@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handboeken - Lage Landen RP</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .handboek-list {
+            list-style: none;
+            display: grid;
+            gap: 1.5rem;
+        }
+        .handboek-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .handboek-item:hover {
+            transform: translateX(10px);
+            box-shadow: var(--card-hover-shadow);
+        }
+        .handboek-item h3 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+        .handboek-item a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .handboek-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <a href="index.html" class="back-link">← Terug naar hoofdmenu</a>
+        <h1>📚 Handboeken & Wetgeving</h1>
+        <p>Alle handboeken en wetten voor Lage Landen RP</p>
+    </header>
+
+    <main class="container">
+        <ul class="handboek-list">
+            <li class="handboek-item">
+                <h3>DSI Handboek</h3>
+                <p>Volledig handboek voor de Dienst Speciale Interventies</p>
+                <a href="Handboek/DSI-Handboek.html">→ Bekijk handboek</a>
+            </li>
+
+            <li class="handboek-item">
+                <h3>Opleidingshandboek</h3>
+                <p>Handboek voor alle opleidingen binnen Lage Landen RP</p>
+                <a href="Handboek/Opleidingshandboek.html">→ Bekijk handboek (HTML)</a> | 
+                <a href="Handboek/Opleidingshandboek.md">→ Bekijk handboek (MD)</a>
+            </li>
+
+            <li class="handboek-item">
+                <h3>Wapenhandboek</h3>
+                <p>Alle informatie over wapens en wapengebruik</p>
+                <a href="Handboek/Wapenhandboek.html">→ Bekijk handboek (HTML)</a> | 
+                <a href="Handboek/Wapenhandboek.md">→ Bekijk handboek (MD)</a>
+            </li>
+
+            <li class="handboek-item">
+                <h3>Wetboek RP</h3>
+                <p>Het volledige wetboek van Lage Landen RP</p>
+                <a href="Handboek/Wetboek-RP.html">→ Bekijk wetboek</a>
+            </li>
+        </ul>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Lage Landen RP - Alle rechten voorbehouden</p>
+        </div>
+    </footer>
+</body>
+</html>

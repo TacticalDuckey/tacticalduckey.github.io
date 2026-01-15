@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sollicitaties & Toetsen - Lage Landen RP</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #ea580c, #fb923c);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .toets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .toets-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .toets-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover-shadow);
+        }
+        .toets-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+        .toets-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .toets-btn {
+            padding: 0.75rem;
+            background: var(--secondary-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        .toets-btn:hover {
+            background: var(--primary-blue);
+        }
+        .toets-btn.invulbaar {
+            background: #10b981;
+        }
+        .toets-btn.invulbaar:hover {
+            background: #059669;
+        }
+        .section-title {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <a href="index.html" class="back-link">← Terug naar hoofdmenu</a>
+        <h1>📝 Sollicitaties & Toetsen</h1>
+        <p>Alle sollicitaties en toetsen voor Lage Landen RP</p>
+    </header>
+
+    <main class="container">
+        <!-- Politie Sollicitatie -->
+        <div class="section-title">
+            <h2>Politie Sollicitatie</h2>
+        </div>
+        <div class="toets-grid">
+            <div class="toets-card">
+                <h3>Politie Sollicitatie</h3>
+                <p>Officiële sollicitatieprocedure voor de politiedienst</p>
+                <div class="toets-links">
+                    <a href="Sollicitaties/1. Politie Sollicitatie - Invulbaar.html" class="toets-btn invulbaar">Invulbaar Formulier</a>
+                    <a href="Sollicitaties/1. Politie Sollicitatie.html" class="toets-btn">Bekijk HTML</a>
+                    <a href="Sollicitaties/1. Politie Sollicitatie.md" class="toets-btn">Bekijk Markdown</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wapen Toetsen -->
+        <div class="section-title">
+            <h2>Wapen Toetsen</h2>
+        </div>
+        <div class="toets-grid">
+            <div class="toets-card">
+                <h3>WTGM Toets</h3>
+                <p>Toets voor Wapenstok, Taser, Geweld & Middelmatig geweld</p>
+                <div class="toets-links">
+                    <a href="Sollicitaties/2. WTGM Toets - Invulbaar.html" class="toets-btn invulbaar">Invulbaar Formulier</a>
+                    <a href="Sollicitaties/2. WTGM Toets.html" class="toets-btn">Bekijk HTML</a>
+                    <a href="Sollicitaties/2. WTGM Toets.md" class="toets-btn">Bekijk Markdown</a>
+                </div>
+            </div>
+
+            <div class="toets-card">
+                <h3>Groot Wapen Toets</h3>
+                <p>Toets voor het gebruik van grote wapens</p>
+                <div class="toets-links">
+                    <a href="Sollicitaties/3. Groot Wapen Toets - Invulbaar.html" class="toets-btn invulbaar">Invulbaar Formulier</a>
+                    <a href="Sollicitaties/3. Groot Wapen Toets.md" class="toets-btn">Bekijk Markdown</a>
+                </div>
+            </div>
+
+            <div class="toets-card">
+                <h3>Taser Toets</h3>
+                <p>Toets voor het gebruik van de taser</p>
+                <div class="toets-links">
+                    <a href="Sollicitaties/4. Taser Toets - Invulbaar.html" class="toets-btn invulbaar">Invulbaar Formulier</a>
+                    <a href="Sollicitaties/4. Taser Toets.md" class="toets-btn">Bekijk Markdown</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rijbewijzen -->
+        <div class="section-title">
+            <h2>Rijbewijs Toetsen</h2>
+        </div>
+        <div class="toets-grid">
+            <div class="toets-card">
+                <h3>🚗 Rijbewijs Auto</h3>
+                <p>Theorie- en praktijktoets voor het autorijbewijs</p>
+                <div class="toets-links">
+                    <a href="Sollicitaties/5. Rijbewijs Auto - Invulbaar.html" class="toets-btn invulbaar">Invulbaar Formulier</a>
+                    <a href="Sollicitaties/5. Rijbewijs Auto Toets.md" class="toets-btn">Bekijk Markdown</a>
+                </div>
+            </div>
+
+            <div class="toets-card">
+                <h3>🏍️ Rijbewijs Motor</h3>
+                <p>Theorie- en praktijktoets voor het motorrijbewijs</p>
+                <div class="toets-links">
+                    <a href="Sollicitaties/6. Rijbewijs Motor - Invulbaar.html" class="toets-btn invulbaar">Invulbaar Formulier</a>
+                    <a href="Sollicitaties/6. Rijbewijs Motor Toets.md" class="toets-btn">Bekijk Markdown</a>
+                </div>
+            </div>
+
+            <div class="toets-card">
+                <h3>🚤 Rijbewijs Boot</h3>
+                <p>Theorie- en praktijktoets voor het bootrijbewijs</p>
+                <div class="toets-links">
+                    <a href="Sollicitaties/7. Rijbewijs Boot - Invulbaar.html" class="toets-btn invulbaar">Invulbaar Formulier</a>
+                    <a href="Sollicitaties/7. Rijbewijs Boot Toets.md" class="toets-btn">Bekijk Markdown</a>
+                </div>
+            </div>
+
+            <div class="toets-card">
+                <h3>✈️ Rijbewijs Lucht</h3>
+                <p>Theorie- en praktijktoets voor het vliegbewijs</p>
+                <div class="toets-links">
+                    <a href="Sollicitaties/8. Rijbewijs Lucht - Invulbaar.html" class="toets-btn invulbaar">Invulbaar Formulier</a>
+                    <a href="Sollicitaties/8. Rijbewijs Lucht Toets.md" class="toets-btn">Bekijk Markdown</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- STAFF ONLY -->
+        <div class="section-title" style="background: linear-gradient(135deg, #dc2626, #f87171); color: white;">
+            <h2>⚠️ STAFF ONLY - Nakijkmodellen</h2>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Alleen toegankelijk voor staffleden</p>
+        </div>
+        <div class="toets-grid">
+            <div class="toets-card">
+                <h3>Sollicitatie Beoordeling</h3>
+                <a href="Sollicitaties/STAFF - Politie Sollicitatie Beoordelingsformulier.html" class="toets-btn">Beoordelingsformulier</a>
+            </div>
+            <div class="toets-card">
+                <h3>WTGM Nakijkmodel</h3>
+                <a href="Sollicitaties/STAFF - WTGM Toets Nakijkmodel.html" class="toets-btn">Nakijkmodel</a>
+            </div>
+            <div class="toets-card">
+                <h3>Groot Wapen Nakijkmodel</h3>
+                <a href="Sollicitaties/STAFF - Groot Wapen Nakijkmodel.html" class="toets-btn">Nakijkmodel</a>
+            </div>
+            <div class="toets-card">
+                <h3>Taser Nakijkmodel</h3>
+                <a href="Sollicitaties/STAFF - Taser Nakijkmodel.html" class="toets-btn">Nakijkmodel</a>
+            </div>
+            <div class="toets-card">
+                <h3>Rijbewijs Auto Nakijkmodel</h3>
+                <a href="Sollicitaties/STAFF - Rijbewijs Auto Nakijkmodel.html" class="toets-btn">Nakijkmodel</a>
+            </div>
+            <div class="toets-card">
+                <h3>Rijbewijs Motor Nakijkmodel</h3>
+                <a href="Sollicitaties/STAFF - Rijbewijs Motor Nakijkmodel.html" class="toets-btn">Nakijkmodel</a>
+            </div>
+            <div class="toets-card">
+                <h3>Rijbewijs Boot Nakijkmodel</h3>
+                <a href="Sollicitaties/STAFF - Rijbewijs Boot Nakijkmodel.html" class="toets-btn">Nakijkmodel</a>
+            </div>
+            <div class="toets-card">
+                <h3>Rijbewijs Lucht Nakijkmodel</h3>
+                <a href="Sollicitaties/STAFF - Rijbewijs Lucht Nakijkmodel.html" class="toets-btn">Nakijkmodel</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Lage Landen RP - Alle rechten voorbehouden</p>
+        </div>
+    </footer>
+</body>
+</html>
