@@ -1,0 +1,9 @@
+# Beveilig STAFF pagina's - alleen toegankelijk voor staff en admin
+/staff-nakijkmodellen.html  /login.html  401!  Role=staff,admin
+/Sollicitaties/STAFF*       /login.html  401!  Role=staff,admin
+
+# Beveilig dashboard - alleen voor ingelogde gebruikers
+/dashboard.html             /login.html  401
+
+# Alle andere pagina's zijn publiek toegankelijk
+/*                          /:splat      200

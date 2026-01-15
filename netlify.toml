@@ -8,11 +8,24 @@
 
 # Redirect rules voor beveiligde pagina's
 [[redirects]]
-  from = "/admin/*"
+  from = "/staff-nakijkmodellen.html"
   to = "/login.html"
-  status = 401
+  status = 200
   force = false
-  conditions = {Role = ["!admin", "!staff"]}
+  conditions = {Role = ["staff", "admin"]}
+
+[[redirects]]
+  from = "/Sollicitaties/STAFF*"
+  to = "/login.html"
+  status = 200
+  force = false
+  conditions = {Role = ["staff", "admin"]}
+
+[[redirects]]
+  from = "/dashboard.html"
+  to = "/login.html"
+  status = 200
+  force = false
 
 # Headers voor security
 [[headers]]
