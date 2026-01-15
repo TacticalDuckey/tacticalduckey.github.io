@@ -1,0 +1,518 @@
+{
+  "name": "🚓 Politie De Lage Landen",
+  "verification_level": 0,
+  "default_message_notifications": 1,
+  "explicit_content_filter": 0,
+  "afk_timeout": 300,
+  "emojis": [],
+  "features": [],
+  "roles": [
+    {
+      "name": "👑 Server Owner",
+      "color": 16711680,
+      "permissions": "8",
+      "hoist": true,
+      "mentionable": true,
+      "position": 30
+    },
+    {
+      "name": "🛡️ Staff",
+      "color": 16744448,
+      "permissions": "8",
+      "hoist": true,
+      "mentionable": true,
+      "position": 29
+    },
+    {
+      "name": "🚔 Korpschef",
+      "color": 1774383,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": true,
+      "position": 28
+    },
+    {
+      "name": "🚔 Plaatsvervangend Korpschef",
+      "color": 3028051,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": true,
+      "position": 27
+    },
+    {
+      "name": "🚔 Commissaris",
+      "color": 3426654,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 26
+    },
+    {
+      "name": "⭐⭐⭐ Hoofdinspecteur",
+      "color": 2052493,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 25
+    },
+    {
+      "name": "⭐⭐ Inspecteur",
+      "color": 2651302,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 24
+    },
+    {
+      "name": "⭐ Brigadier",
+      "color": 3447003,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 23
+    },
+    {
+      "name": "👮 Hoofdagent",
+      "color": 6134242,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 22
+    },
+    {
+      "name": "👮 Agent",
+      "color": 8773097,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 21
+    },
+    {
+      "name": "🚓 Surveillant",
+      "color": 11458289,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 20
+    },
+    {
+      "name": "🔰 Aspirant",
+      "color": 14084856,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 19
+    },
+    {
+      "name": "📝 Trainee",
+      "color": 15463163,
+      "permissions": "268435456",
+      "hoist": true,
+      "mentionable": false,
+      "position": 18
+    },
+    {
+      "name": "🔫 WTGM",
+      "color": 2709161,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 17
+    },
+    {
+      "name": "💥 Groot Wapen",
+      "color": 12589899,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 16
+    },
+    {
+      "name": "⚡ Taser Bevoegd",
+      "color": 2609728,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 15
+    },
+    {
+      "name": "🚗 Rijbewijs Auto",
+      "color": 15908626,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 14
+    },
+    {
+      "name": "🏍️ Rijbewijs Motor",
+      "color": 13840896,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 13
+    },
+    {
+      "name": "🚤 Rijbewijs Boot",
+      "color": 1482117,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 12
+    },
+    {
+      "name": "🚁 Rijbewijs Lucht",
+      "color": 9322701,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 11
+    },
+    {
+      "name": "🎯 Schietinstructeur",
+      "color": 15158332,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 10
+    },
+    {
+      "name": "🎓 Trainer / Opleider",
+      "color": 1752220,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": true,
+      "position": 9
+    },
+    {
+      "name": "⚖️ Onderzoeksrechter",
+      "color": 15844367,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 8
+    },
+    {
+      "name": "💎 VIP / Donateur",
+      "color": 15908626,
+      "permissions": "0",
+      "hoist": true,
+      "mentionable": false,
+      "position": 7
+    },
+    {
+      "name": "🚑 Ambulance / Medisch",
+      "color": 2609728,
+      "permissions": "0",
+      "hoist": true,
+      "mentionable": false,
+      "position": 6
+    },
+    {
+      "name": "🚒 Brandweer",
+      "color": 15105570,
+      "permissions": "0",
+      "hoist": true,
+      "mentionable": false,
+      "position": 5
+    },
+    {
+      "name": "🏛️ Overheid",
+      "color": 9322701,
+      "permissions": "0",
+      "hoist": true,
+      "mentionable": false,
+      "position": 4
+    },
+    {
+      "name": "👤 Burger",
+      "color": 9807270,
+      "permissions": "0",
+      "hoist": false,
+      "mentionable": false,
+      "position": 3
+    }
+  ],
+  "channels": [
+    {
+      "id": "1000",
+      "name": "📘 INFORMATIE",
+      "type": 4,
+      "position": 0
+    },
+    {
+      "id": "2000",
+      "name": "📝 SOLLICITATIES & TOETSING",
+      "type": 4,
+      "position": 1
+    },
+    {
+      "id": "3000",
+      "name": "🎓 OPLEIDING & KORPSINFORMATIE",
+      "type": 4,
+      "position": 2
+    },
+    {
+      "id": "4000",
+      "name": "👮 POLITIE DIENST (RP)",
+      "type": 4,
+      "position": 3
+    },
+    {
+      "id": "5000",
+      "name": "📟 PORTOFOON (VOICE)",
+      "type": 4,
+      "position": 4
+    },
+    {
+      "id": "6000",
+      "name": "🗣️ ALGEMEEN",
+      "type": 4,
+      "position": 5
+    },
+    {
+      "id": "7000",
+      "name": "🔒 STAFF ONLY",
+      "type": 4,
+      "position": 6
+    },
+    {
+      "name": "📌│welkom",
+      "type": 0,
+      "parent_id": "1000",
+      "position": 0,
+      "topic": "Welkom bij de Politie van De Lage Landen 👮"
+    },
+    {
+      "name": "📌│regels-politie",
+      "type": 0,
+      "parent_id": "1000",
+      "position": 1,
+      "topic": "Lees de regels zorgvuldig door"
+    },
+    {
+      "name": "📌│rol-structuur",
+      "type": 0,
+      "parent_id": "1000",
+      "position": 2,
+      "topic": "Overzicht van alle rangen"
+    },
+    {
+      "name": "📌│mededelingen",
+      "type": 0,
+      "parent_id": "1000",
+      "position": 3,
+      "topic": "Belangrijke aankondigingen"
+    },
+    {
+      "name": "📌│faq",
+      "type": 0,
+      "parent_id": "1000",
+      "position": 4,
+      "topic": "Veelgestelde vragen"
+    },
+    {
+      "name": "📝│sollicitatie-informatie",
+      "type": 0,
+      "parent_id": "2000",
+      "position": 0,
+      "topic": "Hoe solliciteer je?"
+    },
+    {
+      "name": "📨│sollicitaties",
+      "type": 0,
+      "parent_id": "2000",
+      "position": 1,
+      "topic": "Plaats hier je sollicitatie"
+    },
+    {
+      "name": "📊│politie-toets",
+      "type": 0,
+      "parent_id": "2000",
+      "position": 2,
+      "topic": "Neem hier je toets af"
+    },
+    {
+      "name": "📘│antwoordmodel",
+      "type": 0,
+      "parent_id": "2000",
+      "position": 3,
+      "topic": "Antwoorden voor de toets (alleen staff)"
+    },
+    {
+      "name": "📅│opleidingen-planning",
+      "type": 0,
+      "parent_id": "2000",
+      "position": 4,
+      "topic": "Planning van opleidingen"
+    },
+    {
+      "name": "📚│opleiding-handboek",
+      "type": 0,
+      "parent_id": "3000",
+      "position": 0,
+      "topic": "Het officiële handboek"
+    },
+    {
+      "name": "🚓│procedures",
+      "type": 0,
+      "parent_id": "3000",
+      "position": 1,
+      "topic": "Procedures en protocollen"
+    },
+    {
+      "name": "📜│wetgeving-rp",
+      "type": 0,
+      "parent_id": "3000",
+      "position": 2,
+      "topic": "Wetgeving binnen de RP"
+    },
+    {
+      "name": "📈│promoties",
+      "type": 0,
+      "parent_id": "3000",
+      "position": 3,
+      "topic": "Promotie-aanvragen en updates"
+    },
+    {
+      "name": "📂│formats",
+      "type": 0,
+      "parent_id": "3000",
+      "position": 4,
+      "topic": "Formats voor rapportages"
+    },
+    {
+      "name": "🚓│dienst-meldingen",
+      "type": 0,
+      "parent_id": "4000",
+      "position": 0,
+      "topic": "Meld je aan voor dienst"
+    },
+    {
+      "name": "📟│porto-tekst",
+      "type": 0,
+      "parent_id": "4000",
+      "position": 1,
+      "topic": "Portofoon berichten (tekst)"
+    },
+    {
+      "name": "📂│rapportages",
+      "type": 0,
+      "parent_id": "4000",
+      "position": 2,
+      "topic": "Dienstrapportages"
+    },
+    {
+      "name": "🚨│incident-meldingen",
+      "type": 0,
+      "parent_id": "4000",
+      "position": 3,
+      "topic": "Meld incidenten"
+    },
+    {
+      "name": "📸│bewijsmateriaal",
+      "type": 0,
+      "parent_id": "4000",
+      "position": 4,
+      "topic": "Upload bewijsmateriaal"
+    },
+    {
+      "name": "🔊│📟 Porto 1 – Surveillance",
+      "type": 2,
+      "parent_id": "5000",
+      "position": 0
+    },
+    {
+      "name": "🔊│📟 Porto 2 – Verkeer",
+      "type": 2,
+      "parent_id": "5000",
+      "position": 1
+    },
+    {
+      "name": "🔊│📟 Porto 3 – Nood/Achtervolging",
+      "type": 2,
+      "parent_id": "5000",
+      "position": 2
+    },
+    {
+      "name": "🔊│📟 Porto 4 – Opleiding",
+      "type": 2,
+      "parent_id": "5000",
+      "position": 3
+    },
+    {
+      "name": "🔊│📟 Porto Leiding",
+      "type": 2,
+      "parent_id": "5000",
+      "position": 4
+    },
+    {
+      "name": "🔊│📟 Porto Staff",
+      "type": 2,
+      "parent_id": "5000",
+      "position": 5
+    },
+    {
+      "name": "💬│algemeen",
+      "type": 0,
+      "parent_id": "6000",
+      "position": 0,
+      "topic": "Algemene chat"
+    },
+    {
+      "name": "❓│vragen",
+      "type": 0,
+      "parent_id": "6000",
+      "position": 1,
+      "topic": "Stel je vragen hier"
+    },
+    {
+      "name": "🎉│off-topic",
+      "type": 0,
+      "parent_id": "6000",
+      "position": 2,
+      "topic": "Voor alles buiten politie"
+    },
+    {
+      "name": "📸│screenshots",
+      "type": 0,
+      "parent_id": "6000",
+      "position": 3,
+      "topic": "Deel je screenshots"
+    },
+    {
+      "name": "🛠️│staff-chat",
+      "type": 0,
+      "parent_id": "7000",
+      "position": 0,
+      "topic": "Staff discussies"
+    },
+    {
+      "name": "📋│beoordelingen",
+      "type": 0,
+      "parent_id": "7000",
+      "position": 1,
+      "topic": "Beoordeel sollicitaties"
+    },
+    {
+      "name": "⚠️│meldingen",
+      "type": 0,
+      "parent_id": "7000",
+      "position": 2,
+      "topic": "Belangrijke meldingen"
+    },
+    {
+      "name": "🧾│logs",
+      "type": 0,
+      "parent_id": "7000",
+      "position": 3,
+      "topic": "Server logs"
+    },
+    {
+      "name": "📊│toets-resultaten",
+      "type": 0,
+      "parent_id": "7000",
+      "position": 4,
+      "topic": "Resultaten van toetsen"
+    }
+  ]
+}

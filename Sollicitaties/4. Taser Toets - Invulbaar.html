@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Taser Toets - De Lage Landen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #854d0e;
+            border-bottom: 3px solid #eab308;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #854d0e;
+            margin-top: 30px;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 30px 0;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .checkbox-group {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .checkbox-group li {
+            margin-bottom: 5px;
+        }
+        .save-button {
+            background-color: #eab308;
+            color: #422006;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 30px 0;
+            display: block;
+            width: 100%;
+        }
+        .save-button:hover {
+            background-color: #ca8a04;
+        }
+        .info-box {
+            background-color: #fefce8;
+            border-left: 4px solid #eab308;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+        }
+        table td {
+            padding: 8px;
+        }
+        @media print {
+            .save-button, .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <h1>⚡ TASER BEVOEGDHEID TOETS</h1>
+    
+    <div class="info-box">
+        <strong>De Lage Landen (Roblox)</strong><br>
+        ⚠️ Minimaal 70% correct om te slagen
+    </div>
+    
+    <hr>
+    
+    <table>
+        <tr>
+            <td style="width: 100px;"><strong>Naam:</strong></td>
+            <td><input type="text" id="naam"></td>
+        </tr>
+        <tr>
+            <td><strong>Rang:</strong></td>
+            <td><input type="text" id="rang"></td>
+        </tr>
+        <tr>
+            <td><strong>Datum:</strong></td>
+            <td><input type="text" id="datum"></td>
+        </tr>
+    </table>
+    
+    <hr>
+    
+    <h2>📋 Theorie Vragen</h2>
+    
+    <p><strong>1.</strong> Wat is een taser en waarvoor wordt deze gebruikt?</p>
+    <textarea id="vraag1" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>2.</strong> Wanneer mag je een taser gebruiken?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag2" value="a"> Bij elke aanhouding</li>
+        <li><input type="radio" name="vraag2" value="b"> Alleen bij actief verzet</li>
+        <li><input type="radio" name="vraag2" value="c"> Als iemand wegrent</li>
+        <li><input type="radio" name="vraag2" value="d"> Bij verbaal verzet</li>
+    </ul>
+    
+    <p><strong>3.</strong> Mag je een taser gebruiken op iemand die een wapen vasthoudt?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag3" value="a"> Ja, altijd</li>
+        <li><input type="radio" name="vraag3" value="b"> Nee, alleen een vuurwapen gebruiken</li>
+        <li><input type="radio" name="vraag3" value="c"> Ja, maar alleen als er geen direct levensgevaar is</li>
+        <li><input type="radio" name="vraag3" value="d"> Alleen na toestemming van een leidinggevende</li>
+    </ul>
+    
+    <p><strong>4.</strong> Hoeveel keer mag je iemand taseren?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag4" value="a"> Onbeperkt</li>
+        <li><input type="radio" name="vraag4" value="b"> Maximaal 1 keer</li>
+        <li><input type="radio" name="vraag4" value="c"> Maximaal 3 keer</li>
+        <li><input type="radio" name="vraag4" value="d"> Zo vaak als nodig totdat de persoon gestopt is met verzet</li>
+    </ul>
+    
+    <p><strong>5.</strong> Wat doe je DIRECT nadat je iemand getaserd hebt?</p>
+    <textarea id="vraag5" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>6.</strong> Mag je een taser gebruiken op:</p>
+    <table style="margin-left: 20px;">
+        <tr>
+            <td style="width: 250px;">Zwangere vrouwen?</td>
+            <td><input type="radio" name="vraag6a" value="ja"> Ja &nbsp; <input type="radio" name="vraag6a" value="nee"> Nee</td>
+        </tr>
+        <tr>
+            <td>Minderjarigen?</td>
+            <td><input type="radio" name="vraag6b" value="ja"> Ja &nbsp; <input type="radio" name="vraag6b" value="nee"> Nee</td>
+        </tr>
+        <tr>
+            <td>Ouderen (65+)?</td>
+            <td><input type="radio" name="vraag6c" value="ja"> Ja &nbsp; <input type="radio" name="vraag6c" value="nee"> Nee</td>
+        </tr>
+        <tr>
+            <td>Iemand op een hoog gebouw?</td>
+            <td><input type="radio" name="vraag6d" value="ja"> Ja &nbsp; <input type="radio" name="vraag6d" value="nee"> Nee</td>
+        </tr>
+    </table>
+    
+    <p><strong>7.</strong> Een verdachte rent weg maar is niet gewapend. Mag je je taser gebruiken?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag7" value="a"> Ja</li>
+        <li><input type="radio" name="vraag7" value="b"> Nee</li>
+        <li><input type="radio" name="vraag7" value="c"> Alleen als hij agressief is</li>
+    </ul>
+    
+    <hr>
+    
+    <h2>🎯 Praktijk Scenario</h2>
+    
+    <p><strong>8. Situatie:</strong> Je houdt een persoon aan voor een overtreding. Hij begint te schreeuwen en weigert stil te staan. Hij heeft geen wapen.</p>
+    <p><strong>Beschrijf stap voor stap hoe je handelt:</strong></p>
+    <textarea id="vraag8" style="min-height: 120px;" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateStr = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            document.getElementById('datum').value = dateStr;
+        });
+        
+        function savePDF() {
+            const naam = document.getElementById('naam').value || 'Onbekend';
+            
+            if (!naam || naam === 'Onbekend') {
+                alert('⚠️ Vul eerst je naam in!');
+                return;
+            }
+            
+            const fileName = `Taser Toets - Antwoorden - ${naam}.pdf`;
+            
+            alert(`✅ Klik op OK en kies daarna:\n\n1. Bestemming: "Opslaan als PDF"\n2. Bestandsnaam: ${fileName}\n3. Klik op "Opslaan"`);
+            
+            window.print();
+        }
+    </script>
+    
+</body>
+</html>

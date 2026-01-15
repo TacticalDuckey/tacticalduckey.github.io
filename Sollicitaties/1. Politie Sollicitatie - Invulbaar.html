@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Politie Sollicitatie - De Lage Landen</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #1e3a8a;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 30px;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 30px 0;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .checkbox-group {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .checkbox-group li {
+            margin-bottom: 5px;
+        }
+        .save-button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 30px 0;
+            display: block;
+            width: 100%;
+        }
+        .save-button:hover {
+            background-color: #2563eb;
+        }
+        .info-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        @media print {
+            .save-button, .no-print { display: none; }
+        }
+    </style>
+</head>
+<body id="content">
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <h1>👮 Politie Sollicitatie – De Lage Landen (Roblox)</h1>
+    
+    <hr>
+    
+    <h2>📋 Algemene informatie</h2>
+    
+    <p><strong>Roblox gebruikersnaam:</strong></p>
+    <input type="text" id="roblox" placeholder="Vul hier in...">
+    
+    <p><strong>Discord naam (incl. #):</strong></p>
+    <input type="text" id="discord" placeholder="Vul hier in...">
+    
+    <p><strong>Leeftijd (IRL):</strong></p>
+    <input type="text" id="leeftijd" placeholder="Vul hier in...">
+    
+    <p><strong>Tijdzone:</strong></p>
+    <input type="text" id="tijdzone" placeholder="Vul hier in...">
+    
+    <p><strong>Gemiddeld aantal uur per week actief:</strong></p>
+    <input type="text" id="uren" placeholder="Vul hier in...">
+    
+    <hr>
+    
+    <h2>🎮 Ervaring</h2>
+    
+    <p><strong>1.</strong> Heb je eerder bij een politie, marechaussee of andere hulpdienst gezeten in Roblox?</p>
+    <textarea id="vraag1" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p style="margin-left: 30px;"><strong>Zo ja, waar en welke rang?:</strong></p>
+    <textarea id="vraag1b" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>2.</strong> Hoeveel ervaring heb je met roleplay?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="ervaring" value="beginner"> Beginner</li>
+        <li><input type="radio" name="ervaring" value="gemiddeld"> Gemiddeld</li>
+        <li><input type="radio" name="ervaring" value="gevorderd"> Gevorderd</li>
+    </ul>
+    
+    <hr>
+    
+    <h2>💡 Motivatie</h2>
+    
+    <p><strong>3.</strong> Waarom wil jij bij de politie van <em>De Lage Landen</em>?<br>
+    <span style="color: #6b7280; font-size: 0.9em;">(Minimaal 3 zinnen)</span></p>
+    <textarea id="vraag3" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>4.</strong> Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?</p>
+    <textarea id="vraag4" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <hr>
+    
+    <h2>📚 Politie-interne kennis</h2>
+    <p style="color: #6b7280; font-style: italic;">(Beantwoord zo volledig mogelijk)</p>
+    
+    <p><strong>5.</strong> Wat houdt een <strong>BTGV</strong> in en wanneer mag deze worden uitgevoerd?</p>
+    <textarea id="vraag5" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>6.</strong> Wat is het verschil tussen een <strong>staandehouding</strong> en een <strong>aanhouding</strong>?</p>
+    <textarea id="vraag6" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>7.</strong> Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.</p>
+    <textarea id="vraag7" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>8.</strong> Wat betekent <strong>proportionaliteit</strong> en <strong>subsidiariteit</strong> binnen politiewerk?</p>
+    <textarea id="vraag8" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>9.</strong> Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?</p>
+    <textarea id="vraag9" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <hr>
+    
+    <h2>🚨 Situatievragen (RP)</h2>
+    
+    <p><strong>10.</strong> Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheldt je uit. Hoe handel je dit af?</p>
+    <textarea id="vraag10" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>11.</strong> Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?</p>
+    <textarea id="vraag11" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <hr>
+    
+    <h2>📖 Gedrag & regels</h2>
+    
+    <p><strong>12.</strong> Kun jij omgaan met hiërarchie en bevelen van hogere rangen?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="hierarchie" value="ja"> Ja</li>
+        <li><input type="radio" name="hierarchie" value="nee"> Nee</li>
+    </ul>
+    <p style="margin-left: 30px;"><strong>Toelichting:</strong></p>
+    <textarea id="vraag12" placeholder="Vul hier je toelichting in..."></textarea>
+    
+    <p><strong>13.</strong> Ben je bekend met <strong>FailRP</strong>, <strong>Powergaming</strong> en <strong>Meta-gaming</strong>?</p>
+    <p style="margin-left: 30px;">Leg kort uit wat deze termen betekenen:</p>
+    <textarea id="vraag13" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <hr>
+    
+    <h2>✅ Slot</h2>
+    
+    <p><strong>14.</strong> Waarom zouden wij jou moeten aannemen?</p>
+    <textarea id="vraag14" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>15.</strong> Heb je nog vragen of opmerkingen?</p>
+    <textarea id="vraag15" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <hr>
+    
+    <p style="text-align: center; color: #6b7280; font-style: italic; margin-top: 40px;">
+        Bedankt voor je sollicitatie! Je hoort binnen 48 uur van ons. 🚓
+    </p>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <script>
+        function savePDF() {
+            // Haal de naam op
+            const naam = document.getElementById('roblox').value || 'Onbekend';
+            
+            // Controleer of er antwoorden zijn ingevuld
+            if (!naam || naam === 'Onbekend') {
+                alert('⚠️ Vul eerst je Roblox gebruikersnaam in!');
+                return;
+            }
+            
+            // Gebruik browser's print functie voor PDF
+            const fileName = `Politie Sollicitatie - Antwoorden - ${naam}.pdf`;
+            
+            // Toon instructie
+            alert(`✅ Klik op OK en kies daarna:\n\n1. Bestemming: "Opslaan als PDF"\n2. Bestandsnaam: ${fileName}\n3. Klik op "Opslaan"\n\n💡 Tip: Verwijder vinkje bij "Kop- en voetteksten" voor een schonere PDF!`);
+            
+            // Open print dialog
+            window.print();
+        }
+    </script>
+    
+</body>
+</html>

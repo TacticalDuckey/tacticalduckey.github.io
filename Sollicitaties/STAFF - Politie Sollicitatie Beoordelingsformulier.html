@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>STAFF - Politie Sollicitatie Beoordelingsformulier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f9fafb;
+        }
+        h1 {
+            color: #1e3a8a;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e3a8a;
+            margin-top: 30px;
+        }
+        .info-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .score-box {
+            background-color: #ffffff;
+            border: 2px solid #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .score-box h3 {
+            margin-top: 0;
+            color: #1e3a8a;
+        }
+        .score-display {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .geslaagd {
+            color: #059669;
+        }
+        .niet-geslaagd {
+            color: #dc2626;
+        }
+        .vraag-container {
+            background-color: #ffffff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 3px solid #d1d5db;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            min-height: 80px;
+            resize: vertical;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .beoordeling {
+            margin: 10px 0;
+        }
+        .beoordeling label {
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .rating {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .rating label {
+            padding: 5px 15px;
+            border: 2px solid #d1d5db;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .rating input[type="radio"]:checked + span {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .rating input[type="radio"] {
+            display: none;
+        }
+        .save-button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            display: block;
+            width: 100%;
+        }
+        .save-button:hover {
+            background-color: #2563eb;
+        }
+        table {
+            width: 100%;
+            margin: 10px 0;
+        }
+        table td {
+            padding: 8px;
+        }
+        .criteria-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .criteria-table th, .criteria-table td {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            text-align: left;
+        }
+        .criteria-table th {
+            background-color: #eff6ff;
+            color: #1e3a8a;
+        }
+        @media print {
+            .no-print { display: none; }
+            body { background-color: white; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan Beoordeling als PDF</button>
+    </div>
+    
+    <h1>🚓 STAFF - Politie Sollicitatie Beoordelingsformulier</h1>
+    
+    <div class="info-box">
+        <strong>⚠️ ALLEEN VOOR STAFF</strong><br>
+        Gebruik dit formulier om sollicitaties te beoordelen. Kopieer de antwoorden van de sollicitant en geef per onderdeel een beoordeling.
+    </div>
+    
+    <table>
+        <tr>
+            <td style="width: 150px;"><strong>Sollicitant:</strong></td>
+            <td><input type="text" id="sollicitant"></td>
+        </tr>
+        <tr>
+            <td><strong>Beoordelaar:</strong></td>
+            <td><input type="text" id="beoordelaar"></td>
+        </tr>
+        <tr>
+            <td><strong>Datum:</strong></td>
+            <td><input type="text" id="datum"></td>
+        </tr>
+    </table>
+    
+    <h2>📋 Persoonlijke Informatie</h2>
+    
+    <div class="vraag-container">
+        <p><strong>Roblox gebruikersnaam:</strong></p>
+        <input type="text" id="roblox">
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>Discord gebruikersnaam:</strong></p>
+        <input type="text" id="discord">
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>Leeftijd:</strong></p>
+        <input type="text" id="leeftijd">
+        <div class="beoordeling">
+            <label><input type="radio" name="check_leeftijd" value="ok"> ✅ Voldoet aan minimum leeftijd</label>
+            <label><input type="radio" name="check_leeftijd" value="niet_ok"> ❌ Te jong</label>
+        </div>
+    </div>
+    
+    <h2>📊 Beantwoording Vragen (1-15)</h2>
+    
+    <div class="vraag-container">
+        <p><strong>1. Waarom wil je bij de politie?</strong></p>
+        <textarea id="vraag1" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score1" value="1"><span>1 - Zwak</span></label>
+            <label><input type="radio" name="score1" value="2"><span>2 - Onvoldoende</span></label>
+            <label><input type="radio" name="score1" value="3"><span>3 - Matig</span></label>
+            <label><input type="radio" name="score1" value="4"><span>4 - Voldoende</span></label>
+            <label><input type="radio" name="score1" value="5"><span>5 - Goed</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>2. Hoeveel uur per week kun je actief zijn?</strong></p>
+        <textarea id="vraag2" placeholder="Antwoord van sollicitant..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="check2" value="voldoende"> ✅ Voldoende uren</label>
+            <label><input type="radio" name="check2" value="onvoldoende"> ❌ Te weinig uren</label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>3. In welke tijdzone ben je?</strong></p>
+        <textarea id="vraag3" placeholder="Antwoord van sollicitant..."></textarea>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>4. Heb je eerdere ervaring met politie roleplay?</strong></p>
+        <textarea id="vraag4" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling ervaring:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score4" value="1"><span>1 - Geen</span></label>
+            <label><input type="radio" name="score4" value="2"><span>2 - Minimaal</span></label>
+            <label><input type="radio" name="score4" value="3"><span>3 - Enige</span></label>
+            <label><input type="radio" name="score4" value="4"><span>4 - Ruime</span></label>
+            <label><input type="radio" name="score4" value="5"><span>5 - Uitgebreide</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>5. Wat zijn je sterke punten?</strong></p>
+        <textarea id="vraag5" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score5" value="1"><span>1 - Zwak</span></label>
+            <label><input type="radio" name="score5" value="2"><span>2 - Onvoldoende</span></label>
+            <label><input type="radio" name="score5" value="3"><span>3 - Matig</span></label>
+            <label><input type="radio" name="score5" value="4"><span>4 - Voldoende</span></label>
+            <label><input type="radio" name="score5" value="5"><span>5 - Goed</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>6. Wat zijn je zwakke punten?</strong></p>
+        <textarea id="vraag6" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling zelfkennis:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score6" value="1"><span>1 - Niet eerlijk</span></label>
+            <label><input type="radio" name="score6" value="2"><span>2 - Vaag</span></label>
+            <label><input type="radio" name="score6" value="3"><span>3 - Neutraal</span></label>
+            <label><input type="radio" name="score6" value="4"><span>4 - Eerlijk</span></label>
+            <label><input type="radio" name="score6" value="5"><span>5 - Zeer zelfreflectief</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>7. Hoe ga je om met stress of conflicten?</strong></p>
+        <textarea id="vraag7" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score7" value="1"><span>1 - Zwak</span></label>
+            <label><input type="radio" name="score7" value="2"><span>2 - Onvoldoende</span></label>
+            <label><input type="radio" name="score7" value="3"><span>3 - Matig</span></label>
+            <label><input type="radio" name="score7" value="4"><span>4 - Voldoende</span></label>
+            <label><input type="radio" name="score7" value="5"><span>5 - Goed</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>8. Scenario: Burger wordt agressief tijdens controle</strong></p>
+        <textarea id="vraag8" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling professioneel handelen:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score8" value="1"><span>1 - Onjuist</span></label>
+            <label><input type="radio" name="score8" value="2"><span>2 - Zwak</span></label>
+            <label><input type="radio" name="score8" value="3"><span>3 - Redelijk</span></label>
+            <label><input type="radio" name="score8" value="4"><span>4 - Goed</span></label>
+            <label><input type="radio" name="score8" value="5"><span>5 - Uitstekend</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>9. Scenario: Collega maakt een fout</strong></p>
+        <textarea id="vraag9" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling teamwork:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score9" value="1"><span>1 - Onjuist</span></label>
+            <label><input type="radio" name="score9" value="2"><span>2 - Zwak</span></label>
+            <label><input type="radio" name="score9" value="3"><span>3 - Redelijk</span></label>
+            <label><input type="radio" name="score9" value="4"><span>4 - Goed</span></label>
+            <label><input type="radio" name="score9" value="5"><span>5 - Uitstekend</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>10. Scenario: Twee meldingen tegelijk</strong></p>
+        <textarea id="vraag10" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling prioritering:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score10" value="1"><span>1 - Onjuist</span></label>
+            <label><input type="radio" name="score10" value="2"><span>2 - Zwak</span></label>
+            <label><input type="radio" name="score10" value="3"><span>3 - Redelijk</span></label>
+            <label><input type="radio" name="score10" value="4"><span>4 - Goed</span></label>
+            <label><input type="radio" name="score10" value="5"><span>5 - Uitstekend</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>11. Hoe belangrijk is teamwork voor jou?</strong></p>
+        <textarea id="vraag11" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score11" value="1"><span>1 - Zwak</span></label>
+            <label><input type="radio" name="score11" value="2"><span>2 - Onvoldoende</span></label>
+            <label><input type="radio" name="score11" value="3"><span>3 - Matig</span></label>
+            <label><input type="radio" name="score11" value="4"><span>4 - Voldoende</span></label>
+            <label><input type="radio" name="score11" value="5"><span>5 - Goed</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>12. Kun je omgaan met hiërarchie?</strong></p>
+        <textarea id="vraag12" placeholder="Antwoord van sollicitant..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="check12" value="ja"> ✅ Ja - Geschikt</label>
+            <label><input type="radio" name="check12" value="twijfel"> ⚠️ Twijfelachtig</label>
+            <label><input type="radio" name="check12" value="nee"> ❌ Nee - Niet geschikt</label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>13. FailRP, Powergaming, Meta-gaming uitleg</strong></p>
+        <textarea id="vraag13" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Kennis RP regels:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score13" value="1"><span>1 - Onbekend</span></label>
+            <label><input type="radio" name="score13" value="2"><span>2 - Minimaal</span></label>
+            <label><input type="radio" name="score13" value="3"><span>3 - Basis</span></label>
+            <label><input type="radio" name="score13" value="4"><span>4 - Goed</span></label>
+            <label><input type="radio" name="score13" value="5"><span>5 - Uitstekend</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>14. Waarom zouden wij jou moeten aannemen?</strong></p>
+        <textarea id="vraag14" placeholder="Antwoord van sollicitant..."></textarea>
+        <p><strong>Beoordeling motivatie:</strong></p>
+        <div class="rating">
+            <label><input type="radio" name="score14" value="1"><span>1 - Zwak</span></label>
+            <label><input type="radio" name="score14" value="2"><span>2 - Onvoldoende</span></label>
+            <label><input type="radio" name="score14" value="3"><span>3 - Matig</span></label>
+            <label><input type="radio" name="score14" value="4"><span>4 - Voldoende</span></label>
+            <label><input type="radio" name="score14" value="5"><span>5 - Overtuigend</span></label>
+        </div>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>15. Heb je nog vragen of opmerkingen?</strong></p>
+        <textarea id="vraag15" placeholder="Antwoord van sollicitant..."></textarea>
+    </div>
+    
+    <hr>
+    
+    <h2>📊 Totaal Overzicht</h2>
+    
+    <div class="score-box no-print">
+        <h3>Automatische Score Berekening</h3>
+        <div class="score-display">
+            Gemiddelde score: <span id="gemiddelde">-</span> / 5.0
+        </div>
+        <div class="score-display">
+            Percentage: <span id="percentage">-</span>%
+        </div>
+        <div class="score-display">
+            Aanbeveling: <span id="aanbeveling">-</span>
+        </div>
+    </div>
+    
+    <table class="criteria-table">
+        <thead>
+            <tr>
+                <th>Criterium</th>
+                <th>Beoordeling</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Motivatie & Enthousiasme</td>
+                <td>
+                    <select id="crit_motivatie" onchange="updateAanbeveling()">
+                        <option value="">-- Selecteer --</option>
+                        <option value="1">⭐ Zwak</option>
+                        <option value="2">⭐⭐ Matig</option>
+                        <option value="3">⭐⭐⭐ Voldoende</option>
+                        <option value="4">⭐⭐⭐⭐ Goed</option>
+                        <option value="5">⭐⭐⭐⭐⭐ Uitstekend</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Professionaliteit</td>
+                <td>
+                    <select id="crit_professionaliteit" onchange="updateAanbeveling()">
+                        <option value="">-- Selecteer --</option>
+                        <option value="1">⭐ Zwak</option>
+                        <option value="2">⭐⭐ Matig</option>
+                        <option value="3">⭐⭐⭐ Voldoende</option>
+                        <option value="4">⭐⭐⭐⭐ Goed</option>
+                        <option value="5">⭐⭐⭐⭐⭐ Uitstekend</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Taalvaardigheid (spelling/grammatica)</td>
+                <td>
+                    <select id="crit_taal" onchange="updateAanbeveling()">
+                        <option value="">-- Selecteer --</option>
+                        <option value="1">⭐ Zwak</option>
+                        <option value="2">⭐⭐ Matig</option>
+                        <option value="3">⭐⭐⭐ Voldoende</option>
+                        <option value="4">⭐⭐⭐⭐ Goed</option>
+                        <option value="5">⭐⭐⭐⭐⭐ Uitstekend</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Geschiktheid voor politiewerk</td>
+                <td>
+                    <select id="crit_geschiktheid" onchange="updateAanbeveling()">
+                        <option value="">-- Selecteer --</option>
+                        <option value="1">⭐ Niet geschikt</option>
+                        <option value="2">⭐⭐ Twijfelachtig</option>
+                        <option value="3">⭐⭐⭐ Redelijk geschikt</option>
+                        <option value="4">⭐⭐⭐⭐ Geschikt</option>
+                        <option value="5">⭐⭐⭐⭐⭐ Zeer geschikt</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>✅ Eindoordeel</h2>
+    
+    <div class="vraag-container">
+        <p><strong>Algemene indruk:</strong></p>
+        <textarea id="algemene_indruk" placeholder="Vat je algemene indruk samen..."></textarea>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>Sterke punten sollicitant:</strong></p>
+        <textarea id="sterke_punten_eval" placeholder="Wat viel positief op?"></textarea>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>Aandachtspunten:</strong></p>
+        <textarea id="aandachtspunten" placeholder="Wat moet de sollicitant verbeteren of waar moet op gelet worden?"></textarea>
+    </div>
+    
+    <div class="score-box">
+        <h3>Definitieve Beslissing</h3>
+        <div class="beoordeling">
+            <label style="display: block; margin: 10px 0;">
+                <input type="radio" name="beslissing" value="aangenomen" onchange="updateBeslissing()">
+                <strong style="color: #059669; font-size: 18px;">✅ AANGENOMEN</strong> - Uitnodigen voor training
+            </label>
+            <label style="display: block; margin: 10px 0;">
+                <input type="radio" name="beslissing" value="gesprek" onchange="updateBeslissing()">
+                <strong style="color: #ea580c; font-size: 18px;">💬 GESPREK</strong> - Uitnodigen voor sollicitatiegesprek
+            </label>
+            <label style="display: block; margin: 10px 0;">
+                <input type="radio" name="beslissing" value="afgewezen" onchange="updateBeslissing()">
+                <strong style="color: #dc2626; font-size: 18px;">❌ AFGEWEZEN</strong> - Sollicitatie niet succesvol
+            </label>
+        </div>
+        <div id="beslissing_display" style="font-size: 24px; font-weight: bold; margin-top: 20px; text-align: center;"></div>
+    </div>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan Beoordeling als PDF</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateStr = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            document.getElementById('datum').value = dateStr;
+            
+            // Event listeners voor score berekening
+            for (let i = 1; i <= 14; i++) {
+                const radios = document.getElementsByName('score' + i);
+                radios.forEach(radio => {
+                    radio.addEventListener('change', berekenGemiddelde);
+                });
+            }
+        });
+        
+        function berekenGemiddelde() {
+            const scoreVragen = [1, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14]; // Vragen met 1-5 score
+            let totaal = 0;
+            let aantal = 0;
+            
+            scoreVragen.forEach(num => {
+                const selected = document.querySelector(`input[name="score${num}"]:checked`);
+                if (selected) {
+                    totaal += parseInt(selected.value);
+                    aantal++;
+                }
+            });
+            
+            if (aantal > 0) {
+                const gemiddelde = totaal / aantal;
+                const percentage = (gemiddelde / 5) * 100;
+                
+                document.getElementById('gemiddelde').textContent = gemiddelde.toFixed(2);
+                document.getElementById('percentage').textContent = percentage.toFixed(0);
+                
+                let aanbeveling = '';
+                if (gemiddelde >= 4.0) {
+                    aanbeveling = '✅ Sterke kandidaat - Aannemen aanbevolen';
+                } else if (gemiddelde >= 3.0) {
+                    aanbeveling = '💬 Redelijke kandidaat - Gesprek aanbevolen';
+                } else {
+                    aanbeveling = '❌ Zwakke kandidaat - Afwijzen aanbevolen';
+                }
+                
+                document.getElementById('aanbeveling').textContent = aanbeveling;
+            }
+        }
+        
+        function updateAanbeveling() {
+            // Update aanbeveling op basis van criteria scores
+            berekenGemiddelde();
+        }
+        
+        function updateBeslissing() {
+            const beslissing = document.querySelector('input[name="beslissing"]:checked');
+            const display = document.getElementById('beslissing_display');
+            
+            if (beslissing) {
+                if (beslissing.value === 'aangenomen') {
+                    display.textContent = '✅ AANGENOMEN';
+                    display.style.color = '#059669';
+                } else if (beslissing.value === 'gesprek') {
+                    display.textContent = '💬 GESPREK GEPLAND';
+                    display.style.color = '#ea580c';
+                } else {
+                    display.textContent = '❌ AFGEWEZEN';
+                    display.style.color = '#dc2626';
+                }
+            }
+        }
+        
+        function savePDF() {
+            const naam = document.getElementById('sollicitant').value || 'Onbekend';
+            
+            if (!naam || naam === 'Onbekend') {
+                alert('⚠️ Vul eerst de naam van de sollicitant in!');
+                return;
+            }
+            
+            const fileName = `Sollicitatie Beoordeling - ${naam}.pdf`;
+            
+            alert(`✅ Klik op OK en kies daarna:\n\n1. Bestemming: "Opslaan als PDF"\n2. Bestandsnaam: ${fileName}\n3. Klik op "Opslaan"`);
+            
+            window.print();
+        }
+    </script>
+    
+</body>
+</html>

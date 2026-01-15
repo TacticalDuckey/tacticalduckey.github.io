@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>STAFF - WTGM Toets Nakijkmodel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f9fafb;
+        }
+        h1 {
+            color: #7c2d12;
+            border-bottom: 3px solid #ea580c;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #7c2d12;
+            margin-top: 30px;
+        }
+        .info-box {
+            background-color: #fff7ed;
+            border-left: 4px solid #ea580c;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .score-box {
+            background-color: #ffffff;
+            border: 2px solid #ea580c;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .score-box h3 {
+            margin-top: 0;
+            color: #7c2d12;
+        }
+        .score-display {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .geslaagd {
+            color: #059669;
+        }
+        .niet-geslaagd {
+            color: #dc2626;
+        }
+        .vraag-container {
+            background-color: #ffffff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 3px solid #d1d5db;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            min-height: 60px;
+            resize: vertical;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .beoordeling {
+            margin: 10px 0;
+        }
+        .beoordeling label {
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        .beoordeling input[type="radio"] {
+            margin-right: 5px;
+        }
+        .save-button {
+            background-color: #ea580c;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            display: block;
+            width: 100%;
+        }
+        .save-button:hover {
+            background-color: #c2410c;
+        }
+        table {
+            width: 100%;
+            margin: 10px 0;
+        }
+        table td {
+            padding: 8px;
+        }
+        @media print {
+            .no-print { display: none; }
+            body { background-color: white; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan Beoordeling als PDF</button>
+    </div>
+    
+    <h1>🔫 STAFF - WTGM Toets Nakijkmodel</h1>
+    
+    <div class="info-box">
+        <strong>⚠️ ALLEEN VOOR STAFF</strong><br>
+        Minimaal 75% vereist om te slagen | 9 vragen totaal
+    </div>
+    
+    <table>
+        <tr>
+            <td style="width: 150px;"><strong>Speler naam:</strong></td>
+            <td><input type="text" id="spelernaam"></td>
+        </tr>
+        <tr>
+            <td><strong>Rang:</strong></td>
+            <td><input type="text" id="rang"></td>
+        </tr>
+        <tr>
+            <td><strong>Beoordelaar:</strong></td>
+            <td><input type="text" id="beoordelaar"></td>
+        </tr>
+        <tr>
+            <td><strong>Datum:</strong></td>
+            <td><input type="text" id="datum"></td>
+        </tr>
+    </table>
+    
+    <div class="score-box no-print">
+        <h3>📊 Automatische Beoordeling</h3>
+        <div class="score-display">
+            Score: <span id="score">0</span> / 9 (<span id="percentage">0</span>%)
+        </div>
+        <div class="score-display">
+            Cijfer: <span id="cijfer">-</span>
+        </div>
+        <div class="score-display">
+            Uitslag: <span id="uitslag">-</span>
+        </div>
+    </div>
+    
+    <h2>📋 Vragen Beoordeling</h2>
+    
+    <div class="vraag-container">
+        <p><strong>1. Wat betekent de afkorting WTGM?</strong></p>
+        <textarea id="antwoord1" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag1" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag1" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: Wapens, Trainen, Geweld, Munitie (of soortgelijk)</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>2. Welke rangen mogen standaard een dienstwapen dragen?</strong></p>
+        <textarea id="antwoord2" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag2" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag2" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: Vanaf Surveillant/Agent (of alle rangen)</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>3. Wanneer mag je je wapen trekken?</strong></p>
+        <textarea id="antwoord3" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag3" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag3" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: B - Alleen bij direct levensgevaar</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>4. Wat is de volgorde van het geweldsspectrum?</strong></p>
+        <textarea id="antwoord4" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag4" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag4" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: 1. Verbale aanwijzing, 2. Wapenstok/Pepperspray, 3. Taser, 4. Vuurwapen</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>5. Mag je waarschuwingsschoten lossen?</strong></p>
+        <textarea id="antwoord5" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag5" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag5" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: C - Nee, nooit (of B - alleen in levensgevaarlijke situaties, afhankelijk van server regels)</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>6. Je ziet een collega die zijn wapen trekt zonder dat er direct gevaar is. Wat doe je?</strong></p>
+        <textarea id="antwoord6" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag6" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag6" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: Aanspreken/rapporteren aan leidinggevende</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>7. Een burger vraagt of hij je wapen mag zien. Wat zeg je?</strong></p>
+        <textarea id="antwoord7" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag7" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag7" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: B - "Nee, dat is verboden."</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>8. Noem 3 situaties waarin het gebruik van je dienstwapen gerechtvaardigd is</strong></p>
+        <textarea id="antwoord8" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag8" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag8" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: Bijv. gewapende overval, dreiging met vuurwapen, actieve schutter, levensgevaar voor jou/collega/burger</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>9. Praktijk Scenario: Je bent op patrouille en ziet een persoon met een mes die iemand bedreigt.</strong></p>
+        <textarea id="antwoord9" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag9" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag9" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: Backup vragen, wapen trekken, verbale waarschuwing, geweldsspectrum volgen</small>
+    </div>
+    
+    <hr>
+    
+    <h2>📝 Opmerkingen & Eindoordeel</h2>
+    
+    <p><strong>Opmerkingen voor de speler:</strong></p>
+    <textarea id="opmerkingen" placeholder="Voeg hier opmerkingen toe..."></textarea>
+    
+    <div class="score-box">
+        <h3>✅ Eindoordeel</h3>
+        <div class="score-display">
+            Score: <span id="score2">0</span> / 9 (<span id="percentage2">0</span>%)
+        </div>
+        <div class="score-display">
+            Cijfer: <span id="cijfer2">-</span>
+        </div>
+        <div class="score-display">
+            Uitslag: <span id="uitslag2">-</span>
+        </div>
+    </div>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan Beoordeling als PDF</button>
+    </div>
+    
+    <script>
+        // Automatisch datum invullen
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateStr = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            document.getElementById('datum').value = dateStr;
+        });
+        
+        function berekenScore() {
+            const totaalVragen = 9;
+            let goedAntwoorden = 0;
+            
+            // Tel het aantal goede antwoorden
+            for (let i = 1; i <= totaalVragen; i++) {
+                const radioButtons = document.getElementsByName('vraag' + i);
+                for (const radio of radioButtons) {
+                    if (radio.checked && radio.value === 'goed') {
+                        goedAntwoorden++;
+                        break;
+                    }
+                }
+            }
+            
+            // Bereken percentage
+            const percentage = Math.round((goedAntwoorden / totaalVragen) * 100);
+            
+            // Bereken cijfer (1-10 schaal)
+            const cijfer = Math.round((goedAntwoorden / totaalVragen) * 10 * 10) / 10;
+            
+            // Bepaal of geslaagd (75% vereist)
+            const geslaagd = percentage >= 75;
+            const uitslagText = geslaagd ? '✅ GESLAAGD' : '❌ NIET GESLAAGD';
+            const uitslagClass = geslaagd ? 'geslaagd' : 'niet-geslaagd';
+            
+            // Update beide score displays
+            document.getElementById('score').textContent = goedAntwoorden;
+            document.getElementById('percentage').textContent = percentage;
+            document.getElementById('cijfer').textContent = cijfer.toFixed(1);
+            document.getElementById('uitslag').textContent = uitslagText;
+            document.getElementById('uitslag').className = 'score-display ' + uitslagClass;
+            
+            document.getElementById('score2').textContent = goedAntwoorden;
+            document.getElementById('percentage2').textContent = percentage;
+            document.getElementById('cijfer2').textContent = cijfer.toFixed(1);
+            document.getElementById('uitslag2').textContent = uitslagText;
+            document.getElementById('uitslag2').className = 'score-display ' + uitslagClass;
+        }
+        
+        function savePDF() {
+            const naam = document.getElementById('spelernaam').value || 'Onbekend';
+            
+            if (!naam || naam === 'Onbekend') {
+                alert('⚠️ Vul eerst de naam van de speler in!');
+                return;
+            }
+            
+            const fileName = `WTGM Beoordeling - ${naam}.pdf`;
+            
+            alert(`✅ Klik op OK en kies daarna:\n\n1. Bestemming: "Opslaan als PDF"\n2. Bestandsnaam: ${fileName}\n3. Klik op "Opslaan"`);
+            
+            window.print();
+        }
+    </script>
+    
+</body>
+</html>

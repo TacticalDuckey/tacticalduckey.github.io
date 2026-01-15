@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>STAFF - Rijbewijs Auto Nakijkmodel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f9fafb;
+        }
+        h1 {
+            color: #1e40af;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 30px;
+        }
+        .info-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .score-box {
+            background-color: #ffffff;
+            border: 2px solid #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .score-box h3 {
+            margin-top: 0;
+            color: #1e40af;
+        }
+        .score-display {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .geslaagd {
+            color: #059669;
+        }
+        .niet-geslaagd {
+            color: #dc2626;
+        }
+        .vraag-container {
+            background-color: #ffffff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 3px solid #d1d5db;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            min-height: 60px;
+            resize: vertical;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .beoordeling {
+            margin: 10px 0;
+        }
+        .beoordeling label {
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        .save-button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            display: block;
+            width: 100%;
+        }
+        .save-button:hover {
+            background-color: #2563eb;
+        }
+        table {
+            width: 100%;
+            margin: 10px 0;
+        }
+        table td {
+            padding: 8px;
+        }
+        @media print {
+            .no-print { display: none; }
+            body { background-color: white; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan Beoordeling als PDF</button>
+    </div>
+    
+    <h1>🚗 STAFF - Rijbewijs Auto Nakijkmodel</h1>
+    
+    <div class="info-box">
+        <strong>⚠️ ALLEEN VOOR STAFF</strong><br>
+        Minimaal 75% vereist om te slagen | 11 vragen totaal
+    </div>
+    
+    <table>
+        <tr>
+            <td style="width: 150px;"><strong>Speler naam:</strong></td>
+            <td><input type="text" id="spelernaam"></td>
+        </tr>
+        <tr>
+            <td><strong>Rang:</strong></td>
+            <td><input type="text" id="rang"></td>
+        </tr>
+        <tr>
+            <td><strong>Beoordelaar:</strong></td>
+            <td><input type="text" id="beoordelaar"></td>
+        </tr>
+        <tr>
+            <td><strong>Datum:</strong></td>
+            <td><input type="text" id="datum"></td>
+        </tr>
+    </table>
+    
+    <div class="score-box no-print">
+        <h3>📊 Automatische Beoordeling</h3>
+        <div class="score-display">
+            Score: <span id="score">0</span> / 11 (<span id="percentage">0</span>%)
+        </div>
+        <div class="score-display">
+            Cijfer: <span id="cijfer">-</span>
+        </div>
+        <div class="score-display">
+            Uitslag: <span id="uitslag">-</span>
+        </div>
+    </div>
+    
+    <h2>📋 Vragen Beoordeling</h2>
+    
+    <div class="vraag-container">
+        <p><strong>1. Wat is de maximale snelheid binnen de bebouwde kom?</strong></p>
+        <textarea id="antwoord1" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag1" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag1" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: B - 50 km/u</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>2. Wat is de maximale snelheid buiten de bebouwde kom?</strong></p>
+        <textarea id="antwoord2" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag2" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag2" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: C - 80 km/u</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>3. Wat is de maximale snelheid op de snelweg?</strong></p>
+        <textarea id="antwoord3" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag3" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag3" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: C - 130 km/u (of B - 120 km/u afhankelijk van server)</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>4. Wat moet je doen bij een rood stoplicht?</strong></p>
+        <textarea id="antwoord4" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag4" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag4" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: A - Stoppen</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>5. Wat betekent een oranje stoplicht?</strong></p>
+        <textarea id="antwoord5" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag5" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag5" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: A - Stoppen als het veilig kan</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>6. Wat moet je doen bij een STOP-bord?</strong></p>
+        <textarea id="antwoord6" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag6" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag6" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: Volledig stoppen, voorrang verlenen</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>7. Wanneer mag je rechts inhalen?</strong></p>
+        <textarea id="antwoord7" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag7" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag7" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: C - In de file of bij een afrit</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>8. Wat betekent een doorgaande gele streep?</strong></p>
+        <textarea id="antwoord8" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag8" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag8" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: B - Inhalen verboden</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>9. Wanneer moet je je richting aangeven?</strong></p>
+        <textarea id="antwoord9" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag9" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag9" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: B - Bij afslaan, inhalen en wisselen van rijstrook</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>10. Wat is de voorrangsregel op een rotonde?</strong></p>
+        <textarea id="antwoord10" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag10" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag10" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: A - Verkeer op de rotonde heeft voorrang</small>
+    </div>
+    
+    <div class="vraag-container">
+        <p><strong>11. Praktijk: Je ziet een ongeluk op de snelweg - Wat doe je?</strong></p>
+        <textarea id="antwoord11" placeholder="Antwoord van speler..."></textarea>
+        <div class="beoordeling">
+            <label><input type="radio" name="vraag11" value="goed" onchange="berekenScore()"> ✅ Goed</label>
+            <label><input type="radio" name="vraag11" value="fout" onchange="berekenScore()"> ❌ Fout</label>
+        </div>
+        <small style="color: #6b7280;">Juiste antwoord: Snelheid verminderen, waarschuwingslichten, melden via portofoon, veilig parkeren</small>
+    </div>
+    
+    <hr>
+    
+    <h2>📝 Opmerkingen & Eindoordeel</h2>
+    
+    <p><strong>Opmerkingen voor de speler:</strong></p>
+    <textarea id="opmerkingen" placeholder="Voeg hier opmerkingen toe..."></textarea>
+    
+    <div class="score-box">
+        <h3>✅ Eindoordeel</h3>
+        <div class="score-display">
+            Score: <span id="score2">0</span> / 11 (<span id="percentage2">0</span>%)
+        </div>
+        <div class="score-display">
+            Cijfer: <span id="cijfer2">-</span>
+        </div>
+        <div class="score-display">
+            Uitslag: <span id="uitslag2">-</span>
+        </div>
+    </div>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan Beoordeling als PDF</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateStr = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            document.getElementById('datum').value = dateStr;
+        });
+        
+        function berekenScore() {
+            const totaalVragen = 11;
+            let goedAntwoorden = 0;
+            
+            for (let i = 1; i <= totaalVragen; i++) {
+                const radioButtons = document.getElementsByName('vraag' + i);
+                for (const radio of radioButtons) {
+                    if (radio.checked && radio.value === 'goed') {
+                        goedAntwoorden++;
+                        break;
+                    }
+                }
+            }
+            
+            const percentage = Math.round((goedAntwoorden / totaalVragen) * 100);
+            const cijfer = Math.round((goedAntwoorden / totaalVragen) * 10 * 10) / 10;
+            const geslaagd = percentage >= 75;
+            const uitslagText = geslaagd ? '✅ GESLAAGD' : '❌ NIET GESLAAGD';
+            const uitslagClass = geslaagd ? 'geslaagd' : 'niet-geslaagd';
+            
+            document.getElementById('score').textContent = goedAntwoorden;
+            document.getElementById('percentage').textContent = percentage;
+            document.getElementById('cijfer').textContent = cijfer.toFixed(1);
+            document.getElementById('uitslag').textContent = uitslagText;
+            document.getElementById('uitslag').className = 'score-display ' + uitslagClass;
+            
+            document.getElementById('score2').textContent = goedAntwoorden;
+            document.getElementById('percentage2').textContent = percentage;
+            document.getElementById('cijfer2').textContent = cijfer.toFixed(1);
+            document.getElementById('uitslag2').textContent = uitslagText;
+            document.getElementById('uitslag2').className = 'score-display ' + uitslagClass;
+        }
+        
+        function savePDF() {
+            const naam = document.getElementById('spelernaam').value || 'Onbekend';
+            
+            if (!naam || naam === 'Onbekend') {
+                alert('⚠️ Vul eerst de naam van de speler in!');
+                return;
+            }
+            
+            const fileName = `Rijbewijs Auto Beoordeling - ${naam}.pdf`;
+            
+            alert(`✅ Klik op OK en kies daarna:\n\n1. Bestemming: "Opslaan als PDF"\n2. Bestandsnaam: ${fileName}\n3. Klik op "Opslaan"`);
+            
+            window.print();
+        }
+    </script>
+    
+</body>
+</html>

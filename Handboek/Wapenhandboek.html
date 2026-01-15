@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politie Wapenhandboek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #1e3c72;
+        }
+        
+        h1 {
+            color: #1e3c72;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            color: #2a5298;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #1e3c72;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .toc {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border-bottom: none;
+        }
+        
+        .toc ol {
+            list-style-position: inside;
+            margin-left: 20px;
+        }
+        
+        .toc li {
+            margin: 10px 0;
+        }
+        
+        .toc a {
+            color: #2a5298;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #1e3c72;
+            text-decoration: underline;
+        }
+        
+        .weapon-section {
+            margin-bottom: 50px;
+            padding: 25px;
+            background: #fafafa;
+            border-left: 5px solid #2a5298;
+            border-radius: 5px;
+        }
+        
+        .specs {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .specs ul {
+            list-style: none;
+        }
+        
+        .specs li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .specs li:last-child {
+            border-bottom: none;
+        }
+        
+        .specs strong {
+            color: #1e3c72;
+            display: inline-block;
+            width: 200px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .warning::before {
+            content: "⚠️ ";
+            font-size: 1.2em;
+        }
+        
+        .danger {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        ol, ul {
+            margin-left: 30px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .procedure-steps {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .procedure-steps li {
+            counter-increment: step-counter;
+            padding-left: 50px;
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .procedure-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #2a5298;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .escalation-ladder {
+            background: linear-gradient(to right, #28a745, #ffc107, #dc3545);
+            padding: 3px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .escalation-ladder ol {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 0;
+        }
+        
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+        }
+        
+        .doc-info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            margin: 30px 0;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚔 Politie Wapenhandboek</h1>
+            <p style="color: #666; font-size: 1.1em;">Richtlijnen voor veilig en verantwoord wapengebruik</p>
+        </header>
+
+        <div class="toc">
+            <h2>Inhoudsopgave</h2>
+            <ol>
+                <li><a href="#walther">Walther P99Q - Dienstwapen</a></li>
+                <li><a href="#wapenstok">Wapenstok</a></li>
+                <li><a href="#taser">Taser X2</a></li>
+                <li><a href="#hk416">HK416 - Geweer</a></li>
+                <li><a href="#mossberg">Mossberg 500 - Shotgun</a></li>
+                <li><a href="#pepperspray">Pepperspray</a></li>
+                <li><a href="#veiligheid">Algemene Veiligheidsregels</a></li>
+            </ol>
+        </div>
+
+        <div class="weapon-section" id="walther">
+            <h2>Walther P99Q - Dienstwapen</h2>
+            
+            <h3>Specificaties</h3>
+            <div class="specs">
+                <ul>
+                    <li><strong>Type:</strong> Semi-automatisch pistool</li>
+                    <li><strong>Kaliber:</strong> 9x19mm Parabellum</li>
+                    <li><strong>Magazijncapaciteit:</strong> 15 patronen + 1 in de kamer</li>
+                    <li><strong>Effectief bereik:</strong> 50 meter</li>
+                    <li><strong>Gewicht:</strong> 625 gram (geladen)</li>
+                </ul>
+            </div>
+
+            <h3>Wanneer Inzetten?</h3>
+            <ul>
+                <li>Situaties waarbij levensgevaar dreigt voor jezelf of anderen</li>
+                <li>Verdachte is gewapend met een vuurwapen</li>
+                <li>Verdachte is gewapend met een dodelijk steekwapen en vormt directe dreiging</li>
+                <li>Als laatste redmiddel wanneer andere geweldsmiddelen niet effectief zijn</li>
+            </ul>
+
+            <h3>Veiligheidsprotocol</h3>
+            
+            <h4>1. Voor gebruik:</h4>
+            <ul>
+                <li>Controleer of het wapen geladen is</li>
+                <li>Vinger ALTIJD langs de trekkerbeugel, nooit op de trekker (tenzij je gaat schieten)</li>
+                <li>Wapen altijd in veilige richting richten (naar de grond of doelwit)</li>
+            </ul>
+
+            <h4>2. Tijdens gebruik:</h4>
+            <ul>
+                <li>Identificeer je doelwit en wat erachter is</li>
+                <li>Geef duidelijke waarschuwing: <strong>"POLITIE! WAPEN NEER OF WE SCHIETEN!"</strong></li>
+                <li>Schiet alleen wanneer absoluut noodzakelijk</li>
+                <li>Richt op center mass (lichaam) voor maximale effectiviteit</li>
+            </ul>
+
+            <h4>3. Na gebruik:</h4>
+            <ul>
+                <li>Controleer omgeving op andere dreigingen</li>
+                <li>Waarschuw dispatch dat er geschoten is</li>
+                <li>Roep direct medische hulp voor gewonden</li>
+                <li>Beveilig de plaats delict</li>
+                <li>Maak uitgebreid rapport</li>
+            </ul>
+
+            <h3>Onderhoud</h3>
+            <ul>
+                <li>Dagelijks visueel inspecteren</li>
+                <li>Wekelijks schoonmaken (ook zonder gebruik)</li>
+                <li>Altijd schoonmaken na gebruik op schietbaan</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="weapon-section" id="wapenstok">
+            <h2>Wapenstok</h2>
+            
+            <h3>Specificaties</h3>
+            <div class="specs">
+                <ul>
+                    <li><strong>Type:</strong> Uitschuifbare wapenstok (ASP)</li>
+                    <li><strong>Lengte:</strong> 40-65 cm (uitgeklapt)</li>
+                    <li><strong>Materiaal:</strong> Gehard staal met rubberen grip</li>
+                    <li><strong>Gewicht:</strong> 400-600 gram</li>
+                </ul>
+            </div>
+
+            <h3>Wanneer Inzetten?</h3>
+            <ul>
+                <li>Verdachte is fysiek agressief maar niet gewapend met dodelijke wapens</li>
+                <li>Verdachte verzet zich tegen aanhouding</li>
+                <li>Voor afstand houden bij gevaarlijke verdachte</li>
+                <li>Noodweer/noodhulp situaties</li>
+                <li>Bij ordeverstoringen</li>
+            </ul>
+
+            <h3>Gebruiksinstructies</h3>
+            
+            <h4>1. Uittrekken:</h4>
+            <ul>
+                <li>Trek met snelle polsbeweging uit</li>
+                <li>Hoor "klik" wanneer volledig uitgeklapt</li>
+                <li>Test stevigheid door licht te tikken</li>
+            </ul>
+
+            <h4>2. Slagtechnieken:</h4>
+            <div class="info">
+                <strong>PRIORITEIT:</strong> Richt op grote spiergroepen (benen, armen, schouders)
+            </div>
+            <div class="danger">
+                <strong>VERBODEN ZONES:</strong> Hoofd, nek, wervelkolom, nieren, geslachtsdelen
+            </div>
+            <ul>
+                <li>Gebruik snelle, korte slagen</li>
+                <li>Maximaal 3 slagen, evalueer dan de situatie</li>
+            </ul>
+
+            <h4>3. Duw/bloktechnieken:</h4>
+            <ul>
+                <li>Gebruik voor afstand creëren</li>
+                <li>Horizontaal houden voor blokkeren van aanvallen</li>
+                <li>Duwtechnieken voor crowd control</li>
+            </ul>
+
+            <h4>4. Intrekken:</h4>
+            <ul>
+                <li>Druk op knop aan onderzijde</li>
+                <li>Schuif segmenten voorzichtig in elkaar</li>
+                <li>Nooit geforceerd dichtslaan (beschadigt wapenstok)</li>
+            </ul>
+
+            <h3>Veiligheidsrichtlijnen</h3>
+            <ul>
+                <li>Gebruik proportioneel geweld</li>
+                <li>Stop direct wanneer verdachte zich conformeert</li>
+                <li>Controleer na inzet of verdachte verwondingen heeft</li>
+                <li>Medische controle bij slagen op gewrichten of botbreukverdenkingen</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="weapon-section" id="taser">
+            <h2>Taser X2</h2>
+            
+            <h3>Specificaties</h3>
+            <div class="specs">
+                <ul>
+                    <li><strong>Type:</strong> Electrische onklaar makingswapen</li>
+                    <li><strong>Bereik:</strong> 7 meter effectief, maximaal 10 meter</li>
+                    <li><strong>Voltage:</strong> 50.000 volt</li>
+                    <li><strong>Amperage:</strong> 2.1 milliampère</li>
+                    <li><strong>Effect duur:</strong> 5 seconden per activatie</li>
+                    <li><strong>Cartridges:</strong> 2 (dual-shot systeem)</li>
+                </ul>
+            </div>
+
+            <h3>Wanneer Inzetten?</h3>
+            <ul>
+                <li>Verdachte is gewelddadig maar niet met dodelijk wapen</li>
+                <li>Persoon onder invloed die agressief gedrag vertoont</li>
+                <li>Verdachte met steekwapen op veilige afstand (minimaal 5 meter)</li>
+                <li>Mentaal gestoorde persoon die zichzelf of anderen in gevaar brengt</li>
+                <li>Als alternatief voor fysiek geweld bij verzet</li>
+            </ul>
+
+            <div class="danger">
+                <h4>NIET Inzetten bij:</h4>
+                <ul>
+                    <li>Personen op grote hoogte (valgevaar)</li>
+                    <li>Zwangere vrouwen (indien zichtbaar zwanger)</li>
+                    <li>Kinderen onder 12 jaar</li>
+                    <li>Ouderen met zichtbare gezondheidsproblemen</li>
+                    <li>Nabij brandbare stoffen/gassen</li>
+                </ul>
+            </div>
+
+            <h3>Gebruiksinstructies</h3>
+            
+            <ol class="procedure-steps">
+                <li>
+                    <strong>Voor gebruik:</strong>
+                    <ul>
+                        <li>Controleer battery indicator (moet groen zijn)</li>
+                        <li>Controleer of cartridge correct geplaatst is</li>
+                        <li>Verwijder veiligheidsclip</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Waarschuwingsfase:</strong>
+                    <ul>
+                        <li>Toon taser aan verdachte</li>
+                        <li>Roep luid: <strong>"TASER, TASER, TASER!"</strong></li>
+                        <li>Activeer laser/LED voor intimidatie (indien mogelijk)</li>
+                        <li>Geef verdachte kans te conformeren (3-5 seconden)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Tijdens gebruik:</strong>
+                    <ul>
+                        <li>Richt op center mass (rug of borst/buik)</li>
+                        <li>Minimale afstand: 2 meter voor goede probe spread</li>
+                        <li>Druk trekker in voor 5-seconden cyclus</li>
+                        <li>Waarschuw collega's: <strong>"TASER TASER TASER"</strong> voordat je schiet</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Na gebruik:</strong>
+                    <ul>
+                        <li>Benader verdachte direct en boeien tijdens 5-sec cyclus</li>
+                        <li>Verwijder probes ALLEEN als ze niet in gevoelige zones zitten</li>
+                        <li>Bij probes in gezicht, nek, geslachtsdelen → laat zitten, medische hulp</li>
+                        <li>Fotografeer probe plaatsing voor rapport</li>
+                        <li>Bewaar cartridge als bewijsmateriaal</li>
+                        <li>Vul Taser Usage Report in</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Medische Nazorg</h3>
+            <div class="warning">
+                <ul>
+                    <li>Altijd medische controle na taser gebruik</li>
+                    <li>Monitor verdachte op ademhaling en bewustzijn</li>
+                    <li>Bij hartritmestoornissen direct 112</li>
+                    <li>Registreer exacte gebruiksduur en aantal cycli</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="weapon-section" id="hk416">
+            <h2>HK416 - Geweer</h2>
+            
+            <h3>Specificaties</h3>
+            <div class="specs">
+                <ul>
+                    <li><strong>Type:</strong> Selectief-vuur aanvalsgeweer</li>
+                    <li><strong>Kaliber:</strong> 5.56x45mm NATO</li>
+                    <li><strong>Magazijncapaciteit:</strong> 30 patronen</li>
+                    <li><strong>Vuurmodi:</strong> Semi-automatisch, 3-round burst, volledig automatisch</li>
+                    <li><strong>Effectief bereik:</strong> 400-600 meter</li>
+                    <li><strong>Gewicht:</strong> 3.6 kg (geladen met 30 patronen)</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <h3>Autorisatie Vereist</h3>
+                <p><strong>WAARSCHUWING:</strong> Dit wapen mag ALLEEN gebruikt worden door speciaal opgeleide en geautoriseerde eenheden:</p>
+                <ul>
+                    <li>DSI (Dienst Speciale Interventies)</li>
+                    <li>AT (Arrestatieteam)</li>
+                    <li>ME (Mobiele Eenheid) in specifieke situaties</li>
+                    <li>Officieren met "Groot Wapen Certificaat"</li>
+                </ul>
+            </div>
+
+            <h3>Wanneer Inzetten?</h3>
+            <ul>
+                <li>Terrorisme dreiging of aanslag</li>
+                <li>Gijzeling met zwaar bewapende daders</li>
+                <li>Verdachten met gepantserde voertuigen</li>
+                <li>Situaties met meerdere gewapende personen</li>
+                <li>Ordeverstoringen met vuurwapengeweld</li>
+                <li>Op bevel van commandant tijdens hoog-risico operaties</li>
+            </ul>
+
+            <h3>Veiligheidsprotocol</h3>
+            
+            <h4>1. Transport:</h4>
+            <ul>
+                <li>Altijd ongeladen tijdens transport in voertuig</li>
+                <li>Magazijn gescheiden van wapen</li>
+                <li>Safety op "SAFE"</li>
+                <li>Wapen in verticale houder of tas</li>
+            </ul>
+
+            <h4>2. Voor inzet:</h4>
+            <ul>
+                <li>Ontvang expliciete autorisatie van commandant</li>
+                <li>Controleer wapen op functionaliteit</li>
+                <li>Laad magazijn, NIET in wapen steken tot operationeel</li>
+                <li>Veiligheidspal op "SAFE"</li>
+                <li>Communiceer met team over inzet</li>
+            </ul>
+
+            <h4>3. Tijdens gebruik:</h4>
+            <ul>
+                <li>Selecteer vuurmodus: meestal semi-automatisch</li>
+                <li>Volledig automatisch ALLEEN voor directe levensbedreigende situaties</li>
+                <li>3-round burst voor gecontroleerde vuurkracht</li>
+                <li>Richt zorgvuldig: hoge penetratiekracht, let op achtergrond</li>
+                <li>Communiceer met team: <strong>"WAPEN IN GEBRUIK!"</strong></li>
+            </ul>
+
+            <h4>4. Na gebruik:</h4>
+            <ul>
+                <li>Maak wapen veilig: magazijn eruit, patroon uit kamer</li>
+                <li>Safety op "SAFE"</li>
+                <li>Wapen inleveren bij wapenmeester</li>
+                <li>Uitgebreid rapport + debriefing verplicht</li>
+                <li>Ballistisch onderzoek door TGO</li>
+            </ul>
+
+            <h3>Vuurmodi Gebruik</h3>
+            <div class="specs">
+                <ul>
+                    <li><strong>Semi-automatisch:</strong> Standaard modus, één schot per trekker druk</li>
+                    <li><strong>3-round burst:</strong> Drie schoten per trekker druk, voor middellange afstand</li>
+                    <li><strong>Volledig automatisch:</strong> Continue vuur, ALLEEN bij direct levensgevaar meerdere targets</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="weapon-section" id="mossberg">
+            <h2>Mossberg 500 - Shotgun</h2>
+            
+            <h3>Specificaties</h3>
+            <div class="specs">
+                <ul>
+                    <li><strong>Type:</strong> Pomp-actie shotgun</li>
+                    <li><strong>Kaliber:</strong> 12 gauge</li>
+                    <li><strong>Magazijncapaciteit:</strong> 5+1 (5 in tube, 1 in kamer)</li>
+                    <li><strong>Effectief bereik:</strong> 40 meter (buckshot), 100 meter (slug)</li>
+                    <li><strong>Gewicht:</strong> 3.4 kg</li>
+                </ul>
+            </div>
+
+            <h3>Munitietypes</h3>
+            <div class="specs">
+                <ul>
+                    <li>
+                        <strong>Buckshot (00 Buck):</strong>
+                        <ul>
+                            <li>9 kogels per patroon</li>
+                            <li>Maximale stopping power</li>
+                            <li>Kort tot middellang bereik (0-30m)</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Slug (enkel projectiel):</strong>
+                        <ul>
+                            <li>Grotere afstand en penetratie</li>
+                            <li>Gebruik tegen voertuigen of harde dekking</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Breaching rounds:</strong>
+                        <ul>
+                            <li>Voor het forceren van deuren</li>
+                            <li>Speciale training vereist</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <strong>Autorisatie:</strong> Vereist "Groot Wapen Certificaat" of speciale eenheid lidmaatschap (DSI/AT/ME)
+            </div>
+
+            <h3>Wanneer Inzetten?</h3>
+            <ul>
+                <li>Close-quarters gevechten (gebouwen, huizen)</li>
+                <li>Voertuig stops bij hoog risico</li>
+                <li>Directe dreiging waarbij grote stopping power nodig is</li>
+                <li>Deur breaching operaties (met speciale munitie)</li>
+                <li>Nachtelijke operaties (minder precisie vereist door spread)</li>
+            </ul>
+
+            <h3>Gebruiksinstructies</h3>
+            
+            <h4>1. Laden:</h4>
+            <ul>
+                <li>Controleer of kamer leeg is</li>
+                <li>Veiligheidspal op "SAFE"</li>
+                <li>Laad patronen in tube onder loop</li>
+                <li>Pompen om patroon in kamer te laden</li>
+                <li>Safety blijft op "SAFE" tot klaar om te vuren</li>
+            </ul>
+
+            <h4>2. Vuren:</h4>
+            <ul>
+                <li>Safety af</li>
+                <li>Richt (minder zorgvuldig richten nodig bij buckshot op korte afstand)</li>
+                <li>Vuur</li>
+                <li><strong>BELANGRIJK:</strong> Pomp direct na elk schot voor volgende patroon</li>
+                <li>Wacht niet met pompen, dit moet automatische handeling zijn</li>
+            </ul>
+
+            <h4>3. Na gebruik:</h4>
+            <ul>
+                <li>Maak veilig: pomp alle patronen uit wapen</li>
+                <li>Visueel en fysiek controleren of kamer leeg is</li>
+                <li>Safety op "SAFE"</li>
+                <li>Rapporteer aantal afgevuurde patronen</li>
+            </ul>
+
+            <h3>Veiligheidsrichtlijnen</h3>
+            <div class="warning">
+                <ul>
+                    <li>Enorme terugslag: stevige schouder positie</li>
+                    <li>Breed spreidingspatroon: let op omstanders</li>
+                    <li>Hoge penetratiekracht bij slugs: controleer achtergrond</li>
+                    <li>Nooit ongeladen shotgun pompen als intimidatie (onprofessioneel)</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="weapon-section" id="pepperspray">
+            <h2>Pepperspray</h2>
+            
+            <h3>Specificaties</h3>
+            <div class="specs">
+                <ul>
+                    <li><strong>Type:</strong> OC spray (Oleoresin Capsicum)</li>
+                    <li><strong>Bereik:</strong> 3-4 meter</li>
+                    <li><strong>Capsaïcine concentratie:</strong> 10%</li>
+                    <li><strong>Inhoud:</strong> 50ml (20-25 sprays)</li>
+                    <li><strong>Effect duur:</strong> 30-45 minuten (afhankelijk van persoon)</li>
+                </ul>
+            </div>
+
+            <h3>Wanneer Inzetten?</h3>
+            <ul>
+                <li>Licht agressief gedrag</li>
+                <li>Verdachte wil vluchten maar niet gewelddadig</li>
+                <li>Persoon onder invloed die onhandelbaar is</li>
+                <li>Dierenagressie (loslopende honden)</li>
+                <li>Als eerste geweldsmiddel bij verzet</li>
+            </ul>
+
+            <h3>Gebruiksinstructies</h3>
+            
+            <h4>1. Voor gebruik:</h4>
+            <ul>
+                <li>Controleer winrichting (spray niet in eigen gezicht)</li>
+                <li>Waarschuw collega's: <strong>"PEPPERSPRAY!"</strong></li>
+                <li>Houd afstand van 1.5-2 meter</li>
+            </ul>
+
+            <h4>2. Tijdens gebruik:</h4>
+            <ul>
+                <li>Richt op gezicht (ogen, neus, mond)</li>
+                <li>Spray 1-2 seconden in horizontale beweging</li>
+                <li>Stap opzij (verdachte zal wild bewegen)</li>
+                <li>Evalueer effect na 5 seconden</li>
+            </ul>
+
+            <h4>3. Na gebruik:</h4>
+            <ul>
+                <li>Boeien verdachte (verdachte is tijdelijk verblind)</li>
+                <li>Breng direct naar open lucht</li>
+                <li>Spoel gezicht met WATER (geen melk, mythe!)</li>
+                <li>Medische controle indien:
+                    <ul>
+                        <li>Astma of ademhalingsproblemen</li>
+                        <li>Contact lens draagt</li>
+                        <li>Zwangere vrouwen</li>
+                        <li>Kinderen of ouderen</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Nazorg</h3>
+            <ul>
+                <li>Verdachte rechtop laten zitten (nooit op buik, verstikingsgevaar)</li>
+                <li>Frisse lucht</li>
+                <li>Laat ogen tranen, niet wrijven</li>
+                <li>Was handen van verdachte</li>
+                <li>Overtollige kleding verwijderen (spray blijft hangen in stof)</li>
+            </ul>
+
+            <h3>Zelf geraakt?</h3>
+            <div class="info">
+                <ul>
+                    <li>Blijf kalm, paniceer niet</li>
+                    <li>Ga naar frisse lucht</li>
+                    <li>Knijp ogen dicht en open afwisselend (laat tranen)</li>
+                    <li>Laat collega overnemen</li>
+                    <li>Terugtrekken uit situatie voor 15 minuten</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="weapon-section" id="veiligheid">
+            <h2>Algemene Veiligheidsregels</h2>
+            
+            <div class="danger">
+                <h3>De 4 Vuurwapenregels (ALTIJD van toepassing)</h3>
+                <ol>
+                    <li><strong>Behandel elk wapen alsof het geladen is</strong></li>
+                    <li><strong>Richt nooit op iets waar je niet op wilt schieten</strong></li>
+                    <li><strong>Houd je vinger van de trekker tot je klaar bent om te schieten</strong></li>
+                    <li><strong>Wees zeker van je doelwit en wat erachter is</strong></li>
+                </ol>
+            </div>
+
+            <h3>Geweldstraject (Escalatieladder)</h3>
+            <div class="escalation-ladder">
+                <ol>
+                    <li><strong>Aanwezigheid:</strong> Zichtbaar aanwezig zijn in uniform</li>
+                    <li><strong>Verbale communicatie:</strong> Bevelen geven, deëscaleren</li>
+                    <li><strong>Passieve fysieke macht:</strong> Hand op schouder, begeleiden</li>
+                    <li><strong>Actieve fysieke macht:</strong> Grepen, klem, duwweb</li>
+                    <li><strong>Geweldsmiddelen:</strong>
+                        <ul>
+                            <li>Pepperspray</li>
+                            <li>Wapenstok</li>
+                            <li>Taser</li>
+                            <li>Dienstwapen</li>
+                            <li>Groot wapen</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="warning">
+                <p><strong>Proportionaliteit:</strong> Gebruik altijd het laagst mogelijke geweldsniveau dat effectief is.</p>
+                <p><strong>Subsidiariteit:</strong> Geweld is laatste redmiddel wanneer andere middelen niet werken.</p>
+            </div>
+
+            <h3>Rapportageplicht</h3>
+            <p>Na gebruik van ENIG geweldsmiddel:</p>
+            <ul>
+                <li>Direct melden aan dispatch</li>
+                <li>Uitgebreid rapport binnen 24 uur</li>
+                <li>Bij vuurwapengebruik: directe melding aan commandant</li>
+                <li>Gewondenregistratie</li>
+                <li>Fotodocumentatie van verwondingen</li>
+                <li>Bij taser: speciale Taser Usage Report</li>
+            </ul>
+
+            <h3>Training & Certificering</h3>
+            <div class="specs">
+                <ul>
+                    <li><strong>Dienstwapen (Walther P99Q):</strong> Jaarlijkse herkwalificatie</li>
+                    <li><strong>Taser:</strong> Jaarlijkse recertificering + praktijktest</li>
+                    <li><strong>Groot Wapen:</strong> Halfjaarlijkse training + schiettest</li>
+                    <li><strong>Wapenstok:</strong> Training tijdens basisopleiding + opfrisdag</li>
+                    <li><strong>Pepperspray:</strong> Basis training, eigen ervaring aanbevolen (veilig testen)</li>
+                </ul>
+            </div>
+
+            <h3>Wapenbeheer</h3>
+            <ol>
+                <li><strong>Dagelijkse controle:</strong> Visuele inspectie voor dienst</li>
+                <li><strong>Schoonmaak:</strong> Na elk gebruik, minimaal wekelijks</li>
+                <li><strong>Munitie controle:</strong> Controleer vervaldatum</li>
+                <li><strong>Rapporteer defecten:</strong> Direct melden aan wapenmeester</li>
+                <li><strong>Opslag:</strong> Veilig opgeborgen in wapenkluis</li>
+                <li><strong>Registratie:</strong> Log elke keer dat wapen uitgegeven/ingeleverd wordt</li>
+            </ol>
+
+            <h3>Juridische Aspecten</h3>
+            
+            <h4>Artikel 8 Politiewet - Geweldsaanwending</h4>
+            <p>De politieambtenaar mag geweld gebruiken wanneer:</p>
+            <ol>
+                <li>Het gebruik redelijk en proportioneel is</li>
+                <li>Het doel niet op andere wijze bereikt kan worden</li>
+                <li>De situatie het gebruik rechtvaardigt</li>
+            </ol>
+
+            <h4>Noodweer/Noodweerexces</h4>
+            <ul>
+                <li><strong>Noodweer:</strong> Verdediging tegen onmiddellijke dreiging</li>
+                <li><strong>Proportioneel:</strong> Geweld evenredig aan dreiging</li>
+                <li><strong>Subsidiair:</strong> Geen andere mogelijkheid</li>
+            </ul>
+
+            <h4>Aansprakelijkheid</h4>
+            <ul>
+                <li>Correct wapengbruik: beschermd door wet</li>
+                <li>Incorrect wapengbruik: persoonlijk en strafrechtelijk aansprakelijk</li>
+                <li>Volg protocol en procedures ALTIJD</li>
+            </ul>
+
+            <h3>Contact & Vragen</h3>
+            <p>Bij vragen over wapengebruik, training of certificering:</p>
+            <ul>
+                <li><strong>Wapenmeester:</strong> Voor technische vragen en onderhoud</li>
+                <li><strong>Opleidingscoördinator:</strong> Voor training en certificering</li>
+                <li><strong>Commandant:</strong> Voor autorisatie groot wapen gebruik</li>
+                <li><strong>Intern Affairs:</strong> Bij incidenten met wapens</li>
+            </ul>
+        </div>
+
+        <footer>
+            <div class="doc-info">
+                <p><strong>Document versie:</strong> 1.0</p>
+                <p><strong>Laatst bijgewerkt:</strong> 15 januari 2026</p>
+                <p><strong>Status:</strong> Actief</p>
+            </div>
+            
+            <div class="warning" style="margin-top: 20px;">
+                <strong>WAARSCHUWING:</strong> Dit document bevat richtlijnen voor roleplay doeleinden. 
+                In echte situaties altijd de officiële politieprotocollen en wetgeving volgen.
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

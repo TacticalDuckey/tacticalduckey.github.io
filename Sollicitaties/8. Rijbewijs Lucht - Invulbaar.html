@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rijbewijs Lucht - De Lage Landen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #065f46;
+            border-bottom: 3px solid #10b981;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #065f46;
+            margin-top: 30px;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 30px 0;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .checkbox-group {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .checkbox-group li {
+            margin-bottom: 5px;
+        }
+        .save-button {
+            background-color: #10b981;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 30px 0;
+            display: block;
+            width: 100%;
+        }
+        .save-button:hover {
+            background-color: #059669;
+        }
+        .info-box {
+            background-color: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+        }
+        table td {
+            padding: 8px;
+        }
+        @media print {
+            .save-button, .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <h1>🚁 RIJBEWIJS LUCHT – Vliegbevoegdheid</h1>
+    
+    <div class="info-box">
+        <strong>De Lage Landen (Roblox)</strong><br>
+        ⚠️ Minimaal 80% correct om te slagen + praktijkexamen vereist<br>
+        🔒 Alleen beschikbaar vanaf rang <strong>Inspecteur</strong>
+    </div>
+    
+    <hr>
+    
+    <table>
+        <tr>
+            <td style="width: 100px;"><strong>Naam:</strong></td>
+            <td><input type="text" id="naam"></td>
+        </tr>
+        <tr>
+            <td><strong>Rang:</strong></td>
+            <td><input type="text" id="rang"></td>
+        </tr>
+        <tr>
+            <td><strong>Datum:</strong></td>
+            <td><input type="text" id="datum"></td>
+        </tr>
+    </table>
+    
+    <hr>
+    
+    <h2>📋 Theorie Vragen</h2>
+    
+    <p><strong>1.</strong> Welke luchtvaartuigen vallen onder dit rijbewijs?</p>
+    <ul class="checkbox-group">
+        <li><input type="checkbox" name="vraag1a"> Politiehelikopter</li>
+        <li><input type="checkbox" name="vraag1b"> Drone</li>
+        <li><input type="checkbox" name="vraag1c"> Vliegtuig</li>
+        <li><input type="checkbox" name="vraag1d"> Straaljager</li>
+    </ul>
+    
+    <p><strong>2.</strong> Wat is de minimale vlieghoogte boven bebouwde kom?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag2" value="a"> 50 meter</li>
+        <li><input type="radio" name="vraag2" value="b"> 100 meter</li>
+        <li><input type="radio" name="vraag2" value="c"> 300 meter</li>
+        <li><input type="radio" name="vraag2" value="d"> 500 meter</li>
+    </ul>
+    
+    <p><strong>3.</strong> Wanneer mag je de politiehelikopter inzetten?</p>
+    <textarea id="vraag3" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>4.</strong> Wat doe je voor je start met de helikopter?</p>
+    <ul class="checkbox-group">
+        <li><input type="checkbox" name="vraag4a"> Controle van brandstof</li>
+        <li><input type="checkbox" name="vraag4b"> Controle van rotorbladen</li>
+        <li><input type="checkbox" name="vraag4c"> Communicatie met dispatch</li>
+        <li><input type="checkbox" name="vraag4d"> Omgeving controleren (geen obstakels)</li>
+        <li><input type="checkbox" name="vraag4e"> Weersomstandigheden checken</li>
+    </ul>
+    
+    <p><strong>5.</strong> Mag je landen op een snelweg?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag5" value="a"> Ja, altijd</li>
+        <li><input type="radio" name="vraag5" value="b"> Nee, nooit</li>
+        <li><input type="radio" name="vraag5" value="c"> Alleen in noodgevallen</li>
+        <li><input type="radio" name="vraag5" value="d"> Alleen met toestemming van een Hoofdcommissaris</li>
+    </ul>
+    
+    <p><strong>6.</strong> Wat is het maximum aantal personen in een politiehelikopter?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag6" value="a"> 2 personen</li>
+        <li><input type="radio" name="vraag6" value="b"> 4 personen</li>
+        <li><input type="radio" name="vraag6" value="c"> 6 personen</li>
+        <li><input type="radio" name="vraag6" value="d"> 8 personen</li>
+    </ul>
+    
+    <p><strong>7.</strong> Je ziet tijdens een achtervolging dat de verdachte een gebouw inrent. Wat doe je met de helikopter?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag7" value="a"> Landen op het dak</li>
+        <li><input type="radio" name="vraag7" value="b"> Positie houden en gebied observeren</li>
+        <li><input type="radio" name="vraag7" value="c"> Direct terugvliegen naar basis</li>
+        <li><input type="radio" name="vraag7" value="d"> Landen op straat</li>
+    </ul>
+    
+    <p><strong>8.</strong> Mag je schieten vanuit een helikopter?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag8" value="a"> Ja, altijd</li>
+        <li><input type="radio" name="vraag8" value="b"> Nee, nooit</li>
+        <li><input type="radio" name="vraag8" value="c"> Alleen met toestemming van Hoofdcommissaris</li>
+        <li><input type="radio" name="vraag8" value="d"> Alleen in levensgevaarlijke situaties</li>
+    </ul>
+    
+    <p><strong>9.</strong> Wat betekent "mayday"?</p>
+    <textarea id="vraag9" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>10.</strong> Wat doe je bij motorstoring tijdens de vlucht?</p>
+    <textarea id="vraag10" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <hr>
+    
+    <h2>🎯 Praktijk Scenario</h2>
+    
+    <p><strong>11. Situatie:</strong> Je vliegt boven de stad en ziet een grote brand bij een flatgebouw. Er zijn mogelijk mensen op het dak.</p>
+    <p><strong>Beschrijf je actieplan:</strong></p>
+    <textarea id="vraag11" style="min-height: 120px;" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateStr = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            document.getElementById('datum').value = dateStr;
+        });
+        
+        function savePDF() {
+            const naam = document.getElementById('naam').value || 'Onbekend';
+            
+            if (!naam || naam === 'Onbekend') {
+                alert('⚠️ Vul eerst je naam in!');
+                return;
+            }
+            
+            const fileName = `Rijbewijs Lucht - Antwoorden - ${naam}.pdf`;
+            
+            alert(`✅ Klik op OK en kies daarna:\n\n1. Bestemming: "Opslaan als PDF"\n2. Bestandsnaam: ${fileName}\n3. Klik op "Opslaan"`);
+            
+            window.print();
+        }
+    </script>
+    
+</body>
+</html>

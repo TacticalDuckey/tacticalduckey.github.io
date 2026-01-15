@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politie Procedures Handboek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: #34495e;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .procedure-section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 5px solid #2a5298;
+        }
+        
+        .procedure-section h2 {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5298;
+        }
+        
+        .procedure-section h3 {
+            color: #2a5298;
+            font-size: 1.5em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .procedure-section h4 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .procedure-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .procedure-section ul, .procedure-section ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .procedure-section li {
+            margin-bottom: 8px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box strong {
+            color: #856404;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .info-box strong {
+            color: #0c5460;
+        }
+        
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .danger-box strong {
+            color: #721c24;
+        }
+        
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 20px;
+            padding-left: 60px;
+            position: relative;
+        }
+        
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #2a5298;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background: #2a5298;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚔 Politie Procedures Handboek</h1>
+            <p>Officiële procedures en richtlijnen voor politiewerk</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#algemeen">Algemeen</a></li>
+                <li><a href="#aanhouding">Aanhouding</a></li>
+                <li><a href="#fouillering">Fouillering</a></li>
+                <li><a href="#verkeerscontrole">Verkeerscontrole</a></li>
+                <li><a href="#geweld">Geweldgebruik</a></li>
+                <li><a href="#huiszoekingen">Huiszoekingen</a></li>
+                <li><a href="#rapport">Rapportage</a></li>
+                <li><a href="#communicatie">Communicatie</a></li>
+            </ul>
+        </nav>
+        
+        <div class="content">
+            <!-- ALGEMENE PROCEDURES -->
+            <section id="algemeen" class="procedure-section">
+                <h2>1. Algemene Procedures</h2>
+                
+                <h3>1.1 Dienstuitvoering</h3>
+                <p>Als politieagent vertegenwoordig je de wet en de orde. Het is essentieel dat je te allen tijde professioneel en respectvol optreedt.</p>
+                
+                <h4>Basisprincipes:</h4>
+                <ul>
+                    <li>Handel altijd conform de wet en de gedragscode</li>
+                    <li>Behandel elke burger met respect en waardigheid</li>
+                    <li>Wees objectief en onpartijdig in je werkzaamheden</li>
+                    <li>Gebruik alleen geweld wanneer dit noodzakelijk en proportioneel is</li>
+                    <li>Rapporteer alle incidenten nauwkeurig en tijdig</li>
+                </ul>
+                
+                <div class="info-box">
+                    <strong>Let op:</strong> Je bent als politieagent ook buiten diensttijd verantwoordelijk voor je gedrag en moet optreden bij strafbare feiten.
+                </div>
+                
+                <h3>1.2 Identificatieplicht</h3>
+                <p>Politieagenten moeten zich altijd kunnen identificeren:</p>
+                <ul>
+                    <li>Draag je badge zichtbaar tijdens dienst</li>
+                    <li>Toon je identificatie op eerste verzoek</li>
+                    <li>Vermeld je naam en rangnummer bij officiële handelingen</li>
+                </ul>
+            </section>
+            
+            <!-- AANHOUDINGSPROCEDURE -->
+            <section id="aanhouding" class="procedure-section">
+                <h2>2. Aanhoudingsprocedure</h2>
+                
+                <h3>2.1 Juridische Grondslag</h3>
+                <p>Een aanhouding mag alleen plaatsvinden wanneer:</p>
+                <ul>
+                    <li>Er sprake is van een strafbaar feit (op heterdaad of verdenking)</li>
+                    <li>Er een aanhoudingsbevel is uitgevaardigd</li>
+                    <li>De persoon een gevaar vormt voor zichzelf of anderen</li>
+                </ul>
+                
+                <h3>2.2 Aanhoudingsprocedure (Stap voor Stap)</h3>
+                <ol class="step-list">
+                    <li>
+                        <strong>Beoordeling Situatie</strong><br>
+                        Analyseer de situatie: Is aanhouding noodzakelijk? Is het veilig? Heb je voldoende mankracht?
+                    </li>
+                    <li>
+                        <strong>Aankondiging</strong><br>
+                        Maak duidelijk dat je politie bent: "Stop! Politie!" Identificeer jezelf indien nodig.
+                    </li>
+                    <li>
+                        <strong>Mededelingsplicht</strong><br>
+                        Deel de volgende zaken mee:<br>
+                        - Dat de persoon is aangehouden<br>
+                        - De reden van aanhouding<br>
+                        - Dat hij/zij het recht heeft te zwijgen
+                    </li>
+                    <li>
+                        <strong>Veiligheidscontrole</strong><br>
+                        Voer een veiligheidscontrole uit op wapens of gevaarlijke voorwerpen voordat je de verdachte vervoert.
+                    </li>
+                    <li>
+                        <strong>Handboeien Aanleggen</strong><br>
+                        Leg handboeien aan indien noodzakelijk voor de veiligheid. Doe dit altijd met de handen op de rug.
+                    </li>
+                    <li>
+                        <strong>Transport</strong><br>
+                        Vervoer de aangehouden persoon naar het politiebureau. Let op: controleer de achterbak van het voertuig voor/na transport.
+                    </li>
+                    <li>
+                        <strong>Overdracht en Registratie</strong><br>
+                        Draag de verdachte over aan de dienstdoende brigadier en registreer de aanhouding in het systeem.
+                    </li>
+                </ol>
+                
+                <div class="warning-box">
+                    <strong>Waarschuwing:</strong> Bij verzet mag proportioneel geweld worden gebruikt. Roep altijd versterking op bij gevaarlijke situaties!
+                </div>
+                
+                <h3>2.3 Rechten van de Verdachte</h3>
+                <p>Elke aangehouden persoon heeft de volgende rechten:</p>
+                <ul>
+                    <li><strong>Zwijgrecht:</strong> De verdachte hoeft geen vragen te beantwoorden</li>
+                    <li><strong>Recht op juridische bijstand:</strong> De verdachte mag een advocaat raadplegen</li>
+                    <li><strong>Recht op tolkenbestand:</strong> Bij taalproblemen moet een tolk worden ingeschakeld</li>
+                    <li><strong>Informatieplicht:</strong> Familie moet worden geïnformeerd over de aanhouding</li>
+                </ul>
+            </section>
+            
+            <!-- FOULLERINGSPROCEDURE -->
+            <section id="fouillering" class="procedure-section">
+                <h2>3. Foulleringsprocedure</h2>
+                
+                <h3>3.1 Soorten Fouillering</h3>
+                
+                <h4>A. Veiligheidsfouillering</h4>
+                <p>Een oppervlakkige controle op wapens en gevaarlijke voorwerpen. Deze mag altijd worden uitgevoerd bij:</p>
+                <ul>
+                    <li>Aanhouding van een verdachte</li>
+                    <li>Verdenking van het dragen van wapens</li>
+                    <li>Controleren van identiteit in gevaarlijke omstandigheden</li>
+                </ul>
+                
+                <h4>B. Inbeslagnemingsfouillering</h4>
+                <p>Een uitgebreidere fouillering om voorwerpen in beslag te nemen. Vereist:</p>
+                <ul>
+                    <li>Redelijke verdenking van strafbare feiten</li>
+                    <li>Machtiging van officier van justitie of rechter-commissaris (bij kleding uitdoen)</li>
+                </ul>
+                
+                <h3>3.2 Uitvoering Fouillering</h3>
+                <ol class="step-list">
+                    <li>
+                        <strong>Aankondiging</strong><br>
+                        Deel mee dat je een fouillering gaat uitvoeren en op welke grondslag.
+                    </li>
+                    <li>
+                        <strong>Positie Innemen</strong><br>
+                        Laat de persoon staan met gespreide benen en handen op het hoofd, tegen de muur, of op de motorkap van een voertuig.
+                    </li>
+                    <li>
+                        <strong>Systematische Controle</strong><br>
+                        Controleer van boven naar beneden: hoofd, torso, armen, benen. Voel in zakken en onder kleding (buitenkant).
+                    </li>
+                    <li>
+                        <strong>Veiligheid Eerst</strong><br>
+                        Voel voorzichtig - scherpe voorwerpen kunnen verwondingen veroorzaken. Gebruik een collega als backup.
+                    </li>
+                    <li>
+                        <strong>Registratie</strong><br>
+                        Registreer gevonden voorwerpen en neem deze in beslag indien noodzakelijk.
+                    </li>
+                </ol>
+                
+                <div class="danger-box">
+                    <strong>Let op:</strong> Fouillering van intieme lichaamsdelen (kleding volledig uit) mag alleen door een arts en met toestemming van het Openbaar Ministerie!
+                </div>
+                
+                <h3>3.3 Gendervereisten</h3>
+                <p>Bij fouillering waarbij kleding moet worden uitgedaan of intieme zones worden gecontroleerd:</p>
+                <ul>
+                    <li>Moet de fouillering worden uitgevoerd door een agent van hetzelfde geslacht</li>
+                    <li>Of door een medisch geschoolde professional</li>
+                    <li>Indien mogelijk buiten het zicht van anderen</li>
+                </ul>
+            </section>
+            
+            <!-- VERKEERSCONTROLE -->
+            <section id="verkeerscontrole" class="procedure-section">
+                <h2>4. Verkeerscontrole Procedure</h2>
+                
+                <h3>4.1 Staandehouding Voertuig</h3>
+                <ol class="step-list">
+                    <li>
+                        <strong>Positie Kiezen</strong><br>
+                        Parkeer je voertuig op een veilige locatie met voldoende ruimte. Zet je zwaailichten aan.
+                    </li>
+                    <li>
+                        <strong>Stopteken Geven</strong><br>
+                        Geef duidelijk stopteken met de hand of gebruik de lichtbalk. Wijs een veilige plaats aan om te stoppen.
+                    </li>
+                    <li>
+                        <strong>Voorbereiding</strong><br>
+                        Informeer de meldkamer over de staandehouding (locatie, kenteken, aantal inzittenden).
+                    </li>
+                    <li>
+                        <strong>Benadering</strong><br>
+                        Benader het voertuig vanaf de bestuurderskant. Blijf alert op gevaar. Vraag de bestuurder het raampje te openen.
+                    </li>
+                    <li>
+                        <strong>Identificatie en Controle</strong><br>
+                        Vraag om rijbewijs, kentekenbewijs en verzekeringsbewijs. Controleer de documenten en voer een check uit in het systeem.
+                    </li>
+                    <li>
+                        <strong>Afsluiting</strong><br>
+                        Geef een waarschuwing, bon, of laat de bestuurder doorrijden. Bedank voor de medewerking.
+                    </li>
+                </ol>
+                
+                <h3>4.2 Alcoholcontrole</h3>
+                <p>Bij verdenking van rijden onder invloed:</p>
+                <ul>
+                    <li>Voer een ademtest uit met een goedgekeurd blaasapparaat</li>
+                    <li>Bij een positieve uitslag: neem het rijbewijs in en laat het voertuig beveiligen</li>
+                    <li>Vervoer de bestuurder naar het bureau voor een officiële ademanalyse</li>
+                    <li>Bij weigering: verbalisereren voor weigering ademtest</li>
+                </ul>
+                
+                <div class="info-box">
+                    <strong>Wettelijke Grenswaarden:</strong><br>
+                    - Beginnende bestuurders (< 5 jaar): 0,2 promille (88 µg/l)<br>
+                    - Ervaren bestuurders: 0,5 promille (220 µg/l)<br>
+                    - Professioneel vervoer: 0,2 promille (88 µg/l)
+                </div>
+                
+                <h3>4.3 Voertuigcontrole</h3>
+                <p>Controleer bij twijfel het volgende:</p>
+                <ul>
+                    <li>APK-keuring (geldig en binnen datum)</li>
+                    <li>Verlichting (koplamp, achterlicht, richtingaanwijzers, remlicht)</li>
+                    <li>Banden (profieldiepte minimaal 1,6 mm)</li>
+                    <li>Lading (goed vastgezet en niet uitstekend zonder markering)</li>
+                    <li>Gordels en veiligheidssystemen</li>
+                </ul>
+            </section>
+            
+            <!-- GEWELDGEBRUIK -->
+            <section id="geweld" class="procedure-section">
+                <h2>5. Geweldgebruik - Geweldsinstructie</h2>
+                
+                <h3>5.1 Basisprincipes</h3>
+                <p>Geweld mag alleen worden gebruikt wanneer:</p>
+                <ul>
+                    <li>Het <strong>noodzakelijk</strong> is (er is geen ander middel beschikbaar)</li>
+                    <li>Het <strong>proportioneel</strong> is (in verhouding tot het doel)</li>
+                    <li>Het <strong>subsidiair</strong> is (als laatste redmiddel)</li>
+                </ul>
+                
+                <div class="danger-box">
+                    <strong>Kritiek:</strong> Elk geweldgebruik moet worden gemeld en gerapporteerd aan je superieur!
+                </div>
+                
+                <h3>5.2 Geweldstrappe (Escalatieladder)</h3>
+                <table>
+                    <tr>
+                        <th>Niveau</th>
+                        <th>Type Geweld</th>
+                        <th>Toelichting</th>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>Aanwezigheid</td>
+                        <td>Uniform dragen en zichtbaar aanwezig zijn</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Verbale Aanwijzing</td>
+                        <td>Duidelijke, directe bevelen geven</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Fysiek Contact</td>
+                        <td>Aanraken, duwen, vasthouden zonder pijn</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Pijnprikkels</td>
+                        <td>Polsdruk, druk op zenuwpunten</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Halsluchtige Slagen</td>
+                        <td>Slagen met wapenstok, controle technieken</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Intensief Geweld</td>
+                        <td>Wurggrepen, slagen op vitale delen, vuurwapen</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Dodelijk Geweld</td>
+                        <td>Vuurwapengeweld met dodelijke afloop (uiterste noodweer)</td>
+                    </tr>
+                </table>
+                
+                <h3>5.3 Wapenstok</h3>
+                <p><strong>Wanneer te gebruiken:</strong> Bij fysiek verzet waarbij verbale commando's en fysiek contact niet voldoende zijn.</p>
+                <p><strong>Doelgebieden:</strong></p>
+                <ul>
+                    <li>✓ Armen (boven- en onderarm)</li>
+                    <li>✓ Benen (boven- en onderbeen, behalve knie)</li>
+                    <li>✗ NOOIT: Hoofd, nek, wervelkolom, borst, geslachtsdelen</li>
+                </ul>
+                
+                <h3>5.4 Taser</h3>
+                <p>De taser is een stroomstootwapen voor tijdelijke immobilisatie.</p>
+                <p><strong>Gebruik alleen bij:</strong></p>
+                <ul>
+                    <li>Ernstig fysiek geweld of dreiging daarvan</li>
+                    <li>Situaties waarbij de veiligheid van agenten of burgers in gevaar is</li>
+                    <li>Als alternatief voor het vuurwapen</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <strong>Let op:</strong> Niet gebruiken bij:<br>
+                    - Zwangere vrouwen<br>
+                    - Personen op grote hoogte (valgevaar)<br>
+                    - In onmiddellijke nabijheid van ontvlambare stoffen<br>
+                    - Personen met zichtbare hartproblemen
+                </div>
+                
+                <h3>5.5 Vuurwapen</h3>
+                <p>Het vuurwapen is het zwaarste geweldsmiddel en mag alleen worden gebruikt bij:</p>
+                <ul>
+                    <li><strong>Noodweer/noodweerexces:</strong> Direct gevaar voor leven</li>
+                    <li><strong>Verdediging:</strong> Bescherming van jezelf of anderen tegen levensbedreigende aanval</li>
+                    <li><strong>Aanhouding:</strong> Van een persoon die een misdrijf heeft gepleegd met levensgevaar</li>
+                </ul>
+                
+                <p><strong>Waarschuwingsschot:</strong></p>
+                <ul>
+                    <li>Waarschuw eerst: "Politie! Stop of ik schiet!"</li>
+                    <li>Los een waarschuwingsschot (in de lucht of grond) indien mogelijk en veilig</li>
+                    <li>Schiet alleen op persoon als uiterste noodmaatregel</li>
+                </ul>
+                
+                <h3>5.6 Rapportage Geweldgebruik</h3>
+                <p>Na elk geweldgebruik (vanaf niveau 2):</p>
+                <ol>
+                    <li>Meld het direct aan je superieur</li>
+                    <li>Vul binnen 24 uur een geweldsrapport in</li>
+                    <li>Beschrijf de situatie, het gebruikte geweld, en de reden</li>
+                    <li>Bij letsel: laat dit medisch documenteren</li>
+                    <li>Bewaar alle bewijsmateriaal (foto's, getuigenverklaringen)</li>
+                </ol>
+            </section>
+            
+            <!-- HUISZOEKINGEN -->
+            <section id="huiszoekingen" class="procedure-section">
+                <h2>6. Huiszoeking Procedure</h2>
+                
+                <h3>6.1 Juridische Vereisten</h3>
+                <p>Een huiszoeking mag alleen plaatsvinden met:</p>
+                <ul>
+                    <li>Een huiszoekingsbevel van de rechter-commissaris</li>
+                    <li>Toestemming van de bewoner (vrijwillig en aantoonbaar)</li>
+                    <li>In spoedeisende gevallen: machtiging van de officier van justitie</li>
+                </ul>
+                
+                <div class="danger-box">
+                    <strong>Belangrijk:</strong> Zonder machtiging of toestemming is huiszoeking onrechtmatig en kan leiden tot strafvervolging en nietigheid van bewijs!
+                </div>
+                
+                <h3>6.2 Voorbereiding</h3>
+                <ol>
+                    <li>Controleer de geldigheid van het huiszoekingsbevel</li>
+                    <li>Bestudeer de plattegrond van het pand (indien beschikbaar)</li>
+                    <li>Zorg voor voldoende mankracht</li>
+                    <li>Bereid benodigde apparatuur voor (camera's, inbeslagnamezakken, forensisch materiaal)</li>
+                    <li>Informeer de meldkamer over de actie</li>
+                </ol>
+                
+                <h3>6.3 Uitvoering</h3>
+                <ol class="step-list">
+                    <li>
+                        <strong>Aankomst en Toegang</strong><br>
+                        Klop aan en identificeer jezelf. Toon het huiszoekingsbevel. Bij weigering of gevaar mag je geweld gebruiken om toegang te krijgen.
+                    </li>
+                    <li>
+                        <strong>Veiligheid</strong><br>
+                        Beveilig alle personen in het pand. Controleer op wapens. Laat niemand het pand verlaten zonder toestemming.
+                    </li>
+                    <li>
+                        <strong>Rechten Mededelen</strong><br>
+                        Informeer de bewoners over hun rechten en de reden van de huiszoeking.
+                    </li>
+                    <li>
+                        <strong>Systematisch Zoeken</strong><br>
+                        Doorzoek het pand kamer voor kamer. Werk gestructureerd en documenteer alles (foto's/video).
+                    </li>
+                    <li>
+                        <strong>Inbeslagname</strong><br>
+                        Neem relevante voorwerpen in beslag. Geef een ontvangstbewijs en leg alles vast in het proces-verbaal.
+                    </li>
+                    <li>
+                        <strong>Afsluiting</strong><br>
+                        Zorg dat het pand wordt afgesloten. Geef een kopie van het proces-verbaal aan de bewoner.
+                    </li>
+                </ol>
+                
+                <h3>6.4 Inbeslagname</h3>
+                <p>Voorwerpen die in beslag mogen worden genomen:</p>
+                <ul>
+                    <li>Voorwerpen die dienstig kunnen zijn aan de waarheidsvinding</li>
+                    <li>Voorwerpen waarvan inbeslagname bij wet is toegestaan</li>
+                    <li>Voorwerpen die vatbaar zijn voor verbeurdverklaring</li>
+                </ul>
+                
+                <p><strong>Bij inbeslagname:</strong></p>
+                <ul>
+                    <li>Verpak en label elk voorwerp afzonderlijk</li>
+                    <li>Maak foto's voor documentatie</li>
+                    <li>Geef een gedetailleerd ontvangstbewijs</li>
+                    <li>Transport naar beveiligde opslaglocatie</li>
+                </ul>
+            </section>
+            
+            <!-- RAPPORTAGE -->
+            <section id="rapport" class="procedure-section">
+                <h2>7. Rapportage en Administratie</h2>
+                
+                <h3>7.1 Proces-verbaal</h3>
+                <p>Een proces-verbaal is een officieel verslag van je bevindingen en handelingen. Het moet:</p>
+                <ul>
+                    <li><strong>Volledig</strong> zijn: alle relevante feiten en omstandigheden</li>
+                    <li><strong>Objectief</strong> zijn: feitelijke beschrijving zonder meningen</li>
+                    <li><strong>Nauwkeurig</strong> zijn: correcte data, tijden, plaatsen, namen</li>
+                    <li><strong>Tijdig</strong> worden opgemaakt: zo snel mogelijk na het incident</li>
+                </ul>
+                
+                <h3>7.2 Structuur Proces-verbaal</h3>
+                <ol>
+                    <li><strong>Kopgegevens</strong>
+                        <ul>
+                            <li>Datum en tijd</li>
+                            <li>Locatie</li>
+                            <li>Betrokken personen (naam, adres, geboortedatum)</li>
+                            <li>Je eigen gegevens (naam, rangnummer)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Aanleiding</strong>
+                        <ul>
+                            <li>Waarom ben je ter plaatse gekomen?</li>
+                            <li>Melding, eigen waarneming, of opdracht?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bevindingen</strong>
+                        <ul>
+                            <li>Wat heb je aangetroffen?</li>
+                            <li>Wat heb je waargenomen?</li>
+                            <li>Beschrijf chronologisch</li>
+                        </ul>
+                    </li>
+                    <li><strong>Handelingen</strong>
+                        <ul>
+                            <li>Welke acties heb je ondernomen?</li>
+                            <li>Aanhouding, fouillering, inbeslagname?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Verklaringen</strong>
+                        <ul>
+                            <li>Verklaringen van verdachten, getuigen</li>
+                            <li>Gebruik letterlijke citaten waar mogelijk</li>
+                        </ul>
+                    </li>
+                    <li><strong>Afsluiting</strong>
+                        <ul>
+                            <li>Conclusie en vervolgacties</li>
+                            <li>Bijlagen (foto's, tekeningen, documenten)</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>7.3 Tips voor Goed Rapportage</h3>
+                <ul>
+                    <li>Gebruik duidelijke, begrijpelijke taal (geen politiejargon)</li>
+                    <li>Schrijf in de ik-vorm: "Ik zag...", "Ik hoorde..."</li>
+                    <li>Vermijd aannames: alleen feiten die je zelf hebt waargenomen</li>
+                    <li>Gebruik volledige namen, geen afkortingen</li>
+                    <li>Controleer spelling en grammatica</li>
+                    <li>Laat iemand anders het doorlezen voor indiening</li>
+                </ul>
+                
+                <div class="info-box">
+                    <strong>Termijn:</strong> Proces-verbalen moeten binnen 48 uur na het incident worden ingediend, tenzij er sprake is van een complexe zaak.
+                </div>
+            </section>
+            
+            <!-- COMMUNICATIE -->
+            <section id="communicatie" class="procedure-section">
+                <h2>8. Communicatie en Radiogebruik</h2>
+                
+                <h3>8.1 Radiocommunicatie</h3>
+                <p>Effectieve radiocommunicatie is cruciaal voor de veiligheid en coördinatie.</p>
+                
+                <h4>Basis Radioprotocol:</h4>
+                <ul>
+                    <li><strong>Denk voordat je spreekt:</strong> Weet wat je wilt zeggen</li>
+                    <li><strong>Wacht op vrije lijn:</strong> Onderbreek geen andere communicatie (behalve noodgevallen)</li>
+                    <li><strong>Identificeer jezelf:</strong> Geef je roepnummer</li>
+                    <li><strong>Wees kort en bondig:</strong> Kom meteen ter zake</li>
+                    <li><strong>Spreek duidelijk:</strong> Niet te snel, articuleer goed</li>
+                    <li><strong>Gebruik standaard codes:</strong> Zie onderstaande tabel</li>
+                </ul>
+                
+                <h3>8.2 Politiecodes</h3>
+                <table>
+                    <tr>
+                        <th>Code</th>
+                        <th>Betekenis</th>
+                    </tr>
+                    <tr>
+                        <td>10-4</td>
+                        <td>Begrepen / Akkoord</td>
+                    </tr>
+                    <tr>
+                        <td>10-8</td>
+                        <td>In dienst</td>
+                    </tr>
+                    <tr>
+                        <td>10-7</td>
+                        <td>Uit dienst</td>
+                    </tr>
+                    <tr>
+                        <td>10-20</td>
+                        <td>Wat is je locatie?</td>
+                    </tr>
+                    <tr>
+                        <td>10-33</td>
+                        <td>Noodoproep - Hulp vereist</td>
+                    </tr>
+                    <tr>
+                        <td>10-99</td>
+                        <td>Agent gewond / Noodsituatie</td>
+                    </tr>
+                    <tr>
+                        <td>Code 1</td>
+                        <td>Niet spoedeisend</td>
+                    </tr>
+                    <tr>
+                        <td>Code 2</td>
+                        <td>Spoedeisend (zonder zwaailicht)</td>
+                    </tr>
+                    <tr>
+                        <td>Code 3</td>
+                        <td>Zeer spoedeisend (met zwaailicht en sirene)</td>
+                    </tr>
+                </table>
+                
+                <h3>8.3 Telefoonprotocol</h3>
+                <p>Bij telefonisch contact met burgers:</p>
+                <ul>
+                    <li>Meld jezelf: "Goedemorgen/middag/avond, u spreekt met agent [naam] van politie [eenheid]"</li>
+                    <li>Luister actief en toon empathie</li>
+                    <li>Noteer belangrijke informatie direct</li>
+                    <li>Herhaal belangrijke gegevens ter bevestiging</li>
+                    <li>Geef duidelijkheid over vervolgstappen</li>
+                    <li>Bedank voor het contact</li>
+                </ul>
+                
+                <h3>8.4 Omgang met Burgers</h3>
+                <p>Basisprincipes voor communicatie met burgers:</p>
+                <ul>
+                    <li><strong>Respectvol:</strong> Behandel iedereen met respect, ongeacht de situatie</li>
+                    <li><strong>Professioneel:</strong> Blijf kalm en beheerst, ook bij agressie</li>
+                    <li><strong>Duidelijk:</strong> Gebruik begrijpelijke taal, vermijd juridisch jargon</li>
+                    <li><strong>Empathisch:</strong> Toon begrip voor emoties en zorgen</li>
+                    <li><strong>Transparant:</strong> Leg uit wat je doet en waarom</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <strong>De-escalatie:</strong> Probeer altijd eerst te de-escaleren door rustig te blijven, te luisteren, en ruimte te geven. Geweld is het laatste redmiddel!
+                </div>
+            </section>
+            
+            <!-- EXTRA SECTIE: SLACHTOFFERHULP -->
+            <section class="procedure-section">
+                <h2>9. Slachtofferhulp en Nazorg</h2>
+                
+                <h3>9.1 Omgang met Slachtoffers</h3>
+                <p>Slachtoffers van misdrijven verdienen bijzondere aandacht en zorg:</p>
+                <ul>
+                    <li>Toon empathie en begrip voor hun situatie</li>
+                    <li>Geef hen de ruimte om hun verhaal te doen</li>
+                    <li>Informeer over hun rechten (slachtofferrechten)</li>
+                    <li>Verwijs naar Slachtofferhulp Nederland</li>
+                    <li>Vraag of er iemand moet worden gebeld (familie, vriend)</li>
+                    <li>Geef een kopie van aangifte en contactgegevens</li>
+                </ul>
+                
+                <h3>9.2 Slachtofferrechten</h3>
+                <p>Slachtoffers hebben recht op:</p>
+                <ul>
+                    <li>Informatie over de voortgang van het onderzoek</li>
+                    <li>Spreekrecht in rechtszaken</li>
+                    <li>Schadevergoeding</li>
+                    <li>Bescherming tegen de verdachte</li>
+                    <li>Ondersteuning door Slachtofferhulp</li>
+                </ul>
+            </section>
+        </div>
+        
+        <footer>
+            <p>&copy; 2026 Politie - Dit document is vertrouwelijk en alleen bedoeld voor intern gebruik.</p>
+            <p>Versie 1.0 | Laatst bijgewerkt: Januari 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSI | TRAINING FASES | VERTROUWELIJK</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', 'Courier Prime', monospace;
+            background: #0a0a0a;
+            color: #00ff41;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Login Screen Styles */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #loginScreen.hidden {
+            display: none;
+        }
+
+        .terminal-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85em;
+            color: #00ff41;
+            opacity: 0.15;
+            line-height: 1.4;
+            padding: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            animation: scrollTerminal 60s linear infinite;
+            pointer-events: none;
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        @keyframes scrollTerminal {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+
+        .login-container {
+            background: rgba(0, 0, 0, 0.95);
+            border: 3px solid #ff0000;
+            padding: 50px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+            animation: glitchLogin 5s infinite;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes glitchLogin {
+            0%, 98%, 100% { transform: translate(0, 0); }
+            99% { transform: translate(2px, -2px); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            color: #ff0000;
+            font-size: 3em;
+            letter-spacing: 15px;
+            text-shadow: 0 0 20px #ff0000;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .login-header .subtitle {
+            color: #00ff41;
+            font-size: 1.2em;
+            letter-spacing: 5px;
+        }
+
+        .login-warning {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #ff0000;
+            font-size: 0.9em;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: #00ff41;
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .form-group input {
+            background: #000;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            padding: 15px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.1em;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .login-btn {
+            background: #ff0000;
+            color: #000;
+            border: none;
+            padding: 18px;
+            font-size: 1.3em;
+            font-weight: 700;
+            letter-spacing: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .login-btn:hover {
+            background: #00ff41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #555;
+            font-size: 0.8em;
+        }
+
+        #mainContent {
+            display: none;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+        }
+
+        #mainContent.unlocked {
+            display: block;
+        }
+
+        #mainContent.fade-in {
+            opacity: 1;
+        }
+
+        .logout-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        }
+
+        .logout-btn {
+            background: rgba(255, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #ff0000;
+            padding: 12px 25px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            text-transform: uppercase;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 0, 1);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        #bootSequence {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99998;
+            display: none;
+            padding: 40px;
+            font-family: 'Courier Prime', monospace;
+            color: #00ff41;
+            font-size: 1.1em;
+            overflow: hidden;
+        }
+
+        #bootSequence.active {
+            display: block;
+        }
+
+        .boot-line {
+            margin: 8px 0;
+            white-space: pre-wrap;
+        }
+
+        .boot-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: #00ff41;
+            animation: blink 0.8s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .boot-success {
+            color: #00ff41;
+        }
+
+        .boot-warning {
+            color: #ffff00;
+        }
+
+        .boot-error {
+            color: #ff0000;
+        }
+        
+        /* Scanline effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .classified-header {
+            background: #000;
+            border: 3px solid #ff0000;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+        
+        .classified-stamp {
+            color: #ff0000;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: 10px;
+            text-shadow: 0 0 10px #ff0000;
+            animation: pulse 2s infinite;
+        }
+        
+        .clearance-level {
+            color: #ffff00;
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        header {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            border: 2px solid #00ff41;
+            background: rgba(0, 255, 65, 0.05);
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            color: #00ff41;
+            text-shadow: 0 0 20px #00ff41;
+            letter-spacing: 15px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: #888;
+            margin-top: 10px;
+            letter-spacing: 5px;
+        }
+        
+        .warning-box {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .warning-box h3 {
+            color: #ff0000;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 1.2em;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        
+        .phase-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(0, 255, 65, 0.02);
+            border: 1px solid #003300;
+            position: relative;
+        }
+        
+        .phase-section::before {
+            content: "█";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #00ff41;
+            opacity: 0.3;
+        }
+        
+        .phase-section h2 {
+            color: #ff0000;
+            font-size: 2.2em;
+            margin: 0 0 20px 0;
+            padding: 15px;
+            background: rgba(255, 0, 0, 0.1);
+            border-left: 5px solid #ff0000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #ff0000;
+            display: block;
+        }
+        
+        .phase-icon {
+            display: inline-block;
+            background: #ff0000;
+            color: #000;
+            padding: 5px 15px;
+            font-weight: 700;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            margin-right: 15px;
+        }
+        
+        h3 {
+            color: #00ff41;
+            font-size: 1.8em;
+            margin: 30px 0 15px 0;
+            padding-left: 20px;
+            border-left: 3px solid #00ff41;
+            font-weight: 600;
+        }
+        
+        ul {
+            list-style: none;
+            margin: 15px 0;
+            padding-left: 0;
+        }
+        
+        li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            border-bottom: 1px solid #003300;
+        }
+        
+        li::before {
+            content: "▸";
+            position: absolute;
+            left: 10px;
+            color: #00ff41;
+            font-weight: bold;
+        }
+        
+        .day-info {
+            background: rgba(255, 255, 0, 0.05);
+            border: 2px dashed #ffff00;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .day-info::before {
+            content: "📋 INFO";
+            display: block;
+            color: #ffff00;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        
+        .exercise-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ff41;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .exercise-card:hover {
+            border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .exercise-card h4 {
+            color: #00ff41;
+            font-size: 1.4em;
+            margin: 0 0 15px 0;
+            border-bottom: 2px solid #00ff41;
+            padding-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, rgba(0,255,65,0.1) 0%, rgba(0,0,0,0.8) 100%);
+            border: 1px solid #00ff41;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .stat-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            color: #00ff41;
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            color: #888;
+            margin-top: 10px;
+        }
+        
+        .success-box {
+            background: rgba(0, 255, 65, 0.1);
+            border: 2px solid #00ff41;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .success-box::before {
+            content: "✓ GESLAAGD";
+            display: block;
+            color: #00ff41;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #00ff41;
+        }
+        
+        .success-box h3 {
+            color: #00ff41;
+            border: none;
+            padding: 0;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        th {
+            background: rgba(255, 0, 0, 0.3);
+            color: #ff0000;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            border: 1px solid #ff0000;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border: 1px solid #003300;
+        }
+        
+        tr:hover {
+            background: rgba(0, 255, 65, 0.1);
+        }
+        
+        .note {
+            background: rgba(255, 255, 0, 0.1);
+            border: 2px dashed #ffff00;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .note::before {
+            content: "⚠️ BELANGRIJK";
+            display: block;
+            color: #ffff00;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        
+        .note strong {
+            color: #ffff00;
+        }
+        
+        .redacted {
+            background: #000;
+            color: #000;
+            cursor: help;
+            padding: 0 5px;
+        }
+        
+        .redacted:hover {
+            background: #333;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="terminal-bg" id="terminalBg"></div>
+
+        <div class="login-container">
+            <div class="login-header">
+                <h1>DSI</h1>
+                <div class="subtitle">TRAINING TOEGANG</div>
+            </div>
+
+            <div class="login-warning">
+                ⚠ BEVEILIGDE TRAINING DOCUMENTATIE ⚠<br>
+                Toegang beperkt tot DSI Instructeurs en Cursisten.<br>
+                Ongeautoriseerde toegang is strafbaar.
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">GEBRUIKERSNAAM</label>
+                    <input type="text" id="username" autocomplete="off" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">WACHTWOORD</label>
+                    <input type="password" id="password" autocomplete="off" required>
+                </div>
+
+                <button type="submit" class="login-btn">TOEGANG AANVRAGEN</button>
+
+                <div class="error-message" id="errorMessage">
+                    ❌ TOEGANG GEWEIGERD<br>
+                    Ongeldige inloggegevens
+                </div>
+            </form>
+
+            <div class="login-footer">
+                Doc.NL-LL-2026-TRAINING-001 | Beveiligingsniveau: VERTROUWELIJK
+            </div>
+        </div>
+    </div>
+
+    <!-- Boot Sequence Screen -->
+    <div id="bootSequence">
+        <div id="bootContent"></div>
+    </div>
+
+    <!-- Main Content (Hidden until login) -->
+    <div id="mainContent">
+    <div class="logout-container">
+        <button class="logout-btn" id="logoutBtn" onclick="logout()">🔓 UITLOGGEN</button>
+    </div>
+    
+    <div class="classified-header">
+        <div class="classified-stamp">VERTROUWELIJK</div>
+        <div class="clearance-level">DSI TRAINING PROCEDURES - INSTRUCTEURS & CURSISTEN</div>
+        <div style="font-size: 0.7em; color: #333; margin-top: 5px;">Doc.NL-LL-2026-TRAINING-001</div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>DSI</h1>
+            <div class="subtitle">DIENST SPECIALE INTERVENTIES - TRAINING FASES</div>
+            <div style="font-size: 0.6em; color: #222; margin-top: 15px; letter-spacing: 1px;">█ PRAEPARATUS ESTO - WEES VOORBEREID █</div>
+        </header>
+
+        <div class="warning-box">
+            <h3>⚠️ WAARSCHUWING - SELECTIEPROCES</h3>
+            <p><strong>Uitvalpercentage tijdens opleiding: ~60%</strong></p>
+            <p>De DSI-opleiding is één van de zwaarste selectieprocessen binnen de Nederlandse politie en krijgsmacht. Alleen de meest gemotiveerde, fysiek en mentaal sterke kandidaten halen de eindstreep en ontvangen de befaamde blauwe baret.</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">~1000</div>
+                <div class="stat-label">Opleidingsuren</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">~20</div>
+                <div class="stat-label">Weken Basistraining</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Maanden Praktijk</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">~40%</div>
+                <div class="stat-label">Slagingspercentage</div>
+            </div>
+        </div>
+
+        <!-- WEEK 1-5: TESTWEEK & WITTE MODULE -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">1</span>WEEK 1-5: TESTWEEK & WITTE MODULE</h2>
+            <p><strong>Duur:</strong> 5 Weken (5 dagen in Roblox) | <strong>Fase:</strong> Aanleerfase | <strong>Uitval:</strong> ~60%</p>
+            
+            <div class="day-info">
+                <strong>📅 Roblox Planning:</strong> Elke fase = 1 dag werk per individuele aspirant. De planning wordt per persoon bepaald door de instructeur.
+            </div>
+
+            <h3>📋 DAG 1: TESTWEEK - FYSIEKE SELECTIE</h3>
+            <p>De testweek is een intensieve periode van 5 dagen waarin aspiranten worden getest op sport, casussen en samenwerkingsoefeningen. Dit is de zwaarste selectiefase met het hoogste uitvalpercentage.</p>
+            
+            <div class="exercise-card">
+                <h4>🏃 ROBLOX FYSIEKE OEFENINGEN</h4>
+                <p>In Roblox gebruiken we aangepaste fysieke oefeningen. Standaard hoeveelheden kunnen worden aangepast door de instructeur.</p>
+                
+                <table>
+                    <tr>
+                        <th>Oefening</th>
+                        <th>Uitvoering</th>
+                        <th>Standaard Aantal</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Jumping Jacks</strong></td>
+                        <td>Springen in Roblox - gewoon springen per repetitie</td>
+                        <td>500+ sprongen (MINIMAAL)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grammar Jacks</strong></td>
+                        <td>Per sprong tel je in het Engels in de chat (One, Two, Three, etc.)</td>
+                        <td>250+ sprongen (MINIMAAL)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Push Ups</strong></td>
+                        <td>Liggen (/e dance2), opstaan, springen, "ONE" typen in chat. Spelling IS belangrijk!</td>
+                        <td>150+ herhalingen (MINIMAAL)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hell Jacks</strong></td>
+                        <td>Per sprong typ je één letter van het getal. Bijv: O [spring] N [spring] E [spring] ONE [spring]</td>
+                        <td>150+ sprongen (MINIMAAL)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nightmare Jacks</strong></td>
+                        <td>Zelfde als Hell Jacks MAAR per "sprong" doe je de emote /e cheer in plaats van springen</td>
+                        <td>100+ herhalingen (MINIMAAL)</td>
+                    </tr>
+                </table>
+                
+                <div class="note">
+                    <strong>💡 BELANGRIJK:</strong> De instructeur kan op elk moment de regels aanpassen! Bijvoorbeeld: spelling kan wel of niet belangrijk zijn afhankelijk van de instructie. Luister altijd goed naar je instructeur!
+                </div>
+            </div>
+
+            <h3>🧠 DAG 2: PSYCHOLOGISCHE SCREENING</h3>
+            <ul>
+                <li><strong>Stresstest interviews:</strong> Aspiranten worden geïnterviewd onder druk</li>
+                <li><strong>Samenwerkingsoefeningen:</strong> Teamwork scenarios in stressvolle omstandigheden</li>
+                <li><strong>Casuïstiek:</strong> Theoretische scenario's waarbij besluitvorming wordt getest</li>
+                <li><strong>Mentale weerbaarheid:</strong> Testen op doorzettingsvermogen en discipline</li>
+                <li><strong>Veiligheidsonderzoek:</strong> Achtergrondcheck en betrouwbaarheidsonderzoek</li>
+                <li><strong>Medische keuring:</strong> Volledige fysieke en medische beoordeling</li>
+            </ul>
+            
+            <div class="note">
+                <strong>⚠️ Selectiecriteria:</strong> Bij succesvolle afronding van de testweek, psychologische keuring, medische keuring en positieve beoordeling van het veiligheidsonderzoek mogen aspiranten beginnen aan de DSI-opleiding.
+            </div>
+
+            <h3>🚗 DAG 3: SPECIALISTISCHE RIJOPLEIDING (SRO)</h3>
+            <p>Binnen de DSI moet elk teamlid een specialistische rijopleiding volgen. In Roblox wordt dit aangepast naar praktische rijscenario's.</p>
+            <ul>
+                <li><strong>Snelle verplaatsing door verkeer:</strong> Oefeningen in snel en veilig navigeren</li>
+                <li><strong>Bepantserde voertuigen:</strong> Leren omgaan met extra gewicht en aangepaste rijeigenschappen</li>
+                <li><strong>Autoprocedures:</strong> Speciale manoeuvres om zich verplaatsende verdachten te overmeesteren</li>
+                <li><strong>Noodstops en blokkades:</strong> Tactische rijmanoeuvres voor aanhoudingen</li>
+                <li><strong>Konvooi rijden:</strong> Gecoördineerd rijden in teamverband</li>
+                <li><strong>Evasive driving:</strong> Ontwijkingsmanoeuvres bij dreiging</li>
+            </ul>
+
+            <h3>🔫 DAG 4: BASISVAARDIGHEDEN WAPENS</h3>
+            <p>Aspiranten beginnen met de basis van wapenveiligheid en schietoefeningen.</p>
+            <ul>
+                <li><strong>Wapenveiligheid:</strong> De vier basisregels van veilig wapenbezit</li>
+                <li><strong>Schietbaan training:</strong> Basis schiettechnieken op statische doelen</li>
+                <li><strong>Wapensystemen DSI:</strong> Kennismaking met standaard DSI bewapening</li>
+                <li><strong>Laden en ontladen procedures:</strong> Veilig omgaan met munitie</li>
+                <li><strong>Doelidentificatie:</strong> Onderscheid maken tussen dreigingen en burgers</li>
+                <li><strong>Stress shooting:</strong> Schieten onder druk en in beweging</li>
+            </ul>
+
+            <h3>⚔️ DAG 5: BASISPROCEDURES & AZV</h3>
+            <p>Laatste dag van de Witte Module focust op procedures en zelfverdediging.</p>
+            <ul>
+                <li><strong>Aanhoudingstechnieken (basis):</strong> Grondtechnieken voor controle van verdachten</li>
+                <li><strong>Zelfverdedigingstechnieken (AZV):</strong> Persoonlijke verdedigingsvaardigheden</li>
+                <li><strong>Communicatie procedures:</strong> Radio communicatie en commandostructuur</li>
+                <li><strong>Tactische formaties:</strong> Basis bewegingsformaties in teamverband</li>
+                <li><strong>Gebouwzuivering (introductie):</strong> Eerste kennismaking met clearing procedures</li>
+                <li><strong>Scenario training:</strong> Eerste realistische oefeningen met rollenspel</li>
+            </ul>
+
+            <div class="success-box">
+                <h3>✅ EVALUATIE WITTE MODULE</h3>
+                <p>Na afronding van week 5 krijgen aspiranten een <strong>positief advies</strong> of worden ze uit de opleiding verwijderd. Bij een positief advies mogen aspiranten de opleiding voortzetten naar de Grijze Module.</p>
+                <p><strong>Slagingspercentage Witte Module:</strong> ~40% (60% uitval)</p>
+            </div>
+        </div>
+
+        <!-- WEEK 6-19: GRIJZE MODULE -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">2</span>WEEK 6-19: GRIJZE MODULE</h2>
+            <p><strong>Duur:</strong> 14 Weken (14 dagen in Roblox) | <strong>Fase:</strong> Trainings- en Ontwikkelfase</p>
+            
+            <div class="day-info">
+                <strong>📅 Focus:</strong> Kandidaten leren de aangeleerde vaardigheden en procedures in realistische scenario's toe te passen door middel van vaardigheidstrainingen, rollenspelen en oefeningen.
+            </div>
+
+            <h3>🏠 DAG 6-8: CQB - CLOSE QUARTERS BATTLE</h3>
+            <p>Close Quarters Battle (CQB) training is de kern van DSI-operaties. Aspiranten leren gebouwen en ruimtes veilig te zuiveren.</p>
+            
+            <div class="exercise-card">
+                <h4>🏠 KILLHOUSE TRAINING FACILITIES</h4>
+                <p><strong>Wat is een Killhouse?</strong></p>
+                <p>Een Killhouse is een speciaal ontworpen trainingsgebouw dat echte woningen, kantoorpanden, of andere structuren simuleert. Het bestaat uit meerdere kamers, gangen, trappen en verschillende ingangen die operators gebruiken om CQB-scenario's te oefenen in een gecontroleerde omgeving.</p>
+                
+                <div class="warning-box">
+                    <p><strong>In Roblox:</strong> Killhouses worden nagebootst met speciaal gebouwde faciliteiten met meerdere kamers, gangen, deuren, en obstakels. Instructeurs spelen tegenstanders en burgers om realistische scenario's te creëren.</p>
+                </div>
+
+                <h4 style="margin-top: 25px;">🚪 BREACHING TECHNIEKEN</h4>
+                <p>Breaching is het forceren van toegang tot een ruimte of gebouw. Verschillende methoden worden gebruikt afhankelijk van de situatie:</p>
+                
+                <table style="margin-top: 15px;">
+                    <tr>
+                        <th>Breach Type</th>
+                        <th>Methode</th>
+                        <th>Toepassing</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Mechanical Breach</strong></td>
+                        <td>Deurkozijn forceren, sloophamers, breekijzer (Halligan tool)</td>
+                        <td>Standaard houten deuren, eenvoudige sloten</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Explosive Breach</strong></td>
+                        <td>Gerichte explosieven (frame charges, linear charges)</td>
+                        <td>Versterkte deuren, meerdere toegangspunten tegelijk</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ballistic Breach</strong></td>
+                        <td>Shotgun met speciale munitie (Hatton rounds) op scharnieren</td>
+                        <td>Snelle toegang, combinatie met andere methoden</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hydraulic Breach</strong></td>
+                        <td>Hydraulische spreiders en cutters</td>
+                        <td>Metalen deuren, voertuigen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thermal Breach</strong></td>
+                        <td>Snijbranders, exotherme lansen</td>
+                        <td>Kluizen, zeer zware constructies</td>
+                    </tr>
+                </table>
+
+                <div class="note" style="margin-top: 20px;">
+                    <p><strong>🎮 Roblox Implementatie:</strong> In Roblox simuleren we breaching door verschillende deur-types die op verschillende manieren geopend moeten worden. Operators moeten de juiste methode kiezen en samenwerken.</p>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h4>⚔️ CROSS-BREACHING & SIMULTANE TOEGANG</h4>
+                <p><strong>Cross-Breaching</strong> is een geavanceerde tactiek waarbij meerdere toegangspunten tegelijkertijd worden geforceerd om verdachten te overweldigen en hun reactietijd te minimaliseren.</p>
+                
+                <h4 style="margin-top: 20px; color: #ffff00;">Waarom Cross-Breaching?</h4>
+                <ul>
+                    <li><strong>360° Overrompeling:</strong> Verdachten kunnen niet alle richtingen tegelijk verdedigen</li>
+                    <li><strong>Verwarring Creëren:</strong> Simultane explosies/geluiden desoriënteren doelen</li>
+                    <li><strong>Snelheid:</strong> Vermindert reactietijd van verdachten drastisch</li>
+                    <li><strong>Veiligheid:</strong> Verdachten kunnen zich niet verzamelen bij één ingangspunt</li>
+                    <li><strong>Controle:</strong> Team heeft direct controle over meerdere ruimtes</li>
+                </ul>
+
+                <h4 style="margin-top: 20px; color: #ffff00;">Cross-Breach Uitvoering</h4>
+                <ol>
+                    <li><strong>Verkenning:</strong> Identificeer alle mogelijke toegangspunten (deuren, ramen, muren, daken)</li>
+                    <li><strong>Planning:</strong> Wijs teams toe aan elk toegangspunt</li>
+                    <li><strong>Timing:</strong> Synchroniseer breach op exact hetzelfde moment (vaak met countdown)</li>
+                    <li><strong>Initiatie:</strong> Team leader geeft signaal - alle teams breachen TEGELIJK</li>
+                    <li><strong>Entry:</strong> Snelle binnenkomst vanuit alle richtingen</li>
+                    <li><strong>Dominance:</strong> Immediate control en dominantie over de ruimte</li>
+                    <li><strong>Clearing:</strong> Systematisch zuiveren naar het centrum toe</li>
+                </ol>
+
+                <div class="warning-box" style="margin-top: 20px;">
+                    <p><strong>KRITIEK BIJ CROSS-BREACHING:</strong> Crossfire vermijden! Teams moeten exact weten waar collega's zijn om friendly fire te voorkomen. Duidelijke sector-toewijzing en discipline zijn essentieel.</p>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h4>🎯 ROOM CLEARING PROCEDURES</h4>
+                <p>Het zuiveren van kamers is een systematisch proces dat elke operator moet beheersen:</p>
+                
+                <h4 style="margin-top: 20px; color: #ffff00;">De Fatal Funnel</h4>
+                <p>De <strong>Fatal Funnel</strong> is de deuropening zelf - het gevaarlijkste punt bij room entry. Iedereen die door een deur gaat, is kwetsbaar omdat:</p>
+                <ul>
+                    <li>Je beweging wordt beperkt door de deuropening</li>
+                    <li>Je wordt "geframed" tegen de achtergrond</li>
+                    <li>Verdachten hebben vaak de deur in het vizier</li>
+                    <li>Het is een choke point waar je moet doorheen</li>
+                </ul>
+                <p><strong>Oplossing:</strong> Zo min mogelijk tijd in de fatal funnel - snelle, beslissende beweging!</p>
+
+                <h4 style="margin-top: 20px; color: #ffff00;">Pieing/Slicing the Corner</h4>
+                <p>Voor je de kamer binnengaat, <strong>pie</strong> je de kamer visueel vanaf de kant van de deur:</p>
+                <ol>
+                    <li>Sta aan de zijkant van de deur</li>
+                    <li>Lean langzaam en verbreed je zichthoek gradueel (als een "taartpunt")</li>
+                    <li>Clear zo veel mogelijk van de kamer VOOR je binnenkomt</li>
+                    <li>Identificeer dreigingen zonder jezelf bloot te stellen</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #ffff00;">Dynamic Entry (4-Man Entry)</h4>
+                <p>De meest voorkomende entry techniek bij DSI - 4 operators, gecoördineerde beweging:</p>
+                <ol>
+                    <li><strong>Man 1 (Point):</strong> Eerste binnen, zuivert linker hoek/sector</li>
+                    <li><strong>Man 2 (Second):</strong> Direct na Man 1, zuivert rechter hoek/sector</li>
+                    <li><strong>Man 3 (Third):</strong> Ondersteunt en zuivert diepe hoeken</li>
+                    <li><strong>Man 4 (Rear Security):</strong> Dekt de achterzijde en helpt waar nodig</li>
+                </ol>
+                <p><strong>Commandotaal:</strong> "BREACH BREACH BREACH" of "GO GO GO" bij entry</p>
+
+                <h4 style="margin-top: 20px; color: #ffff00;">Sector Responsibility (Verantwoordelijkheidsgebieden)</h4>
+                <p>Elke operator heeft een specifieke sector om te clearen:</p>
+                <ul>
+                    <li><strong>High-Low Coverage:</strong> Sommige operators richten zich op hoge hoeken (boven meubels), anderen op lage (onder tafels, achter banken)</li>
+                    <li><strong>Corner Responsibility:</strong> Elke hoek wordt toegewezen aan een specifieke operator</li>
+                    <li><strong>Center Room:</strong> Eén operator houdt overzicht op center mass van de kamer</li>
+                    <li><strong>Backstop Awareness:</strong> Altijd bewust zijn van wat achter je doel is (burgers, collega's)</li>
+                </ul>
+            </div>
+
+            <div class="exercise-card">
+                <h4>📐 ADVANCED CQB TECHNIEKEN</h4>
+                
+                <h4 style="margin-top: 15px; color: #ffff00;">Button Hook Entry</h4>
+                <p>Entry techniek waarbij de eerste operator scherp draait langs de deur:</p>
+                <ul>
+                    <li>Man 1 draait scherp naar links/rechts direct na deur</li>
+                    <li>Man 2 gaat opposite richting</li>
+                    <li>Snel, gebruikt deurdrang als dekking</li>
+                    <li>Effectief bij smalle kamers</li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #ffff00;">Crisscross/X-Entry</h4>
+                <p>Twee operators kruisen elkaars pad bij binnenkomst:</p>
+                <ul>
+                    <li>Man 1 gaat naar rechts, Man 2 kruist naar links</li>
+                    <li>Zeer snelle room coverage</li>
+                    <li>Vereist perfecte timing en vertrouwen</li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #ffff00;">Flooding Technique</h4>
+                <p>Alle operators stormen tegelijk naar binnen (bij zeer hoog risico):</p>
+                <ul>
+                    <li>Maximum snelheid en agressie</li>
+                    <li>Overweldigende force</li>
+                    <li>Gebruikt bij extreme dreigingen</li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #ffff00;">Stairwell Clearing</h4>
+                <p>Trappen zijn extreem gevaarlijk - speciale procedures:</p>
+                <ul>
+                    <li><strong>Going Up:</strong> Point man dekt naar boven, #2 dekt zijkanten</li>
+                    <li><strong>Going Down:</strong> Meer gevaarlijk - beperkt zicht, gravity advantage voor verdachten</li>
+                    <li><strong>Landing Clearing:</strong> Elke overloop wordt volledig gezuiverd voor verder gaan</li>
+                    <li><strong>Spiral Stairs:</strong> Extreme voorzichtigheid - zeer beperkt zicht</li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #ffff00;">Hallway/Corridor Movement</h4>
+                <ul>
+                    <li><strong>Wall Hugging:</strong> NIET doen - maakt je voorspelbaar</li>
+                    <li><strong>Center Line:</strong> Vaak beter - maximale mobiliteit</li>
+                    <li><strong>Offset Formation:</strong> Teams bewegen in staggered positie</li>
+                    <li><strong>Cross Coverage:</strong> Teams dekken elkaars sectoren</li>
+                </ul>
+            </div>
+
+            <div class="exercise-card">
+                <h4>💥 FLASHBANGS & DISTRACTION DEVICES</h4>
+                <p>Flashbangs (ook wel "stun grenades") zijn essentieel bij CQB om tactische voordelen te creëren:</p>
+                
+                <h4 style="margin-top: 15px; color: #ffff00;">Wat Doet een Flashbang?</h4>
+                <ul>
+                    <li><strong>Auditief:</strong> 170-180 decibel explosie - tijdelijke doofheid</li>
+                    <li><strong>Visueel:</strong> 6-8 miljoen candela flash - tijdelijke blindheid</li>
+                    <li><strong>Psychologisch:</strong> Shock, disoriëntatie, verwarring</li>
+                    <li><strong>Effect Duur:</strong> 5-10 seconden disoriëntatie</li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #ffff00;">Flashbang Entry Procedure</h4>
+                <ol>
+                    <li><strong>"FLASHBANG OUT!"</strong> - Team waarschuwing</li>
+                    <li>Gooi flashbang in kamer (niet bounced terug!)</li>
+                    <li><strong>Wait for BANG</strong> - Wacht op detonatie</li>
+                    <li><strong>Immediate Entry</strong> - Direct na explosie naar binnen</li>
+                    <li>Operators dragen oog/oor bescherming maar voelen nog steeds drukgolf</li>
+                </ol>
+
+                <div class="warning-box" style="margin-top: 15px;">
+                    <p><strong>SAFETY:</strong> Flashbangs kunnen brand veroorzaken! Check voor brandbare materialen. In Roblox simuleren we dit effect met visuele/audio cues.</p>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h4>🎮 KILLHOUSE TRAINING IN ROBLOX</h4>
+                <p>Hoe we CQB training implementeren in de Roblox omgeving:</p>
+                
+                <h4 style="margin-top: 15px; color: #ffff00;">Faciliteit Opbouw</h4>
+                <ul>
+                    <li><strong>Multi-Room Complex:</strong> Minstens 6-10 verschillende kamers</li>
+                    <li><strong>Variërende Layouts:</strong> Smalle gangen, grote ruimtes, trappenhuizen</li>
+                    <li><strong>Meerdere Verdiepingen:</strong> Voor verticale clearing oefeningen</li>
+                    <li><strong>Verschillende Deur Types:</strong> Gewone deuren, dubbele deuren, verstevigde deuren</li>
+                    <li><strong>Meubels & Obstakels:</strong> Realistische inrichting met dekking</li>
+                    <li><strong>Lighting Control:</strong> Kan worden aangepast voor low-light training</li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #ffff00;">Training Scenarios</h4>
+                <ul>
+                    <li><strong>Unknown Threat:</strong> Operators weten niet hoeveel tegenstanders of waar</li>
+                    <li><strong>Hostage Rescue:</strong> Burgers (gespeeld door instructeurs) moeten ongedeerd blijven</li>
+                    <li><strong>Barricaded Suspects:</strong> Verdachten hebben posities ingenomen</li>
+                    <li><strong>Active Shooter:</strong> Tegenstander beweegt door het gebouw</li>
+                    <li><strong>Multi-Floor Clear:</strong> Gehele gebouw moet worden gezuiverd</li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #ffff00;">Evaluatie Criteria</h4>
+                <ul>
+                    <li><strong>Timing:</strong> Hoe snel werd de ruimte gecleared?</li>
+                    <li><strong>Communication:</strong> Constante verbale communicatie tussen operators</li>
+                    <li><strong>Sector Coverage:</strong> Werden alle hoeken/sectoren gechecked?</li>
+                    <li><strong>Threat Neutralization:</strong> Zijn alle dreigingen geneutraliseerd?</li>
+                    <li><strong>Civilian Safety:</strong> Zijn burgers veilig gebleven?</li>
+                    <li><strong>Team Cohesion:</strong> Bewoog het team als één eenheid?</li>
+                    <li><strong>Muzzle Discipline:</strong> Was wapenveiligheid gewaarborgd?</li>
+                </ul>
+
+                <div class="note" style="margin-top: 15px;">
+                    <p><strong>DEBRIEF:</strong> Na elke Killhouse run volgt een grondige debriefing. Video replay (indien mogelijk) wordt gebruikt om fouten te analyseren en tactieken te verbeteren.</p>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h4>🎯 CQB FORMATIES</h4>
+                <table>
+                    <tr>
+                        <th>Formatie</th>
+                        <th>Toepassing</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Stack Formation</strong></td>
+                        <td>Standaard opstelling bij deuren en doorgangen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Diamond Formation</strong></td>
+                        <td>Open ruimte beweging met 360° dekking</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Single File</strong></td>
+                        <td>Smalle ruimtes en trappenhuizen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Buddy Teams</strong></td>
+                        <td>Paren van 2 operators voor flexibiliteit</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>🎯 DAG 9-11: GEVORDERDE SCHIETOEFENINGEN</h3>
+            <p>Schietvaardigheden worden naar een hoger niveau getild met complexe scenario's en stressvolle omstandigheden.</p>
+            <ul>
+                <li><strong>Schietbaan Training (Gevorderd):</strong> Precisie schieten op variërende afstanden</li>
+                <li><strong>Moving Target Practice:</strong> Schieten op bewegende doelen</li>
+                <li><strong>Shooting on the Move:</strong> Effectief vuren terwijl je zelf in beweging bent</li>
+                <li><strong>Cover & Concealment:</strong> Gebruik maken van dekking tijdens vuurgevechten</li>
+                <li><strong>Multiple Target Engagement:</strong> Snel schakelen tussen meerdere doelen</li>
+                <li><strong>Low Light / Night Shooting:</strong> Schieten in beperkte lichtomstandigheden</li>
+                <li><strong>Transition Drills:</strong> Wisselen tussen primair en secundair wapen</li>
+                <li><strong>Malfunction Clearance:</strong> Storingen verhelpen onder druk</li>
+                <li><strong>Stress Inoculation:</strong> Schieten onder extreme stress (fysiek en mentaal)</li>
+                <li><strong>Hostage/No-Shoot Scenarios:</strong> Precisie bij aanwezigheid van burgers</li>
+            </ul>
+
+            <h3>⚡ DAG 12-14: TACTISCHE SCENARIO'S</h3>
+            <p>Realistische scenario's waarin alle vaardigheden samenkomen. Met acteurs en Force-on-Force training.</p>
+            <ul>
+                <li><strong>Gegijzelde Scenarios:</strong> Bevrijding van gijzelaars met minimaal risico</li>
+                <li><strong>Woninginval Scenario's:</strong> Planmatige aanhoudingen in woningen</li>
+                <li><strong>Verdachte Aanhouding:</strong> Overmeesteren van gewapende verdachten</li>
+                <li><strong>Terreurdreiging Scenarios:</strong> Respons op actieve terroristische dreigingen</li>
+                <li><strong>VIP Bescherming:</strong> Tactische beveiliging van personen</li>
+                <li><strong>Vehicle Interdiction:</strong> Aanhouden van verdachten in voertuigen</li>
+                <li><strong>Multiple Location Raids:</strong> Gecoördineerde invallen op meerdere locaties</li>
+                <li><strong>Force-on-Force:</strong> Realistische gevechtsimulaties tegen tegenstanders</li>
+                <li><strong>Roleplaying:</strong> Acteurs spelen verdachten, gijzelaars, en burgers</li>
+            </ul>
+
+            <div class="note">
+                <strong>🎭 Roblox Aanpassing:</strong> In Roblox worden deze scenario's nagespeeld met specifieke locaties en rollenspel. Instructeurs spelen tegenstanders of burgers. Evaluatie gebeurt op basis van tactiek, communicatie, en teamwork.
+            </div>
+
+            <h3>🪂 DAG 15-16: HOOGTE OPERATIES</h3>
+            <p>Bekwaammaking in het werken op grote hoogte - een essentieel onderdeel voor complexe operaties.</p>
+            <ul>
+                <li><strong>Klimtechnieken:</strong> Veilig klimmen en dalen op gebouwen en structuren</li>
+                <li><strong>Rappelling:</strong> Afdalen aan touwen vanaf hoogte (abseilen)</li>
+                <li><strong>Fast-Rope Training:</strong> Snelle deployment vanaf helikopters</li>
+                <li><strong>Roof Access:</strong> Toegang verkrijgen tot gebouwen via daken</li>
+                <li><strong>Window Entry:</strong> Binnentreden via ramen op hoogte</li>
+                <li><strong>Height Safety:</strong> Veiligheidsprocedures en uitrusting voor hoogtewerk</li>
+                <li><strong>Rescue Operations:</strong> Redden van personen op grote hoogte</li>
+                <li><strong>Vertical Assault:</strong> Aanvallen van boven naar beneden</li>
+            </ul>
+
+            <div class="note">
+                <strong>🎮 Roblox Aanpassing:</strong> In Roblox worden multi-level gebouwen gebruikt. Aspiranten moeten leren navigeren op verschillende hoogtes, via ladders, liften, en andere verticale toegangspunten.
+            </div>
+
+            <h3>🥋 DAG 17-19: AANHOUDINGSTECHNIEKEN</h3>
+            <p>Geavanceerde technieken om verdachten fysiek te controleren en aan te houden met minimaal geweld.</p>
+            <ul>
+                <li><strong>Takedown Techniques:</strong> Veilig een verdachte naar de grond brengen</li>
+                <li><strong>Ground Control:</strong> Controle behouden over een verdachte op de grond</li>
+                <li><strong>Handcuffing Procedures:</strong> Boeien aanleggen in verschillende situaties</li>
+                <li><strong>Subject Control:</strong> Fysieke controle zonder permanente schade</li>
+                <li><strong>Geweldsladder:</strong> Escaleren en de-escaleren van geweld</li>
+                <li><strong>Multiple Subjects:</strong> Meerdere verdachten tegelijk onder controle</li>
+                <li><strong>Armed Subject Disarm:</strong> Ontwapenen van verdachten met messen/vuurwapens</li>
+                <li><strong>Resistant Subject:</strong> Omgaan met actief verzet</li>
+                <li><strong>Team Arrest Tactics:</strong> Gecoördineerde aanhoudingen in teamverband</li>
+                <li><strong>Medical Response:</strong> Eerste hulp na aanhouding indien nodig</li>
+            </ul>
+
+            <div class="exercise-card">
+                <h4>💪 FYSIEKE CONDITIETRAINING</h4>
+                <p>Gedurende de gehele Grijze Module blijft fysieke training cruciaal:</p>
+                <ul>
+                    <li>Dagelijkse Jumping Jacks, Grammar Jacks, Push Ups</li>
+                    <li>Hell Jacks en Nightmare Jacks als straftraining</li>
+                    <li>Lange rennen in gevechtsuitrusting</li>
+                    <li>Krachtoefeningen met uitrustingsgewicht</li>
+                    <li>Team PT (Physical Training) sessies</li>
+                </ul>
+                <p><strong>Instructeurs kunnen op elk moment extra fysieke oefeningen eisen bij fouten of gebrek aan discipline!</strong></p>
+            </div>
+
+            <div class="success-box">
+                <h3>✅ EVALUATIE GRIJZE MODULE</h3>
+                <p>Na afronding van week 19 worden aspiranten geëvalueerd op:</p>
+                <ul>
+                    <li>Technische schietvaardigheden</li>
+                    <li>CQB-procedures en tactiek</li>
+                    <li>Teamwork en communicatie</li>
+                    <li>Fysieke conditie en mentale weerbaarheid</li>
+                    <li>Besluitvorming onder druk</li>
+                </ul>
+                <p><strong>Bij succesvolle afronding:</strong> Start van de Praktijkbegeleidingsmodule (Week 20+)</p>
+            </div>
+        </div>
+
+        <!-- WEEK 20+: PRAKTIJKBEGELEIDING -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">3</span>WEEK 20+: PRAKTIJKBEGELEIDING</h2>
+            <p><strong>Duur:</strong> 6 Maanden (in Roblox: doorlopend proces) | <strong>Fase:</strong> Operationele Toepassing</p>
+            
+            <div class="day-info">
+                <strong>📅 Doel:</strong> Aspirant-operators draaien onder toeziend oog van een praktijkbegeleider mee in ernst-inzetten binnen een van de arrestatieteams.
+            </div>
+
+            <h3>🎖️ STAGE BIJ OPERATIONEEL TEAM</h3>
+            <p>Tijdens deze fase worden aspirant-operators toegewezen aan een van de zes AOT's (Aanhoudings- en Ondersteuningsteams) of een andere DSI-afdeling.</p>
+            
+            <div class="exercise-card">
+                <h4>🏢 MOGELIJK PLAATSING BIJ:</h4>
+                <table>
+                    <tr>
+                        <th>Afdeling</th>
+                        <th>Verantwoordelijkheid</th>
+                    </tr>
+                    <tr>
+                        <td><strong>AOT Noord-Oost</strong></td>
+                        <td>Aanhouding (vuurwapen)gevaarlijke verdachten in Noord-Oost Nederland</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AOT Den Haag</strong></td>
+                        <td>Aanhouding verdachten regio Den Haag en omgeving</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AOT Zuid</strong></td>
+                        <td>Operaties in Zuid-Nederland</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AOT Amsterdam</strong></td>
+                        <td>Operaties in Amsterdam en regio</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AOT Midden</strong></td>
+                        <td>Operaties in Midden-Nederland</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AOT Rotterdam</strong></td>
+                        <td>Operaties in Rotterdam en omgeving</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Afdeling Interventie (AI)</strong></td>
+                        <td>Contraterreur en complexe interventies</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AE&OO</strong></td>
+                        <td>Expertise & Operationele Ondersteuning (scherpschutters, onderhandelaars)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>⚔️ MEEDRAAIEN IN ECHTE INZETTEN</h3>
+            <p>Aspiranten nemen deel aan operationele activiteiten onder directe supervisie van ervaren operators.</p>
+            <ul>
+                <li><strong>Planmatige Aanhoudingen:</strong> Deelname aan vooraf geplande arrestatie-operaties</li>
+                <li><strong>Ad Hoc Inzetten:</strong> Respons op acute dreigingen (terrorisme, verwarde personen)</li>
+                <li><strong>Piketdiensten:</strong> 24/7 oproepbaar zijn met persoonlijke dienstauto</li>
+                <li><strong>Observatie & Surveillance:</strong> Meelopen in voor-operationele verkenningen</li>
+                <li><strong>Briefing & Debriefing:</strong> Deelname aan operationele besprekingen</li>
+                <li><strong>Rapid Response Team (RRT):</strong> Mogelijke inzet bij terroristische incidenten</li>
+                <li><strong>Oefeningen & Training:</strong> Doorlopende training tussen operaties</li>
+                <li><strong>Interoperabiliteit:</strong> Samenwerking met andere diensten (ME, recherche, etc.)</li>
+            </ul>
+
+            <div class="note">
+                <strong>🎮 Roblox Toepassing:</strong> In Roblox betekent dit dat aspiranten meedoen aan officiële DSI-operaties, onder supervisie van een gekwalificeerde operator. Ze worden beoordeeld op hun performance in realistische scenario's.
+            </div>
+
+            <h3>📊 EVALUATIE DOOR ERVAREN OPERATORS</h3>
+            <p>Gedurende de 6 maanden worden aspiranten continu beoordeeld door hun praktijkbegeleider en teamleiders.</p>
+            
+            <div class="exercise-card">
+                <h4>📋 BEOORDELINGSCRITERIA</h4>
+                <ul>
+                    <li><strong>Technische Vaardigheden:</strong> Wapen handling, CQB, aanhoudingstechnieken</li>
+                    <li><strong>Tactisch Inzicht:</strong> Besluitvorming tijdens operaties</li>
+                    <li><strong>Teamwork:</strong> Samenwerken met collega-operators</li>
+                    <li><strong>Communicatie:</strong> Duidelijke en effectieve radiocommunicatie</li>
+                    <li><strong>Stress Management:</strong> Presteren onder hoge druk</li>
+                    <li><strong>Discipline:</strong> Naleving van procedures en bevelen</li>
+                    <li><strong>Fysieke Conditie:</strong> Blijvend voldoen aan fysieke eisen</li>
+                    <li><strong>Mentale Weerbaarheid:</strong> Omgaan met moeilijke situaties</li>
+                    <li><strong>Leervermogen:</strong> Groei en ontwikkeling gedurende de stage</li>
+                    <li><strong>Integriteit:</strong> Professioneel gedrag en betrouwbaarheid</li>
+                </ul>
+            </div>
+
+            <h3>📝 MAANDELIJKSE EVALUATIES</h3>
+            <p>Elke maand vindt een formele evaluatie plaats tussen de aspirant en de praktijkbegeleider.</p>
+            <ul>
+                <li><strong>Voortgang Bespreking:</strong> Review van sterke en zwakke punten</li>
+                <li><strong>Verbeterpunten:</strong> Specifieke aandachtspunten voor de komende maand</li>
+                <li><strong>Operationele Ervaringen:</strong> Bespreking van deelgenomen inzetten</li>
+                <li><strong>Feedback van Team:</strong> Input van collega's en teamleiders</li>
+                <li><strong>Zelfbeoordeling:</strong> Reflectie door de aspirant zelf</li>
+                <li><strong>Doelen Stellen:</strong> Concrete doelstellingen voor verbetering</li>
+            </ul>
+
+            <h3>🎯 SPECIALISATIE ORIËNTATIE</h3>
+            <p>Tijdens de praktijkbegeleiding kunnen aspiranten kennismaken met verschillende specialismen binnen de DSI.</p>
+            <ul>
+                <li><strong>SF-Medic:</strong> Gespecialiseerde gewondenverzorging (X-ABCDE/MARCH methodiek)</li>
+                <li><strong>Hoogte Specialist:</strong> Operaties op grote hoogte en reddingsoperaties</li>
+                <li><strong>Hondengeleider:</strong> Werken met aanhoudingshonden</li>
+                <li><strong>Motorrijder:</strong> Opereren vanaf motorfiets</li>
+                <li><strong>Vuurwapendocent:</strong> Training geven in wapensystemen</li>
+                <li><strong>Explosievenexpert (Springmeester):</strong> Breaching met explosieven</li>
+                <li><strong>Duiker:</strong> Onderwateroperaties en wapenberging</li>
+                <li><strong>Scherpschutter (EPS):</strong> Expert Precisie Schutting</li>
+                <li><strong>Onderhandelaar:</strong> Crisis onderhandeling</li>
+                <li><strong>Drone/Robot Specialist:</strong> Technische surveillance en verkenning</li>
+            </ul>
+
+            <div class="note">
+                <strong>💡 Specialisme Keuze:</strong> Na certificering als operator staat het teamleden vrij om in overleg met de leiding een specialisme te kiezen. Elk AT heeft een breed scala aan specialismen vertegenwoordigd.
+            </div>
+
+            <div class="success-box">
+                <h3>✅ EINDBEOORDELING PRAKTIJKBEGELEIDING</h3>
+                <p>Na 6 maanden vindt de definitieve beoordeling plaats:</p>
+                <ul>
+                    <li><strong>Geslaagd:</strong> Toekenning blauwe baret en status van volwaardig DSI-operator</li>
+                    <li><strong>Verlenging:</strong> Extra begeleidingstijd indien nodig (max. 3 maanden)</li>
+                    <li><strong>Afgekeurd:</strong> Niet geschikt voor DSI, terugkeer naar reguliere dienst</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ROBLOX OEFENINGEN DETAIL -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">💪</span>ROBLOX FYSIEKE OEFENINGEN - GEDETAILLEERD</h2>
+            <p>Binnen de DSI Roblox training gebruiken we aangepaste fysieke oefeningen die de intensiteit en discipline van echte training simuleren.</p>
+
+            <div class="exercise-card">
+                <h4>1️⃣ JUMPING JACKS (Standaard)</h4>
+                <p><strong>Uitvoering:</strong></p>
+                <ul>
+                    <li>Gebruik de <strong>SPACEBAR</strong> om te springen in Roblox</li>
+                    <li>Elke sprong = 1 repetitie</li>
+                    <li>Tel zelf mee (niet in chat)</li>
+                    <li>Blijf op dezelfde plek staan</li>
+                </ul>
+                <p><strong>MINIMAAL Aantal:</strong> 500 sprongen</p>
+                <p><strong>Disciplinaire Actie:</strong> Bij fouten of slecht gedrag kan dit worden verhoogd naar 1000+</p>
+            </div>
+
+            <div class="exercise-card">
+                <h4>2️⃣ GRAMMAR JACKS (Engels Tellen)</h4>
+                <p><strong>Uitvoering:</strong></p>
+                <ol>
+                    <li>Spring (SPACEBAR)</li>
+                    <li>Type in de chat: <strong>"One"</strong></li>
+                    <li>Spring opnieuw</li>
+                    <li>Type in de chat: <strong>"Two"</strong></li>
+                    <li>Ga zo door tot het opgegeven aantal</li>
+                </ol>
+                <p><strong>Belangrijke Regels:</strong></p>
+                <ul>
+                    <li>✅ Correcte spelling in het Engels (One, Two, Three, etc.)</li>
+                    <li>✅ Hoofdletter aan het begin</li>
+                    <li>❌ GEEN cijfers (1, 2, 3) - alleen geschreven woorden</li>
+                    <li>❌ GEEN spellfouten geaccepteerd</li>
+                </ul>
+                <p><strong>Voorbeelden:</strong></p>
+                <ul>
+                    <li>Correct: "One" "Two" "Three" "Four" "Five"</li>
+                    <li>Fout: "1" "too" "tree" "fore"</li>
+                </ul>
+                <p><strong>MINIMAAL Aantal:</strong> 250 sprongen</p>
+            </div>
+
+            <div class="exercise-card">
+                <h4>3️⃣ PUSH UPS (Opstaan-Liggen)</h4>
+                <p><strong>Uitvoering:</strong></p>
+                <ol>
+                    <li>Type <strong>/e dance2</strong> om te gaan liggen</li>
+                    <li>Sta op (beweeg je karakter)</li>
+                    <li>Spring (SPACEBAR)</li>
+                    <li>Type in de chat: <strong>"ONE"</strong> (in hoofdletters!)</li>
+                    <li>Herhaal het proces</li>
+                </ol>
+                <p><strong>Belangrijke Regels:</strong></p>
+                <ul>
+                    <li>✅ Spelling IS belangrijk bij Push Ups</li>
+                    <li>✅ Gebruik HOOFDLETTERS: "ONE" "TWO" "THREE"</li>
+                    <li>✅ Geschreven Engelse woorden, geen cijfers</li>
+                    <li>⚠️ Instructeur kan dit wijzigen - luister goed!</li>
+                </ul>
+                <p><strong>MINIMAAL Aantal:</strong> 150 herhalingen</p>
+            </div>
+
+            <div class="exercise-card">
+                <h4>4️⃣ HELL JACKS (Letter voor Letter)</h4>
+                <p><strong>Uitvoering:</strong></p>
+                <p>Dit is de zwaarste oefening! Je typt elke letter afzonderlijk met een sprong ertussen.</p>
+                <ol>
+                    <li>Type in chat: <strong>"O"</strong></li>
+                    <li>Spring (SPACEBAR)</li>
+                    <li>Type in chat: <strong>"N"</strong></li>
+                    <li>Spring (SPACEBAR)</li>
+                    <li>Type in chat: <strong>"E"</strong></li>
+                    <li>Spring (SPACEBAR)</li>
+                    <li>Type in chat: <strong>"ONE"</strong> (het volledige woord)</li>
+                    <li>Spring (SPACEBAR)</li>
+                    <li>Begin aan "TWO": type <strong>"T"</strong>, spring, type <strong>"W"</strong>, spring, type <strong>"O"</strong>, spring, type <strong>"TWO"</strong>, spring</li>
+                </ol>
+                <p><strong>Voorbeeld voor "ONE":</strong></p>
+                <ul>
+                    <li>O [spring] N [spring] E [spring] ONE [spring]</li>
+                </ul>
+                <p><strong>Voorbeeld voor "TWENTY":</strong></p>
+                <ul>
+                    <li>T [spring] W [spring] E [spring] N [spring] T [spring] Y [spring] TWENTY [spring]</li>
+                </ul>
+                <p><strong>MINIMAAL Aantal:</strong> 150 (zeer intensief!)</p>
+                <p><strong>⚠️ Straf Oefening:</strong> Wordt vaak gebruikt als disciplinaire maatregel!</p>
+            </div>
+
+            <div class="exercise-card">
+                <h4>5️⃣ NIGHTMARE JACKS (Hell Jacks met Emotes)</h4>
+                <p><strong>Uitvoering:</strong></p>
+                <p>Dezelfde procedure als Hell Jacks, MAAR in plaats van springen gebruik je de emote <strong>/e cheer</strong></p>
+                <ol>
+                    <li>Type in chat: <strong>"O"</strong></li>
+                    <li>Type <strong>/e cheer</strong> (in plaats van springen)</li>
+                    <li>Type in chat: <strong>"N"</strong></li>
+                    <li>Type <strong>/e cheer</strong></li>
+                    <li>Type in chat: <strong>"E"</strong></li>
+                    <li>Type <strong>/e cheer</strong></li>
+                    <li>Type in chat: <strong>"ONE"</strong></li>
+                    <li>Type <strong>/e cheer</strong></li>
+                </ol>
+                <p><strong>Waarom "Nightmare"?</strong></p>
+                <ul>
+                    <li>Je moet constant typen (letters + emote commando's)</li>
+                    <li>Veel kans op typfouten</li>
+                    <li>Duurt veel langer dan normale oefeningen</li>
+                    <li>Vereist extreme focus en discipline</li>
+                </ul>
+                <p><strong>MINIMAAL Aantal:</strong> 100 (zeer zwaar!)</p>
+                <p><strong>💀 Ultieme Straf:</strong> Alleen gegeven bij ernstige fouten of gebrek aan respect!</p>
+            </div>
+
+            <div class="warning-box">
+                <h3>⚠️ INSTRUCTEUR AUTORITEIT</h3>
+                <p><strong>BELANGRIJK:</strong> De instructeur heeft volledige autoriteit om regels aan te passen:</p>
+                <ul>
+                    <li>Spelling kan wel of niet belangrijk zijn (afhankelijk van de instructie)</li>
+                    <li>Aantal herhalingen kan worden verhoogd of verlaagd</li>
+                    <li>Nieuwe variaties kunnen worden geïntroduceerd</li>
+                    <li>Tijdslimieten kunnen worden toegevoegd</li>
+                    <li>Team-straffen kunnen worden gegeven (hele groep doet extra oefeningen)</li>
+                </ul>
+                <p><strong>Luister ALTIJD naar je instructeur en volg orders EXACT op!</strong></p>
+            </div>
+        </div>
+
+        <!-- BLAUWE BARET CEREMONIE -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">🎖️</span>CERTIFICERING & BLAUWE BARET CEREMONIE</h2>
+            
+            <div class="success-box">
+                <h3>🏆 NA SLAGEN: TOEKENNING BLAUWE BARET</h3>
+                <p>Na succesvolle afronding van alle fases (Testweek, Witte Module, Grijze Module, en 6 maanden Praktijkbegeleiding) ontvangen de nieuwe operators de legendarische <strong>BLAUWE BARET</strong> - het symbool van DSI-excellence.</p>
+            </div>
+
+            <h3>🎓 CERTIFICERING CEREMONIE</h3>
+            <p>De officiële ceremonie waarbij nieuwe operators hun status ontvangen.</p>
+            
+            <div class="exercise-card">
+                <h4>📋 CEREMONIE PROGRAMMA</h4>
+                <ol>
+                    <li><strong>Verzameling:</strong> Alle nieuwe operators in vol ornaat</li>
+                    <li><strong>Opening:</strong> Welkomstwoord door Hoofd-DSI of Teamchef</li>
+                    <li><strong>Review Opleidingstraject:</strong> Korte terugblik op de intensieve training</li>
+                    <li><strong>Individuele Erkenning:</strong> Elke operator wordt bij naam genoemd</li>
+                    <li><strong>Overhandiging Blauwe Baret:</strong> Officiële uitreiking door senior operator</li>
+                    <li><strong>Eedaflegging:</strong> Belofte van trouw aan DSI-waarden</li>
+                    <li><strong>Team Foto:</strong> Officiële foto van de nieuwe lichting</li>
+                    <li><strong>Celebratie:</strong> Feestelijke afsluiting met team</li>
+                </ol>
+            </div>
+
+            <h3>🎖️ WAT BETEKENT DE BLAUWE BARET?</h3>
+            <ul>
+                <li><strong>Symbool van Excellence:</strong> Alleen gedragen door gekwalificeerde DSI-operators</li>
+                <li><strong>Technische Bekwaamheid:</strong> Bewijs van meesterschap in tactische vaardigheden</li>
+                <li><strong>Mentale Sterkte:</strong> Heeft de zwaarste selectie overleefd</li>
+                <li><strong>Teamlid DSI:</strong> Volwaardig lid van de meest elite eenheid van Nederland</li>
+                <li><strong>Operationele Inzetbaarheid:</strong> Klaar om mee te draaien in ernst-operaties</li>
+                <li><strong>Broederschap:</strong> Onderdeel van een hechte gemeenschap van professionals</li>
+            </ul>
+
+            <div class="note">
+                <strong>🎮 Roblox Implementatie:</strong> In Roblox kan de blauwe baret worden gegeven als een speciaal accessoire, rank, of badge. Dit geeft visuele herkenning aan gecertificeerde operators en onderscheidt hen van aspiranten.
+            </div>
+
+            <h3>📊 OPERATOR STATUS VERLENING</h3>
+            <p>Na certificering krijgen operators de volgende status en rechten:</p>
+            <ul>
+                <li><strong>Officiële Operator Status:</strong> Volwaardig teamlid van een AOT of AI</li>
+                <li><strong>Operationele Inzet:</strong> Deelname aan alle typen operaties</li>
+                <li><strong>Stemrecht:</strong> Inspraak in team beslissingen</li>
+                <li><strong>Mentorschap:</strong> Kunnen nieuwe aspiranten begeleiden</li>
+                <li><strong>Specialisatie Training:</strong> Toegang tot specialistische opleidingen</li>
+                <li><strong>Piketdienst:</strong> Rouleren in 24/7 oproepbaarheid</li>
+                <li><strong>DSI Uitrusting:</strong> Volledige toegang tot alle DSI-uitrusting en wapensystemen</li>
+                <li><strong>Carrière Ontwikkeling:</strong> Mogelijkheid tot promotie (sectiecommandant, teamchef)</li>
+            </ul>
+
+            <h3>🔄 DOORLOPENDE TRAINING</h3>
+            <p>Certificering is niet het einde - DSI-operators trainen continu:</p>
+            <ul>
+                <li><strong>Wekelijkse Training:</strong> Onderhoud van vaardigheden</li>
+                <li><strong>Maandelijkse Oefeningen:</strong> Grote scenario's en Force-on-Force</li>
+                <li><strong>Jaarlijkse Her-certificering:</strong> Testen van fysieke conditie en schietvaardigheden</li>
+                <li><strong>Specialistische Cursussen:</strong> Voortdurende ontwikkeling</li>
+                <li><strong>Internationale Samenwerking:</strong> Training met ATLAS-partners (GSG9, GIGN, etc.)</li>
+            </ul>
+
+            <div class="warning-box">
+                <h3>⚠️ BEHOUD VAN STATUS</h3>
+                <p>De blauwe baret kan worden ingenomen bij:</p>
+                <ul>
+                    <li>Niet voldoen aan fysieke eisen bij her-certificering</li>
+                    <li>Ernstige schending van procedures of protocollen</li>
+                    <li>Verlies van vertrouwen door teamleiding</li>
+                    <li>Disciplinaire problemen</li>
+                    <li>Medische redenen die operationele inzet belemmeren</li>
+                </ul>
+                <p><strong>De standaard blijft hoog - altijd!</strong></p>
+            </div>
+        </div>
+
+        <!-- SAMENVATING & TIJDLIJN -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">📅</span>VOLLEDIGE OPLEIDINGSTIJDLIJN OVERZICHT</h2>
+            
+            <table>
+                <tr>
+                    <th>Fase</th>
+                    <th>Duur (Echt)</th>
+                    <th>Duur (Roblox)</th>
+                    <th>Focus</th>
+                    <th>Uitval</th>
+                </tr>
+                <tr>
+                    <td><strong>Testweek</strong></td>
+                    <td>5 dagen</td>
+                    <td>1 dag</td>
+                    <td>Fysieke & mentale selectie</td>
+                    <td>~30%</td>
+                </tr>
+                <tr>
+                    <td><strong>Witte Module</strong></td>
+                    <td>4 weken</td>
+                    <td>4 dagen</td>
+                    <td>Aanleerfase - basis vaardigheden</td>
+                    <td>~30%</td>
+                </tr>
+                <tr>
+                    <td><strong>Grijze Module</strong></td>
+                    <td>14 weken</td>
+                    <td>14 dagen</td>
+                    <td>Trainings- & ontwikkelfase</td>
+                    <td>~10%</td>
+                </tr>
+                <tr>
+                    <td><strong>Hoogte Week</strong></td>
+                    <td>1 week</td>
+                    <td>1 dag</td>
+                    <td>Opereren op hoogte</td>
+                    <td>~5%</td>
+                </tr>
+                <tr>
+                    <td><strong>Praktijkbegeleiding</strong></td>
+                    <td>6 maanden</td>
+                    <td>Doorlopend</td>
+                    <td>Operationele toepassing</td>
+                    <td>~5%</td>
+                </tr>
+                <tr>
+                    <td><strong>TOTAAL</strong></td>
+                    <td><strong>~9 maanden</strong></td>
+                    <td><strong>~20 dagen +</strong></td>
+                    <td><strong>Volledige opleiding</strong></td>
+                    <td><strong>~60% totaal</strong></td>
+                </tr>
+            </table>
+
+            <div class="day-info">
+                <h3>🎯 SUCCESFACTOREN</h3>
+                <p>Wat onderscheidt succesvolle operators van degenen die uitvallen?</p>
+                <ul>
+                    <li><strong>Mentale Veerkracht:</strong> Doorzetten wanneer het moeilijk wordt</li>
+                    <li><strong>Teamgeest:</strong> Het team boven jezelf plaatsen</li>
+                    <li><strong>Discipline:</strong> Strikte naleving van orders en procedures</li>
+                    <li><strong>Fysieke Conditie:</strong> Constant hoog niveau onderhouden</li>
+                    <li><strong>Leervermogen:</strong> Snel nieuwe vaardigheden oppikken</li>
+                    <li><strong>Stressbestendigheid:</strong> Presteren onder extreme druk</li>
+                    <li><strong>Motivatie:</strong> Onwrikbare drive om DSI-operator te worden</li>
+                    <li><strong>Integriteit:</strong> Onvoorwaardelijke betrouwbaarheid</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer style="margin-top: 60px; padding-top: 30px; border-top: 2px solid #0f3460; text-align: center;">
+            <h3 style="color: #00d4ff; margin-bottom: 20px;">PRAEPARATUS ESTO - WEES VOORBEREID</h3>
+            <p style="color: #a0a0a0; font-size: 0.9em;">
+                <strong>Dienst Speciale Interventies</strong><br>
+                Deze training procedure is gebaseerd op informatie van de werkelijke DSI-opleiding<br>
+                en aangepast voor Roblox roleplay doeleinden.<br><br>
+                Instructeurs hebben volledige discretie om de training aan te passen<br>
+                aan de behoeften van individuele aspiranten en team vereisten.<br><br>
+                <em>Alleen de meest toegewijde en capabele individuen behalen de blauwe baret.</em>
+            </p>
+            <div style="margin-top: 30px; padding: 20px; background: rgba(0, 212, 255, 0.1); border-radius: 10px;">
+                <p style="color: #00d4ff; font-weight: bold; font-size: 1.1em;">
+                    🎖️ AAN ALLE ASPIRANTEN 🎖️
+                </p>
+                <p style="color: #e0e0e0;">
+                    De weg naar de blauwe baret is zwaar en veeleisend.<br>
+                    Velen beginnen, weinigen voltooien.<br>
+                    Maar degenen die doorzetten worden onderdeel van iets groters dan zichzelf:<br>
+                    <strong style="color: #00d4ff;">De Elite van de Elite.</strong>
+                </p>
+            </div>
+        </footer>
+
+    </div>
+    </div>
+    <!-- End Main Content -->
+
+    <script>
+        // Generate terminal background text
+        function generateTerminalText() {
+            const commands = [
+                '> DSI-SYSTEM INIT... OK',
+                '> LOADING TRAINING MODULES... OK',
+                '> VERIFYING CREDENTIALS... OK',
+                '> ACCESSING DATABASE NL-LL-TRAINING...',
+                '> [SYSTEM] Training Phase 1: TESTWEEK',
+                '> [SYSTEM] Training Phase 2: WITTE MODULE',
+                '> [SYSTEM] Training Phase 3: GRIJZE MODULE',
+                '> [SYSTEM] Training Phase 4: PRAKTIJKBEGELEIDING',
+                '> [ALERT] Uitvalpercentage: 60%',
+                '> [INFO] Slagingspercentage: 40%',
+                '> [WARNING] Alleen voor DSI personeel',
+                '> CHECKING SECURITY CLEARANCE...',
+                '> FIREWALL STATUS: ACTIVE',
+                '> ENCRYPTION: AES-256 ENABLED',
+                '> [OPERATOR] Physical Training Protocol Active',
+                '> [SYSTEM] CQB Training Module Loaded',
+                '> [SYSTEM] Weapons Training Module Loaded',
+                '> [SYSTEM] Tactical Scenarios Initialized',
+                '> MONITORING CURSOR ACTIVITIES...',
+                '> [INFO] Blauwe Baret Certification Protocol',
+                '> NETWORK STATUS: SECURE',
+                '> TIMESTAMP: ' + new Date().toISOString(),
+                '> [DATA] Training Duration: ~9 maanden',
+                '> [DATA] Praktijkbegeleiding: 6 maanden',
+                '> CONNECTION ESTABLISHED TO NL-LL-MAIN',
+                '> [SYSTEM] Specialisatie Modules Available',
+                '> [WARNING] Instructeur heeft volledige autoriteit',
+                '> PRAEPARATUS ESTO - WEES VOORBEREID',
+                '> [INFO] AOT Teams: 6 regionale teams',
+                '> [INFO] AI: Contra-terreur interventies',
+                '> SYSTEM READY...',
+                ''
+            ];
+
+            let terminalText = '';
+            for (let i = 0; i < 4; i++) {
+                terminalText += commands.join('\\n') + '\\n';
+            }
+            
+            document.getElementById('terminalBg').textContent = terminalText;
+        }
+
+        generateTerminalText();
+
+        // Boot sequence
+        async function typeText(element, text, speed = 30) {
+            return new Promise(resolve => {
+                let i = 0;
+                const interval = setInterval(() => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, speed);
+            });
+        }
+
+        async function runBootSequence() {
+            const bootContent = document.getElementById('bootContent');
+            bootContent.innerHTML = '';
+
+            const sequences = [
+                { text: '> DSI TRAINING SYSTEM v2.6.12', class: 'boot-success', delay: 100 },
+                { text: '> INITIALIZING TRAINING PROTOCOLS...', class: 'boot-success', delay: 300 },
+                { text: '> LOADING TESTWEEK MODULE............... [OK]', class: 'boot-success', delay: 400 },
+                { text: '> LOADING WITTE MODULE.................. [OK]', class: 'boot-success', delay: 400 },
+                { text: '> LOADING GRIJZE MODULE................. [OK]', class: 'boot-success', delay: 400 },
+                { text: '> LOADING PRAKTIJKBEGELEIDING........... [OK]', class: 'boot-success', delay: 400 },
+                { text: '> VERIFYING ROBLOX INTEGRATION.......... [OK]', class: 'boot-success', delay: 500 },
+                { text: '> CHECKING PHYSICAL TRAINING EXERCISES.. [OK]', class: 'boot-success', delay: 300 },
+                { text: '> WARNING: Uitvalpercentage 60%', class: 'boot-warning', delay: 600 },
+                { text: '> SYSTEM READY', class: 'boot-success', delay: 400 },
+                { text: '> PRAEPARATUS ESTO', class: 'boot-success', delay: 800 }
+            ];
+
+            for (const seq of sequences) {
+                const line = document.createElement('div');
+                line.className = 'boot-line ' + seq.class;
+                bootContent.appendChild(line);
+                await typeText(line, seq.text, 20);
+                await new Promise(resolve => setTimeout(resolve, seq.delay));
+            }
+
+            const cursorLine = document.createElement('div');
+            cursorLine.className = 'boot-line';
+            cursorLine.innerHTML = '<span class=\"boot-cursor\"></span>';
+            bootContent.appendChild(cursorLine);
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            document.getElementById('bootSequence').style.opacity = '0';
+            document.getElementById('bootSequence').style.transition = 'opacity 1s';
+            
+            setTimeout(() => {
+                document.getElementById('bootSequence').classList.remove('active');
+                document.getElementById('mainContent').classList.add('unlocked');
+                setTimeout(() => document.getElementById('mainContent').classList.add('fade-in'), 50);
+            }, 1000);
+        }
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (username === 'TacticalDuckey' && password === 'Calvin103#') {
+                errorMessage.classList.remove('show');
+                document.getElementById('loginScreen').style.opacity = '0';
+                document.getElementById('loginScreen').style.transition = 'opacity 0.8s';
+                
+                setTimeout(() => {
+                    document.getElementById('loginScreen').classList.add('hidden');
+                    document.getElementById('bootSequence').classList.add('active');
+                    runBootSequence();
+                    sessionStorage.setItem('dsiTrainingLoggedIn', 'true');
+                }, 800);
+            } else {
+                errorMessage.classList.add('show');
+                document.getElementById('password').value = '';
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        // Logout function
+        function logout() {
+            sessionStorage.removeItem('dsiTrainingLoggedIn');
+            
+            const mainContent = document.getElementById('mainContent');
+            mainContent.style.opacity = '0';
+            mainContent.style.transition = 'opacity 0.8s';
+            
+            setTimeout(() => {
+                mainContent.classList.remove('unlocked', 'fade-in');
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('loginScreen').style.opacity = '0';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                setTimeout(() => {
+                    document.getElementById('loginScreen').style.opacity = '1';
+                    document.getElementById('loginScreen').style.transition = 'opacity 0.8s';
+                }, 50);
+            }, 800);
+        }
+
+        // Check if already logged in
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('dsiTrainingLoggedIn') === 'true') {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainContent').classList.add('unlocked', 'fade-in');
+            }
+        });
+    </script>
+</body>
+</html>

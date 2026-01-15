@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WTGM Toets - De Lage Landen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #7c2d12;
+            border-bottom: 3px solid #ea580c;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #7c2d12;
+            margin-top: 30px;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 30px 0;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .checkbox-group {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .checkbox-group li {
+            margin-bottom: 5px;
+        }
+        .save-button {
+            background-color: #ea580c;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 30px 0;
+            display: block;
+            width: 100%;
+        }
+        .save-button:hover {
+            background-color: #c2410c;
+        }
+        .info-box {
+            background-color: #fff7ed;
+            border-left: 4px solid #ea580c;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+        }
+        table td {
+            padding: 8px;
+        }
+        @media print {
+            .save-button, .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <h1>🔫 WTGM Toets – Wapen & Munitie</h1>
+    
+    <div class="info-box">
+        <strong>De Lage Landen (Roblox)</strong><br>
+        ⚠️ Minimaal 75% correct om te slagen
+    </div>
+    
+    <hr>
+    
+    <table>
+        <tr>
+            <td style="width: 100px;"><strong>Naam:</strong></td>
+            <td><input type="text" id="naam"></td>
+        </tr>
+        <tr>
+            <td><strong>Rang:</strong></td>
+            <td><input type="text" id="rang"></td>
+        </tr>
+        <tr>
+            <td><strong>Datum:</strong></td>
+            <td><input type="text" id="datum" value=""></td>
+        </tr>
+    </table>
+    
+    <hr>
+    
+    <h2>📋 Theorie Vragen</h2>
+    
+    <p><strong>1.</strong> Wat betekent de afkorting WTGM?</p>
+    <textarea id="vraag1" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>2.</strong> Welke rangen mogen standaard een dienstwapen dragen?</p>
+    <textarea id="vraag2" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>3.</strong> Wanneer mag je je wapen trekken?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag3" value="a"> Altijd als ik me bedreigd voel</li>
+        <li><input type="radio" name="vraag3" value="b"> Alleen bij direct levensgevaar</li>
+        <li><input type="radio" name="vraag3" value="c"> Alleen na toestemming van een leidinggevende</li>
+        <li><input type="radio" name="vraag3" value="d"> Bij elke achtervolging</li>
+    </ul>
+    
+    <p><strong>4.</strong> Wat is de volgorde van het geweldsspectrum?<br>
+    <span style="color: #6b7280; font-size: 0.9em;">(1 = eerste stap, 5 = laatste stap)</span></p>
+    <textarea id="vraag4" placeholder="Vul de juiste volgorde in (bijv. 1. Verbale aanwijzing, 2. ...)"></textarea>
+    
+    <p><strong>5.</strong> Mag je waarschuwingsschoten lossen?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag5" value="a"> Ja, altijd</li>
+        <li><input type="radio" name="vraag5" value="b"> Ja, maar alleen in levensgevaarlijke situaties</li>
+        <li><input type="radio" name="vraag5" value="c"> Nee, nooit</li>
+        <li><input type="radio" name="vraag5" value="d"> Alleen als een leidinggevende het goedkeurt</li>
+    </ul>
+    
+    <p><strong>6.</strong> Je ziet een collega die zijn wapen trekt zonder dat er direct gevaar is. Wat doe je?</p>
+    <textarea id="vraag6" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>7.</strong> Een burger vraagt of hij je wapen mag zien. Wat zeg je?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag7" value="a"> "Ja hoor, kijk maar!"</li>
+        <li><input type="radio" name="vraag7" value="b"> "Nee, dat is verboden."</li>
+        <li><input type="radio" name="vraag7" value="c"> "Alleen als je je ID laat zien."</li>
+        <li><input type="radio" name="vraag7" value="d"> "Vraag het maar aan mijn leidinggevende."</li>
+    </ul>
+    
+    <p><strong>8.</strong> Noem 3 situaties waarin het gebruik van je dienstwapen gerechtvaardigd is:</p>
+    <p>1. <input type="text" id="vraag8a" style="width: 95%;"></p>
+    <p>2. <input type="text" id="vraag8b" style="width: 95%;"></p>
+    <p>3. <input type="text" id="vraag8c" style="width: 95%;"></p>
+    
+    <hr>
+    
+    <h2>🎯 Praktijk Scenario</h2>
+    
+    <p><strong>9. Situatie:</strong> Je bent op patrouille en ziet een persoon met een mes die iemand bedreigt.</p>
+    <p><strong>Beschrijf stap voor stap wat je doet:</strong></p>
+    <textarea id="vraag9" style="min-height: 120px;" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <script>
+        // Automatisch huidige datum invullen
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateStr = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            document.getElementById('datum').value = dateStr;
+        });
+        
+        function savePDF() {
+            const naam = document.getElementById('naam').value || 'Onbekend';
+            
+            if (!naam || naam === 'Onbekend') {
+                alert('⚠️ Vul eerst je naam in!');
+                return;
+            }
+            
+            const fileName = `WTGM Toets - Antwoorden - ${naam}.pdf`;
+            
+            alert(`✅ Klik op OK en kies daarna:\n\n1. Bestemming: "Opslaan als PDF"\n2. Bestandsnaam: ${fileName}\n3. Klik op "Opslaan"\n\n💡 Tip: Verwijder vinkje bij "Kop- en voetteksten" voor een schonere PDF!`);
+            
+            window.print();
+        }
+    </script>
+    
+</body>
+</html>

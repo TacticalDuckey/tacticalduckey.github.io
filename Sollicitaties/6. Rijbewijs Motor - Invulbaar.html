@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rijbewijs Motor - De Lage Landen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #6b21a8;
+            border-bottom: 3px solid #a855f7;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #6b21a8;
+            margin-top: 30px;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 30px 0;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .checkbox-group {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .checkbox-group li {
+            margin-bottom: 5px;
+        }
+        .save-button {
+            background-color: #a855f7;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 30px 0;
+            display: block;
+            width: 100%;
+        }
+        .save-button:hover {
+            background-color: #9333ea;
+        }
+        .info-box {
+            background-color: #faf5ff;
+            border-left: 4px solid #a855f7;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+        }
+        table td {
+            padding: 8px;
+        }
+        @media print {
+            .save-button, .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <h1>🏍️ RIJBEWIJS MOTOR – Categorie A</h1>
+    
+    <div class="info-box">
+        <strong>De Lage Landen (Roblox)</strong><br>
+        ⚠️ Minimaal 75% correct om te slagen + praktijkexamen vereist
+    </div>
+    
+    <hr>
+    
+    <table>
+        <tr>
+            <td style="width: 100px;"><strong>Naam:</strong></td>
+            <td><input type="text" id="naam"></td>
+        </tr>
+        <tr>
+            <td><strong>Rang:</strong></td>
+            <td><input type="text" id="rang"></td>
+        </tr>
+        <tr>
+            <td><strong>Datum:</strong></td>
+            <td><input type="text" id="datum"></td>
+        </tr>
+    </table>
+    
+    <hr>
+    
+    <h2>📋 Theorie Vragen</h2>
+    
+    <p><strong>1.</strong> Wat is het belangrijkste verschil tussen motor- en autorijden?</p>
+    <textarea id="vraag1" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>2.</strong> Wat is de maximale snelheid voor motoren binnen de bebouwde kom?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag2" value="a"> 30 km/u</li>
+        <li><input type="radio" name="vraag2" value="b"> 50 km/u</li>
+        <li><input type="radio" name="vraag2" value="c"> 60 km/u</li>
+        <li><input type="radio" name="vraag2" value="d"> 80 km/u</li>
+    </ul>
+    
+    <p><strong>3.</strong> Mag je op een motor tussen stilstaand verkeer door rijden?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag3" value="a"> Ja, altijd</li>
+        <li><input type="radio" name="vraag3" value="b"> Nee, nooit</li>
+        <li><input type="radio" name="vraag3" value="c"> Alleen in de file</li>
+        <li><input type="radio" name="vraag3" value="d"> Alleen op de snelweg</li>
+    </ul>
+    
+    <p><strong>4.</strong> Wat moet je verplicht dragen op een motor?</p>
+    <ul class="checkbox-group">
+        <li><input type="checkbox" name="vraag4a"> Helm</li>
+        <li><input type="checkbox" name="vraag4b"> Motorjas</li>
+        <li><input type="checkbox" name="vraag4c"> Handschoenen</li>
+        <li><input type="checkbox" name="vraag4d"> Motorbroek</li>
+        <li><input type="checkbox" name="vraag4e"> Motorlaarzen</li>
+    </ul>
+    
+    <p><strong>5.</strong> Wat doe je bij een bocht op een motor?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag5" value="a"> Remmen in de bocht</li>
+        <li><input type="radio" name="vraag5" value="b"> Voor de bocht remmen, dan gas geven</li>
+        <li><input type="radio" name="vraag5" value="c"> Gas geven in de bocht</li>
+        <li><input type="radio" name="vraag5" value="d"> In neutraal door de bocht</li>
+    </ul>
+    
+    <p><strong>6.</strong> Mag je met een passagier rijden?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag6" value="a"> Ja, altijd</li>
+        <li><input type="radio" name="vraag6" value="b"> Nee, nooit</li>
+        <li><input type="radio" name="vraag6" value="c"> Alleen als de motor daarvoor geschikt is</li>
+        <li><input type="radio" name="vraag6" value="d"> Alleen overdag</li>
+    </ul>
+    
+    <p><strong>7.</strong> Wat is wheelie-verbod?</p>
+    <textarea id="vraag7" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <p><strong>8.</strong> Hoe rem je veilig op een motor?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag8" value="a"> Alleen voorrem</li>
+        <li><input type="radio" name="vraag8" value="b"> Alleen achterrem</li>
+        <li><input type="radio" name="vraag8" value="c"> Voor- en achterrem tegelijk</li>
+        <li><input type="radio" name="vraag8" value="d"> Motorrem</li>
+    </ul>
+    
+    <p><strong>9.</strong> Wat moet je controleren voor je gaat rijden?</p>
+    <ul class="checkbox-group">
+        <li><input type="checkbox" name="vraag9a"> Banden</li>
+        <li><input type="checkbox" name="vraag9b"> Lichten</li>
+        <li><input type="checkbox" name="vraag9b"> Remmen</li>
+        <li><input type="checkbox" name="vraag9d"> Brandstof</li>
+        <li><input type="checkbox" name="vraag9e"> Ketting/aandrijving</li>
+    </ul>
+    
+    <p><strong>10.</strong> Mag je wheelies of stoppies doen op de openbare weg?</p>
+    <ul class="checkbox-group">
+        <li><input type="radio" name="vraag10" value="a"> Ja</li>
+        <li><input type="radio" name="vraag10" value="b"> Nee</li>
+        <li><input type="radio" name="vraag10" value="c"> Alleen op parkeerplaatsen</li>
+    </ul>
+    
+    <hr>
+    
+    <h2>🎯 Praktijk Scenario</h2>
+    
+    <p><strong>11. Situatie:</strong> Je rijdt op de snelweg en het begint hard te regenen. Wat doe je?</p>
+    <textarea id="vraag11" style="min-height: 120px;" placeholder="Vul hier je antwoord in..."></textarea>
+    
+    <div class="no-print">
+        <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateStr = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            document.getElementById('datum').value = dateStr;
+        });
+        
+        function savePDF() {
+            const naam = document.getElementById('naam').value || 'Onbekend';
+            
+            if (!naam || naam === 'Onbekend') {
+                alert('⚠️ Vul eerst je naam in!');
+                return;
+            }
+            
+            const fileName = `Rijbewijs Motor - Antwoorden - ${naam}.pdf`;
+            
+            alert(`✅ Klik op OK en kies daarna:\n\n1. Bestemming: "Opslaan als PDF"\n2. Bestandsnaam: ${fileName}\n3. Klik op "Opslaan"`);
+            
+            window.print();
+        }
+    </script>
+    
+</body>
+</html>

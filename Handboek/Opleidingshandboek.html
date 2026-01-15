@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politie Opleidingshandboek - De Lage Landen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 5px solid #ffd700;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h2 {
+            font-size: 1.5em;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            border-left: 4px solid #1e3c72;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+        }
+
+        .toc h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .toc ol {
+            margin-left: 20px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+            color: #495057;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #ffd700;
+            display: inline-block;
+        }
+
+        .subsection {
+            margin: 25px 0;
+        }
+
+        .subsection h4 {
+            color: #2a5298;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .danger-box {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .rank-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .rank-item {
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #1e3c72;
+            font-weight: 500;
+        }
+
+        .steps ol, .steps ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        .steps li {
+            margin: 12px 0;
+            line-height: 1.8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #1e3c72;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px 5px 5px 0;
+        }
+
+        .badge.orange {
+            background: #ff9800;
+        }
+
+        .badge.red {
+            background: #f44336;
+        }
+
+        .badge.green {
+            background: #4caf50;
+        }
+
+        .badge.blue {
+            background: #2196f3;
+        }
+
+        .badge.purple {
+            background: #9c27b0;
+        }
+
+        .checklist {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .checklist li {
+            list-style: none;
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 5px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .checklist li:before {
+            content: "☐";
+            position: absolute;
+            left: 15px;
+            font-size: 1.3em;
+            color: #1e3c72;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tip-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .code-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .code-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #1e3c72;
+        }
+
+        .code-item strong {
+            color: #1e3c72;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .footer {
+            background: #1e3c72;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .content {
+                padding: 20px 15px;
+            }
+            .section-title {
+                font-size: 1.5em;
+            }
+        }
+
+        .weapon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .weapon-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .weapon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .weapon-card h5 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+        }
+
+        .do-dont {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .do-list, .dont-list {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .do-list {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+        }
+
+        .dont-list {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+
+        .do-list h5, .dont-list h5 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .do-list li, .dont-list li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .do-dont {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📘 POLITIE OPLEIDINGSHANDBOEK</h1>
+            <h2>🚓 Politie De Lage Landen</h2>
+        </div>
+
+        <div class="content">
+            <!-- INHOUDSOPGAVE -->
+            <div class="toc">
+                <h3>📋 INHOUDSOPGAVE</h3>
+                <ol>
+                    <li>Welkom</li>
+                    <li>Rangstructuur</li>
+                    <li>Basistraining (Trainee → Surveillant)</li>
+                    <li>Wapentraining & Bevoegdheden</li>
+                    <li>Rijbewijzen & Voertuigen</li>
+                    <li>Communicatie & Portofoon</li>
+                    <li>Procedures & Protocollen</li>
+                    <li>Regels & Gedragscode</li>
+                    <li>Promoties & Doorgroeimogelijkheden</li>
+                </ol>
+            </div>
+
+            <!-- WELKOM -->
+            <div class="section">
+                <h3 class="section-title">👋 WELKOM BIJ DE POLITIE</h3>
+                <p>Welkom bij de <strong>Politie De Lage Landen</strong>! Je bent aangenomen en gaat beginnen aan je carrière als politieagent. Dit handboek bevat alle informatie die je nodig hebt tijdens je opleiding en werk bij de politie.</p>
+                <div class="info-box">
+                    <strong>⚠️ Belangrijk:</strong> Lees dit handboek zorgvuldig door - er wordt verwacht dat je deze informatie kent en toepast tijdens je dienst.
+                </div>
+            </div>
+
+            <!-- RANGSTRUCTUUR -->
+            <div class="section">
+                <h3 class="section-title">🎖️ RANGSTRUCTUUR</h3>
+                
+                <div class="subsection">
+                    <h4>Management</h4>
+                    <div class="rank-list">
+                        <div class="rank-item">️ <strong>Staff</strong> - Beheerders en moderators</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h4>Politie Hiërarchie (hoog → laag)</h4>
+                    <div class="rank-list">
+                        <div class="rank-item">🚔 <strong>Korpschef</strong> - Hoogste politieleiding</div>
+                        <div class="rank-item">👮 <strong>Hoofdcommissaris</strong> - Senior management</div>
+                        <div class="rank-item">🎖️ <strong>Commissaris</strong> - Afdelingsleiding</div>
+                        <div class="rank-item">💼 <strong>Hoofdinspecteur</strong> - Senior leidinggevende</div>
+                        <div class="rank-item">🔷 <strong>Inspecteur</strong> - Leidinggevende</div>
+                        <div class="rank-item">🔹 <strong>Brigadier</strong> - Ervaren agent + leiderschapstaken</div>
+                        <div class="rank-item">👔 <strong>Hoofd Agent</strong> - Senior agent</div>
+                        <div class="rank-item">🚨 <strong>Agent First Class</strong> - Ervaren agent</div>
+                        <div class="rank-item">👮‍♂️ <strong>Agent</strong> - Volwaardige agent</div>
+                        <div class="rank-item">🆕 <strong>Surveillant</strong> - Net afgestudeerd</div>
+                        <div class="rank-item">📚 <strong>Trainee</strong> - In opleiding</div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>📌 Belangrijk:</strong> Je begint als <strong>Trainee</strong> en moet doorgroeien naar <strong>Surveillant</strong> door de basistraining te voltooien.
+                </div>
+            </div>
+
+            <!-- BASISTRAINING -->
+            <div class="section">
+                <h3 class="section-title">📚 BASISTRAINING (Trainee → Surveillant)</h3>
+
+                <div class="subsection">
+                    <h4>Stap 1: Introductie</h4>
+                    <ul class="steps">
+                        <li>Kennismaken met trainer</li>
+                        <li>Rondleiding door het bureau</li>
+                        <li>Uitleg over kanalen en commando's</li>
+                        <li>Uniform en uitrusting ontvangen</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h4>Stap 2: Theorie</h4>
+                    <p>Je leert over:</p>
+                    <ul class="steps">
+                        <li><strong>Verkeersregels</strong> - Snelheidslimiten, voorrang, stoplichten</li>
+                        <li><strong>Geweldsspectrum</strong> - Wanneer welk geweldsniveau?</li>
+                        <li><strong>Communicatie</strong> - Hoe gebruik je de portofoon?</li>
+                        <li><strong>Meldingen</strong> - Welke meldingen zijn er en hoe handel je ze af?</li>
+                        <li><strong>Aanhouden</strong> - Procedure voor arrestaties</li>
+                        <li><strong>Rapportage</strong> - Hoe schrijf je een rapport?</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h4>Stap 3: Praktijk</h4>
+                    <p>Je gaat op patrouille met je trainer:</p>
+                    <ul class="steps">
+                        <li>🚗 Verkeerscontroles uitvoeren</li>
+                        <li>👥 Burgers aanspreken en controleren</li>
+                        <li>📝 Proces-verbaal opmaken</li>
+                        <li>🚔 Achtervolging (als situatie zich voordoet)</li>
+                        <li>🏢 Bureauwerk (rapportages)</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h4>Stap 4: Examen</h4>
+                    <ul class="steps">
+                        <li><strong>Theorietoets</strong> - Multiple choice vragen</li>
+                        <li><strong>Praktijkexamen</strong> - Patrouille met beoordelaar</li>
+                        <li><strong>Minimaal 75% correct</strong> om te slagen</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Geslaagd?</strong><br>
+                    <strong>Promotie naar Surveillant</strong> - Je bent nu volwaardig agent!
+                </div>
+
+                <div class="warning-box">
+                    <strong>❌ Niet geslaagd?</strong><br>
+                    Herkansing mogelijk na 24 uur
+                </div>
+            </div>
+
+            <!-- WAPENTRAINING -->
+            <div class="section">
+                <h3 class="section-title">🔫 WAPENTRAINING & BEVOEGDHEDEN</h3>
+
+                <div class="weapon-grid">
+                    <div class="weapon-card">
+                        <h5>🔫 1. WTGM (Wapen & Munitie)</h5>
+                        <p><span class="badge">Minimale rang: Surveillant</span></p>
+                        <p><span class="badge orange">Slagingseis: 75%</span></p>
+                        <p style="margin-top: 15px;"><strong>Wat leer je?</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Wanneer mag je je wapen trekken?</li>
+                            <li>Geweldsspectrum</li>
+                            <li>Veilig wapengebruik</li>
+                            <li>Situaties waarin schieten gerechtvaardigd is</li>
+                        </ul>
+                        <div class="success-box" style="margin-top: 15px;">
+                            <strong>Na het behalen:</strong><br>
+                            Je mag je dienstwapen dragen en gebruiken
+                        </div>
+                    </div>
+
+                    <div class="weapon-card">
+                        <h5>💥 2. Groot Wapen (HK416 / Mossberg M590)</h5>
+                        <p><span class="badge">Minimale rang: Surveillant</span></p>
+                        <p><span class="badge blue">Vereist: WTGM</span></p>
+                        <p><span class="badge red">Slagingseis: 80%</span></p>
+                        <p style="margin-top: 15px;"><strong>Wat leer je?</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Verschil tussen HK416 en Mossberg M590</li>
+                            <li>Wanneer gebruik je een groot wapen?</li>
+                            <li>Tactische inzet</li>
+                            <li>Veiligheidsprotocollen</li>
+                        </ul>
+                        <div class="success-box" style="margin-top: 15px;">
+                            <strong>Na het behalen:</strong><br>
+                            Je mag schouderwapens gebruiken bij ernstige dreiging
+                        </div>
+                    </div>
+
+                    <div class="weapon-card">
+                        <h5>⚡ 3. Taser Bevoegdheid</h5>
+                        <p><span class="badge">Minimale rang: Surveillant</span></p>
+                        <p><span class="badge green">Slagingseis: 70%</span></p>
+                        <p style="margin-top: 15px;"><strong>Wat leer je?</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Wanneer mag je een taser gebruiken?</li>
+                            <li>Veiligheidsrisico's (zwangeren, ouderen, hoogte)</li>
+                            <li>Nazorg na taseren</li>
+                            <li>Rapportageplicht</li>
+                        </ul>
+                        <div class="success-box" style="margin-top: 15px;">
+                            <strong>Na het behalen:</strong><br>
+                            Je mag een taser dragen en inzetten bij actief verzet
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIJBEWIJZEN -->
+            <div class="section">
+                <h3 class="section-title">🚗 RIJBEWIJZEN & VOERTUIGEN</h3>
+
+                <div class="weapon-grid">
+                    <div class="weapon-card">
+                        <h5>🚗 Rijbewijs Auto</h5>
+                        <p><span class="badge orange">Slagingseis: 75%</span></p>
+                        <p style="margin-top: 15px;"><strong>Theorie:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Verkeersregels (binnen/buiten/snelweg)</li>
+                            <li>Voorrangsregels</li>
+                            <li>Verkeersborden</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Praktijk:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>Rijvaardigheid</li>
+                            <li>Noodsituaties</li>
+                            <li>Achtervolging (basis)</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Voertuigen:</strong> Politieauto's, patrouillewagens</p>
+                    </div>
+
+                    <div class="weapon-card">
+                        <h5>🏍️ Rijbewijs Motor</h5>
+                        <p><span class="badge orange">Slagingseis: 75%</span></p>
+                        <p style="margin-top: 15px;"><strong>Extra aandacht:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Balans en wendbaarheid</li>
+                            <li>Remmen (voor- en achterrem)</li>
+                            <li>Wheelie-verbod!</li>
+                            <li>Weersomstandigheden</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Voertuigen:</strong> Politiemotoren</p>
+                    </div>
+
+                    <div class="weapon-card">
+                        <h5>🚤 Rijbewijs Boot</h5>
+                        <p><span class="badge orange">Slagingseis: 75%</span></p>
+                        <p style="margin-top: 15px;"><strong>Specifieke kennis:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Stuurboord & Bakboord</li>
+                            <li>Voorrangsregels op water</li>
+                            <li>Navigatielichten (rood/groen)</li>
+                            <li>Weersomstandigheden (mist)</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Voertuigen:</strong> Politieboten</p>
+                    </div>
+
+                    <div class="weapon-card">
+                        <h5>🚁 Rijbewijs Lucht</h5>
+                        <p><span class="badge purple">Minimale rang: Inspecteur</span></p>
+                        <p><span class="badge red">Slagingseis: 80%</span></p>
+                        <p style="margin-top: 15px;"><strong>Geavanceerde training:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Pre-flight checks</li>
+                            <li>Noodprocedures (mayday, motorstoring)</li>
+                            <li>Observatietechnieken</li>
+                            <li>Landingsprotocollen</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Voertuigen:</strong> Politiehelikopter, drones</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMUNICATIE -->
+            <div class="section">
+                <h3 class="section-title">📻 COMMUNICATIE & PORTOFOON</h3>
+
+                <div class="subsection">
+                    <h4>Portofoon Kanalen</h4>
+                    <ul class="steps">
+                        <li><strong>📢 Algemeen</strong> - Dagelijkse communicatie</li>
+                        <li><strong>🚨 Noodsituaties</strong> - Alleen bij urgentie!</li>
+                        <li><strong>🔒 Staff</strong> - Alleen voor leidinggevenden</li>
+                    </ul>
+                </div>
+
+                <div class="do-dont">
+                    <div class="do-list">
+                        <h5>✅ WEL:</h5>
+                        <ul>
+                            <li>Duidelijk en kort communiceren</li>
+                            <li>Identificeer jezelf (naam + rang)</li>
+                            <li>Gebruik "Over" aan einde bericht</li>
+                            <li>Luister eerst voordat je spreekt</li>
+                        </ul>
+                    </div>
+                    <div class="dont-list">
+                        <h5>❌ NIET:</h5>
+                        <ul>
+                            <li>Schreeuwen of schelden</li>
+                            <li>Privégesprekken voeren</li>
+                            <li>Muziek afspelen</li>
+                            <li>Portofoon misbruiken</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h4>Standaard Meldingen</h4>
+                    <div class="code-list">
+                        <div class="code-item"><strong>10-4</strong> Begrepen</div>
+                        <div class="code-item"><strong>10-20</strong> Locatie?</div>
+                        <div class="code-item"><strong>10-6</strong> Bezig met melding</div>
+                        <div class="code-item"><strong>10-8</strong> Beschikbaar</div>
+                        <div class="code-item"><strong>10-10</strong> Backup vereist</div>
+                        <div class="code-item"><strong>10-99</strong> NOODSITUATIE</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROCEDURES -->
+            <div class="section">
+                <h3 class="section-title">📋 PROCEDURES & PROTOCOLLEN</h3>
+
+                <div class="subsection">
+                    <h4>Verkeerscontrole</h4>
+                    <ol class="steps">
+                        <li>Stop het voertuig veilig</li>
+                        <li>Identificeer jezelf</li>
+                        <li>Vraag rijbewijs en kentekenbewijs</li>
+                        <li>Controleer op overtredingen</li>
+                        <li>Proces-verbaal of waarschuwing</li>
+                        <li>Laat persoon gaan of arresteer bij ernstige overtreding</li>
+                    </ol>
+                </div>
+
+                <div class="subsection">
+                    <h4>Aanhouding</h4>
+                    <ol class="steps">
+                        <li><strong>Verbale aanwijzing</strong> - "Politie! Blijf staan!"</li>
+                        <li><strong>Identificatie</strong> - Toon wie je bent</li>
+                        <li><strong>Boeien</strong> - Veilig boeien (handen achter rug)</li>
+                        <li><strong>Rechten voorlezen</strong> - "Je wordt gearresteerd voor..."</li>
+                        <li><strong>Transport</strong> - Breng naar bureau</li>
+                        <li><strong>Rapportage</strong> - Schrijf arrestatierapport</li>
+                    </ol>
+                </div>
+
+                <div class="subsection">
+                    <h4>Geweldsspectrum</h4>
+                    <ol class="steps">
+                        <li><strong>Verbale aanwijzing</strong> - Praat eerst altijd</li>
+                        <li><strong>Fysiek contact</strong> - Duwen, trekken (zonder pijn)</li>
+                        <li><strong>Wapenstok/Pepperspray</strong> - Lichte pijn</li>
+                        <li><strong>Taser</strong> - Tijdelijke verlamming</li>
+                        <li><strong>Vuurwapen</strong> - ALLEEN bij direct levensgevaar!</li>
+                    </ol>
+                </div>
+
+                <div class="subsection">
+                    <h4>Achtervolging</h4>
+                    <ul class="steps">
+                        <li>Meld ALTIJD via portofoon (locatie, richting, voertuig)</li>
+                        <li>Vraag backup</li>
+                        <li>Veiligheid burgers = prioriteit #1</li>
+                        <li>Stop als het te gevaarlijk wordt</li>
+                        <li>Gebruik gestolen auto's NOOIT als reden om te schieten</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- REGELS -->
+            <div class="section">
+                <h3 class="section-title">⚖️ REGELS & GEDRAGSCODE</h3>
+
+                <div class="success-box">
+                    <h5 style="margin-bottom: 15px;">Algemene Regels</h5>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Respectvol</strong> - Behandel iedereen met respect</li>
+                        <li><strong>Professioneel</strong> - Je vertegenwoordigt de politie</li>
+                        <li><strong>Teamwork</strong> - Werk samen met collega's</li>
+                        <li><strong>Eerlijk</strong> - Geen corruptie of machtsmisbruik</li>
+                        <li><strong>Actief</strong> - Minimaal X uur per week</li>
+                    </ul>
+                </div>
+
+                <div class="danger-box">
+                    <h5 style="margin-bottom: 15px;">VERBODEN</h5>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>FailRP</strong> - Onrealistisch roleplay</li>
+                        <li><strong>RDM</strong> - Random Death Match (zomaar schieten)</li>
+                        <li><strong>VDM</strong> - Vehicle Death Match (overrijden zonder reden)</li>
+                        <li><strong>Metagaming</strong> - OOC info gebruiken IC</li>
+                        <li><strong>Powergaming</strong> - Unrealistische acties forceren</li>
+                        <li><strong>Corruptie</strong> - Criminelen helpen, omkoping</li>
+                        <li><strong>Misbruik wapens</strong> - Wapen trekken zonder reden</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h5 style="margin-bottom: 15px;">Hiërarchie</h5>
+                    <ul style="margin-left: 20px;">
+                        <li>Luister naar hogere rangen</li>
+                        <li>Volg bevelen op (tenzij tegen regels)</li>
+                        <li>Spreek leidinggevende aan bij problemen</li>
+                        <li>Respecteer de rangorde</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h5 style="margin-bottom: 15px;">Consequenties bij overtreding</h5>
+                    <ol style="margin-left: 20px;">
+                        <li><strong>Waarschuwing</strong> - Eerste overtreding</li>
+                        <li><strong>Schorsing</strong> - Herhaalde overtreding (1-7 dagen)</li>
+                        <li><strong>Degradatie</strong> - Ernstige overtreding</li>
+                        <li><strong>Ontslag</strong> - Zeer ernstig of herhaaldelijk</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- PROMOTIES -->
+            <div class="section">
+                <h3 class="section-title">📈 PROMOTIES & DOORGROEIMOGELIJKHEDEN</h3>
+
+                <div class="subsection">
+                    <h4>Hoe promoveer je?</h4>
+                    <ul class="steps">
+                        <li><strong>Actief zijn</strong> - Regelmatig online en in dienst</li>
+                        <li><strong>Goed werk leveren</strong> - Professioneel, correct, behulpzaam</li>
+                        <li><strong>Trainingen volgen</strong> - WTGM, rijbewijzen, etc.</li>
+                        <li><strong>Positief gedrag</strong> - Geen waarschuwingen</li>
+                        <li><strong>Leiderschap tonen</strong> - Help nieuwe agenten (vanaf Hoofd Agent)</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h4>Speciale functies</h4>
+                    <div class="rank-list">
+                        <div class="rank-item">🎯 <strong>Schietinstructeur</strong> - Train anderen in wapens</div>
+                        <div class="rank-item">🎓 <strong>Trainer</strong> - Geef basistraining aan Trainees</div>
+                        <div class="rank-item">⚖️ <strong>Onderzoeksrechter</strong> - Doe complexe onderzoeken</div>
+                        <div class="rank-item">🚁 <strong>Helikopterpiloot</strong> - Vlieg de politiehelikopter (Inspecteur+)</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h4>Promotieproces</h4>
+                    <ol class="steps">
+                        <li>Leidinggevende ziet potentie</li>
+                        <li>Gesprek over prestaties</li>
+                        <li>Eventueel proefperiode</li>
+                        <li>Promotie bij goedkeuring</li>
+                        <li>Nieuwe bevoegdheden en verantwoordelijkheden</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- TIPS -->
+            <div class="section">
+                <h3 class="section-title">🎯 TIPS VOOR NIEUWE AGENTEN</h3>
+                
+                <div class="tip-box">
+                    <strong>💡 Luister en leer</strong> Ervaren collega's weten meer
+                </div>
+                <div class="tip-box">
+                    <strong>💡 Stel vragen</strong> Liever vragen dan fouten maken
+                </div>
+                <div class="tip-box">
+                    <strong>💡 Wees actief</strong> Hoe meer je speelt, hoe sneller je leert
+                </div>
+                <div class="tip-box">
+                    <strong>💡 Blijf kalm</strong> Ook onder druk professioneel blijven
+                </div>
+                <div class="tip-box">
+                    <strong>💡 Teamwork</strong> Je bent nooit alleen, vraag backup!
+                </div>
+                <div class="tip-box">
+                    <strong>💡 Rapporteer</strong> Schrijf alles op, ook kleine dingen
+                </div>
+                <div class="tip-box">
+                    <strong>💡 Respecteer</strong> Burgers, collega's, leidinggevenden
+                </div>
+                <div class="tip-box">
+                    <strong>💡 Plezier</strong> Vergeet niet te genieten van het spel!
+                </div>
+            </div>
+
+            <!-- CONTACT -->
+            <div class="section">
+                <h3 class="section-title">📞 CONTACT & HULP</h3>
+
+                <div class="info-box">
+                    <h5 style="margin-bottom: 15px;">Heb je vragen?</h5>
+                    <ul style="margin-left: 20px;">
+                        <li>Vraag je trainer (als Trainee)</li>
+                        <li>Tag een <strong>Brigadier</strong> of hoger</li>
+                        <li>Open een ticket in #support</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h5 style="margin-bottom: 15px;">Problemen melden?</h5>
+                    <ul style="margin-left: 20px;">
+                        <li>Gebruik #klachten voor klachten</li>
+                        <li>Tag <strong>Staff</strong> bij ernstige problemen</li>
+                        <li>Respecteer de afhandeling</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CHECKLIST -->
+            <div class="section">
+                <h3 class="section-title">✅ CHECKLIST VOOR TRAINEES</h3>
+                
+                <p style="margin-bottom: 20px;">Voordat je Surveillant wordt, moet je:</p>
+                
+                <div class="checklist">
+                    <ul>
+                        <li>Introductie gehad met trainer</li>
+                        <li>Theorieles bijgewoond</li>
+                        <li>Minimaal 3 praktijkpatrouilles gedaan</li>
+                        <li>Verkeerscontrole gedaan</li>
+                        <li>Arrestatie uitgevoerd</li>
+                        <li>Rapport geschreven</li>
+                        <li>Theorietoets gehaald (75%+)</li>
+                        <li>Praktijkexamen gehaald</li>
+                    </ul>
+                </div>
+
+                <div class="success-box" style="text-align: center; font-size: 1.1em;">
+                    <strong>Klaar? Vraag je trainer om je examen in te plannen!</strong>
+                </div>
+            </div>
+
+            <!-- SUCCES -->
+            <div class="section" style="border-bottom: none;">
+                <h3 class="section-title">🚓 SUCCES!</h3>
+                
+                <p style="font-size: 1.1em; line-height: 1.8;">
+                    Je hebt nu alle basis informatie om een goede politieagent te worden bij <strong>De Lage Landen</strong>. 
+                    Werk hard, blijf professioneel, en help je collega's.
+                </p>
+                
+                <div class="success-box" style="text-align: center; margin-top: 30px; font-size: 1.3em;">
+                    <strong>Welkom bij het korps! 👮‍♂️👮‍♀️</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Laatst bijgewerkt: Januari 2026</strong></p>
+            <p>© Politie De Lage Landen</p>
+        </div>
+    </div>
+</body>
+</html>

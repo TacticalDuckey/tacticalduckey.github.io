@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSI | VERTROUWELIJK | NL-26-12</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', 'Courier Prime', monospace;
+            background: #0a0a0a;
+            color: #00ff41;
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Origin: Polder-Tech-NL-2612 */
+        }
+
+        /* Login Screen Styles */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #loginScreen.hidden {
+            display: none;
+        }
+
+        /* Terminal Background Animation */
+        .terminal-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85em;
+            color: #00ff41;
+            opacity: 0.15;
+            line-height: 1.4;
+            padding: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            animation: scrollTerminal 60s linear infinite;
+            pointer-events: none;
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        @keyframes scrollTerminal {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        .login-container {
+            background: rgba(0, 0, 0, 0.95);
+            border: 3px solid #ff0000;
+            padding: 50px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+            animation: glitchLogin 5s infinite;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes glitchLogin {
+            0%, 98%, 100% { transform: translate(0, 0); }
+            99% { transform: translate(2px, -2px); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            color: #ff0000;
+            font-size: 3em;
+            letter-spacing: 15px;
+            text-shadow: 0 0 20px #ff0000;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .login-header .subtitle {
+            color: #00ff41;
+            font-size: 1.2em;
+            letter-spacing: 5px;
+        }
+
+        .login-warning {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #ff0000;
+            font-size: 0.9em;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: #00ff41;
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .form-group input {
+            background: #000;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            padding: 15px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.1em;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .login-btn {
+            background: #ff0000;
+            color: #000;
+            border: none;
+            padding: 18px;
+            font-size: 1.3em;
+            font-weight: 700;
+            letter-spacing: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .login-btn:hover {
+            background: #00ff41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #555;
+            font-size: 0.8em;
+        }
+
+        #mainContent {
+            display: none;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+        }
+
+        #mainContent.unlocked {
+            display: block;
+        }
+
+        #mainContent.fade-in {
+            opacity: 1;
+        }
+
+        /* Logout Button */
+        .logout-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        }
+
+        .logout-btn {
+            background: rgba(255, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #ff0000;
+            padding: 12px 25px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            text-transform: uppercase;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 0, 1);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        .logout-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Boot Sequence Screen */
+        #bootSequence {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99998;
+            display: none;
+            padding: 40px;
+            font-family: 'Courier Prime', monospace;
+            color: #00ff41;
+            font-size: 1.1em;
+            overflow-y: auto;
+        }
+
+        #bootSequence.active {
+            display: block;
+        }
+
+        .boot-line {
+            margin: 8px 0;
+            white-space: pre-wrap;
+        }
+
+        .boot-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: #00ff41;
+            animation: blink 0.8s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .boot-success {
+            color: #00ff41;
+        }
+
+        .boot-warning {
+            color: #ffff00;
+        }
+
+        .boot-error {
+            color: #ff0000;
+        }
+        
+        /* Scanline effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .classified-header {
+            background: #000;
+            border: 3px solid #ff0000;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+        
+        .classified-stamp {
+            color: #ff0000;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: 10px;
+            text-shadow: 0 0 10px #ff0000;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .clearance-level {
+            color: #ffff00;
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .dsi-logo {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            border: 2px solid #00ff41;
+            background: rgba(0, 255, 65, 0.05);
+        }
+        
+        .dsi-logo h1 {
+            font-size: 3.5em;
+            color: #00ff41;
+            text-shadow: 0 0 20px #00ff41;
+            letter-spacing: 15px;
+            font-weight: 700;
+        }
+        
+        .dsi-logo .subtitle {
+            font-size: 1.3em;
+            color: #888;
+            margin-top: 10px;
+            letter-spacing: 5px;
+        }
+        
+        .motto {
+            text-align: center;
+            font-size: 1.5em;
+            font-style: italic;
+            color: #888;
+            margin: 20px 0;
+            padding: 20px;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        
+        h2 {
+            color: #ff0000;
+            font-size: 2.2em;
+            margin: 40px 0 20px 0;
+            padding: 15px;
+            background: rgba(255, 0, 0, 0.1);
+            border-left: 5px solid #ff0000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        
+        h3 {
+            color: #00ff41;
+            font-size: 1.8em;
+            margin: 30px 0 15px 0;
+            padding-left: 20px;
+            border-left: 3px solid #00ff41;
+            font-weight: 600;
+        }
+        
+        h4 {
+            color: #ffff00;
+            font-size: 1.4em;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+        
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(0, 255, 65, 0.02);
+            border: 1px solid #003300;
+            position: relative;
+        }
+        
+        .section::before {
+            content: "█";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #00ff41;
+            opacity: 0.3;
+        }
+        
+        .rank-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ff41;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .rank-card:hover {
+            border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .rank-card h3 {
+            margin: 0 0 15px 0;
+            border: none;
+            padding: 0;
+        }
+        
+        .rank-badge {
+            display: inline-block;
+            background: #ff0000;
+            color: #000;
+            padding: 5px 15px;
+            font-weight: 700;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .spec-item {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-left: 3px solid #00ff41;
+        }
+        
+        .spec-item strong {
+            color: #ffff00;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        ul {
+            list-style: none;
+            margin: 15px 0;
+            padding-left: 0;
+        }
+        
+        li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            border-bottom: 1px solid #003300;
+        }
+        
+        li::before {
+            content: "▸";
+            position: absolute;
+            left: 10px;
+            color: #00ff41;
+            font-weight: bold;
+        }
+        
+        .warning-box {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .warning-box::before {
+            content: "⚠ WAARSCHUWING";
+            display: block;
+            color: #ff0000;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        
+        .classified-box {
+            background: rgba(255, 255, 0, 0.05);
+            border: 2px dashed #ffff00;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .classified-box::before {
+            content: "🔒 VERTROUWELIJK";
+            display: block;
+            color: #ffff00;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        
+        .unit-structure {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .unit-box {
+            background: linear-gradient(135deg, rgba(0,255,65,0.1) 0%, rgba(0,0,0,0.8) 100%);
+            border: 1px solid #00ff41;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .unit-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+        }
+        
+        .unit-box h4 {
+            color: #00ff41;
+            border-bottom: 2px solid #00ff41;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        th {
+            background: rgba(255, 0, 0, 0.3);
+            color: #ff0000;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            border: 1px solid #ff0000;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border: 1px solid #003300;
+        }
+        
+        tr:hover {
+            background: rgba(0, 255, 65, 0.1);
+        }
+        
+        .footer {
+            margin-top: 60px;
+            padding: 30px;
+            background: #000;
+            border: 2px solid #ff0000;
+            text-align: center;
+        }
+        
+        .footer .warning {
+            color: #ff0000;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .doc-meta {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+        
+        .redacted {
+            background: #000;
+            color: #000;
+            cursor: help;
+            padding: 0 5px;
+        }
+        
+        .redacted:hover {
+            background: #333;
+            color: #ff0000;
+        }
+        
+        .clearance-badge {
+            display: inline-block;
+            background: #ff0000;
+            color: #000;
+            padding: 3px 10px;
+            font-size: 0.7em;
+            font-weight: 700;
+            margin-left: 10px;
+            letter-spacing: 1px;
+        }
+        
+        @media print {
+            body::before {
+                display: none;
+            }
+        }
+
+        /* Security measures */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Disable right-click context menu */
+        * {
+            -webkit-touch-callout: none;
+        }
+
+        /* Screenshot watermark overlay */
+        #screenshotWatermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99999;
+            background-image: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(255, 0, 0, 0.03) 100px,
+                    rgba(255, 0, 0, 0.03) 200px
+                );
+        }
+
+        #screenshotWatermark::before {
+            content: 'VERTROUWELIJK • DSI • VERTROUWELIJK • DSI • VERTROUWELIJK • DSI • VERTROUWELIJK • DSI • VERTROUWELIJK • DSI • VERTROUWELIJK • DSI • ';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 200%;
+            text-align: center;
+            font-size: 4em;
+            color: rgba(255, 0, 0, 0.05);
+            font-weight: 700;
+            transform: rotate(-45deg) translateY(-50%);
+            white-space: nowrap;
+            animation: watermarkScroll 20s linear infinite;
+            letter-spacing: 30px;
+        }
+
+        #screenshotWatermark::after {
+            content: 'VERTROUWELIJK • DSI • VERTROUWELIJK • DSI • VERTROUWELIJK • DSI • ';
+            position: absolute;
+            top: 25%;
+            left: 0;
+            width: 200%;
+            text-align: center;
+            font-size: 3em;
+            color: rgba(255, 0, 0, 0.08);
+            font-weight: 700;
+            transform: rotate(45deg);
+            white-space: nowrap;
+            animation: watermarkScroll 15s linear infinite reverse;
+            letter-spacing: 25px;
+        }
+
+        /* Timestamp watermark */
+        #timestampWatermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 0, 0, 0.15);
+            color: rgba(255, 0, 0, 0.4);
+            padding: 10px 20px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9em;
+            pointer-events: none;
+            z-index: 99998;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            letter-spacing: 2px;
+        }
+
+        /* User info watermark */
+        #userWatermark {
+            position: fixed;
+            top: 60px;
+            left: 20px;
+            background: rgba(255, 0, 0, 0.15);
+            color: rgba(255, 0, 0, 0.4);
+            padding: 10px 20px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9em;
+            pointer-events: none;
+            z-index: 99998;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            letter-spacing: 2px;
+        }
+
+        @keyframes watermarkScroll {
+            0% { transform: rotate(-45deg) translateX(0) translateY(-50%); }
+            100% { transform: rotate(-45deg) translateX(-50%) translateY(-50%); }
+        }
+
+        /* Blur content when tab loses focus */
+        body.blurred #mainContent {
+            filter: blur(20px);
+            transition: filter 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Screenshot Watermark -->
+    <div id="screenshotWatermark"></div>
+    
+    <!-- Timestamp Watermark -->
+    <div id="timestampWatermark">LOADING...</div>
+    
+    <!-- User Watermark -->
+    <div id="userWatermark">SESSION: INITIALIZING...</div>
+    
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <!-- Scrolling Terminal Background -->
+        <div class="terminal-bg" id="terminalBg"></div>
+
+        <div class="login-container">
+            <div class="login-header">
+                <h1>DSI</h1>
+                <div class="subtitle">TOEGANGSCONTROLE</div>
+            </div>
+
+            <div class="login-warning">
+                ⚠ BEVEILIGDE TOEGANG ⚠<br>
+                Dit systeem is uitsluitend toegankelijk voor geautoriseerd DSI-personeel.<br>
+                Ongeautoriseerde toegangspogingen worden geregistreerd en gemeld.
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">GEBRUIKERSNAAM</label>
+                    <input type="text" id="username" name="username" autocomplete="off" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">WACHTWOORD</label>
+                    <input type="password" id="password" name="password" autocomplete="off" required>
+                </div>
+
+                <button type="submit" class="login-btn">TOEGANG AANVRAGEN</button>
+
+                <div class="error-message" id="errorMessage">
+                    ⚠ TOEGANG GEWEIGERD ⚠<br>
+                    Ongeldige inloggegevens. Alle pogingen worden gelogd.
+                </div>
+            </form>
+
+            <div class="login-footer">
+                Doc.NL-LL-2026-001-ORANJE | Beveiligingsniveau: VERTROUWELIJK
+            </div>
+        </div>
+    </div>
+
+    <!-- Boot Sequence Screen -->
+    <div id="bootSequence">
+        <div id="bootContent"></div>
+    </div>
+
+    <!-- Clipboard Permission Denied Screen -->
+    <div id="clipboardDenied" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 99997; padding: 40px; font-family: 'Courier Prime', monospace; color: #ff0000; font-size: 1.1em;">
+        <div style="max-width: 800px; margin: 100px auto; border: 3px solid #ff0000; padding: 40px; background: rgba(0,0,0,0.95); box-shadow: 0 0 50px rgba(255,0,0,0.5);">
+            <div style="font-size: 2.5em; text-align: center; margin-bottom: 30px; animation: pulse 2s infinite;">⚠ TOEGANG GEWEIGERD ⚠</div>
+            <div style="color: #00ff41; text-align: center; line-height: 1.8;">
+                <p>Clipboard toegang is VERPLICHT voor toegang tot DSI-systemen.</p>
+                <p>Reden: Beveiligingsprotocol NL-LL-CLIP-2612</p>
+                <p style="margin-top: 30px; color: #ffff00;">U heeft de beveiligingsvereiste geweigerd.</p>
+                <p style="margin-top: 20px; color: #888;">Sessie wordt beëindigd...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until login) -->
+    <div id="mainContent">
+    <div class="logout-container">
+        <button class="logout-btn" id="logoutBtn" onclick="logout()">🔓 UITLOGGEN</button>
+    </div>
+    <div class="classified-header">
+        <div class="classified-stamp">VERTROUWELIJK</div>
+        <div class="clearance-level">TOEGANG BEPERKT TOT DSI PERSONEEL</div>
+        <div style="font-size: 0.7em; color: #333; margin-top: 5px;">Doc.NL-LL-2026-001-ORANJE</div>
+    </div>
+
+    <div class="container">
+        <div class="dsi-logo">
+            <h1>DSI</h1>
+            <div class="subtitle">DIENST SPECIALE INTERVENTIES</div>
+        </div>
+
+        <div class="motto">
+            "Praeparatus Esto" - Wees Voorbereid
+            <div style="font-size: 0.6em; color: #222; margin-top: 10px; letter-spacing: 1px;">█ GEO-REF: 52°05'N 5°07'E █</div>
+        </div>
+
+        <div class="warning-box">
+            Dit document bevat geclassificeerde informatie over de structuur, rollen en operationele procedures van de Dienst Speciale Interventies. 
+            Ongeautoriseerde verspreiding is strafbaar onder de Wet Bescherming Staatsgeheimen.
+            <div style="font-size: 0.65em; margin-top: 10px; color: #550000;">Ref: LAGELANDEN-SEC-DELTA-XVII</div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Missie & Visie</h2>
+            <p>De Dienst Speciale Interventies (DSI) is de Nederlandse contra-terrorisme eenheid, opgericht in 2006. De DSI is verantwoordelijk voor het bestrijden van terrorisme, het aanhouden van vuurwapengevaarlijke verdachten en het leveren van speciale interventies wanneer de reguliere politie onvoldoende toegerust is.</p>
+            
+            <div class="classified-box">
+                <strong>Operationele Capaciteit:</strong> ±600 operators verdeeld over meerdere afdeleden<br>
+                <strong>Reactietijd:</strong> <span class="redacted">GECLASSIFICEERD</span><br>
+                <strong>Commandostructuur:</strong> Directe aansturing onder Eenheid Landelijke Opsporing en Interventies<br>
+                <strong>Code Oranje Protocol:</strong> NL-LL-16-12 (Waterland Procedure)
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📋 Organisatiestructuur</h2>
+            
+            <h3>Afdelingen binnen DSI</h3>
+            <div class="unit-structure">
+                <div class="unit-box">
+                    <h4>Afdeling AOT</h4>
+                    <p>Aanhoudings- en Ondersteuningsteams</p>
+                    <ul>
+                        <li>6 regionale teams</li>
+                        <li>Planmatige aanhoudingen</li>
+                        <li>80% van alle DSI-inzetten</li>
+                    </ul>
+                </div>
+
+                <div class="unit-box">
+                    <h4>Afdeling Interventie (AI)</h4>
+                    <p>Anti-terreur interventie eenheid</p>
+                    <ul>
+                        <li>Gemengd politie/defensie</li>
+                        <li>Contra-terreur operaties</li>
+                        <li>Quick Reaction Force</li>
+                    </ul>
+                </div>
+
+                <div class="unit-box">
+                    <h4>Afdeling AE&OO</h4>
+                    <p>Expertise & Operationele Ondersteuning</p>
+                    <ul>
+                        <li>Precisieschutters</li>
+                        <li>Onderhandelaars</li>
+                        <li>Technische specialisten</li>
+                    </ul>
+                </div>
+
+                <div class="unit-box">
+                    <h4>Unit Interventie Mariniers (UIM)</h4>
+                    <p>M-Squadron NLMARSOF</p>
+                    <ul>
+                        <li>Maritieme operaties</li>
+                        <li>Complexe interventies</li>
+                        <li>Ultimum remedium</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>👤 Rangen & Functies</h2>
+
+            <div class="rank-card">
+                <span class="rank-badge">LEIDING</span>
+                <h3>Commandant <span class="clearance-badge">NIVEAU 5</span></h3>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong>Verantwoordelijkheden:</strong>
+                        Algehele leiding over DSI-operaties, strategische planning en coördinatie met NCTV
+                    </div>
+                    <div class="spec-item">
+                        <strong>Bevoegdheden:</strong>
+                        Autorisatie voor alle DSI-inzetten, directe rapportage aan Minister van JenV
+                    </div>
+                    <div class="spec-item">
+                        <strong>Vereisten:</strong>
+                        Minimaal 15 jaar operationele ervaring, strategische trainingen, hoogste veiligheidsclearance
+                    </div>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">LEIDING</span>
+                <h3>Operationeel Leader <span class="clearance-badge">NIVEAU 4</span></h3>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong>Verantwoordelijkheden:</strong>
+                        Leiding over operationele teams, tactische planning, coördinatie tussen afdelingen
+                    </div>
+                    <div class="spec-item">
+                        <strong>Bevoegdheden:</strong>
+                        Teamsamenstelling, operationele beslissingen ter plaatse, training autorisatie
+                    </div>
+                    <div class="spec-item">
+                        <strong>Vereisten:</strong>
+                        10+ jaar operationele ervaring, leiderschapscursus, gevechtsscenario training
+                    </div>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">TRAINING</span>
+                <h3>Instructeur <span class="clearance-badge">NIVEAU 3</span></h3>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong>Verantwoordelijkheden:</strong>
+                        Opleiden nieuwe operators, ontwikkelen trainingsprotocollen, kwaliteitscontrole
+                    </div>
+                    <div class="spec-item">
+                        <strong>Specialisaties:</strong>
+                        CQB, wapensystemen, tactische geneeskunde, breaching, scherpschutters training
+                    </div>
+                    <div class="spec-item">
+                        <strong>Vereisten:</strong>
+                        8+ jaar operationele ervaring, pedagogische vaardigheden, alle specialismen beheerst
+                    </div>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">OPERATIONEEL</span>
+                <h3>Operator <span class="clearance-badge">NIVEAU 2</span></h3>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong>Verantwoordelijkheden:</strong>
+                        Uitvoeren van interventies, aanhoudingen, ondersteuning bij complexe operaties
+                    </div>
+                    <div class="spec-item">
+                        <strong>Kwalificaties:</strong>
+                        Volledig opgeleide DSI operator, minimaal 1 specialisme, certified in alle wapensystemen
+                    </div>
+                    <div class="spec-item">
+                        <strong>Vereisten:</strong>
+                        AOT-opleiding voltooid (20 weken), fysieke test geslaagd, psychologische screening
+                    </div>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">TRAINING</span>
+                <h3>Cursist <span class="clearance-badge">NIVEAU 1</span></h3>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong>Status:</strong>
+                        In opleiding tot operator, onder supervisie van instructeurs
+                    </div>
+                    <div class="spec-item">
+                        <strong>Traject:</strong>
+                        Testweek (5 dagen) → Witte module (4 weken) → Grijze module (14 weken) → Praktijkbegeleiding (6 maanden)
+                    </div>
+                    <div class="spec-item">
+                        <strong>Vereisten:</strong>
+                        Geslaagd voor selectie, medische keuring, veiligheidsonderzoek goedgekeurd
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎖️ Specialistische Rollen</h2>
+
+            <div class="rank-card">
+                <span class="rank-badge">DEMOLITIE</span>
+                <h3>DEMSPEC - Demolition Specialist</h3>
+                <p><strong>Primaire Taak:</strong> Explosievenexpert gespecialiseerd in breaching en EOD-operaties</p>
+                <ul>
+                    <li>Forceren van toegangen met explosieven (tactical breaching)</li>
+                    <li>Ontmantelen van IED's en boobytraps</li>
+                    <li>Training in gebruik van C4, detonators en breaching charges</li>
+                    <li>Veiligheidscoördinator bij explosievendreiging</li>
+                    <li>Samenwerking met EOD-teams bij complexe situaties</li>
+                </ul>
+                <div class="warning-box">
+                    Toegang tot explosieven uitsluitend met autorisatie van Operationeel Leader. 
+                    Alle handelingen worden geregistreerd en gecontroleerd.
+                    <div style="font-size: 0.65em; margin-top: 8px; color: #440000;">Protocol: TULP-ORANJE-17</div>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">COMMUNICATIE</span>
+                <h3>COMMSPEC - Communications Specialist</h3>
+                <p><strong>Primaire Taak:</strong> Beheer en coördinatie van alle communicatiesystemen tijdens operaties</p>
+                <ul>
+                    <li>Onderhouden verbindingen tussen teams en commandopost</li>
+                    <li>Encryptie en beveiligde communicatie</li>
+                    <li>Technische ondersteuning radio-apparatuur</li>
+                    <li>Signaalanalyse en electronic warfare countermeasures</li>
+                    <li>Live video feeds en drone communicatie</li>
+                </ul>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">MEDISCH</span>
+                <h3>MEDIC - Tactical Medic</h3>
+                <p><strong>Primaire Taak:</strong> Geavanceerde medische verzorging in gevechtsomstandigheden</p>
+                <ul>
+                    <li>TCCC (Tactical Combat Casualty Care) certified</li>
+                    <li>X-ABCDE/MARCH methodiek</li>
+                    <li>Cricothyrotomie en thoracocentese bevoegd</li>
+                    <li>Toedienen IV-vloeistoffen en medicatie</li>
+                    <li>Coördinatie met MMT en ambulancediensten</li>
+                    <li>Medische briefing en casualty evacuation planning</li>
+                </ul>
+                <div class="classified-box">
+                    Medics hebben toegang tot voorbehouden handelingen normaal alleen toegestaan aan artsen. 
+                    Jaarlijkse recertificering verplicht.
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">PRECISIE</span>
+                <h3>SNIPER - Expert Precisieschutter</h3>
+                <p><strong>Primaire Taak:</strong> Lange-afstands observatie en precisievuur</p>
+                <ul>
+                    <li>Langeafstandsschuttersopleiding (EPS - Expert Precisieschutter)</li>
+                    <li>Observatie en inlichtingenverzameling</li>
+                    <li>Overwatch tijdens operaties</li>
+                    <li>Neutraliseren van High Value Targets op bevel</li>
+                    <li>Ballistische berekeningen onder variabele omstandigheden</li>
+                    <li>Camouflage en verborgen positie technieken</li>
+                </ul>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong>Wapensystemen:</strong>
+                        .338 Lapua Magnum, .300 Win Mag, .50 BMG (anti-materieel)
+                    </div>
+                    <div class="spec-item">
+                        <strong>Effectief Bereik:</strong>
+                        800-1500 meter afhankelijk van systeem
+                    </div>
+                    <div class="spec-item">
+                        <strong>Vuurtoestemming:</strong>
+                        Alleen op directe autorisatie Commandant of Operationeel Leader
+                    </div>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">K9</span>
+                <h3>K9 - Hondengeleider</h3>
+                <p><strong>Primaire Taak:</strong> Operaties met speciaal getrainde dienst- en aanhoudingshonden</p>
+                <ul>
+                    <li>Aanhouding van gevaarlijke verdachten met diensthond</li>
+                    <li>Verkenning van risicovolle gebieden</li>
+                    <li>Detectie van explosieven en drugs</li>
+                    <li>Zoekacties naar personen</li>
+                    <li>Live camera feeds via hond-gemonteerde systemen</li>
+                </ul>
+                <div class="spec-item">
+                    <strong>Hondenrassen:</strong> Mechelse Herder, Duitse Herder, Malinois
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">RAPID RESPONSE</span>
+                <h3>RRT - Rapid Response Team</h3>
+                <p><strong>Primaire Taak:</strong> Snelle reactie bij terroristische incidenten</p>
+                <ul>
+                    <li>24/7 stand-by op strategische locaties</li>
+                    <li>Eerste interventie bij terroristische aanslagen</li>
+                    <li>Quick Reaction Force (QRF) operaties</li>
+                    <li>Gemiddelde responstijd: <span class="redacted">GECLASSIFICEERD</span></li>
+                    <li>Luchtmobiele inzet via AW139 helikopters</li>
+                </ul>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">INTERVENTIE</span>
+                <h3>AI - Afdeling Interventie</h3>
+                <p><strong>Primaire Taak:</strong> Contra-terreur interventies en complexe operaties</p>
+                <ul>
+                    <li>Gemengd politie/defensie team (Alpha, Bravo, Charlie teams)</li>
+                    <li>Terroristische dreigingen en actieve aanslagen</li>
+                    <li>Gijzelingen met zwaar bewapende daders</li>
+                    <li>Geen geweldsplafond - volledig spectrum operaties</li>
+                    <li>Internationale missies en ATLAS-operaties</li>
+                </ul>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">SUPPORT</span>
+                <h3>AE&OO - Expertise & Operationele Ondersteuning</h3>
+                <p><strong>Primaire Taak:</strong> Gespecialiseerde ondersteuning aan operaties</p>
+                <ul>
+                    <li>Expert Precisieschutters (EPS)</li>
+                    <li>Onderhandelaars (crisis negotiation)</li>
+                    <li>Drone operators en robotspecialisten</li>
+                    <li>Technische surveillance</li>
+                    <li>Inlichtingenanalyse</li>
+                </ul>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">ELITE</span>
+                <h3>M-Squadron - Unit Interventie Mariniers</h3>
+                <p><strong>Primaire Taak:</strong> Maritieme en complexe interventies (ultimum remedium)</p>
+                <ul>
+                    <li>NLMARSOF - Netherlands Maritime Special Operations Forces</li>
+                    <li>Maritieme objecten (schepen, boorplatforms)</li>
+                    <li>Luchtvaartgerelateerde interventies</li>
+                    <li>Langdurende complexe operaties</li>
+                    <div style="font-size: 0.65em; margin-top: 8px; color: #440000;">Auth-Code: MOLEN-DELTA-26</div>
+                    <li>Zwaarste bewapening en uitrusting binnen DSI</li>
+                    <li>FRISC-vaartuigen voor maritieme toegang</li>
+                </ul>
+                <div class="warning-box">
+                    M-Squadron wordt alleen ingezet wanneer alle andere opties uitgeput zijn. 
+                    Autorisatie vereist van Minister van Defensie en JenV.
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">SUPPORT</span>
+                <h3>ASU - Alpha Support Unit</h3>
+                <p><strong>Primaire Taak:</strong> Logistieke en tactische ondersteuning</p>
+                <ul>
+                    <li>Wapenonderhoud en arsenaal beheer</li>
+                    <li>Voertuig preparatie en maintenance</li>
+                    <li>Uitrustingsvoorbereiding voor operaties</li>
+                    <li>Bevoorrading tijdens langdurige inzetten</li>
+                </ul>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">ARRESTATIE</span>
+                <h3>AT - Arrestatieteam (Legacy)</h3>
+                <p><strong>Status:</strong> Sinds 2013 onderdeel van AOT (Aanhoudings- en Ondersteuningsteam)</p>
+                <ul>
+                    <li>Historische benaming voor huidige AOT-teams</li>
+                    <li>Blauwe baret als herkenningssymbool</li>
+                    <li>Planmatige aanhoudingen vuurwapengevaarlijke verdachten</li>
+                </ul>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">OBSERVATIE</span>
+                <h3>OT - Observatieteam</h3>
+                <p><strong>Primaire Taak:</strong> Verkenning en surveillance</p>
+                <ul>
+                    <li>Pre-operationele reconnaissance</li>
+                    <li>Doelwitobservatie en patroonanalyse</li>
+                    <li>Covert surveillance operaties</li>
+                    <li>Real-time intelligence gathering</li>
+                    <li>Fotografische en video documentatie</li>
+                </ul>
+            </div>
+
+            <div class="rank-card">
+                <span class="rank-badge">AANHOUDING</span>
+                <h3>AOT - Aanhoudings- en Ondersteuningsteam</h3>
+                <p><strong>Primaire Taak:</strong> Aanhoudingen en tactische ondersteuning (80% van DSI-inzetten)</p>
+                <ul>
+                    <li>6 regionale teams (Noord-Oost, Den Haag, Zuid, Amsterdam, Midden, Rotterdam)</li>
+                    <li>Planmatige aanhoudingen</li>
+                    <li>Ad-hoc situaties (verwarde personen, acute dreiging)</li>
+                    <li>Bewaking infiltranten en getuigen</li>
+                    <li>Beveiligen objecten en transporten</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Operationele Procedures</h2>
+            
+            <h3>Inzet Autorisatie</h3>
+            <table>
+                <tr>
+                    <th>Niveau</th>
+                    <th>Autoriteit</th>
+                    <th>Type Operatie</th>
+                </tr>
+                <tr>
+                    <td>NIVEAU 1</td>
+                    <td>Operationeel Leader</td>
+                    <td>Standaard AOT aanhoudingen</td>
+                </tr>
+                <tr>
+                    <td>NIVEAU 2</td>
+                    <td>Commandant DSI</td>
+                    <td>AI inzet, RRT activatie</td>
+                </tr>
+                <tr>
+                    <td>NIVEAU 3</td>
+                    <td>Hoofdofficier van Justitie</td>
+                    <td>Complexe operaties, gebruik zwaar geweld</td>
+                </tr>
+                <tr>
+                    <td>NIVEAU 4</td>
+                    <td>Minister JenV</td>
+                    <td>Nationale veiligheidsdreigingen</td>
+                </tr>
+                <tr>
+                    <td>NIVEAU 5</td>
+                    <td>Minister JenV + Defensie</td>
+                    <td>M-Squadron inzet, internationale operaties</td>
+                </tr>
+            </table>
+
+            <h3>Reactieprotocol bij Terroristische Dreiging</h3>
+            <div class="classified-box">
+                <h4>FASE 1: Alertering (T+0 minuten)</h4>
+                <ul>
+                    <li>Dispatch waarschuwt DSI commandopost</li>
+                    <li>RRT-teams op dichtstbijzijnde locaties worden geactiveerd</li>
+                    <li>Quick Reaction Force in gereedheid</li>
+                </ul>
+
+                <h4>FASE 2: Mobilisatie (T+<span class="redacted">XX</span> minuten)</h4>
+                <ul>
+                    <li>Teams verzamelen op staging area</li>
+                    <li>Intelligence briefing door OT</li>
+                    <li>Wapenuitgifte en equipment check</li>
+                </ul>
+
+                <h4>FASE 3: Deployment (T+<span class="redacted">XX</span> minuten)</h4>
+                <ul>
+                    <li>Verplaatsing naar incident locatie</li>
+                    <li>Perimeter security door reguliere politie</li>
+                    <li>SNIPER posities innemen</li>
+                </ul>
+
+                <h4>FASE 4: Interventie</h4>
+                <ul>
+                    <li>Commandant geeft GO/NO-GO beslissing</li>
+                    <li>MEDIC teams in standby</li>
+                    <li>Uitvoering volgens tactical action plan</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Uitrusting & Bewapening</h2>
+            
+            <h3>Persoonlijke Beschermingsmiddelen</h3>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <strong>AOT:</strong>
+                    Ulbrichts TITAN helm, zwaar kogelwerend vest (NIJ Level IV), vizier
+                </div>
+                <div class="spec-item">
+                    <strong>AI/M-Squadron:</strong>
+                    Ops-Core FAST helm, First Spear AAC vest, PVS-31/GPNVG-18 nachtzicht
+                </div>
+                <div class="spec-item">
+                    <strong>Uniform:</strong>
+                    Grijs (onderscheiding van andere eenheden, bemoeilijkt impersonation)
+                </div>
+            </div>
+
+            <h3>Wapensystemen (Geclassificeerd)</h3>
+            <div class="warning-box">
+                Gedetailleerde specificaties van DSI-wapensystemen zijn staatsgeheim. 
+                Onderstaande informatie is beperkt tot algemene categorieën.
+            </div>
+
+            <table>
+                <tr>
+                    <th>Categorie</th>
+                    <th>Type</th>
+                    <th>Gebruik</th>
+                </tr>
+                <tr>
+                    <td>Handwapens</td>
+                    <td>Diverse semi-automatische pistolen</td>
+                    <td>Primair zijwapen alle operators</td>
+                </tr>
+                <tr>
+                    <td>Submachineguns</td>
+                    <td>Compacte automatische wapens</td>
+                    <td>CQB operaties</td>
+                </tr>
+                <tr>
+                    <td>Aanvalsgeweren</td>
+                    <td>5.56mm / .300 BLK systemen</td>
+                    <td>Standaard primair wapen</td>
+                </tr>
+                <tr>
+                    <td>Precisiegeweren</td>
+                    <td>.338 Lapua, .300 Win Mag</td>
+                    <td>SNIPER teams</td>
+                </tr>
+                <tr>
+                    <td>Shotguns</td>
+                    <td>12 gauge pomp-actie</td>
+                    <td>Breaching, close range</td>
+                </tr>
+                <tr>
+                    <td>Minder-dodelijk</td>
+                    <td>Taser, pepperspray, flashbangs</td>
+                    <td>Crowd control, non-lethal options</td>
+                </tr>
+            </table>
+
+            <h3>Voertuigen</h3>
+            <ul>
+                <li><strong>Gepantserde burgervoertuigen:</strong> BMW X5, Mercedes GLE, Audi SQ7</li>
+                <li><strong>APC's:</strong> Lenco BearCat met MARS/ARC systemen</li>
+                <li><strong>Luchtondersteuning:</strong> 3x AgustaWestland AW139 (Quick Reaction Air)</li>
+                <li><strong>Motorfietsen:</strong> BMW en KTM (pursuit operations)</li>
+                <li><strong>Maritiem:</strong> FRISC-vaartuigen (M-Squadron)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📚 Training & Certificering</h2>
+            
+            <h3>Basisopleiding Operator (20 weken)</h3>
+            <div class="classified-box">
+                <h4>Week 1-5: Testweek & Witte Module</h4>
+                <ul>
+                    <li>Fysieke selectie (uitvalpercentage: ~60%)</li>
+                    <li>Psychologische screening</li>
+                    <li>Basisvaardigheden wapens en procedures</li>
+                    <li>Specialistische rijopleiding (SRO)</li>
+                </ul>
+
+                <h4>Week 6-19: Grijze Module</h4>
+                <ul>
+                    <li>CQB (Close Quarters Battle)</li>
+                    <li>Gevorderde schietoefeningen</li>
+                    <li>Tactische scenario's</li>
+                    <li>Hoogte operaties</li>
+                    <li>Aanhoudingstechnieken</li>
+                </ul>
+
+                <h4>Week 20+: Praktijkbegeleiding (6 maanden)</h4>
+                <ul>
+                    <li>Stage bij operationeel team</li>
+                    <li>Meedraaien in echte inzetten</li>
+                    <li>Evaluatie door ervaren operators</li>
+                    <li>Na slagen: toekenning blauwe baret</li>
+                    <li style="font-size: 0.7em; color: #003300; border: none;">Code: GOUDA-BLAUW-XVII</li>
+                </ul>
+            </div>
+
+            <h3>Specialistische Cursussen</h3>
+            <ul>
+                <li><strong>DEMSPEC:</strong> 8 weken explosieventraining + EOD certificering</li>
+                <li><strong>MEDIC:</strong> TCCC course + 12 weken tactical medicine</li>
+                <li><strong>SNIPER:</strong> 10 weken EPS opleiding + ballistics</li>
+                <li><strong>K9:</strong> 16 weken hondengeleiderscursus</li>
+                <li><strong>Breacher:</strong> 4 weken forceren toegangen</li>
+                <li><strong>Duiker:</strong> 6 weken onderwateroperaties</li>
+            </ul>
+
+            <h3>Verplichte Herkwalificaties</h3>
+            <table>
+                <tr>
+                    <th>Training</th>
+                    <th>Frequentie</th>
+                    <th>Duur</th>
+                </tr>
+                <tr>
+                    <td>Schietvaardigheid</td>
+                    <td>Maandelijks</td>
+                    <td>1 dag</td>
+                </tr>
+                <tr>
+                    <td>CQB Scenario's</td>
+                    <td>Wekelijks</td>
+                    <td>4 uur</td>
+                </tr>
+                <tr>
+                    <td>Fysieke Conditie</td>
+                    <td>Continu</td>
+                    <td>Dagelijks</td>
+                </tr>
+                <tr>
+                    <td>MEDIC Recertificering</td>
+                    <td>Jaarlijks</td>
+                    <td>1 week</td>
+                </tr>
+                <tr>
+                    <td>ATLAS Training</td>
+                    <td>Jaarlijks</td>
+                    <td>2 weken (internationaal)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🌍 Internationale Samenwerking</h2>
+            
+            <h3>ATLAS Network</h3>
+            <p>DSI vertegenwoordigt Nederland in het ATLAS-netwerk, een samenwerkingsverband van Europese contra-terreur eenheden.</p>
+            
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <strong>Leden:</strong>
+                    38 Special Forces Units uit EU-landen
+                </div>
+                <div class="spec-item">
+                    <strong>HQ:</strong>
+                    Europol, Den Haag
+                </div>
+                <div class="spec-item">
+                    <strong>Doel:</strong>
+                    Gecoördineerde respons bij grootschalige aanslagen
+                </div>
+            </div>
+
+            <h3>Trainingsuitwisselingen</h3>
+            <ul>
+                <li>GSG 9 (Duitsland)</li>
+                <li>GIGN (Frankrijk)</li>
+                <li>SAS (Verenigd Koninkrijk)</li>
+                <li>FBI HRT (Verenigde Staten)</li>
+                <li>Yamam (Israël)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>⚖️ Juridisch Kader</h2>
+            
+            <h3>Wettelijke Basis</h3>
+            <div class="classified-box">
+                <h4>Artikel 8 Politiewet - Geweldsaanwending</h4>
+                <p>DSI-operators mogen geweld gebruiken wanneer:</p>
+                <ul>
+                    <li>Het gebruik redelijk en proportioneel is</li>
+                    <li>Het doel niet op andere wijze bereikt kan worden</li>
+                    <li>De situatie het gebruik rechtvaardigt</li>
+                </ul>
+
+                <h4>Artikel 11 Besluit Beheer Politie</h4>
+                <p>Definieert taken DSI:</p>
+                <ul>
+                    <li>In stand houden AOT's voor levensbedreigende situaties</li>
+                    <li>In stand houden bijzondere bijstandseenheden (AI, AE&OO)</li>
+                    <li>Bestrijden terrorisme over volledig geweldsspectrum</li>
+                </ul>
+            </div>
+
+            <h3>Rules of Engagement (ROE)</h3>
+            <div class="warning-box">
+                <strong>Vuurwapengebruik toegestaan bij:</strong>
+                <ul>
+                    <li>Directe levensbedreiging voor operators of burgers</li>
+                    <li>Verdachte met vuurwapen die niet conformeert</li>
+                    <li>Actieve terroristische aanslag</li>
+                    <li>Gijzeling met acuut dodelijk gevaar</li>
+                </ul>
+                <strong>Altijd vereist:</strong> Waarschuwing tenzij onmogelijk, proportioneel geweld, minimale schade
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="warning">
+                ⚠ VERTROUWELIJK - NIET VOOR VERSPREIDING ⚠
+            </div>
+            <p>Dit document bevat staatsgeheime informatie over DSI-procedures en -structuren.</p>
+            <p>Ongeautoriseerde verspreiding is strafbaar onder artikel 98 Wetboek van Strafrecht.</p>
+            
+            <div class="doc-meta">
+                <strong>Document Classificatie:</strong> VERTROUWELIJK<br>
+                <strong>Versie:</strong> 2.1-RP<br>
+                <strong>Laatst Bijgewerkt:</strong> 15 januari 2026<br>
+                <strong>Authorisatie:</strong> Commandant DSI<br>
+                <strong>Review Datum:</strong> 15 juli 2026<br>
+                <strong>Origin Code:</strong> <span style="color: #222;">NL-LAGELANDEN-DELTA-2612</span><br>
+                <strong>Watermark:</strong> <span style="color: #111;">ORANJE-NASSAU-XVII</span><br>
+                <br>
+                <em>⚠️ WAARSCHUWING: Dit document is ontwikkeld voor roleplay doeleinden. 
+                Informatie kan afwijken van echte DSI-procedures ter bescherming van operationele veiligheid.</em>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- End Main Content -->
+
+    <script>
+        // Screenshot prevention
+        let screenshotAttempts = 0;
+        let hasClipboardPermission = false;
+        let clipboardClearTimers = [];
+
+        // Clear clipboard immediately (silently)
+        async function clearClipboard() {
+            if (hasClipboardPermission) {
+                try {
+                    await navigator.clipboard.writeText('');
+                } catch (err) {
+                    // Permission revoked, mark as lost
+                    hasClipboardPermission = false;
+                }
+            }
+        }
+
+        // Clear clipboard repeatedly after screenshot attempt
+        async function clearClipboardRepeatedly() {
+            // Clear immediately
+            await clearClipboard();
+            
+            // Cancel any existing timers
+            clipboardClearTimers.forEach(timer => clearTimeout(timer));
+            clipboardClearTimers = [];
+            
+            // Schedule clears at 2, 3, 4, 5, 6, 7, 8, 9, 10 seconds
+            const delays = [2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+            delays.forEach(delay => {
+                const timer = setTimeout(async () => {
+                    await clearClipboard();
+                }, delay);
+                clipboardClearTimers.push(timer);
+            });
+        }
+
+        // Blur content when tab is hidden (but don't trigger logout)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && sessionStorage.getItem('dsiLoggedIn') === 'true') {
+                document.body.classList.add('blurred');
+            } else {
+                document.body.classList.remove('blurred');
+            }
+        });
+        
+        // Prevent Print Screen, Snipping Tool, and other screenshot methods
+        document.addEventListener('keyup', async function(e) {
+            // Print Screen - immediately clear clipboard and schedule repeated clears
+            if (e.key === 'PrintScreen') {
+                // Clear clipboard immediately and repeatedly
+                await clearClipboardRepeatedly();
+                
+                screenshotAttempts++;
+                showScreenshotWarning();
+            }
+        });
+
+        document.addEventListener('keydown', async function(e) {
+            // Prevent ALL common screenshot shortcuts
+            const isScreenshotAttempt = (
+                e.key === 'PrintScreen' ||
+                (e.key === 's' && e.shiftKey && (e.metaKey || e.ctrlKey || e.key === 'Meta')) ||
+                (e.key === 'S' && e.shiftKey && (e.metaKey || e.ctrlKey)) ||
+                (e.keyCode === 44) || // Print Screen keycode
+                (e.key === 'F12') || // Dev tools
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || // Dev tools
+                (e.ctrlKey && e.shiftKey && e.key === 'J') || // Console
+                (e.ctrlKey && e.key === 'u') || // View source
+                (e.ctrlKey && e.key === 'U') // View source
+            );
+
+            if (isScreenshotAttempt) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Clear clipboard immediately and repeatedly
+                await clearClipboardRepeatedly();
+                
+                screenshotAttempts++;
+                showScreenshotWarning();
+                return false;
+            }
+        });
+
+        function showScreenshotWarning() {
+            const existingWarning = document.getElementById('screenshotWarning');
+            if (existingWarning) {
+                existingWarning.remove();
+            }
+
+            const warning = document.createElement('div');
+            warning.id = 'screenshotWarning';
+            warning.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.98);
+                border: 3px solid #ff0000;
+                padding: 40px 60px;
+                z-index: 99999;
+                box-shadow: 0 0 50px rgba(255, 0, 0, 0.8);
+                animation: glitchLogin 0.3s infinite;
+                text-align: center;
+                font-family: 'Rajdhani', monospace;
+            `;
+            
+            warning.innerHTML = `
+                <div style="color: #ff0000; font-size: 3em; font-weight: 700; letter-spacing: 5px; text-shadow: 0 0 20px #ff0000; margin-bottom: 20px;">⚠ WAARSCHUWING ⚠</div>
+                <div style="color: #00ff41; font-size: 1.5em; margin-bottom: 15px;">SCREENSHOT DETECTIE</div>
+                <div style="color: #ffff00; font-size: 1.1em; line-height: 1.6;">
+                    Screenshots van geclassificeerde documenten zijn VERBODEN.<br>
+                    Poging ${screenshotAttempts} is geregistreerd en gerapporteerd.<br><br>
+                    <span style="color: #ff0000;">TOEGANG WORDT ONMIDDELLIJK BEËINDIGD.</span>
+                </div>
+                <div style="margin-top: 25px; color: #333; font-size: 0.8em;">Ref: NL-LL-SECURITY-BREACH-${screenshotAttempts}</div>
+            `;
+            
+            document.body.appendChild(warning);
+            
+            // Fade out warning then logout
+            setTimeout(() => {
+                warning.style.transition = 'opacity 0.5s';
+                warning.style.opacity = '0';
+                setTimeout(() => {
+                    warning.remove();
+                    logout();
+                }, 500);
+            }, 1500);
+        }
+
+        // Inactivity timeout
+        let inactivityTimer;
+        let inactivityWarningTimer;
+        const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minuten
+        const WARNING_BEFORE_LOGOUT = 30 * 1000; // 30 seconden waarschuwing
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            clearTimeout(inactivityWarningTimer);
+            
+            const existingWarning = document.getElementById('inactivityWarning');
+            if (existingWarning) {
+                existingWarning.remove();
+            }
+
+            // Warning timer (4.5 minutes)
+            inactivityWarningTimer = setTimeout(() => {
+                showInactivityWarning();
+            }, INACTIVITY_TIMEOUT - WARNING_BEFORE_LOGOUT);
+
+            // Logout timer (5 minutes)
+            inactivityTimer = setTimeout(() => {
+                logout();
+            }, INACTIVITY_TIMEOUT);
+        }
+
+        function showInactivityWarning() {
+            const warning = document.createElement('div');
+            warning.id = 'inactivityWarning';
+            warning.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: rgba(255, 165, 0, 0.95);
+                border: 2px solid #ff0000;
+                padding: 20px 30px;
+                z-index: 99999;
+                box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+                font-family: 'Rajdhani', monospace;
+                max-width: 350px;
+                animation: pulse 1s infinite;
+            `;
+            
+            warning.innerHTML = `
+                <div style="color: #000; font-size: 1.3em; font-weight: 700; margin-bottom: 10px;">⚠ INACTIVITEIT GEDETECTEERD</div>
+                <div style="color: #000; font-size: 1em; line-height: 1.5;">
+                    U wordt over 30 seconden automatisch uitgelogd wegens inactiviteit.<br><br>
+                    Beweeg uw muis om de sessie te behouden.
+                </div>
+            `;
+            
+            document.body.appendChild(warning);
+        }
+
+        // Track mouse movement and keyboard activity
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('keypress', resetInactivityTimer);
+        document.addEventListener('click', resetInactivityTimer);
+        document.addEventListener('scroll', resetInactivityTimer);
+        document.addEventListener('touchstart', resetInactivityTimer);
+
+        // Start inactivity timer when page loads (after login)
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('dsiLoggedIn') === 'true') {
+                resetInactivityTimer();
+            }
+        });
+
+        // Generate terminal background text
+        function generateTerminalText() {
+            const commands = [
+                'C:\\DSI\\SecureAccess> netstat -ano',
+                'TCP    192.168.1.45:443     52.178.45.23:8080    ESTABLISHED    2612',
+                'TCP    10.0.0.26:22         172.16.45.12:5500    TIME_WAIT      1612',
+                'UDP    127.0.0.1:53         *:*                  LISTENING      3304',
+                '',
+                'C:\\DSI\\SecureAccess> tasklist /FI "STATUS eq RUNNING"',
+                'DSI-Monitor.exe              2612 Services     0     12,456 K',
+                'SecureNet.exe                1612 Console       1     8,234 K',
+                'CryptoAuth.exe               3304 Services     0     16,892 K',
+                'Lagelanden-RP.exe            2026 Console       1     4,512 K',
+                '',
+                'C:\\DSI\\SecureAccess> ping 10.26.12.17',
+                'Pinging 10.26.12.17 with 32 bytes of data:',
+                'Reply from 10.26.12.17: bytes=32 time=2ms TTL=64',
+                'Reply from 10.26.12.17: bytes=32 time=1ms TTL=64',
+                '',
+                'C:\\DSI\\SecureAccess> systeminfo | findstr /B /C:"OS" /C:"Domain"',
+                'OS Name:                   DSI Secure OS',
+                'OS Version:                NL-LL-2612 Build 26122026',
+                'Domain:                    LAGELANDEN.NL',
+                '',
+                'C:\\DSI\\SecureAccess> dir C:\\Classified\\',
+                'Directory of C:\\Classified',
+                '',
+                '15/01/2026  14:26    <DIR>          .',
+                '15/01/2026  14:26    <DIR>          ..',
+                '12/01/2026  10:15         2,612,026 OPERATIE-ORANJE.enc',
+                '10/01/2026  16:45         1,612,612 DELTA-PROTOCOL.enc',
+                '08/01/2026  09:30         3,304,017 TULP-MISSIE.enc',
+                '               3 File(s)     7,528,655 bytes',
+                '',
+                'C:\\DSI\\SecureAccess> netsh firewall show state',
+                'Firewall status:',
+                'Profile                           = Domain',
+                'Operational mode                  = Enable',
+                'Exception mode                    = Enable',
+                '',
+                'C:\\DSI\\SecureAccess> ipconfig /all',
+                'Ethernet adapter Secure Network:',
+                '   Connection-specific DNS Suffix  : lagelanden.local',
+                '   IPv4 Address. . . . . . . . . . : 10.26.12.17',
+                '   Subnet Mask . . . . . . . . . . : 255.255.255.0',
+                '   Default Gateway . . . . . . . . : 10.26.12.1',
+                '',
+                'C:\\DSI\\SecureAccess> whoami /priv',
+                'PRIVILEGES INFORMATION',
+                'Privilege Name                Description                    State',
+                'SeSecurityPrivilege           Manage auditing                Enabled',
+                'SeBackupPrivilege             Back up files                  Enabled',
+                'SeDebugPrivilege              Debug programs                 Enabled',
+                '',
+                'C:\\DSI\\SecureAccess> wmic process get name,processid | findstr DSI',
+                'DSI-CoreService.exe                           2612',
+                'DSI-NetworkMonitor.exe                        1612',  
+                'DSI-EncryptionEngine.exe                      3304',
+                '',
+                'C:\\DSI\\SecureAccess> net use',
+                'Status       Local     Remote                    Network',
+                '-------------------------------------------------------------------------------',
+                'OK           Z:        \\\\ORANJE-SERVER\\Classified    Microsoft Windows Network',
+                'OK           Y:        \\\\DELTA-BACKUP\\Archives       Microsoft Windows Network',
+                '',
+                'C:\\DSI\\SecureAccess> arp -a',
+                'Interface: 10.26.12.17 --- 0x2',
+                '  Internet Address      Physical Address      Type',
+                '  10.26.12.1           00-1A-2B-3C-4D-5E     dynamic',
+                '  10.26.12.26          26-12-26-12-26-12     dynamic',
+                '',
+                'C:\\DSI\\SecureAccess> nslookup lagelanden.nl',
+                'Server:  dns.secure.nl',
+                'Address:  10.26.12.53',
+                'Name:    lagelanden.nl',
+                'Address:  52.26.12.17',
+                '',
+                'C:\\DSI\\SecureAccess> certutil -store My',
+                'DSI Certificate Store:',
+                '================ Certificate 0 ================',
+                'Serial Number: 2612261226122612',
+                'Issuer: CN=DSI-ROOT-CA, O=Lagelanden Security',
+                'Subject: CN=OPERATOR-TERMINAL-NL',
+                '',
+                'C:\\DSI\\SecureAccess> echo %COMPUTERNAME%',
+                'DSI-SECURE-TERMINAL-2612',
+                '',
+                'C:\\DSI\\SecureAccess> date /t && time /t',
+                '15-01-2026',
+                '14:26',
+                '',
+                'C:\\DSI\\SecureAccess> reg query HKLM\\SOFTWARE\\DSI /s',
+                'HKEY_LOCAL_MACHINE\\SOFTWARE\\DSI\\Security',
+                '    ClearanceLevel    REG_SZ    VERTROUWELIJK',
+                '    OriginCode        REG_SZ    NL-LAGELANDEN-DELTA-2612',
+                '    AuthProtocol      REG_SZ    ORANJE-NASSAU-XVII',
+                '',
+                'C:\\DSI\\SecureAccess> gpresult /r',
+                'GROUP POLICY RESULTS',
+                'The user is a part of the following security groups:',
+                '    LAGELANDEN\\DSI-Operators',
+                '    LAGELANDEN\\Secure-Access',
+                '    BUILTIN\\Administrators',
+                '',
+            ];
+
+            let terminalText = '';
+            // Duplicate content to create seamless loop
+            for (let i = 0; i < 4; i++) {
+                terminalText += commands.join('\n') + '\n\n';
+            }
+            
+            document.getElementById('terminalBg').textContent = terminalText;
+        }
+
+        // Initialize terminal background
+        generateTerminalText();
+
+        // Boot sequence typing effect
+        async function typeText(element, text, speed = 30) {
+            return new Promise(resolve => {
+                let i = 0;
+                const timer = setInterval(() => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(timer);
+                        resolve();
+                    }
+                }, speed);
+            });
+        }
+
+        async function runBootSequence() {
+            const bootContent = document.getElementById('bootContent');
+            bootContent.innerHTML = '';
+
+            const sequences = [
+                { text: 'C:\\DSI\\SecureAccess> ', speed: 50, class: '' },
+                { text: 'login -user Operator -domain LAGELANDEN.NL', speed: 30, class: '', newline: true },
+                { text: '', speed: 300, class: '', newline: true },
+                { text: '[AUTH] Authenticating user credentials...', speed: 40, class: 'boot-warning', newline: true },
+                { text: '', speed: 400, class: '', newline: true },
+                { text: '[AUTH] Username: Operator', speed: 35, class: 'boot-success', newline: true },
+                { text: '[AUTH] Clearance Level: VERTROUWELIJK', speed: 35, class: 'boot-success', newline: true },
+                { text: '[AUTH] Origin Code: NL-LAGELANDEN-DELTA-2612', speed: 35, class: 'boot-success', newline: true },
+                { text: '', speed: 500, class: '', newline: true },
+                { text: '[SYSTEM] Loading secure modules...', speed: 40, class: '', newline: true },
+                { text: '[OK] DSI-CoreService.exe                     [LOADED]', speed: 25, class: 'boot-success', newline: true },
+                { text: '[OK] SecureNet.exe                           [LOADED]', speed: 25, class: 'boot-success', newline: true },
+                { text: '[OK] CryptoAuth.exe                          [LOADED]', speed: 25, class: 'boot-success', newline: true },
+                { text: '[OK] Lagelanden-RP.exe                       [LOADED]', speed: 25, class: 'boot-success', newline: true },
+                { text: '', speed: 400, class: '', newline: true },
+                { text: '[NETWORK] Establishing secure connection to ORANJE-SERVER...', speed: 35, class: '', newline: true },
+                { text: '[OK] Connection established: 10.26.12.17:443', speed: 30, class: 'boot-success', newline: true },
+                { text: '', speed: 400, class: '', newline: true },
+                { text: '[SECURITY] Initializing clipboard protection protocol...', speed: 40, class: 'boot-warning', newline: true },
+                { text: '[SECURITY] Protocol: NL-LL-CLIP-2612', speed: 35, class: 'boot-warning', newline: true },
+                { text: '', speed: 300, class: '', newline: true },
+                { text: '[SECURITY] Requesting clipboard access authorization...', speed: 40, class: 'boot-warning', newline: true },
+                { text: '[WARNING] Clipboard access is MANDATORY for system security.', speed: 35, class: 'boot-error', newline: true },
+                { text: '[WARNING] Denying access will result in immediate termination.', speed: 35, class: 'boot-error', newline: true },
+                { text: '', speed: 500, class: '', newline: true },
+            ];
+
+            for (const seq of sequences) {
+                const line = document.createElement('div');
+                line.className = 'boot-line ' + (seq.class || '');
+                bootContent.appendChild(line);
+
+                if (seq.text) {
+                    await typeText(line, seq.text, seq.speed);
+                }
+
+                if (seq.newline) {
+                    await new Promise(resolve => setTimeout(resolve, seq.speed || 100));
+                }
+            }
+
+            // Request clipboard permission
+            const checkingLine = document.createElement('div');
+            checkingLine.className = 'boot-line boot-warning';
+            checkingLine.textContent = '[SECURITY] Awaiting user authorization...';
+            bootContent.appendChild(checkingLine);
+
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            try {
+                // Request clipboard permission
+                await navigator.clipboard.writeText('');
+                
+                // Permission granted - store this
+                hasClipboardPermission = true;
+                
+                // Permission granted
+                const successLine = document.createElement('div');
+                successLine.className = 'boot-line boot-success';
+                bootContent.appendChild(successLine);
+                await typeText(successLine, '[OK] Clipboard access granted. Authorization confirmed.', 30);
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                // Continue boot sequence
+                const continueSequences = [
+                    { text: '', speed: 400, class: '', newline: true },
+                    { text: '[DATABASE] Loading classified documents...', speed: 40, class: '', newline: true },
+                    { text: '[OK] DSI-Handboek.enc                        [DECRYPTED]', speed: 30, class: 'boot-success', newline: true },
+                    { text: '', speed: 500, class: '', newline: true },
+                    { text: '[SYSTEM] Access granted. Welcome, Operator.', speed: 40, class: 'boot-success', newline: true },
+                    { text: '', speed: 400, class: '', newline: true },
+                    { text: 'Initialiseren documentweergave...', speed: 45, class: 'boot-warning', newline: true },
+                    { text: '', speed: 800, class: '', newline: true },
+                ];
+
+                for (const seq of continueSequences) {
+                    const line = document.createElement('div');
+                    line.className = 'boot-line ' + (seq.class || '');
+                    bootContent.appendChild(line);
+
+                    if (seq.text) {
+                        await typeText(line, seq.text, seq.speed);
+                    }
+
+                    if (seq.newline) {
+                        await new Promise(resolve => setTimeout(resolve, seq.speed || 100));
+                    }
+                }
+
+                // Add final cursor
+                const cursorLine = document.createElement('div');
+                cursorLine.className = 'boot-line';
+                cursorLine.innerHTML = '<span class="boot-cursor"></span>';
+                bootContent.appendChild(cursorLine);
+
+                // Wait a bit then fade to main content
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Fade out boot sequence
+                document.getElementById('bootSequence').style.opacity = '0';
+                document.getElementById('bootSequence').style.transition = 'opacity 1s';
+                
+                setTimeout(() => {
+                    document.getElementById('bootSequence').classList.remove('active');
+                    document.getElementById('mainContent').classList.add('fade-in');
+                    startWatermarkUpdates();
+                }, 1000);
+
+            } catch (err) {
+                // Permission denied
+                const deniedLine = document.createElement('div');
+                deniedLine.className = 'boot-line boot-error';
+                bootContent.appendChild(deniedLine);
+                await typeText(deniedLine, '[ERROR] Clipboard access DENIED by user.', 30);
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                const terminateLine = document.createElement('div');
+                terminateLine.className = 'boot-line boot-error';
+                bootContent.appendChild(terminateLine);
+                await typeText(terminateLine, '[SYSTEM] Security requirement not met. Terminating session...', 30);
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Show clipboard denied screen
+                document.getElementById('bootSequence').style.display = 'none';
+                document.getElementById('clipboardDenied').style.display = 'block';
+
+                // Return to login after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('clipboardDenied').style.display = 'none';
+                    sessionStorage.removeItem('dsiLoggedIn');
+                    
+                    const loginScreen = document.getElementById('loginScreen');
+                    loginScreen.classList.remove('hidden');
+                    loginScreen.style.opacity = '0';
+                    
+                    // Clear login form
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    
+                    setTimeout(() => {
+                        loginScreen.style.transition = 'opacity 0.8s';
+                        loginScreen.style.opacity = '1';
+                    }, 50);
+                }, 3000);
+            }
+        }
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check credentials
+            if (username === 'Operator' && password === 'LageLandenRP') {
+                // Successful login
+                errorMessage.classList.remove('show');
+                
+                // Fade out login screen
+                const loginScreen = document.getElementById('loginScreen');
+                loginScreen.style.opacity = '0';
+                loginScreen.style.transition = 'opacity 0.8s';
+                
+                setTimeout(() => {
+                    loginScreen.classList.add('hidden');
+                    document.getElementById('mainContent').classList.add('unlocked');
+                    
+                    // Show and run boot sequence
+                    document.getElementById('bootSequence').classList.add('active');
+                    runBootSequence();
+                    
+                    // Store login state in session
+                    sessionStorage.setItem('dsiLoggedIn', 'true');
+                    
+                    // Start inactivity timer
+                    resetInactivityTimer();
+                }, 800);
+            } else {
+                // Failed login
+                errorMessage.classList.add('show');
+                
+                // Clear password field
+                document.getElementById('password').value = '';
+                
+                // Shake animation already in CSS
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        // Logout function
+        function logout() {
+            // Stop inactivity timers
+            clearTimeout(inactivityTimer);
+            clearTimeout(inactivityWarningTimer);
+            
+            // Stop clipboard clearing timers
+            clipboardClearTimers.forEach(timer => clearTimeout(timer));
+            clipboardClearTimers = [];
+            
+            // Remove any warnings
+            const inactivityWarning = document.getElementById('inactivityWarning');
+            if (inactivityWarning) inactivityWarning.remove();
+            const screenshotWarning = document.getElementById('screenshotWarning');
+            if (screenshotWarning) screenshotWarning.remove();
+            
+            // Reset screenshot attempts and permissions
+            screenshotAttempts = 0;
+            hasClipboardPermission = false;
+            
+            // Clear session
+            sessionStorage.removeItem('dsiLoggedIn');
+            
+            // Fade out main content
+            const mainContent = document.getElementById('mainContent');
+            mainContent.style.opacity = '0';
+            mainContent.style.transition = 'opacity 0.8s';
+            
+            setTimeout(() => {
+                mainContent.classList.remove('unlocked');
+                mainContent.classList.remove('fade-in');
+                
+                // Show login screen again
+                const loginScreen = document.getElementById('loginScreen');
+                loginScreen.classList.remove('hidden');
+                loginScreen.style.opacity = '0';
+                
+                // Clear login form
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                
+                setTimeout(() => {
+                    loginScreen.style.transition = 'opacity 0.8s';
+                    loginScreen.style.opacity = '1';
+                }, 50);
+            }, 800);
+        }
+
+        // Disable right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            screenshotAttempts++;
+            showScreenshotWarning();
+        });
+
+        // Check if already logged in
+        window.addEventListener('load', async function() {
+            if (sessionStorage.getItem('dsiLoggedIn') === 'true') {
+                // Try to get clipboard permission silently
+                try {
+                    await navigator.clipboard.writeText('');
+                    hasClipboardPermission = true;
+                } catch (err) {
+                    // No permission, will need to request again
+                    hasClipboardPermission = false;
+                }
+                
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainContent').classList.add('unlocked');
+                document.getElementById('mainContent').classList.add('fade-in');
+                resetInactivityTimer();
+                startWatermarkUpdates();
+            }
+        });
+
+        // Update watermarks constantly
+        function startWatermarkUpdates() {
+            const timestampElement = document.getElementById('timestampWatermark');
+            const userElement = document.getElementById('userWatermark');
+            
+            // Generate random session ID
+            const sessionId = 'NL-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            
+            function updateWatermarks() {
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('nl-NL');
+                const timeStr = now.toLocaleTimeString('nl-NL');
+                
+                timestampElement.textContent = `TIMESTAMP: ${dateStr} ${timeStr}`;
+                userElement.textContent = `OPERATOR • SESSION: ${sessionId}`;
+            }
+            
+            // Update immediately and then every second
+            updateWatermarks();
+            setInterval(updateWatermarks, 1000);
+        }
+    </script>
+</body>
+</html>
