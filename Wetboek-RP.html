@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wetboek van De Lage Landen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            color: #2c2c2c;
+            background: #f5f5f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid #d4af37;
+        }
+
+        .cover {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 80px 40px;
+            text-align: center;
+            border-bottom: 5px solid #d4af37;
+        }
+
+        .cover h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .cover .subtitle {
+            font-size: 1.5em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .cover .edition {
+            font-size: 1em;
+            margin-top: 30px;
+            opacity: 0.8;
+        }
+
+        .content {
+            padding: 60px 50px;
+        }
+
+        .toc {
+            border: 2px solid #d4af37;
+            padding: 40px;
+            margin-bottom: 60px;
+            background: #fafaf8;
+        }
+
+        .toc h2 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .toc-section {
+            margin: 20px 0;
+        }
+
+        .toc-title {
+            font-weight: 700;
+            font-size: 1.2em;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toc-list {
+            margin-left: 30px;
+            list-style: none;
+        }
+
+        .toc-list li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .toc-list li:before {
+            content: "§";
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .book-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin: 60px 0 40px;
+            padding: 30px;
+            background: #1a1a1a;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border: 3px double #d4af37;
+        }
+
+        .chapter {
+            margin: 50px 0;
+            page-break-inside: avoid;
+        }
+
+        .chapter-title {
+            font-size: 1.8em;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .article {
+            margin: 30px 0;
+            padding: 25px;
+            border-left: 4px solid #d4af37;
+            background: #fafaf8;
+        }
+
+        .article-number {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .article-content {
+            font-size: 1.05em;
+            line-height: 1.9;
+        }
+
+        .article-content p {
+            margin: 12px 0;
+            text-align: justify;
+        }
+
+        .article-sub {
+            margin: 15px 0 15px 30px;
+        }
+
+        .article-sub strong {
+            color: #1a1a1a;
+        }
+
+        .penalty {
+            background: #fff3e0;
+            border-left: 4px solid #ff6b6b;
+            padding: 15px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+
+        .penalty-title {
+            font-weight: 700;
+            color: #c92a2a;
+            margin-bottom: 8px;
+        }
+
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+
+        .definition {
+            background: #f1f8f4;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .definition-term {
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .section-divider {
+            text-align: center;
+            margin: 50px 0;
+            font-size: 2em;
+            color: #d4af37;
+        }
+
+        .footer-page {
+            background: #1a1a1a;
+            color: #d4af37;
+            text-align: center;
+            padding: 40px;
+            margin-top: 80px;
+        }
+
+        .footer-page p {
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        ol.legal-list {
+            margin: 15px 0 15px 40px;
+            list-style-type: lower-alpha;
+        }
+
+        ol.legal-list li {
+            margin: 10px 0;
+        }
+
+        .important-note {
+            background: #ffebee;
+            border: 2px solid #c92a2a;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+            }
+            .article {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cover h1 {
+                font-size: 2em;
+            }
+            .content {
+                padding: 30px 20px;
+            }
+            .book-title {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- COVER PAGE -->
+        <div class="cover">
+            <h1>⚖️ WETBOEK</h1>
+            <div class="subtitle">van De Lage Landen</div>
+            <div style="margin: 40px 0; font-size: 1.2em;">
+                Regels, Wetten & Verordeningen<br>
+                voor Roleplay
+            </div>
+            <div class="edition">Editie 2026 | Versie 1.0</div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            
+            <!-- TABLE OF CONTENTS -->
+            <div class="toc">
+                <h2>📋 Inhoudsopgave</h2>
+                
+                <div class="toc-section">
+                    <div class="toc-title">Boek I - Algemene Bepalingen</div>
+                    <ul class="toc-list">
+                        <li>Hoofdstuk 1: Roleplay Fundamenten</li>
+                        <li>Hoofdstuk 2: Algemene Roleplay Regels</li>
+                        <li>Hoofdstuk 3: Communicatie Regels</li>
+                    </ul>
+                </div>
+
+                <div class="toc-section">
+                    <div class="toc-title">Boek II - Strafrecht</div>
+                    <ul class="toc-list">
+                        <li>Hoofdstuk 1: Geweldsmisdrijven</li>
+                        <li>Hoofdstuk 2: Vermogensmisdrijven</li>
+                        <li>Hoofdstuk 3: Verkeersmisdrijven</li>
+                    </ul>
+                </div>
+
+                <div class="toc-section">
+                    <div class="toc-title">Boek III - Verkeersrecht</div>
+                    <ul class="toc-list">
+                        <li>Hoofdstuk 1: Algemene Verkeersregels</li>
+                        <li>Hoofdstuk 2: Snelheidslimieten</li>
+                        <li>Hoofdstuk 3: Voorrangsregels</li>
+                    </ul>
+                </div>
+
+                <div class="toc-section">
+                    <div class="toc-title">Boek IV - Politiewet</div>
+                    <ul class="toc-list">
+                        <li>Hoofdstuk 1: Bevoegdheden Politie</li>
+                        <li>Hoofdstuk 2: Geweldsgebruik</li>
+                        <li>Hoofdstuk 3: Aanhouding & Fouillering</li>
+                    </ul>
+                </div>
+
+                <div class="toc-section">
+                    <div class="toc-title">Boek V - Sancties</div>
+                    <ul class="toc-list">
+                        <li>Hoofdstuk 1: Straftoemeting</li>
+                        <li>Hoofdstuk 2: OOC Sancties</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BOEK I -->
+            <div class="book-title">BOEK I<br>ALGEMENE BEPALINGEN</div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 1 - Roleplay Fundamenten</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 1.1 - Definitie van Roleplay</div>
+                    <div class="article-content">
+                        <p>Roleplay (hierna: RP) wordt gedefinieerd als het innemen van een fictieve rol binnen een gesimuleerde omgeving, waarbij de deelnemer handelt vanuit het perspectief van zijn personage en niet vanuit zijn eigen persoon.</p>
+                        
+                        <div class="definition">
+                            <div class="definition-term">In Character (IC):</div>
+                            <p>Handelingen, uitspraken en gebeurtenissen die plaatsvinden binnen de roleplay wereld.</p>
+                        </div>
+
+                        <div class="definition">
+                            <div class="definition-term">Out of Character (OOC):</div>
+                            <p>Handelingen, uitspraken en gebeurtenissen die plaatsvinden buiten de roleplay wereld, door de speler zelf.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 1.2 - Realisme & Authenticiteit</div>
+                    <div class="article-content">
+                        <p>Elke deelnemer is verplicht om binnen de roleplay te handelen op een realistische en geloofwaardige wijze, rekening houdend met de beperkingen en mogelijkheden die een normaal persoon in de echte wereld zou hebben.</p>
+                        
+                        <ol class="legal-list">
+                            <li>Het is verboden om bovenmenselijke krachten of kennis te claimen zonder geldige IC-rechtvaardiging;</li>
+                            <li>Het is verboden om zonder geldige reden immune te zijn voor pijn, angst of andere menselijke emoties;</li>
+                            <li>Het is verboden om plotseling te herstellen van ernstige verwondingen zonder medische hulp.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 1.3 - Value of Life (Waarde van Leven)</div>
+                    <div class="article-content">
+                        <p>Iedere deelnemer dient het leven van zijn personage te waarderen alsof het een echt mensenleven betreft.</p>
+                        
+                        <ol class="legal-list">
+                            <li>Het is verboden om onnodig grote risico's te nemen die resulteren in de dood van het personage;</li>
+                            <li>Bij bedreiging met een dodelijk wapen dient het personage te gehoorzamen aan redelijke eisen;</li>
+                            <li>Het is verboden om uit voertuigen te springen die sneller dan 50 km/u rijden;</li>
+                            <li>Het is verboden om van grote hoogte te springen zonder geldige reden.</li>
+                        </ol>
+
+                        <div class="penalty">
+                            <div class="penalty-title">⚠️ Strafbepaling:</div>
+                            Overtreding van dit artikel wordt bestraft met een waarschuwing bij eerste overtreding, schorsing van 24-72 uur bij herhaalde overtredingen.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 2 - Algemene Roleplay Regels</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 2.1 - FailRP</div>
+                    <div class="article-content">
+                        <p>FailRP wordt gedefinieerd als het niet volgen van roleplay standaarden of het uitvoeren van handelingen die niet realistisch zijn binnen de roleplay context.</p>
+                        
+                        <p><strong>Voorbeelden van FailRP:</strong></p>
+                        <ol class="legal-list">
+                            <li>Het negeren van ernstige verwondingen en direct verder spelen;</li>
+                            <li>Het uitvoeren van fysiek zware handelingen terwijl geboeid;</li>
+                            <li>Het praten terwijl knockdown/bewusteloos;</li>
+                            <li>Het ontsnappen uit een politiecel zonder geldige roleplay;</li>
+                            <li>Het gebruiken van emotes om fysieke beperkingen te omzeilen.</li>
+                        </ol>
+
+                        <div class="penalty">
+                            <div class="penalty-title">⚠️ Strafbepaling:</div>
+                            Waarschuwing + roleplay herstellen bij lichte overtredingen. Schorsing 24-48 uur bij ernstige overtredingen. Ban 3-7 dagen bij herhaaldelijke overtredingen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 2.2 - RDM (Random Death Match)</div>
+                    <div class="article-content">
+                        <p>Het is verboden om zonder geldige roleplay reden een ander personage aan te vallen, te verwonden of te doden.</p>
+                        
+                        <div class="article-sub">
+                            <strong>Lid 1:</strong> Voor het gebruik van dodelijk geweld dient een duidelijke escalatie aanwezig te zijn met voldoende roleplay interactie.
+                        </div>
+
+                        <div class="article-sub">
+                            <strong>Lid 2:</strong> Een minimum van 5 minuten hoogwaardige roleplay is vereist voordat dodelijk geweld mag worden toegepast, tenzij sprake is van directe zelfverdediging.
+                        </div>
+
+                        <div class="article-sub">
+                            <strong>Lid 3:</strong> Het doden van een personage zonder enige voorafgaande interactie wordt beschouwd als ernstig RDM.
+                        </div>
+
+                        <div class="penalty">
+                            <div class="penalty-title">⚠️ Strafbepaling:</div>
+                            Schorsing 48-72 uur bij eerste overtreding. Ban 7-14 dagen bij herhaalde overtredingen. Permanente ban bij extreem RDM.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 2.3 - VDM (Vehicle Death Match)</div>
+                    <div class="article-content">
+                        <p>Het is verboden om een voertuig te gebruiken als wapen om andere spelers opzettelijk te raken, verwonden of te doden zonder geldige roleplay reden.</p>
+                        
+                        <ol class="legal-list">
+                            <li>Het opzettelijk aanrijden van personen is alleen toegestaan indien sprake is van levensbedreigend gevaar;</li>
+                            <li>Het rammen van voertuigen is alleen toegestaan met geldige tactische of roleplay reden;</li>
+                            <li>Het blokkeren van wegen met voertuigen zonder roleplay reden is verboden.</li>
+                        </ol>
+
+                        <div class="note">
+                            <strong>Let op:</strong> Ongelukken in het verkeer die niet opzettelijk zijn, vallen niet onder VDM maar moeten wel realistisch worden uitgespeeld.
+                        </div>
+
+                        <div class="penalty">
+                            <div class="penalty-title">⚠️ Strafbepaling:</div>
+                            Schorsing 24-72 uur bij eerste overtreding. Ban 7 dagen bij herhaalde overtredingen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 2.4 - Metagaming</div>
+                    <div class="article-content">
+                        <p>Metagaming wordt gedefinieerd als het gebruiken van informatie die buiten de roleplay (OOC) is verkregen voor acties binnen de roleplay (IC).</p>
+                        
+                        <p><strong>Voorbeelden van Metagaming:</strong></p>
+                        <ol class="legal-list">
+                            <li>Het gebruiken van informatie uit Discord, streams of andere OOC bronnen;</li>
+                            <li>Het herkennen van personen aan hun stem zonder dat je personage hen kent;</li>
+                            <li>Het weten van locaties of gebeurtenissen zonder IC-informatiebron;</li>
+                            <li>Het gebruiken van game-UI informatie (zoals naamplaatjes) voor IC-kennis.</li>
+                        </ol>
+
+                        <div class="penalty">
+                            <div class="penalty-title">⚠️ Strafbepaling:</div>
+                            Waarschuwing bij lichte overtredingen. Schorsing 48-72 uur bij bewuste metagaming. Ban 7-14 dagen bij herhaalde of ernstige overtredingen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 2.5 - Powergaming</div>
+                    <div class="article-content">
+                        <p>Powergaming is het forceren van roleplay handelingen waarbij de andere partij geen kans krijgt om te reageren of waarbij onrealistische acties worden uitgevoerd.</p>
+                        
+                        <p><strong>Voorbeelden van Powergaming:</strong></p>
+                        <ol class="legal-list">
+                            <li>Emotes gebruiken die de andere speler geen keuze laten (bijvoorbeeld: "/me slaat hem knockout");</li>
+                            <li>Beweren dat je iets gedaan hebt zonder de ander de kans te geven te reageren;</li>
+                            <li>Gebruik maken van bugs of exploits voor voordeel in roleplay;</li>
+                            <li>Fysiek onmogelijke handelingen uitvoeren zonder creativiteit of roleplay.</li>
+                        </ol>
+
+                        <div class="note">
+                            <strong>Correcte Emote:</strong> "/me probeert een vuistslag uit te delen" geeft de ander de kans te reageren met "/me duikt weg".
+                        </div>
+
+                        <div class="penalty">
+                            <div class="penalty-title">⚠️ Strafbepaling:</div>
+                            Waarschuwing + roleplay correctie bij eerste overtreding. Schorsing 24-48 uur bij herhaalde overtredingen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 2.6 - New Life Rule (NLR)</div>
+                    <div class="article-content">
+                        <p>Na het overlijden van een personage verliest het personage alle herinneringen aan de gebeurtenissen die leidden tot het overlijden en 30 minuten daarvoor.</p>
+                        
+                        <ol class="legal-list">
+                            <li>Het is verboden om terug te keren naar de locatie van overlijden binnen 30 minuten;</li>
+                            <li>Het is verboden om wraak te nemen voor een gebeurtenis waarin je personage is overleden;</li>
+                            <li>Het is verboden om direct betrokken te raken bij dezelfde situatie na respawn.</li>
+                        </ol>
+
+                        <div class="note">
+                            <strong>Uitzondering:</strong> Bij medische behandeling (revival door ambulance) blijft het geheugen intact, maar moet ernstig letsel realistisch worden uitgespeeld.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 2.7 - Combat Logging</div>
+                    <div class="article-content">
+                        <p>Het is ten strengste verboden om het spel te verlaten tijdens een actieve roleplay situatie, vooral tijdens gevechten, achtervolging of arrestatie.</p>
+                        
+                        <div class="article-sub">
+                            <strong>Lid 1:</strong> Bij verbindingsproblemen dient de speler binnen 15 minuten terug te keren.
+                        </div>
+
+                        <div class="article-sub">
+                            <strong>Lid 2:</strong> Bij geplande afwezigheid dient de speler eerst de roleplay situatie af te ronden.
+                        </div>
+
+                        <div class="penalty">
+                            <div class="penalty-title">⚠️ Strafbepaling:</div>
+                            Ban 24-72 uur bij eerste overtreding. Ban 7-14 dagen bij herhaalde overtredingen. Permanente ban bij extreem misbruik.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 3 - Communicatie Regels</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 3.1 - IC en OOC Scheiding</div>
+                    <div class="article-content">
+                        <p>In Character (IC) en Out of Character (OOC) communicatie dienen strikt gescheiden te worden gehouden.</p>
+                        
+                        <ol class="legal-list">
+                            <li>Voice chat is uitsluitend IC, tenzij in een staffgesprek;</li>
+                            <li>OOC chat mag alleen gebruikt worden voor technische zaken, niet voor IC-informatie;</li>
+                            <li>Het is verboden om IC-problemen op te lossen met OOC-middelen.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 3.2 - Respectvolle Communicatie</div>
+                    <div class="article-content">
+                        <p>Alle deelnemers dienen respectvol te communiceren, zowel IC als OOC.</p>
+                        
+                        <div class="important-note">
+                            ⚠️ STRENG VERBODEN:<br>
+                            Racisme, discriminatie, extreem geweld, seksuele intimidatie, doxing, of persoonlijke aanvallen zijn NOOIT toegestaan en worden direct bestraft met permanente ban.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider">⚖</div>
+
+            <!-- BOEK II -->
+            <div class="book-title">BOEK II<br>STRAFRECHT</div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 1 - Geweldsmisdrijven</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 100 - Eenvoudige Mishandeling</div>
+                    <div class="article-content">
+                        <p>Hij die opzettelijk een ander mishandelt of opzettelijk aan een ander enig lichamelijk letsel toebrengt, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €500 - €2.000 en/of celstraf tot 20 minuten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 101 - Zware Mishandeling</div>
+                    <div class="article-content">
+                        <p>Hij die aan een ander opzettelijk zwaar lichamelijk letsel toebrengt, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €2.000 - €5.000 en/of celstraf 30-60 minuten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 102 - Bedreiging</div>
+                    <div class="article-content">
+                        <p>Hij die een ander op enigerlei wijze met geweld of enige andere feitelijkheid bedreigt, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €300 - €1.500 en/of celstraf tot 15 minuten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 103 - Gijzeling</div>
+                    <div class="article-content">
+                        <p>Hij die opzettelijk iemand wederrechtelijk van de vrijheid berooft of beroofd houdt, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €5.000 - €10.000 en/of celstraf 60-120 minuten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 104 - Moord / Doodslag</div>
+                    <div class="article-content">
+                        <p>Hij die opzettelijk een ander van het leven berooft, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €10.000 - €25.000 en/of celstraf 120-180 minuten.
+                        </div>
+                        <div class="note">
+                            <strong>Let op:</strong> Voor moord/doodslag moet uitgebreide roleplay vooraf zijn gegaan. Zonder goede reden wordt dit ook als RDM beschouwd met OOC sancties.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 2 - Vermogensmisdrijven</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 200 - Diefstal</div>
+                    <div class="article-content">
+                        <p>Hij die een goed dat geheel of ten dele aan een ander toebehoort, wegneemt met het oogmerk om het zich wederrechtelijk toe te eigenen, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €500 - €3.000 en/of celstraf 15-40 minuten, afhankelijk van waarde gestolen goed.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 201 - Diefstal met Geweld (Overval)</div>
+                    <div class="article-content">
+                        <p>Hij die met het oogmerk om zich wederrechtelijk toe te eigenen, door geweld of bedreiging met geweld iemand iets ontneemt, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €3.000 - €10.000 en/of celstraf 45-90 minuten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 202 - Voertuigdiefstal</div>
+                    <div class="article-content">
+                        <p>Hij die opzettelijk een voertuig dat geheel of gedeeltelijk aan een ander toebehoort, wederrechtelijk gebruikt, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €1.000 - €5.000 en/of celstraf 20-50 minuten + terugave voertuig.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 203 - Heling</div>
+                    <div class="article-content">
+                        <p>Hij die een goed verwerft, voorhanden heeft of overdraagt, terwijl hij weet of redelijkerwijs moet vermoeden dat het een gestolen goed betreft, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €1.500 - €5.000 en/of celstraf 20-40 minuten + inbeslagname goederen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 204 - Oplichting</div>
+                    <div class="article-content">
+                        <p>Hij die met het oogmerk om zich wederrechtelijk te bevoordelen door het aannemen van een valse naam of hoedanigheid, iemand beweegt tot afgifte van enig goed, wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €2.000 - €7.000 en/of celstraf 30-60 minuten + schadevergoeding.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 3 - Verkeersmisdrijven</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 300 - Rijden onder Invloed</div>
+                    <div class="article-content">
+                        <p>Het is verboden een voertuig te besturen terwijl men verkeert onder invloed van alcohol of verdovende middelen.</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €1.000 - €3.000 + rijverbod 24 uur en/of celstraf 10-20 minuten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 301 - Gevaarlijk Rijgedrag</div>
+                    <div class="article-content">
+                        <p>Het is verboden zich zodanig te gedragen dat gevaar op de weg wordt veroorzaakt of kan worden veroorzaakt.</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €500 - €2.500 en/of celstraf tot 15 minuten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 302 - Verlaten Plaats Ongeval (Doorrijden)</div>
+                    <div class="article-content">
+                        <p>Het is verboden na een ongeval de plaats daarvan te verlaten zonder de nodige hulp te verlenen en identiteitsgegevens achter te laten.</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €2.000 - €5.000 + rijverbod 48 uur en/of celstraf 20-40 minuten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 303 - Joyriding</div>
+                    <div class="article-content">
+                        <p>Het opzettelijk en roekeloos rijden met hoge snelheid door bewoond gebied zonder geldig doel wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €1.000 - €4.000 + rijverbod 12-48 uur en/of celstraf 15-30 minuten.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider">⚖</div>
+
+            <!-- BOEK III -->
+            <div class="book-title">BOEK III<br>VERKEERSRECHT</div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 1 - Algemene Verkeersregels</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 400 - Rijbewijs Verplichting</div>
+                    <div class="article-content">
+                        <p>Het is verboden een voertuig te besturen zonder geldig rijbewijs voor de desbetreffende voertuigcategorie.</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €500 - €2.000 + inbeslagname voertuig tot geldig rijbewijs wordt getoond.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 401 - Kenteken Verplichting</div>
+                    <div class="article-content">
+                        <p>Elk voertuig dat op de openbare weg rijdt dient voorzien te zijn van een geldig kenteken.</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €300 - €1.000 + verplichting tot registratie.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 402 - Verlichting</div>
+                    <div class="article-content">
+                        <p>Bij duisternis en verminderd zicht dient verlichting gevoerd te worden.</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €100 - €300 + waarschuwing.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 403 - Stopplicht</div>
+                    <div class="article-content">
+                        <p>Bestuurders dienen te stoppen voor een rood verkeerslicht. Het negeren van een rood licht wordt bestraft met:</p>
+                        <div class="penalty">
+                            <strong>Straf:</strong> Boete €250 - €750.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 2 - Snelheidslimieten</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 410 - Maximumsnelheden</div>
+                    <div class="article-content">
+                        <p>De volgende maximumsnelheden zijn van toepassing, tenzij anders aangegeven door verkeersborden:</p>
+                        
+                        <ol class="legal-list">
+                            <li><strong>Binnen de bebouwde kom:</strong> 50 km/u</li>
+                            <li><strong>Buiten de bebouwde kom:</strong> 80 km/u</li>
+                            <li><strong>Autosnelwegen:</strong> 130 km/u</li>
+                            <li><strong>Woonwijken (30 km zones):</strong> 30 km/u</li>
+                        </ol>
+
+                        <div class="penalty">
+                            <strong>Strafmaat overschrijding:</strong>
+                            <ul style="margin-top: 10px; list-style: none;">
+                                <li>• 1-10 km/u: Boete €100</li>
+                                <li>• 11-20 km/u: Boete €250</li>
+                                <li>• 21-30 km/u: Boete €500</li>
+                                <li>• 31-50 km/u: Boete €1.000 + rijverbod 12 uur</li>
+                                <li>• 51+ km/u: Boete €2.000 + rijverbod 24 uur + celstraf mogelijk</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 3 - Voorrangsregels</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 420 - Voorrang Verlenen</div>
+                    <div class="article-content">
+                        <p>Bestuurders zijn verplicht voorrang te verlenen aan:</p>
+                        <ol class="legal-list">
+                            <li>Verkeer van rechts (tenzij anders aangegeven);</li>
+                            <li>Hulpdiensten met optische en geluidssignalen;</li>
+                            <li>Verkeer op voorrangsweg bij oprijden;</li>
+                            <li>Voetgangers op zebrapad.</li>
+                        </ol>
+                        <div class="penalty">
+                            <strong>Straf bij overtreding:</strong> Boete €200 - €600.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider">⚖</div>
+
+            <!-- BOEK IV -->
+            <div class="book-title">BOEK IV<br>POLITIEWET</div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 1 - Bevoegdheden Politie</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 500 - Legitimatieplicht</div>
+                    <div class="article-content">
+                        <p>Een opsporingsambtenaar is bevoegd om aan eenieder zijn identiteitsbewijs te vorderen ten behoeve van identiteitsvaststelling.</p>
+                        
+                        <div class="article-sub">
+                            <strong>Lid 1:</strong> De politie mag om legitimatie vragen bij redelijk vermoeden van een strafbaar feit of verkeersovertredingen.
+                        </div>
+
+                        <div class="article-sub">
+                            <strong>Lid 2:</strong> Weigering tot tonen van legitimatie kan leiden tot aanhouding voor nader onderzoek.
+                        </div>
+
+                        <div class="penalty">
+                            <strong>Straf bij weigering:</strong> Boete €500 en/of aanhouding tot 30 minuten voor identiteitsvaststelling.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 501 - Staande Houden Voertuigen</div>
+                    <div class="article-content">
+                        <p>Een opsporingsambtenaar is bevoegd om voertuigen te controleren en bestuurders staande te houden voor verkeerscontrole of bij vermoeden van strafbare feiten.</p>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 502 - Fouillering</div>
+                    <div class="article-content">
+                        <p>Een opsporingsambtenaar is bevoegd om een persoon te fouilleren indien:</p>
+                        <ol class="legal-list">
+                            <li>Er redelijk vermoeden is dat de persoon wapens of gevaarlijke voorwerpen bij zich draagt;</li>
+                            <li>De persoon aangehouden wordt voor een strafbaar feit;</li>
+                            <li>De persoon wordt opgenomen in een politiecel.</li>
+                        </ol>
+
+                        <div class="note">
+                            <strong>Veiligheidsfouillering:</strong> Mag altijd voorafgaand aan vervoer in politievoertuig.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 503 - Huiszoeking</div>
+                    <div class="article-content">
+                        <p>Een huiszoeking mag alleen plaatsvinden met een huiszoekingsbevel van een rechter of bij verdenking van direct levensgevaar.</p>
+                        
+                        <div class="article-sub">
+                            <strong>Lid 1:</strong> Bij heterdaad (misdrijf wordt op dit moment gepleegd) mag zonder bevel worden binnengetreden.
+                        </div>
+
+                        <div class="article-sub">
+                            <strong>Lid 2:</strong> Bij achtervolging mag een woning worden betreden indien de verdachte daarin is gevlucht.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 2 - Geweldsgebruik</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 510 - Geweldsinstructie Politie</div>
+                    <div class="article-content">
+                        <p>Een opsporingsambtenaar is bevoegd geweld te gebruiken volgens het geweldsspectrum, waarbij steeds het laagst mogelijke geweldsniveau wordt toegepast dat effectief is.</p>
+                        
+                        <div class="definition">
+                            <strong>Geweldsspectrum (oplopend):</strong>
+                            <ol class="legal-list" style="margin-top: 10px;">
+                                <li><strong>Verbale aanwijzing</strong> - Commando's en instructies</li>
+                                <li><strong>Fysiek contact</strong> - Handboeien, meevoeren zonder pijn</li>
+                                <li><strong>Wapenstok / Pepperspray</strong> - Pijnprikkels ter controle</li>
+                                <li><strong>Taser</strong> - Tijdelijke verlamming bij actief verzet</li>
+                                <li><strong>Dienstwapen</strong> - ALLEEN bij direct levensgevaar</li>
+                                <li><strong>Groot wapen (HK416/Mossberg M590)</strong> - ALLEEN bij ernstige dreiging voor levens</li>
+                            </ol>
+                        </div>
+
+                        <div class="important-note">
+                            ⚠️ BELANGRIJKE REGELS VUURWAPENGEBRUIK:<br>
+                            Vuurwapens mogen ALLEEN gebruikt worden bij direct levensgevaar voor agenten of burgers. Waarschuwingsschoten zijn verboden. Er moet ALTIJD eerst gewaarschuwd worden, tenzij onmiddellijk handelen noodzakelijk is.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 511 - Schietincident Protocol</div>
+                    <div class="article-content">
+                        <p>Na elk schietincident dient:</p>
+                        <ol class="legal-list">
+                            <li>Onmiddellijk een melding gedaan te worden bij de leidinggevende;</li>
+                            <li>Een uitgebreid rapport geschreven te worden;</li>
+                            <li>De betrokken agent geschorst te worden tot onderzoek is afgerond;</li>
+                            <li>Een onderzoek ingesteld te worden door Interne Zaken of senior staff.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 3 - Aanhouding & Detentie</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 520 - Aanhoudingsbevoegdheid</div>
+                    <div class="article-content">
+                        <p>Een opsporingsambtenaar is bevoegd tot aanhouding bij:</p>
+                        <ol class="legal-list">
+                            <li>Heterdaad - het misdrijf wordt op dit moment gepleegd;</li>
+                            <li>Verdenking van een strafbaar feit met bewijs;</li>
+                            <li>Uitstaand arrestatiebevel.</li>
+                        </ol>
+
+                        <div class="note">
+                            <strong>Cautie verplichting:</strong> Bij aanhouding dient de verdachte te worden geïnformeerd over:<br>
+                            - De reden van aanhouding<br>
+                            - Het recht om te zwijgen<br>
+                            - Het recht op een advocaat
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 521 - Maximale Detentietijd</div>
+                    <div class="article-content">
+                        <p>Een aangehouden persoon mag maximaal worden vastgehouden voor:</p>
+                        <ol class="legal-list">
+                            <li><strong>Verhoor:</strong> 60 minuten zonder advocaat, 90 minuten met advocaat;</li>
+                            <li><strong>Onderzoek:</strong> 120 minuten met toestemming leidinggevende (Brigadier+);</li>
+                            <li><strong>Verlenging:</strong> Alleen met toestemming Hoofdinspecteur+ en rechtvaardige gronden.</li>
+                        </ol>
+
+                        <div class="note">
+                            Na afloop van detentietijd dient de verdachte ofwel in vrijheid gesteld, ofwel formeel aangeklaagd en voor de rechter gebracht te worden.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 522 - Rechten Verdachte</div>
+                    <div class="article-content">
+                        <p>Een verdachte heeft te allen tijde recht op:</p>
+                        <ol class="legal-list">
+                            <li>Zwijgrecht - niet verplicht tot spreken;</li>
+                            <li>Advocaat - juridische bijstand;</li>
+                            <li>Medische hulp indien gewond;</li>
+                            <li>Informatie over de beschuldigingen;</li>
+                            <li>Eerlijke behandeling zonder mishandeling.</li>
+                        </ol>
+
+                        <div class="important-note">
+                            Schending van deze rechten kan leiden tot nietigverklaring van de aanhouding en OOC sancties voor de betrokken agent(en).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider">⚖</div>
+
+            <!-- BOEK V -->
+            <div class="book-title">BOEK V<br>SANCTIES</div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 1 - Straftoemeting IC</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 600 - Algemene Straftoemeting</div>
+                    <div class="article-content">
+                        <p>Bij het opleggen van straffen dient rekening gehouden te worden met:</p>
+                        <ol class="legal-list">
+                            <li>De ernst van het misdrijf;</li>
+                            <li>De omstandigheden waaronder het is gepleegd;</li>
+                            <li>Het strafblad van de verdachte;</li>
+                            <li>De mate van schuld en opzet;</li>
+                            <li>De gevolgen voor het slachtoffer.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 601 - Recidive (Herhaling)</div>
+                    <div class="article-content">
+                        <p>Bij herhaling van strafbare feiten kunnen straffen worden verhoogd:</p>
+                        <div class="penalty">
+                            <ul style="list-style: none;">
+                                <li>• Eerste overtreding: Normale straf</li>
+                                <li>• Tweede overtreding (binnen 7 dagen): +50% strafverhoging</li>
+                                <li>• Derde overtreding (binnen 14 dagen): +100% strafverhoging</li>
+                                <li>• Vierde+ overtreding: Dubbele straf + mogelijk langdurige celstraf</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 602 - Combinatie Misdrijven</div>
+                    <div class="article-content">
+                        <p>Bij meerdere misdrijven tegelijk worden straffen gecumuleerd tot maximum 180 minuten celstraf.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <h3 class="chapter-title">Hoofdstuk 2 - OOC Sancties</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 700 - Sanctiebeleid OOC</div>
+                    <div class="article-content">
+                        <p>Bij overtreding van OOC-regels (FailRP, RDM, VDM, Metagaming, etc.) hanteert het staffteam het volgende sanctiebeleid:</p>
+                        
+                        <div class="penalty">
+                            <strong>Lichte Overtredingen (FailRP, kleine metagaming):</strong>
+                            <ul style="margin-top: 10px; list-style: none;">
+                                <li>• 1e keer: Waarschuwing + uitleg</li>
+                                <li>• 2e keer: Schorsing 24 uur</li>
+                                <li>• 3e keer: Schorsing 72 uur</li>
+                                <li>• 4e keer: Ban 7 dagen</li>
+                            </ul>
+                        </div>
+
+                        <div class="penalty" style="margin-top: 20px;">
+                            <strong>Ernstige Overtredingen (RDM, VDM, Combat Logging):</strong>
+                            <ul style="margin-top: 10px; list-style: none;">
+                                <li>• 1e keer: Schorsing 48-72 uur</li>
+                                <li>• 2e keer: Ban 7-14 dagen</li>
+                                <li>• 3e keer: Ban 30 dagen</li>
+                                <li>• 4e keer: Permanente ban</li>
+                            </ul>
+                        </div>
+
+                        <div class="penalty" style="margin-top: 20px; background: #ffebee; border-color: #c92a2a;">
+                            <strong>Zeer Ernstige Overtredingen (Racisme, Discriminatie, Toxisch Gedrag, Doxing):</strong>
+                            <ul style="margin-top: 10px; list-style: none;">
+                                <li>• Direct: Permanente ban zonder waarschuwing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 701 - Bezwaar & Beroep</div>
+                    <div class="article-content">
+                        <p>Tegen OOC-sancties kan binnen 48 uur bezwaar worden aangetekend via het ticketsysteem.</p>
+                        
+                        <ol class="legal-list">
+                            <li>Het bezwaar dient onderbouwd te zijn met bewijs (screenshots, clips);</li>
+                            <li>Het bezwaar wordt behandeld door een stafflid dat niet betrokken was bij de sanctie;</li>
+                            <li>De beslissing in beroep is definitief;</li>
+                            <li>Tijdens de bezwaarprocedure blijft de sanctie van kracht.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 702 - Staff Discretie</div>
+                    <div class="article-content">
+                        <p>Staffleden hebben te allen tijde de discretie om af te wijken van standaard sancties indien de situatie daar om vraagt, zowel verzachtend als verzwarend.</p>
+                        
+                        <div class="note">
+                            <strong>Verzachtende omstandigheden:</strong> Onwetendheid, technische problemen, eerste keer spelen, duidelijk ongeluk.
+                        </div>
+
+                        <div class="note">
+                            <strong>Verzwarende omstandigheden:</strong> Opzet, herhaalde waarschuwingen genegeerd, geen berouw, destructief gedrag.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider">⚖</div>
+
+            <!-- SLOTBEPALINGEN -->
+            <div class="chapter">
+                <h3 class="chapter-title" style="text-align: center;">SLOTBEPALINGEN</h3>
+
+                <div class="article">
+                    <div class="article-number">Artikel 999 - Citeertitel</div>
+                    <div class="article-content">
+                        <p>Dit wetboek kan worden aangehaald als: <strong>Wetboek van De Lage Landen</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 1000 - Inwerkingtreding</div>
+                    <div class="article-content">
+                        <p>Dit wetboek treedt in werking op de dag na publicatie in de Discord-server en is vanaf dat moment van toepassing op alle deelnemers.</p>
+                    </div>
+                </div>
+
+                <div class="article">
+                    <div class="article-number">Artikel 1001 - Wijzigingen</div>
+                    <div class="article-content">
+                        <p>Wijzigingen in dit wetboek worden aangekondigd in het aankondigingen-kanaal en treden in werking na een overgangstermijn van minimaal 48 uur, tenzij het spoedwijzigingen betreft.</p>
+                    </div>
+                </div>
+
+                <div class="important-note" style="margin-top: 50px; font-size: 1.2em;">
+                    📖 ONBEKENDHEID MET DE WET VERSCHOONT NIET<br><br>
+                    Alle spelers worden geacht dit wetboek te kennen en na te leven.<br>
+                    Bij twijfel: vraag het aan staff of een advocaat!
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-page">
+            <h3 style="margin-bottom: 20px; font-size: 2em;">⚖️</h3>
+            <p style="font-size: 1.3em; margin-bottom: 10px;">WETBOEK VAN DE LAGE LANDEN</p>
+            <p>Editie 2026 - Versie 1.0</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">Vastgesteld door het Korpsleiding</p>
+            <p style="font-size: 0.9em;">In samenwerking met het Staffteam</p>
+            <p style="margin-top: 30px; opacity: 0.7;">"Recht zonder macht is onmachtig,<br>macht zonder recht is tiranniek."</p>
+        </div>
+    </div>
+</body>
+</html>
