@@ -20,30 +20,7 @@
         <div class="hero-content">
             <!-- DLL RP Logo -->
             <div class="logo-container">
-                <svg class="main-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Shield background -->
-                    <path d="M100 10 L30 40 L30 80 C30 130 50 170 100 190 C150 170 170 130 170 80 L170 40 Z" 
-                          fill="url(#shieldGradient)" stroke="#fff" stroke-width="3"/>
-                    
-                    <!-- Dutch flag stripes -->
-                    <rect x="60" y="50" width="80" height="15" fill="#C8102E"/>
-                    <rect x="60" y="65" width="80" height="15" fill="#fff"/>
-                    <rect x="60" y="80" width="80" height="15" fill="#003DA5"/>
-                    
-                    <!-- DLL text -->
-                    <text x="100" y="130" font-family="Arial, sans-serif" font-size="40" font-weight="bold" 
-                          fill="#fff" text-anchor="middle">DLL</text>
-                    <text x="100" y="155" font-family="Arial, sans-serif" font-size="18" 
-                          fill="#fff" text-anchor="middle">RP</text>
-                    
-                    <!-- Gradient definition -->
-                    <defs>
-                        <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#0c1e4a;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                </svg>
+                <img src="images/logo.png" alt="Lage Landen RP Logo" class="main-logo">
             </div>
             
             <h1 class="main-title">
@@ -70,12 +47,44 @@
     </header>
 
     <main class="container">
-        <section class="intro">
-            <h2>Welkom bij de Lage Landen RP Hulpdiensten</h2>
-            <p>Hier vind je alle informatie, handboeken, procedures en sollicitaties voor de verschillende hulpdiensten van Lage Landen RP.</p>
+        <!-- Banner Section -->
+        <section class="banner-section">
+            <img src="images/banner.png" alt="Lage Landen RP Banner" class="hero-banner">
         </section>
 
-        <section class="services-grid">
+        <section class="intro">
+            <h2>Welkom bij de Lage Landen RP Hulpdiensten</h2>
+            <p>Log in om toegang te krijgen tot alle handboeken, procedures, toetsen en sollicitaties voor de verschillende hulpdiensten van Lage Landen RP.</p>
+            <div class="cta-buttons">
+                <a href="login.html" class="btn btn-large">🔐 Inloggen voor toegang</a>
+                <a href="dashboard.html" class="btn btn-large btn-secondary">📊 Naar Dashboard</a>
+            </div>
+        </section>
+
+        <!-- Info Cards -->
+        <section class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">🚔</div>
+                <h3>Politie</h3>
+                <p>Procedures, handboeken en opleidingen</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🚒</div>
+                <h3>Brandweer</h3>
+                <p>Handboeken en informatie</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🎯</div>
+                <h3>DSI Training</h3>
+                <p>Speciale interventies trainingen</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">📚</div>
+                <h3>Handboeken</h3>
+                <p>Wetgeving en procedures</p>
+            </div>
+        </section>
+    </main>
             <!-- Politie -->
             <div class="service-card">
                 <div class="card-icon politie">
@@ -153,24 +162,6 @@
                 <p>Sollicitatieformulieren en toetsen</p>
                 <div class="card-links">
                     <a href="sollicitaties.html" class="btn">Alle Toetsen</a>
-                </div>
-            </div>
-
-            <!-- Rijbewijzen -->
-            <div class="service-card">
-                <div class="card-icon rijbewijs">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                        <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                </div>
-                <h3>Rijbewijzen</h3>
-                <p>Toetsen voor alle rijbewijzen</p>
-                <div class="card-links">
-                    <a href="Sollicitaties/5. Rijbewijs Auto - Invulbaar.html" class="btn">Auto</a>
-                    <a href="Sollicitaties/6. Rijbewijs Motor - Invulbaar.html" class="btn">Motor</a>
-                    <a href="Sollicitaties/7. Rijbewijs Boot - Invulbaar.html" class="btn">Boot</a>
-                    <a href="Sollicitaties/8. Rijbewijs Lucht - Invulbaar.html" class="btn">Lucht</a>
                 </div>
             </div>
         </section>
