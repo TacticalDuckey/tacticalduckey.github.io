@@ -1,0 +1,23 @@
+[build]
+  publish = "."
+  command = ""
+
+# Netlify Identity configuratie
+[context.production]
+  environment = { NETLIFY_USE_YARN = "false" }
+
+# Redirect rules voor beveiligde pagina's
+[[redirects]]
+  from = "/admin/*"
+  to = "/login.html"
+  status = 401
+  force = false
+  conditions = {Role = ["!admin", "!staff"]}
+
+# Headers voor security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lage Landen RP - Hulpdiensten Portal</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
     <!-- Emergency lights animation -->
@@ -52,6 +53,13 @@
             <div class="title-divider"></div>
             <p class="tagline">Hulpdiensten Informatieportaal</p>
             <p class="tagline-sub">Politie • Brandweer • Ambulance • DSI</p>
+            
+            <!-- Login/Dashboard Buttons -->
+            <div class="auth-nav" style="margin-top: 2rem;">
+                <a href="login.html" id="login-btn" class="btn hero-btn" style="display: inline-block;">🔐 Inloggen</a>
+                <a href="dashboard.html" id="dashboard-btn" class="btn hero-btn" style="display: none;">📊 Mijn Dashboard</a>
+                <div id="user-info" style="display: none; margin-top: 1rem; gap: 0.5rem; justify-content: center; align-items: center;"></div>
+            </div>
         </div>
         
         <!-- Scroll indicator -->
@@ -174,5 +182,47 @@
             <p class="footer-note">Voor vragen of ondersteuning, neem contact op via Discord</p>
         </div>
     </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // Update UI based on login status
+        if (window.netlifyIdentity) {
+            netlifyIdentity.on('init', user => {
+                updateAuthButtons(user);
+            });
+            
+            netlifyIdentity.on('login', user => {
+                updateAuthButtons(user);
+            });
+            
+            netlifyIdentity.on('logout', () => {
+                updateAuthButtons(null);
+            });
+        }
+        
+        function updateAuthButtons(user) {
+            const loginBtn = document.getElementById('login-btn');
+            const dashboardBtn = document.getElementById('dashboard-btn');
+            const userInfo = document.getElementById('user-info');
+            
+            if (user) {
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (dashboardBtn) dashboardBtn.style.display = 'inline-block';
+                if (userInfo && auth) {
+                    const role = auth.getUserRole();
+                    userInfo.innerHTML = `
+                        <span style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600;">
+                            ${user.user_metadata?.full_name || user.email} | ${auth.getRoleDisplay(role)}
+                        </span>
+                    `;
+                    userInfo.style.display = 'flex';
+                }
+            } else {
+                if (loginBtn) loginBtn.style.display = 'inline-block';
+                if (dashboardBtn) dashboardBtn.style.display = 'none';
+                if (userInfo) userInfo.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>

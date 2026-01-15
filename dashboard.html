@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Lage Landen RP</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        .dashboard-header {
+            background: linear-gradient(135deg, #0a1628, #1a2642);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 3px solid var(--primary-blue);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .access-section {
+            margin-bottom: 3rem;
+        }
+
+        .access-section h2 {
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        .access-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .access-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .access-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .access-card h3 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .access-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .access-card.locked::after {
+            content: '🔒 Geen toegang';
+            display: block;
+            margin-top: 1rem;
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0.5rem;
+        }
+
+        .role-badge.admin {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #000;
+        }
+
+        .role-badge.staff {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: white;
+        }
+
+        .role-badge.agent {
+            background: linear-gradient(135deg, #0047ab, #3b82f6);
+            color: white;
+        }
+
+        .role-badge.user {
+            background: linear-gradient(135deg, #64748b, #94a3b8);
+            color: white;
+        }
+
+        .logout-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .logout-btn:hover {
+            background: #a01020;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div class="user-profile">
+            <div class="user-avatar">👤</div>
+            <div>
+                <h1 id="welcome-message">Welkom!</h1>
+                <div id="role-badges"></div>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="auth.logout()">Uitloggen</button>
+        <br>
+        <a href="index.html" style="color: white; margin-top: 1rem; display: inline-block;">← Terug naar home</a>
+    </div>
+
+    <main class="dashboard-container">
+        <!-- Algemene Toegang (iedereen) -->
+        <section class="access-section">
+            <h2>📚 Algemene Informatie</h2>
+            <div class="access-grid">
+                <div class="access-card">
+                    <h3>Handboeken</h3>
+                    <p>Bekijk alle handboeken en wetgeving</p>
+                    <a href="handboeken.html" class="btn">Bekijk →</a>
+                </div>
+                <div class="access-card">
+                    <h3>Politie Procedures</h3>
+                    <p>Procedures voor de politiedienst</p>
+                    <a href="Politie Procedures.html" class="btn">Bekijk →</a>
+                </div>
+                <div class="access-card">
+                    <h3>Brandweer Handboek</h3>
+                    <p>Informatie voor de brandweerdienst</p>
+                    <a href="Brandweer/handboek.html" class="btn">Bekijk →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Agent Toegang -->
+        <section class="access-section" id="agent-section">
+            <h2>🚔 Agent Toegang</h2>
+            <div class="access-grid">
+                <div class="access-card" id="agent-card-1">
+                    <h3>Toetsen & Examens</h3>
+                    <p>Alle toetsen en rijbewijsexamens</p>
+                    <a href="sollicitaties.html" class="btn">Bekijk →</a>
+                </div>
+                <div class="access-card" id="agent-card-2">
+                    <h3>Sollicitatieformulieren</h3>
+                    <p>Invulbare sollicitaties</p>
+                    <a href="Sollicitaties/1. Politie Sollicitatie - Invulbaar.html" class="btn">Bekijk →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAFF Toegang -->
+        <section class="access-section" id="staff-section">
+            <h2>⭐ STAFF Toegang</h2>
+            <div class="access-grid">
+                <div class="access-card" id="staff-card-1">
+                    <h3>Nakijkmodellen</h3>
+                    <p>Alle nakijkmodellen voor toetsen</p>
+                    <a href="staff-nakijkmodellen.html" class="btn">Bekijk →</a>
+                </div>
+                <div class="access-card" id="staff-card-2">
+                    <h3>Beoordelingsformulieren</h3>
+                    <p>Sollicitatie beoordelingen</p>
+                    <a href="Sollicitaties/STAFF - Politie Sollicitatie Beoordelingsformulier.html" class="btn">Bekijk →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN Toegang -->
+        <section class="access-section" id="admin-section">
+            <h2>👑 Administrator Toegang</h2>
+            <div class="access-grid">
+                <div class="access-card" id="admin-card-1">
+                    <h3>Gebruikersbeheer</h3>
+                    <p>Beheer gebruikers en rollen (via Netlify Dashboard)</p>
+                    <a href="https://app.netlify.com" target="_blank" class="btn">Open Netlify →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Lage Landen RP - Alle rechten voorbehouden</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // Check authenticatie en rol
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wacht tot Netlify Identity is geladen
+            const checkAuth = setInterval(() => {
+                if (window.netlifyIdentity && auth.user) {
+                    clearInterval(checkAuth);
+                    initDashboard();
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                if (!auth.user) {
+                    window.location.href = '/login.html?redirect=/dashboard.html';
+                }
+            }, 3000);
+        });
+
+        function initDashboard() {
+            const user = auth.user;
+            const role = auth.getUserRole();
+
+            // Update welcome message
+            const welcomeMsg = document.getElementById('welcome-message');
+            welcomeMsg.textContent = `Welkom, ${user.user_metadata?.full_name || user.email}!`;
+
+            // Update avatar
+            const avatar = document.querySelector('.user-avatar');
+            if (user.user_metadata?.avatar_url) {
+                avatar.innerHTML = `<img src="${user.user_metadata.avatar_url}" style="width:100%;height:100%;border-radius:50%;">`;
+            } else {
+                const initial = (user.user_metadata?.full_name || user.email).charAt(0).toUpperCase();
+                avatar.textContent = initial;
+            }
+
+            // Show role badges
+            const roleBadges = document.getElementById('role-badges');
+            roleBadges.innerHTML = `<span class="role-badge ${role}">${auth.getRoleDisplay(role)}</span>`;
+
+            // Lock sections based on role
+            if (role === 'guest' || role === 'user') {
+                lockSection('agent-section');
+                lockSection('staff-section');
+                lockSection('admin-section');
+            } else if (role === 'agent') {
+                lockSection('staff-section');
+                lockSection('admin-section');
+            } else if (role === 'staff') {
+                lockSection('admin-section');
+            }
+            // admin heeft overal toegang
+        }
+
+        function lockSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const cards = section.querySelectorAll('.access-card');
+                cards.forEach(card => {
+                    card.classList.add('locked');
+                    const links = card.querySelectorAll('a');
+                    links.forEach(link => {
+                        link.style.pointerEvents = 'none';
+                        link.style.opacity = '0.5';
+                    });
+                });
+            }
+        }
+    </script>
+</body>
+</html>
