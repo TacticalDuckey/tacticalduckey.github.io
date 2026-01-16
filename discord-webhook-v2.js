@@ -63,12 +63,16 @@ class DiscordSubmitter {
             };
         }
 
-        // 2. Haal username op
-        const username = formData['Roblox gebruikersnaam'] || formData['roblox'] || formData['Roblox Username'];
-        if (!username) {
+        // 2. Haal username op (flexibel voor verschillende formulieren)
+        const username = formData['Roblox gebruikersnaam'] || 
+                        formData['Naam'] || 
+                        formData['naam'] || 
+                        formData['roblox'] || 
+                        formData['Roblox Username'];
+        if (!username || username.trim() === '') {
             return {
                 success: false,
-                message: '⚠️ Roblox gebruikersnaam niet ingevuld!',
+                message: '⚠️ Naam/Roblox gebruikersnaam niet ingevuld!',
                 errorType: 'validation'
             };
         }
