@@ -334,7 +334,7 @@ class DiscordSubmitter {
         
         // Basis info
         const basisInfo = `
-👤 **Naam:** ${getField('Naam', 'naam') || 'N/A'}
+👤 **Roblox gebruikersnaam:** ${getField('Roblox gebruikersnaam', 'roblox') || 'N/A'}
 🎖️ **Rang:** ${getField('Rang', 'rang') || 'N/A'}
 📅 **Datum:** ${getField('Datum', 'datum') || 'N/A'}
         `.trim();
@@ -375,7 +375,7 @@ class DiscordSubmitter {
         const getField = this.createFieldGetter(formData);
         
         const basisInfo = `
-👤 **Naam:** ${getField('Naam', 'naam') || 'N/A'}
+👤 **Roblox gebruikersnaam:** ${getField('Roblox gebruikersnaam', 'roblox') || 'N/A'}
 🎖️ **Rang:** ${getField('Rang', 'rang') || 'N/A'}
 📅 **Datum:** ${getField('Datum', 'datum') || 'N/A'}
 ✅ **WTGM Bevoegdheid:** ${getField('WTGM Bevoegdheid', 'wtgm') || 'N/A'}
@@ -415,7 +415,7 @@ class DiscordSubmitter {
         const getField = this.createFieldGetter(formData);
         
         const basisInfo = `
-👤 **Naam:** ${getField('Naam', 'naam') || 'N/A'}
+👤 **Roblox gebruikersnaam:** ${getField('Roblox gebruikersnaam', 'roblox') || 'N/A'}
 🎖️ **Rang:** ${getField('Rang', 'rang') || 'N/A'}
 📅 **Datum:** ${getField('Datum', 'datum') || 'N/A'}
         `.trim();
@@ -461,7 +461,7 @@ class DiscordSubmitter {
         };
 
         const basisInfo = `
-👤 **Naam:** ${getField('Naam', 'naam') || 'N/A'}
+👤 **Roblox gebruikersnaam:** ${getField('Roblox gebruikersnaam', 'roblox') || 'N/A'}
 🎖️ **Rang:** ${getField('Rang', 'rang') || 'N/A'}
 📅 **Datum:** ${getField('Datum', 'datum') || 'N/A'}
         `.trim();
