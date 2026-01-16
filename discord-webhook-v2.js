@@ -132,6 +132,9 @@ class DiscordSubmitter {
         };
 
         try {
+            console.log('📤 Submitting to Netlify Function:', this.webhookUrl);
+            console.log('📦 Payload size:', JSON.stringify(payload).length, 'bytes');
+            
             const response = await fetch(this.webhookUrl, {
                 method: 'POST',
                 headers: {
@@ -140,7 +143,18 @@ class DiscordSubmitter {
                 body: JSON.stringify(payload)
             });
 
-            const result = await response.json();
+            console.log('📥 Response status:', response.status);
+            
+            let result;
+            try {
+                result = await response.json();
+                console.log('📥 Response data:', result);
+            } catch (jsonError) {
+                console.error('❌ Failed to parse response as JSON:', jsonError);
+                const text = await response.text();
+                console.log('📄 Response text:', text);
+                throw new Error('Invalid response from server: ' + text.substring(0, 100));
+            }
 
             if (response.ok && result.success) {
                 // Set cooldown na succesvolle verzending
@@ -151,14 +165,18 @@ class DiscordSubmitter {
                     message: '✅ Sollicitatie succesvol ingediend!\n\nStaff zal je sollicitatie beoordelen.' 
                 };
             } else {
-                throw new Error(result.error || 'Server error');
+                const errorMsg = result.error || result.message || 'Unknown server error';
+                console.error('❌ Server returned error:', errorMsg);
+                throw new Error(errorMsg);
             }
         } catch (error) {
-            console.error('Error submitting to Discord:', error);
+            console.error('💥 Error submitting to Discord:', error);
+            console.error('Error details:', error.message);
             return { 
                 success: false, 
-                message: '❌ Er is een fout opgetreden.\n\nProbeer het later opnieuw of neem contact op met staff.',
-                errorType: 'network'
+                message: '❌ Er is een fout opgetreden.\n\nDetails: ' + error.message + '\n\nCheck de console (F12) voor meer info of neem contact op met staff.',
+                errorType: 'network',
+                error: error.message
             };
         }
     }
