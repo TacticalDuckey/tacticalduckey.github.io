@@ -194,11 +194,13 @@ class DiscordSubmitter {
     // Specifieke formatting voor politie sollicitatie
     addPolitieSollicitatieFields(embed, formData) {
         // Basisinformatie in één field
+        const gemiddeld = formData['Gemiddeld aantal uur per week actief'];
         const basisInfo = `
 👤 **Roblox:** ${formData['Roblox gebruikersnaam'] || 'N/A'}
 💬 **Discord:** ${formData['Discord naam (incl. #)'] || 'N/A'}
 🌍 **Tijdzone:** ${formData['Tijdzone'] || 'N/A'}
 🎂 **Leeftijd (IRL):** ${formData['Leeftijd (IRL)'] || 'N/A'}
+⏰ **Gemiddeld actief:** ${gemiddeld || 'N/A'} uur per week
         `.trim();
 
         embed.fields.push({
@@ -207,58 +209,82 @@ class DiscordSubmitter {
             inline: false
         });
 
-        // Motivatie & Ervaring
-        const motivatie = `
-**${formData['Zo ja, waar en welke rang?'] || ''}**
-
-${formData['3. Waarom wil jij bij de politie van De Lage Landen?'] || ''}
-        `.trim();
-
-        if (motivatie.length > 10) {
-            embed.fields.push({
-                name: '💭 Motivatie & Ervaring',
-                value: motivatie.substring(0, 1024),
-                inline: false
-            });
-        }
-
-        // Alle vragen met volledige tekst
+        // Alle vragen met volledige tekst en emojis
         const vragen = [
             { 
+                emoji: '👮',
+                vraag: '1. Heb je eerder bij een politie, marechaussee of andere hulpdienst gezeten in Roblox?',
+                antwoord: formData['1. Heb je eerder bij een politie, marechaussee of andere hulpdienst gezeten in Roblox?']
+            },
+            { 
+                emoji: '🎖️',
+                vraag: '2. Zo ja, waar en welke rang?',
+                antwoord: formData['Zo ja, waar en welke rang?']
+            },
+            { 
+                emoji: '💭',
+                vraag: '3. Waarom wil jij bij de politie van De Lage Landen?',
+                antwoord: formData['3. Waarom wil jij bij de politie van De Lage Landen?']
+            },
+            { 
+                emoji: '⭐',
                 vraag: '4. Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?',
                 antwoord: formData['4. Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?']
             },
             {
+                emoji: '📋',
                 vraag: '5. Wat houdt een BTGV in en wanneer mag deze worden uitgegeven?',
                 antwoord: formData['5. Wat houdt een BTGV in en wanneer mag deze worden uitgegeven?']
             },
             {
+                emoji: '🚔',
                 vraag: '6. Wat is het verschil tussen een staandehouding en een aanhouding?',
                 antwoord: formData['6. Wat is het verschil tussen een staandehouding en een aanhouding?']
             },
             {
+                emoji: '⚠️',
                 vraag: '7. Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.',
                 antwoord: formData['7. Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.']
             },
             {
+                emoji: '⚖️',
                 vraag: '8. Wat betekent proportionaliteit en subsidiariteit binnen politiewerk?',
                 antwoord: formData['8. Wat betekent proportionaliteit en subsidiariteit binnen politiewerk?']
             },
             {
+                emoji: '👥',
                 vraag: '9. Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?',
                 antwoord: formData['9. Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?']
             },
             {
+                emoji: '🚗',
                 vraag: '10. Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheidt je uit. Hoe handel je dit af?',
                 antwoord: formData['10. Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheidt je uit. Hoe handel je dit af?']
             },
             {
+                emoji: '🚨',
                 vraag: '11. Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?',
                 antwoord: formData['11. Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?']
             },
             {
-                vraag: 'Toelichting',
+                emoji: '📖',
+                vraag: '12. Toelichting',
                 antwoord: formData['Toelichting']
+            },
+            {
+                emoji: '📚',
+                vraag: '13. Leg kort uit wat deze termen betekenen',
+                antwoord: formData['Leg kort uit wat deze termen betekenen']
+            },
+            {
+                emoji: '💡',
+                vraag: '14. Waarom zouden wij jou moeten aannemen?',
+                antwoord: formData['14. Waarom zouden wij jou moeten aannemen?']
+            },
+            {
+                emoji: '❓',
+                vraag: '15. Heb je nog vragen of opmerkingen?',
+                antwoord: formData['15. Heb je nog vragen of opmerkingen?']
             }
         ];
 
@@ -266,44 +292,12 @@ ${formData['3. Waarom wil jij bij de politie van De Lage Landen?'] || ''}
         vragen.forEach(item => {
             if (item.antwoord && item.antwoord.trim()) {
                 embed.fields.push({
-                    name: item.vraag,
+                    name: `${item.emoji} ${item.vraag}`,
                     value: item.antwoord.substring(0, 1024),
                     inline: false
                 });
             }
         });
-
-        // Overige vragen met volledige tekst
-        const slotVragen = [
-            {
-                vraag: '14. Waarom zouden wij jou moeten aannemen?',
-                antwoord: formData['14. Waarom zouden wij jou moeten aannemen?']
-            },
-            {
-                vraag: '15. Heb je nog vragen of opmerkingen?',
-                antwoord: formData['15. Heb je nog vragen of opmerkingen?']
-            }
-        ];
-
-        slotVragen.forEach(item => {
-            if (item.antwoord && item.antwoord.trim()) {
-                embed.fields.push({
-                    name: item.vraag,
-                    value: item.antwoord.substring(0, 1024),
-                    inline: false
-                });
-            }
-        });
-
-        // Activiteit
-        const gemiddeld = formData['Gemiddeld aantal uur per week actief'];
-        if (gemiddeld) {
-            embed.fields.push({
-                name: '⏰ Gemiddeld aantal uur per week actief',
-                value: gemiddeld,
-                inline: true
-            });
-        }
     }
 
     // Generieke field formatting voor andere formulieren
