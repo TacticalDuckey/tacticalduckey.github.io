@@ -7,8 +7,6 @@ class DiscordSubmitter {
         // Use Netlify Function instead of direct Discord webhook
         this.webhookUrl = '/.netlify/functions/submit-sollicitatie';
         this.codesStorageKey = 'sollicitatie_codes';
-        this.cooldownStorageKey = 'sollicitatie_cooldowns';
-        this.cooldownHours = 24; // 24 uur cooldown
     }
 
     // ==================== VERIFICATIE SYSTEMEN ====================
@@ -40,43 +38,7 @@ class DiscordSubmitter {
         };
     }
 
-    // Cooldown: Check of gebruiker recent al heeft ingestuurd
-    checkCooldown(username, formType) {
-        const cooldowns = this.getCooldowns();
-        const key = `${username.toLowerCase()}_${formType}`;
-        
-        if (cooldowns[key]) {
-            const lastSubmit = new Date(cooldowns[key]);
-            const now = new Date();
-            const hoursSince = (now - lastSubmit) / (1000 * 60 * 60);
-            
-            if (hoursSince < this.cooldownHours) {
-                const hoursLeft = Math.ceil(this.cooldownHours - hoursSince);
-                return {
-                    allowed: false,
-                    message: `⏱️ Je hebt deze sollicitatie al ingediend.\n\nWacht nog ${hoursLeft} uur voordat je opnieuw kunt indienen.`,
-                    hoursLeft: hoursLeft
-                };
-            }
-        }
-
-        return { allowed: true };
-    }
-
-    // Set cooldown na succesvolle inzending
-    setCooldown(username, formType) {
-        const cooldowns = this.getCooldowns();
-        const key = `${username.toLowerCase()}_${formType}`;
-        cooldowns[key] = new Date().toISOString();
-        localStorage.setItem(this.cooldownStorageKey, JSON.stringify(cooldowns));
-    }
-
     // ==================== STORAGE HELPERS ====================
-
-    getCooldowns() {
-        const data = localStorage.getItem(this.cooldownStorageKey);
-        return data ? JSON.parse(data) : {};
-    }
 
     getSavedCodes() {
         const codes = localStorage.getItem(this.codesStorageKey);
@@ -111,13 +73,7 @@ class DiscordSubmitter {
             };
         }
 
-        // 3. Check cooldown
-        const cooldownCheck = this.checkCooldown(username, formType);
-        if (!cooldownCheck.allowed) {
-            return {
-                success: false,
-                message: cooldownCheck.message,
-                errorType: 'cooldown',
+        // 3. Maak Discord embed
                 hoursLeft: cooldownCheck.hoursLeft
             };
         }
@@ -157,9 +113,6 @@ class DiscordSubmitter {
             }
 
             if (response.ok && result.success) {
-                // Set cooldown na succesvolle verzending
-                this.setCooldown(username, formType);
-                
                 return { 
                     success: true, 
                     message: '✅ Sollicitatie succesvol ingediend!\n\nStaff zal je sollicitatie beoordelen.' 
