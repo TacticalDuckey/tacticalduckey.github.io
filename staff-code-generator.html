@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sollicitatiecode Generator - Staff Only</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="auth.js"></script>
     <style>
         * {
@@ -275,7 +276,7 @@
         // Wait for netlifyIdentity to fully load
         function checkAuthAndLoad() {
             let attempts = 0;
-            const maxAttempts = 30; // 3 seconds
+            const maxAttempts = 50; // 5 seconds (increased from 3)
             
             const checkInterval = setInterval(() => {
                 attempts++;
@@ -287,17 +288,21 @@
                     if (user) {
                         // User found!
                         clearInterval(checkInterval);
+                        console.log('✅ User authenticated:', user.email);
                         
                         // Check roles
                         const roles = user.app_metadata?.roles || [];
+                        console.log('User roles:', roles);
+                        
                         const hasAccess = roles.includes('admin') || roles.includes('staff');
                         
                         if (!hasAccess) {
-                            alert('⛔ Geen Toegang\n\nDeze pagina is alleen voor Staff en Admins.\n\nJouw rol(len): ' + (roles.length > 0 ? roles.join(', ') : 'geen rollen'));
+                            alert('⛔ Geen Toegang\n\nDeze pagina is alleen voor Staff en Admins.\n\nJouw rol(len): ' + (roles.length > 0 ? roles.join(', ') : 'geen rollen toegewezen'));
                             window.location.href = '/dashboard.html';
                             return;
                         }
                         
+                        console.log('✅ Access granted - loading codes');
                         // Access granted!
                         loadActiveCodes();
                         return;
@@ -307,6 +312,7 @@
                 // Timeout - no user found
                 if (attempts >= maxAttempts) {
                     clearInterval(checkInterval);
+                    console.error('❌ Auth timeout - no user detected');
                     alert('⚠️ Niet ingelogd\n\nJe moet eerst inloggen via het Dashboard.');
                     window.location.href = '/dashboard.html';
                 }
