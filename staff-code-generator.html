@@ -272,30 +272,32 @@
     </div>
 
     <script>
-        // Simple auth check - don't redirect, just check
+        // Direct auth check via netlifyIdentity
         window.addEventListener('DOMContentLoaded', () => {
-            // Give auth.js time to initialize
+            // Wait for netlifyIdentity to be ready
             setTimeout(() => {
-                const auth = new NetlifyAuth();
+                // Check direct via netlifyIdentity
+                const currentUser = window.netlifyIdentity?.currentUser();
                 
-                // Check if user exists
-                if (!auth.user) {
+                if (!currentUser) {
                     alert('⚠️ Niet ingelogd\n\nJe moet eerst inloggen.');
                     window.location.href = '/login.html';
                     return;
                 }
                 
-                // Check role
-                const userRole = auth.getUserRole();
-                if (userRole !== 'admin' && userRole !== 'staff') {
-                    alert('⛔ Geen Toegang\n\nDeze pagina is alleen voor Staff en Admins.\n\nJouw rol: ' + userRole);
+                // Check roles directly
+                const roles = currentUser.app_metadata?.roles || [];
+                const hasAccess = roles.includes('admin') || roles.includes('staff');
+                
+                if (!hasAccess) {
+                    alert('⛔ Geen Toegang\n\nDeze pagina is alleen voor Staff en Admins.\n\nJouw rol(len): ' + (roles.length > 0 ? roles.join(', ') : 'geen rollen'));
                     window.location.href = '/dashboard.html';
                     return;
                 }
                 
-                // Load codes
+                // Access granted - load codes
                 loadActiveCodes();
-            }, 500);
+            }, 800);
         });
 
         // Storage keys
