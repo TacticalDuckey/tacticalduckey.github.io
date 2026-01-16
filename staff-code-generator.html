@@ -272,17 +272,32 @@
     </div>
 
     <script>
-        // Check staff access
-        window.addEventListener('DOMContentLoaded', () => {
+        // Wait for Netlify Identity to initialize before checking auth
+        function initializePage() {
             const auth = new NetlifyAuth();
-            if (!auth.hasRole(['staff', 'admin'])) {
-                window.location.href = '/login.html';
-                return;
-            }
             
-            // Load codes after auth check passes
-            loadActiveCodes();
-        });
+            // Wait a bit for auth to fully initialize
+            setTimeout(() => {
+                if (!auth.user) {
+                    // Not logged in
+                    window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+                
+                if (!auth.hasRole(['staff', 'admin'])) {
+                    // Not authorized
+                    alert('⛔ Geen toegang\n\nDeze pagina is alleen toegankelijk voor Staff en Admins.');
+                    window.location.href = '/dashboard.html';
+                    return;
+                }
+                
+                // Auth passed - load codes
+                loadActiveCodes();
+            }, 500);
+        }
+
+        // Initialize when DOM is ready
+        window.addEventListener('DOMContentLoaded', initializePage);
 
         // Storage keys
         const CODES_STORAGE_KEY = 'sollicitatie_codes';
