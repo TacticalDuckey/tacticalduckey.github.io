@@ -12,11 +12,11 @@ De Discord webhook URL moet als **environment variable** in Netlify ingesteld wo
 4. Klik **Add a variable**
 5. Voeg toe:
    - **Key**: `DISCORD_WEBHOOK_URL`
-   - **Value**: `https://discord.com/api/webhooks/1461510160059990250/vncs7XBl59lKFN-FOUZVUtIcCpgmNhR9zOEZ5HHS5wIOZ91eYyTJ17zvzdjFKilSRdQS`
+   - **Value**: `[JE DISCORD WEBHOOK URL HIER]` ⚠️ **VOEG DIT TOE IN NETLIFY DASHBOARD, NIET IN DEZE FILE!**
 6. Klik **Save**
 7. **Redeploy** je site: Deploys → Trigger Deploy → Deploy site
 
-✅ **Na setup**: Verwijder de webhook URL uit deze README voor beveiliging!
+✅ **Belangrijk**: Sla NOOIT de echte webhook URL op in deze repository!
 
 ---
 
