@@ -276,24 +276,38 @@
         function initializePage() {
             const auth = new NetlifyAuth();
             
-            // Wait a bit for auth to fully initialize
+            // Wait longer for auth to fully initialize
             setTimeout(() => {
+                console.log('Auth check - User:', auth.user);
+                console.log('Auth check - Current user:', window.netlifyIdentity?.currentUser());
+                
                 if (!auth.user) {
-                    // Not logged in
-                    window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
-                    return;
+                    // Check if netlifyIdentity is loaded and has user
+                    const currentUser = window.netlifyIdentity?.currentUser();
+                    if (currentUser) {
+                        auth.user = currentUser;
+                        console.log('Auth recovered from netlifyIdentity');
+                    } else {
+                        console.log('No user found - redirecting to login');
+                        window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                        return;
+                    }
                 }
                 
+                const userRole = auth.getUserRole();
+                console.log('User role:', userRole);
+                
                 if (!auth.hasRole(['staff', 'admin'])) {
-                    // Not authorized
+                    console.log('Insufficient permissions - redirecting to dashboard');
                     alert('⛔ Geen toegang\n\nDeze pagina is alleen toegankelijk voor Staff en Admins.');
                     window.location.href = '/dashboard.html';
                     return;
                 }
                 
+                console.log('Auth check passed - loading codes');
                 // Auth passed - load codes
                 loadActiveCodes();
-            }, 500);
+            }, 1000); // Verhoogd naar 1 seconde
         }
 
         // Initialize when DOM is ready
