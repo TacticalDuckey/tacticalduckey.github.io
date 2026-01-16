@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Handboeken - Lage Landen RP</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="auth.js"></script>
     <style>
         .page-header {
             background: linear-gradient(135deg, #7c3aed, #a78bfa);
@@ -61,9 +63,10 @@
 
     <main class="container">
         <ul class="handboek-list">
-            <li class="handboek-item">
+            <li class="handboek-item" id="dsi-handboek" style="display: none;">
                 <h3>DSI Handboek</h3>
                 <p>Volledig handboek voor de Dienst Speciale Interventies</p>
+                <p style="color: #ff0000; font-weight: bold;">⚠ Alleen toegankelijk voor DSI personeel en administrators</p>
                 <a href="Handboek/DSI-Handboek.html">→ Bekijk handboek</a>
             </li>
 
@@ -94,5 +97,18 @@
             <p>&copy; 2026 Lage Landen RP - Alle rechten voorbehouden</p>
         </div>
     </footer>
+
+    <script>
+        // Show DSI handboek only for DSI/admin users
+        window.addEventListener('load', async function() {
+            // Wait for auth to initialize
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Check if user has DSI or admin role
+            if (auth && auth.user && auth.hasRole(['dsi', 'admin'])) {
+                document.getElementById('dsi-handboek').style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>

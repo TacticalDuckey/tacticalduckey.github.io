@@ -79,6 +79,7 @@ class NetlifyAuth {
         const roles = this.user.app_metadata?.roles || [];
         
         if (roles.includes('admin')) return 'admin';
+        if (roles.includes('dsi')) return 'dsi';
         if (roles.includes('staff')) return 'staff';
         if (roles.includes('agent')) return 'agent';
         
@@ -88,6 +89,7 @@ class NetlifyAuth {
     getRoleDisplay(role) {
         const roleNames = {
             'admin': '👑 Administrator',
+            'dsi': '🔒 DSI Operator',
             'staff': '⭐ Staff',
             'agent': '🚔 Agent',
             'user': '👤 Gebruiker',

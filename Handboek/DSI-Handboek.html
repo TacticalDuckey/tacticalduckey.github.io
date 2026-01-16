@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSI | VERTROUWELIJK | NL-26-12</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="../auth.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
         
@@ -762,8 +764,8 @@
     <!-- User Watermark -->
     <div id="userWatermark">SESSION: INITIALIZING...</div>
     
-    <!-- Login Screen -->
-    <div id="loginScreen">
+    <!-- Login Screen (hidden when using Netlify auth) -->
+    <div id="loginScreen" class="hidden">
         <!-- Scrolling Terminal Background -->
         <div class="terminal-bg" id="terminalBg"></div>
 
@@ -1904,13 +1906,13 @@
             // Request clipboard permission
             const checkingLine = document.createElement('div');
             checkingLine.className = 'boot-line boot-warning';
-            checkingLine.textContent = '[SECURITY] Awaiting user authorization...';
+            checkingLine.textContent = '[SECURITY] Requesting clipboard access for enhanced protection...';
             bootContent.appendChild(checkingLine);
 
             await new Promise(resolve => setTimeout(resolve, 500));
 
             try {
-                // Request clipboard permission
+                // Try to request clipboard permission
                 await navigator.clipboard.writeText('');
                 
                 // Permission granted - store this
@@ -1920,140 +1922,104 @@
                 const successLine = document.createElement('div');
                 successLine.className = 'boot-line boot-success';
                 bootContent.appendChild(successLine);
-                await typeText(successLine, '[OK] Clipboard access granted. Authorization confirmed.', 30);
+                await typeText(successLine, '[OK] Clipboard access granted. Enhanced security enabled.', 30);
                 
-                await new Promise(resolve => setTimeout(resolve, 300));
+            } catch (err) {
+                // Permission denied - continue anyway
+                hasClipboardPermission = false;
+                
+                const deniedLine = document.createElement('div');
+                deniedLine.className = 'boot-line boot-warning';
+                bootContent.appendChild(deniedLine);
+                await typeText(deniedLine, '[WARNING] Clipboard access denied. Continuing with reduced security.', 30);
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 300));
 
-                // Continue boot sequence
-                const continueSequences = [
-                    { text: '', speed: 400, class: '', newline: true },
-                    { text: '[DATABASE] Loading classified documents...', speed: 40, class: '', newline: true },
-                    { text: '[OK] DSI-Handboek.enc                        [DECRYPTED]', speed: 30, class: 'boot-success', newline: true },
-                    { text: '', speed: 500, class: '', newline: true },
-                    { text: '[SYSTEM] Access granted. Welcome, Operator.', speed: 40, class: 'boot-success', newline: true },
-                    { text: '', speed: 400, class: '', newline: true },
-                    { text: 'Initialiseren documentweergave...', speed: 45, class: 'boot-warning', newline: true },
-                    { text: '', speed: 800, class: '', newline: true },
-                ];
+            // Continue boot sequence regardless of clipboard permission
+            const continueSequences = [
+                { text: '', speed: 400, class: '', newline: true },
+                { text: '[DATABASE] Loading classified documents...', speed: 40, class: '', newline: true },
+                { text: '[OK] DSI-Handboek.enc                        [DECRYPTED]', speed: 30, class: 'boot-success', newline: true },
+                { text: '', speed: 500, class: '', newline: true },
+                { text: '[SYSTEM] Access granted. Welcome, Operator.', speed: 40, class: 'boot-success', newline: true },
+                { text: '', speed: 400, class: '', newline: true },
+                { text: 'Initialiseren documentweergave...', speed: 45, class: 'boot-warning', newline: true },
+                { text: '', speed: 800, class: '', newline: true },
+            ];
 
-                for (const seq of continueSequences) {
-                    const line = document.createElement('div');
-                    line.className = 'boot-line ' + (seq.class || '');
-                    bootContent.appendChild(line);
+            for (const seq of continueSequences) {
+                const line = document.createElement('div');
+                line.className = 'boot-line ' + (seq.class || '');
+                bootContent.appendChild(line);
 
-                    if (seq.text) {
-                        await typeText(line, seq.text, seq.speed);
-                    }
-
-                    if (seq.newline) {
-                        await new Promise(resolve => setTimeout(resolve, seq.speed || 100));
-                    }
+                if (seq.text) {
+                    await typeText(line, seq.text, seq.speed);
                 }
 
-                // Add final cursor
-                const cursorLine = document.createElement('div');
-                cursorLine.className = 'boot-line';
-                cursorLine.innerHTML = '<span class="boot-cursor"></span>';
-                bootContent.appendChild(cursorLine);
-
-                // Wait a bit then fade to main content
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                // Fade out boot sequence
-                document.getElementById('bootSequence').style.opacity = '0';
-                document.getElementById('bootSequence').style.transition = 'opacity 1s';
-                
-                setTimeout(() => {
-                    document.getElementById('bootSequence').classList.remove('active');
-                    document.getElementById('mainContent').classList.add('fade-in');
-                    startWatermarkUpdates();
-                }, 1000);
-
-            } catch (err) {
-                // Permission denied
-                const deniedLine = document.createElement('div');
-                deniedLine.className = 'boot-line boot-error';
-                bootContent.appendChild(deniedLine);
-                await typeText(deniedLine, '[ERROR] Clipboard access DENIED by user.', 30);
-                
-                await new Promise(resolve => setTimeout(resolve, 300));
-
-                const terminateLine = document.createElement('div');
-                terminateLine.className = 'boot-line boot-error';
-                bootContent.appendChild(terminateLine);
-                await typeText(terminateLine, '[SYSTEM] Security requirement not met. Terminating session...', 30);
-
-                await new Promise(resolve => setTimeout(resolve, 1000));
-
-                // Show clipboard denied screen
-                document.getElementById('bootSequence').style.display = 'none';
-                document.getElementById('clipboardDenied').style.display = 'block';
-
-                // Return to login after 3 seconds
-                setTimeout(() => {
-                    document.getElementById('clipboardDenied').style.display = 'none';
-                    sessionStorage.removeItem('dsiLoggedIn');
-                    
-                    const loginScreen = document.getElementById('loginScreen');
-                    loginScreen.classList.remove('hidden');
-                    loginScreen.style.opacity = '0';
-                    
-                    // Clear login form
-                    document.getElementById('username').value = '';
-                    document.getElementById('password').value = '';
-                    
-                    setTimeout(() => {
-                        loginScreen.style.transition = 'opacity 0.8s';
-                        loginScreen.style.opacity = '1';
-                    }, 50);
-                }, 3000);
+                if (seq.newline) {
+                    await new Promise(resolve => setTimeout(resolve, seq.speed || 100));
+                }
             }
+
+            // Add final cursor
+            const cursorLine = document.createElement('div');
+            cursorLine.className = 'boot-line';
+            cursorLine.innerHTML = '<span class="boot-cursor"></span>';
+            bootContent.appendChild(cursorLine);
+
+            // Wait a bit then fade to main content
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Fade out boot sequence
+            document.getElementById('bootSequence').style.opacity = '0';
+            document.getElementById('bootSequence').style.transition = 'opacity 1s';
+            
+            setTimeout(() => {
+                document.getElementById('bootSequence').classList.remove('active');
+                document.getElementById('mainContent').classList.add('fade-in');
+                startWatermarkUpdates();
+            }, 1000);
         }
 
-        // Login functionality
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Check authentication on page load
+        window.addEventListener('load', async function() {
+            // Wait for auth to initialize
+            await new Promise(resolve => setTimeout(resolve, 500));
             
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Check credentials
-            if (username === 'Operator' && password === 'LageLandenRP') {
-                // Successful login
-                errorMessage.classList.remove('show');
-                
-                // Fade out login screen
-                const loginScreen = document.getElementById('loginScreen');
-                loginScreen.style.opacity = '0';
-                loginScreen.style.transition = 'opacity 0.8s';
-                
-                setTimeout(() => {
-                    loginScreen.classList.add('hidden');
-                    document.getElementById('mainContent').classList.add('unlocked');
-                    
-                    // Show and run boot sequence
-                    document.getElementById('bootSequence').classList.add('active');
-                    runBootSequence();
-                    
-                    // Store login state in session
-                    sessionStorage.setItem('dsiLoggedIn', 'true');
-                    
-                    // Start inactivity timer
-                    resetInactivityTimer();
-                }, 800);
-            } else {
-                // Failed login
-                errorMessage.classList.add('show');
-                
-                // Clear password field
-                document.getElementById('password').value = '';
-                
-                // Shake animation already in CSS
-                setTimeout(() => {
-                    errorMessage.classList.remove('show');
-                }, 3000);
+            // Check if user has DSI or admin role
+            if (!auth || !auth.user) {
+                // Not logged in - redirect to login
+                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                return;
             }
+            
+            if (!auth.hasRole(['dsi', 'admin'])) {
+                // No DSI/admin access
+                auth.showAccessDenied();
+                return;
+            }
+            
+            // User is authenticated with correct role
+            // Fade out login screen
+            const loginScreen = document.getElementById('loginScreen');
+            loginScreen.style.opacity = '0';
+            loginScreen.style.transition = 'opacity 0.8s';
+            
+            setTimeout(() => {
+                loginScreen.classList.add('hidden');
+                document.getElementById('mainContent').classList.add('unlocked');
+                
+                // Show and run boot sequence
+                document.getElementById('bootSequence').classList.add('active');
+                runBootSequence();
+                
+                // Store login state in session
+                sessionStorage.setItem('dsiLoggedIn', 'true');
+                
+                // Start inactivity timer
+                resetInactivityTimer();
+            }, 800);
         });
 
         // Logout function
@@ -2079,29 +2045,12 @@
             // Clear session
             sessionStorage.removeItem('dsiLoggedIn');
             
-            // Fade out main content
-            const mainContent = document.getElementById('mainContent');
-            mainContent.style.opacity = '0';
-            mainContent.style.transition = 'opacity 0.8s';
-            
-            setTimeout(() => {
-                mainContent.classList.remove('unlocked');
-                mainContent.classList.remove('fade-in');
-                
-                // Show login screen again
-                const loginScreen = document.getElementById('loginScreen');
-                loginScreen.classList.remove('hidden');
-                loginScreen.style.opacity = '0';
-                
-                // Clear login form
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-                
-                setTimeout(() => {
-                    loginScreen.style.transition = 'opacity 0.8s';
-                    loginScreen.style.opacity = '1';
-                }, 50);
-            }, 800);
+            // Use Netlify auth logout
+            if (auth) {
+                auth.logout();
+            } else {
+                window.location.href = '/index.html';
+            }
         }
 
         // Disable right-click
@@ -2111,25 +2060,7 @@
             showScreenshotWarning();
         });
 
-        // Check if already logged in
-        window.addEventListener('load', async function() {
-            if (sessionStorage.getItem('dsiLoggedIn') === 'true') {
-                // Try to get clipboard permission silently
-                try {
-                    await navigator.clipboard.writeText('');
-                    hasClipboardPermission = true;
-                } catch (err) {
-                    // No permission, will need to request again
-                    hasClipboardPermission = false;
-                }
-                
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainContent').classList.add('unlocked');
-                document.getElementById('mainContent').classList.add('fade-in');
-                resetInactivityTimer();
-                startWatermarkUpdates();
-            }
-        });
+
 
         // Update watermarks constantly
         function startWatermarkUpdates() {

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSI | TRAINING FASES | VERTROUWELIJK</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="../auth.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
         
@@ -612,8 +614,8 @@
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen">
+    <!-- Login Screen (hidden when using Netlify auth) -->
+    <div id="loginScreen" class="hidden">
         <div class="terminal-bg" id="terminalBg"></div>
 
         <div class="login-container">
@@ -1717,62 +1719,49 @@
             }, 1000);
         }
 
-        // Login functionality
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Check authentication on page load
+        window.addEventListener('load', async function() {
+            // Wait for auth to initialize
+            await new Promise(resolve => setTimeout(resolve, 500));
             
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('errorMessage');
-            
-            if (username === 'TacticalDuckey' && password === 'Calvin103#') {
-                errorMessage.classList.remove('show');
-                document.getElementById('loginScreen').style.opacity = '0';
-                document.getElementById('loginScreen').style.transition = 'opacity 0.8s';
-                
-                setTimeout(() => {
-                    document.getElementById('loginScreen').classList.add('hidden');
-                    document.getElementById('bootSequence').classList.add('active');
-                    runBootSequence();
-                    sessionStorage.setItem('dsiTrainingLoggedIn', 'true');
-                }, 800);
-            } else {
-                errorMessage.classList.add('show');
-                document.getElementById('password').value = '';
-                setTimeout(() => {
-                    errorMessage.classList.remove('show');
-                }, 3000);
+            // Check if user has DSI or admin role
+            if (!auth || !auth.user) {
+                // Not logged in - redirect to login
+                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                return;
             }
+            
+            if (!auth.hasRole(['dsi', 'admin'])) {
+                // No DSI/admin access
+                auth.showAccessDenied();
+                return;
+            }
+            
+            // User is authenticated with correct role - hide login screen and show boot
+            document.getElementById('loginScreen').style.opacity = '0';
+            document.getElementById('loginScreen').style.transition = 'opacity 0.8s';
+            
+            setTimeout(() => {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('bootSequence').classList.add('active');
+                runBootSequence();
+                sessionStorage.setItem('dsiTrainingLoggedIn', 'true');
+            }, 800);
         });
 
         // Logout function
         function logout() {
             sessionStorage.removeItem('dsiTrainingLoggedIn');
             
-            const mainContent = document.getElementById('mainContent');
-            mainContent.style.opacity = '0';
-            mainContent.style.transition = 'opacity 0.8s';
-            
-            setTimeout(() => {
-                mainContent.classList.remove('unlocked', 'fade-in');
-                document.getElementById('loginScreen').classList.remove('hidden');
-                document.getElementById('loginScreen').style.opacity = '0';
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-                setTimeout(() => {
-                    document.getElementById('loginScreen').style.opacity = '1';
-                    document.getElementById('loginScreen').style.transition = 'opacity 0.8s';
-                }, 50);
-            }, 800);
+            // Use Netlify auth logout
+            if (auth) {
+                auth.logout();
+            } else {
+                window.location.href = '/index.html';
+            }
         }
 
-        // Check if already logged in
-        window.addEventListener('load', function() {
-            if (sessionStorage.getItem('dsiTrainingLoggedIn') === 'true') {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainContent').classList.add('unlocked', 'fade-in');
-            }
-        });
+
     </script>
 </body>
 </html>
