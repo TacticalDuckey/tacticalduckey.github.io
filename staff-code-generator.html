@@ -256,7 +256,7 @@
 
             <div class="code-display" id="codeDisplay">
                 <div class="code-text" id="generatedCode">ABC-123-XYZ</div>
-                <button class="copy-btn" onclick="copyCode()">📋 Kopieer Code</button>
+                <button class="copy-btn" onclick="copyCode(event)">📋 Kopieer Code</button>
                 <div class="code-info">
                     <strong>Geef deze code aan de sollicitant</strong><br>
                     <span id="codeExpiry"></span>
@@ -368,7 +368,7 @@
         }
 
         // Copy code to clipboard
-        function copyCode() {
+        function copyCode(event) {
             const code = document.getElementById('generatedCode').textContent;
             navigator.clipboard.writeText(code).then(() => {
                 const btn = event.target;
@@ -377,6 +377,9 @@
                 setTimeout(() => {
                     btn.textContent = originalText;
                 }, 2000);
+            }).catch(err => {
+                console.error('Copy failed:', err);
+                alert('Kon code niet kopiëren. Probeer handmatig te selecteren.');
             });
         }
 
