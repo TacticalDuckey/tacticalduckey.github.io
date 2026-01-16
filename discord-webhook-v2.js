@@ -186,6 +186,14 @@ class DiscordSubmitter {
     addFieldsToEmbed(embed, formData, formType) {
         if (formType === 'politie') {
             this.addPolitieSollicitatieFields(embed, formData);
+        } else if (formType === 'wtgm') {
+            this.addWTGMFields(embed, formData);
+        } else if (formType === 'grootwapen') {
+            this.addGrootWapenFields(embed, formData);
+        } else if (formType === 'taser') {
+            this.addTaserFields(embed, formData);
+        } else if (formType.startsWith('rijbewijs')) {
+            this.addRijbewijsFields(embed, formData, formType);
         } else {
             this.addGenericFields(embed, formData);
         }
@@ -314,6 +322,179 @@ class DiscordSubmitter {
                 });
             }
         });
+    }
+
+    // WTGM Toets formatting
+    addWTGMFields(embed, formData) {
+        const getField = this.createFieldGetter(formData);
+        
+        // Basis info
+        const basisInfo = `
+👤 **Naam:** ${getField('Naam', 'naam') || 'N/A'}
+🎖️ **Rang:** ${getField('Rang', 'rang') || 'N/A'}
+📅 **Datum:** ${getField('Datum', 'datum') || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '📋 Basisinformatie',
+            value: basisInfo,
+            inline: false
+        });
+
+        // Vragen
+        const vragen = [
+            { emoji: '🔤', vraag: '1. Wat betekent de afkorting WTGM?', antwoord: getField('1. Wat betekent', 'vraag1') },
+            { emoji: '👮', vraag: '2. Welke rangen mogen standaard een dienstwapen dragen?', antwoord: getField('2. Welke rangen', 'vraag2') },
+            { emoji: '🔫', vraag: '3. Wanneer mag je je wapen trekken?', antwoord: getField('3. Wanneer mag je', 'vraag3') },
+            { emoji: '📊', vraag: '4. Wat is de volgorde van het geweldsspectrum?', antwoord: getField('4. Wat is de volgorde', 'vraag4') },
+            { emoji: '⚠️', vraag: '5. Mag je waarschuwingsschoten lossen?', antwoord: getField('5. Mag je waarschuwingsschoten', 'vraag5') },
+            { emoji: '👥', vraag: '6. Je ziet een collega die zijn wapen trekt zonder gevaar. Wat doe je?', antwoord: getField('6. Je ziet een collega', 'vraag6') },
+            { emoji: '🚫', vraag: '7. Een burger vraagt of hij je wapen mag zien. Wat zeg je?', antwoord: getField('7. Een burger vraagt', 'vraag7') },
+            { emoji: '📝', vraag: '8. Wat moet je doen na het gebruik van je wapen?', antwoord: getField('8. Wat moet je doen', 'vraag8') },
+            { emoji: '🎯', vraag: '9. Waar richt je op bij noodweer?', antwoord: getField('9. Waar richt je', 'vraag9') },
+            { emoji: '💭', vraag: '10. Extra opmerkingen', antwoord: getField('10. Extra opmerkingen', 'vraag10', 'opmerkingen') }
+        ];
+
+        vragen.forEach(item => {
+            if (item.antwoord && item.antwoord.trim()) {
+                embed.fields.push({
+                    name: `${item.emoji} ${item.vraag}`,
+                    value: item.antwoord.substring(0, 1024),
+                    inline: false
+                });
+            }
+        });
+    }
+
+    // Groot Wapen Toets formatting
+    addGrootWapenFields(embed, formData) {
+        const getField = this.createFieldGetter(formData);
+        
+        const basisInfo = `
+👤 **Naam:** ${getField('Naam', 'naam') || 'N/A'}
+🎖️ **Rang:** ${getField('Rang', 'rang') || 'N/A'}
+📅 **Datum:** ${getField('Datum', 'datum') || 'N/A'}
+✅ **WTGM Bevoegdheid:** ${getField('WTGM Bevoegdheid', 'wtgm') || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '📋 Basisinformatie',
+            value: basisInfo,
+            inline: false
+        });
+
+        const vragen = [
+            { emoji: '🔫', vraag: '1. Welke wapens vallen onder "Groot Wapen"?', antwoord: getField('1. Welke wapens', 'vraag1') },
+            { emoji: '⚠️', vraag: '2. Wanneer mag je een groot wapen gebruiken?', antwoord: getField('2. Wanneer mag je', 'vraag2') },
+            { emoji: '🚗', vraag: '3. Mag je met een groot wapen op een voertuig schieten?', antwoord: getField('3. Mag je met een groot', 'vraag3') },
+            { emoji: '🏦', vraag: '4. Je ziet een gewapende overval bij een bank. Mag je je groot wapen gebruiken?', antwoord: getField('4. Je ziet een gewapende', 'vraag4') },
+            { emoji: '📦', vraag: '5. Waar bewaar je een groot wapen?', antwoord: getField('5. Waar bewaar je', 'vraag5') },
+            { emoji: '🎯', vraag: '6. Op welk lichaamsdeel richt je bij een vuurgevecht?', antwoord: getField('6. Op welk lichaamsdeel', 'vraag6') },
+            { emoji: '👥', vraag: '7. Mag je een groot wapen gebruiken bij een demonstratie?', antwoord: getField('7. Mag je een groot wapen', 'vraag7') },
+            { emoji: '📝', vraag: '8. Wat doe je na gebruik van een groot wapen?', antwoord: getField('8. Wat doe je na', 'vraag8') },
+            { emoji: '💭', vraag: '9. Extra opmerkingen', antwoord: getField('9. Extra', 'vraag9', 'opmerkingen') }
+        ];
+
+        vragen.forEach(item => {
+            if (item.antwoord && item.antwoord.trim()) {
+                embed.fields.push({
+                    name: `${item.emoji} ${item.vraag}`,
+                    value: item.antwoord.substring(0, 1024),
+                    inline: false
+                });
+            }
+        });
+    }
+
+    // Taser Toets formatting
+    addTaserFields(embed, formData) {
+        const getField = this.createFieldGetter(formData);
+        
+        const basisInfo = `
+👤 **Naam:** ${getField('Naam', 'naam') || 'N/A'}
+🎖️ **Rang:** ${getField('Rang', 'rang') || 'N/A'}
+📅 **Datum:** ${getField('Datum', 'datum') || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '📋 Basisinformatie',
+            value: basisInfo,
+            inline: false
+        });
+
+        const vragen = [
+            { emoji: '⚡', vraag: '1. Wat is een taser en waarvoor wordt deze gebruikt?', antwoord: getField('1. Wat is een taser', 'vraag1') },
+            { emoji: '✋', vraag: '2. Wanneer mag je een taser gebruiken?', antwoord: getField('2. Wanneer mag je', 'vraag2') },
+            { emoji: '🔫', vraag: '3. Mag je een taser gebruiken op iemand die een wapen vasthoudt?', antwoord: getField('3. Mag je een taser', 'vraag3') },
+            { emoji: '🔢', vraag: '4. Hoeveel keer mag je iemand taseren?', antwoord: getField('4. Hoeveel keer', 'vraag4') },
+            { emoji: '🚑', vraag: '5. Wat doe je DIRECT nadat je iemand getaserd hebt?', antwoord: getField('5. Wat doe je DIRECT', 'vraag5') },
+            { emoji: '🚫', vraag: '6. Mag je een taser gebruiken op kwetsbare personen?', antwoord: getField('6. Mag je een taser', 'vraag6') },
+            { emoji: '📍', vraag: '7. Waar richt je de taser op?', antwoord: getField('7. Waar richt je', 'vraag7') },
+            { emoji: '📝', vraag: '8. Wat moet je rapporteren na taser gebruik?', antwoord: getField('8. Wat moet je', 'vraag8') },
+            { emoji: '💭', vraag: '9. Extra opmerkingen', antwoord: getField('9. Extra', 'vraag9', 'opmerkingen') }
+        ];
+
+        vragen.forEach(item => {
+            if (item.antwoord && item.antwoord.trim()) {
+                embed.fields.push({
+                    name: `${item.emoji} ${item.vraag}`,
+                    value: item.antwoord.substring(0, 1024),
+                    inline: false
+                });
+            }
+        });
+    }
+
+    // Rijbewijs formatting (auto, motor, boot, lucht)
+    addRijbewijsFields(embed, formData, formType) {
+        const getField = this.createFieldGetter(formData);
+        
+        const typeEmojis = {
+            'rijbewijs-auto': '🚗',
+            'rijbewijs-motor': '🏍️',
+            'rijbewijs-boot': '🚤',
+            'rijbewijs-lucht': '✈️'
+        };
+
+        const basisInfo = `
+👤 **Naam:** ${getField('Naam', 'naam') || 'N/A'}
+🎖️ **Rang:** ${getField('Rang', 'rang') || 'N/A'}
+📅 **Datum:** ${getField('Datum', 'datum') || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '📋 Basisinformatie',
+            value: basisInfo,
+            inline: false
+        });
+
+        // Generieke vragen (10-15 vragen meestal)
+        for (let i = 1; i <= 15; i++) {
+            const vraag = getField(`${i}.`, `vraag${i}`);
+            if (vraag && vraag.trim()) {
+                embed.fields.push({
+                    name: `${typeEmojis[formType] || '📝'} Vraag ${i}`,
+                    value: vraag.substring(0, 1024),
+                    inline: false
+                });
+            }
+        }
+    }
+
+    // Helper functie om field getter te maken
+    createFieldGetter(formData) {
+        return (...possibleKeys) => {
+            for (const key of possibleKeys) {
+                if (formData[key]) return formData[key];
+                
+                const foundKey = Object.keys(formData).find(k => 
+                    k.toLowerCase().includes(key.toLowerCase()) || 
+                    key.toLowerCase().includes(k.toLowerCase())
+                );
+                if (foundKey && formData[foundKey]) return formData[foundKey];
+            }
+            return null;
+        };
     }
 
     // Generieke field formatting voor andere formulieren
