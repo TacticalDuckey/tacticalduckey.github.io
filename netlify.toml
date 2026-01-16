@@ -31,6 +31,30 @@
 [[headers]]
   for = "/*"
   [headers.values]
+    # Content Security Policy - Beveiligt tegen XSS en data injection
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://identity.netlify.com https://cdnjs.cloudflare.com;
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: https:;
+      font-src 'self' data: https://cdnjs.cloudflare.com;
+      connect-src 'self' https://discord.com https://identity.netlify.com https://*.netlify.app https://*.netlify.com;
+      frame-src 'self' https://identity.netlify.com;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+    """
+    # Prevent clickjacking
     X-Frame-Options = "DENY"
+    # Prevent MIME type sniffing
     X-Content-Type-Options = "nosniff"
+    # Referrer policy
     Referrer-Policy = "strict-origin-when-cross-origin"
+    # XSS Protection (legacy but still useful)
+    X-XSS-Protection = "1; mode=block"
+    # Permissions Policy (Feature Policy)
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+    # Strict Transport Security (HTTPS only)
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"

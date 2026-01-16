@@ -194,7 +194,42 @@ git push orgin master
 
 ---
 
-## 📞 Support
+## � Beveiliging
+
+### Content Security Policy (CSP)
+Alle security headers worden automatisch toegepast via `netlify.toml`:
+
+- **CSP Headers** - Beschermt tegen XSS en data injection
+- **X-Frame-Options** - Voorkomt clickjacking (DENY)
+- **X-Content-Type-Options** - Voorkomt MIME-sniffing
+- **Strict-Transport-Security** - Forceert HTTPS
+- **Permissions-Policy** - Beperkt browser features
+
+### Toegestane Sources
+```
+Scripts:  Netlify Identity, Cloudflare CDN
+Styles:   Self + inline styles
+Images:   Self + data URIs + HTTPS
+Fonts:    Self + Cloudflare CDN
+API:      Discord webhooks, Netlify endpoints
+```
+
+### Environment Variables
+Gevoelige data zoals Discord webhook URL worden **server-side** opgeslagen:
+1. Netlify Dashboard → Site Settings → Environment Variables
+2. Add: `DISCORD_WEBHOOK_URL`
+3. Waarde wordt **nooit** in de code opgeslagen
+4. Netlify Functions hebben toegang via `process.env`
+
+### Netlify Identity
+- **Trusted Source**: `https://identity.netlify.com/v1/netlify-identity-widget.js`
+- **Officiële Netlify service** - Geen integrity hash nodig
+- **Auto-updates** - Netlify beheert security patches
+- **CSP toegestaan** via `script-src` directive
+
+---
+
+## �📞 Support
 
 Voor vragen of problemen:
 - **Discord**: Neem contact op met server admins
