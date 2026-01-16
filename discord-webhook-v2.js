@@ -73,12 +73,7 @@ class DiscordSubmitter {
             };
         }
 
-        // 3. Maak Discord embed
-                hoursLeft: cooldownCheck.hoursLeft
-            };
-        }
-
-        // 4. Verzend naar Discord via Netlify Function (secure)
+        // 3. Verzend naar Discord via Netlify Function (secure)
         const embed = this.createEmbed(formData, formType, username);
         
         const payload = {
