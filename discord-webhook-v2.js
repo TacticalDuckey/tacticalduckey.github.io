@@ -345,29 +345,19 @@ class DiscordSubmitter {
             inline: false
         });
 
-        // Vragen
-        const vragen = [
-            { emoji: '🔤', vraag: '1. Wat betekent de afkorting WTGM?', antwoord: getField('1. Wat betekent', 'vraag1') },
-            { emoji: '👮', vraag: '2. Welke rangen mogen standaard een dienstwapen dragen?', antwoord: getField('2. Welke rangen', 'vraag2') },
-            { emoji: '🔫', vraag: '3. Wanneer mag je je wapen trekken?', antwoord: getField('3. Wanneer mag je', 'vraag3') },
-            { emoji: '📊', vraag: '4. Wat is de volgorde van het geweldsspectrum?', antwoord: getField('4. Wat is de volgorde', 'vraag4') },
-            { emoji: '⚠️', vraag: '5. Mag je waarschuwingsschoten lossen?', antwoord: getField('5. Mag je waarschuwingsschoten', 'vraag5') },
-            { emoji: '👥', vraag: '6. Je ziet een collega die zijn wapen trekt zonder gevaar. Wat doe je?', antwoord: getField('6. Je ziet een collega', 'vraag6') },
-            { emoji: '🚫', vraag: '7. Een burger vraagt of hij je wapen mag zien. Wat zeg je?', antwoord: getField('7. Een burger vraagt', 'vraag7') },
-            { emoji: '📝', vraag: '8. Wat moet je doen na het gebruik van je wapen?', antwoord: getField('8. Wat moet je doen', 'vraag8') },
-            { emoji: '🎯', vraag: '9. Waar richt je op bij noodweer?', antwoord: getField('9. Waar richt je', 'vraag9') },
-            { emoji: '💭', vraag: '10. Extra opmerkingen', antwoord: getField('10. Extra opmerkingen', 'vraag10', 'opmerkingen') }
-        ];
-
-        vragen.forEach(item => {
-            if (item.antwoord && item.antwoord.trim()) {
+        // Verzamel ALLE vragen dynamisch
+        for (let i = 1; i <= 15; i++) {
+            const antwoord = getField(`${i}.`, `vraag${i}`, `vraag${i}a`, `vraag${i}b`, `vraag${i}c`, `vraag${i}d`);
+            if (antwoord && antwoord.toString().trim()) {
+                const emojis = ['🔤', '👮', '🔫', '📊', '⚠️', '👥', '🚫', '📝', '🎯', '💭', '📌', '🔍', '⚖️', '🛡️', '✅'];
+                const emoji = emojis[i-1] || '📌';
                 embed.fields.push({
-                    name: `${item.emoji} ${item.vraag}`,
-                    value: item.antwoord.substring(0, 1024),
+                    name: `${emoji} Vraag ${i}`,
+                    value: antwoord.toString().substring(0, 1024),
                     inline: false
                 });
             }
-        });
+        }
     }
 
     // Groot Wapen Toets formatting
@@ -387,27 +377,19 @@ class DiscordSubmitter {
             inline: false
         });
 
-        const vragen = [
-            { emoji: '🔫', vraag: '1. Welke wapens vallen onder "Groot Wapen"?', antwoord: getField('1. Welke wapens', 'vraag1') },
-            { emoji: '⚠️', vraag: '2. Wanneer mag je een groot wapen gebruiken?', antwoord: getField('2. Wanneer mag je', 'vraag2') },
-            { emoji: '🚗', vraag: '3. Mag je met een groot wapen op een voertuig schieten?', antwoord: getField('3. Mag je met een groot', 'vraag3') },
-            { emoji: '🏦', vraag: '4. Je ziet een gewapende overval bij een bank. Mag je je groot wapen gebruiken?', antwoord: getField('4. Je ziet een gewapende', 'vraag4') },
-            { emoji: '📦', vraag: '5. Waar bewaar je een groot wapen?', antwoord: getField('5. Waar bewaar je', 'vraag5') },
-            { emoji: '🎯', vraag: '6. Op welk lichaamsdeel richt je bij een vuurgevecht?', antwoord: getField('6. Op welk lichaamsdeel', 'vraag6') },
-            { emoji: '👥', vraag: '7. Mag je een groot wapen gebruiken bij een demonstratie?', antwoord: getField('7. Mag je een groot wapen', 'vraag7') },
-            { emoji: '📝', vraag: '8. Wat doe je na gebruik van een groot wapen?', antwoord: getField('8. Wat doe je na', 'vraag8') },
-            { emoji: '💭', vraag: '9. Extra opmerkingen', antwoord: getField('9. Extra', 'vraag9', 'opmerkingen') }
-        ];
-
-        vragen.forEach(item => {
-            if (item.antwoord && item.antwoord.trim()) {
+        // Verzamel ALLE vragen dynamisch
+        for (let i = 1; i <= 15; i++) {
+            const antwoord = getField(`${i}.`, `vraag${i}`, `vraag${i}a`, `vraag${i}b`, `vraag${i}c`, `vraag${i}d`, `vraag${i}e`);
+            if (antwoord && antwoord.toString().trim()) {
+                const emojis = ['🔫', '⚠️', '🚗', '🏦', '📦', '🎯', '👥', '📝', '💭', '📌', '🔍', '⚖️', '🛡️', '✅', '🎖️'];
+                const emoji = emojis[i-1] || '📌';
                 embed.fields.push({
-                    name: `${item.emoji} ${item.vraag}`,
-                    value: item.antwoord.substring(0, 1024),
+                    name: `${emoji} Vraag ${i}`,
+                    value: antwoord.toString().substring(0, 1024),
                     inline: false
                 });
             }
-        });
+        }
     }
 
     // Taser Toets formatting
@@ -426,27 +408,18 @@ class DiscordSubmitter {
             inline: false
         });
 
-        const vragen = [
-            { emoji: '⚡', vraag: '1. Wat is een taser en waarvoor wordt deze gebruikt?', antwoord: getField('1. Wat is een taser', 'vraag1') },
-            { emoji: '✋', vraag: '2. Wanneer mag je een taser gebruiken?', antwoord: getField('2. Wanneer mag je', 'vraag2') },
-            { emoji: '🔫', vraag: '3. Mag je een taser gebruiken op iemand die een wapen vasthoudt?', antwoord: getField('3. Mag je een taser', 'vraag3') },
-            { emoji: '🔢', vraag: '4. Hoeveel keer mag je iemand taseren?', antwoord: getField('4. Hoeveel keer', 'vraag4') },
-            { emoji: '🚑', vraag: '5. Wat doe je DIRECT nadat je iemand getaserd hebt?', antwoord: getField('5. Wat doe je DIRECT', 'vraag5') },
-            { emoji: '🚫', vraag: '6. Mag je een taser gebruiken op kwetsbare personen?', antwoord: getField('6. Mag je een taser', 'vraag6') },
-            { emoji: '📍', vraag: '7. Waar richt je de taser op?', antwoord: getField('7. Waar richt je', 'vraag7') },
-            { emoji: '📝', vraag: '8. Wat moet je rapporteren na taser gebruik?', antwoord: getField('8. Wat moet je', 'vraag8') },
-            { emoji: '💭', vraag: '9. Extra opmerkingen', antwoord: getField('9. Extra', 'vraag9', 'opmerkingen') }
-        ];
-
-        vragen.forEach(item => {
-            if (item.antwoord && item.antwoord.trim()) {
+        // Verzamel ALLE vragen (1-10) dynamisch
+        for (let i = 1; i <= 10; i++) {
+            const antwoord = getField(`${i}.`, `vraag${i}`, `vraag${i}a`, `vraag${i}b`, `vraag${i}c`, `vraag${i}d`);
+            if (antwoord && antwoord.toString().trim()) {
+                const emoji = ['⚡', '✋', '🔫', '🔢', '🚑', '🚫', '🏃', '🎯', '📝', '💭'][i-1] || '📌';
                 embed.fields.push({
-                    name: `${item.emoji} ${item.vraag}`,
-                    value: item.antwoord.substring(0, 1024),
+                    name: `${emoji} Vraag ${i}`,
+                    value: antwoord.toString().substring(0, 1024),
                     inline: false
                 });
             }
-        });
+        }
     }
 
     // Rijbewijs formatting (auto, motor, boot, lucht)
