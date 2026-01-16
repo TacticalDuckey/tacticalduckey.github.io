@@ -5,6 +5,7 @@
     <title>Politie Sollicitatie - De Lage Landen</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="../discord-webhook.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -191,11 +192,52 @@
         Bedankt voor je sollicitatie! Je hoort binnen 48 uur van ons. 🚓
     </p>
     
-    <div class="no-print">
+    <div class="no-print" style="text-align: center; margin-top: 30px;">
+        <button class="save-button" onclick="submitToDiscord()" style="background: linear-gradient(135deg, #10b981, #059669); margin-right: 10px;">
+            ✅ Indienen bij Staff
+        </button>
         <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
     </div>
     
     <script>
+        // Discord Webhook Submit
+        async function submitToDiscord() {
+            // Verzamel alle form data
+            const formData = {};
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            
+            inputs.forEach(input => {
+                const label = input.previousElementSibling?.textContent || input.placeholder || input.id;
+                if (input.value && input.value.trim() !== '') {
+                    formData[label.replace(':', '').trim()] = input.value;
+                }
+            });
+
+            // Check of minimaal Roblox username is ingevuld
+            if (!formData['Roblox gebruikersnaam'] && !formData['roblox']) {
+                alert('⚠️ Vul eerst je Roblox gebruikersnaam in!');
+                return;
+            }
+
+            // Toon loading
+            event.target.disabled = true;
+            event.target.textContent = '⏳ Verzenden...';
+
+            // Verstuur naar Discord
+            const result = await discordSubmitter.submitToDiscord(formData, 'politie');
+
+            // Toon resultaat
+            if (result.success) {
+                discordSubmitter.showSuccessMessage();
+            } else {
+                discordSubmitter.showErrorMessage();
+            }
+
+            // Reset button
+            event.target.disabled = false;
+            event.target.textContent = '✅ Indienen bij Staff';
+        }
+
         function savePDF() {
             // Haal de naam op
             const naam = document.getElementById('roblox').value || 'Onbekend';
