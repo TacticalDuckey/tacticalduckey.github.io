@@ -1,11 +1,9 @@
 # Beveilig STAFF pagina's - alleen toegankelijk voor staff en admin
-/staff-nakijkmodellen.html          /login.html  401!  Role=staff,admin
-/staff-code-generator.html          /login.html  401!  Role=staff,admin
-/Sollicitaties/STAFF*               /login.html  401!  Role=staff,admin
-/Politie/Sollicitaties/STAFF*       /login.html  401!  Role=staff,admin
+# Note: Netlify role-based redirects werken alleen met JWT authentication
+# Client-side auth check is primaire beveiliging
 
-# Beveilig dashboard - alleen voor ingelogde gebruikers
-/dashboard.html                     /login.html  401
+# Beveilig dashboard - alleen voor ingelogde gebruikers  
+/dashboard.html                     /login.html  200
 
-# Alle andere pagina's zijn publiek toegankelijk
+# Alle andere pagina's zijn publiek toegankelijk (client-side auth check)
 /*                                  /:splat      200

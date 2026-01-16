@@ -227,7 +227,16 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+        <div style="text-align: center; color: white;">
+            <div style="font-size: 48px; margin-bottom: 20px;">🔐</div>
+            <h2 style="margin: 0;">Toegang controleren...</h2>
+            <p style="margin-top: 10px; opacity: 0.8;">Even geduld</p>
+        </div>
+    </div>
+
+    <div class="container" style="display: none;" id="mainContent">
         <h1>🔑 Sollicitatiecode Generator</h1>
         <p class="subtitle">Genereer toegangscodes voor sollicitaties - Alleen voor Staff</p>
 
@@ -272,42 +281,80 @@
     </div>
 
     <script>
-        // Wait for Netlify Identity to initialize before checking auth
-        function initializePage() {
-            const auth = new NetlifyAuth();
-            
-            // Wait longer for auth to fully initialize
-            setTimeout(() => {
-                console.log('Auth check - User:', auth.user);
-                console.log('Auth check - Current user:', window.netlifyIdentity?.currentUser());
-                
-                if (!auth.user) {
-                    // Check if netlifyIdentity is loaded and has user
-                    const currentUser = window.netlifyIdentity?.currentUser();
-                    if (currentUser) {
-                        auth.user = currentUser;
-                        console.log('Auth recovered from netlifyIdentity');
-                    } else {
-                        console.log('No user found - redirecting to login');
-                        window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+        // Wait for Netlify Identity to fully initialize
+        function waitForAuth() {
+            return new Promise((resolve) => {
+                // Check if netlifyIdentity is ready
+                if (window.netlifyIdentity) {
+                    const user = window.netlifyIdentity.currentUser();
+                    if (user) {
+                        resolve(user);
                         return;
                     }
                 }
-                
-                const userRole = auth.getUserRole();
-                console.log('User role:', userRole);
-                
-                if (!auth.hasRole(['staff', 'admin'])) {
-                    console.log('Insufficient permissions - redirecting to dashboard');
-                    alert('⛔ Geen toegang\n\nDeze pagina is alleen toegankelijk voor Staff en Admins.');
-                    window.location.href = '/dashboard.html';
-                    return;
-                }
-                
-                console.log('Auth check passed - loading codes');
-                // Auth passed - load codes
-                loadActiveCodes();
-            }, 1000);
+
+                // Wait for netlifyIdentity to initialize
+                let attempts = 0;
+                const maxAttempts = 50; // 5 seconds max
+                const checkAuth = setInterval(() => {
+                    attempts++;
+                    if (window.netlifyIdentity) {
+                        const user = window.netlifyIdentity.currentUser();
+                        if (user) {
+                            clearInterval(checkAuth);
+                            resolve(user);
+                            return;
+                        }
+                    }
+
+                    if (attempts >= maxAttempts) {
+                        clearInterval(checkAuth);
+                        resolve(null);
+                    }
+                }, 100);
+            });
+        }
+
+        async function initializePage() {
+            console.log('=== Staff Code Generator - Auth Check Start ===');
+            
+            // Wait for auth to be ready
+            const user = await waitForAuth();
+            
+            console.log('User found:', user);
+            console.log('User email:', user?.email);
+            console.log('User roles:', user?.app_metadata?.roles);
+
+            // Hide loading, show content
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+
+            if (!user) {
+                console.log('No user - redirecting to login');
+                alert('⚠️ Niet ingelogd\n\nJe moet eerst inloggen om deze pagina te gebruiken.');
+                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                return;
+            }
+
+            // Check roles
+            const roles = user.app_metadata?.roles || [];
+            const hasAccess = roles.includes('admin') || roles.includes('staff');
+            
+            console.log('Has admin role:', roles.includes('admin'));
+            console.log('Has staff role:', roles.includes('staff'));
+            console.log('Access granted:', hasAccess);
+
+            if (!hasAccess) {
+                console.log('Insufficient permissions');
+                alert('⛔ Geen Toegang\n\nDeze pagina is alleen toegankelijk voor Staff en Administrators.\n\nJouw roles: ' + (roles.length > 0 ? roles.join(', ') : 'geen'));
+                window.location.href = '/dashboard.html';
+                return;
+            }
+
+            console.log('=== Auth Check Passed - Loading Codes ===');
+            
+            // Load active codes
+            loadActiveCodes();
         }
 
         // Initialize when DOM is ready
