@@ -254,16 +254,20 @@
 
             // Verzamel alle form data
             const formData = {};
-            const inputs = document.querySelectorAll('input[type="text"], textarea');
             
-            inputs.forEach(input => {
-                // Skip access code veld
+            // Text inputs en textareas
+            document.querySelectorAll('input[type="text"], textarea').forEach(input => {
                 if (input.id === 'accessCode') return;
-                
                 const label = input.previousElementSibling?.textContent || input.placeholder || input.id;
                 if (input.value && input.value.trim() !== '') {
                     formData[label.replace(':', '').trim()] = input.value;
                 }
+            });
+            
+            // Radio buttons
+            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                const questionText = radio.closest('p, td')?.parentElement?.querySelector('strong')?.textContent || radio.name;
+                formData[questionText.trim()] = radio.value;
             });
 
             // Check of minimaal Roblox username is ingevuld
