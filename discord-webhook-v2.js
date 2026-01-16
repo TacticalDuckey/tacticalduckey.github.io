@@ -1,11 +1,11 @@
 // Discord Webhook Integration voor Lage Landen RP Sollicitaties v2.0
 // Features: Code Verification, 24h Cooldown, Enhanced Security
-
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1461510160059990250/vncs7XBl59lKFN-FOUZVUtIcCpgmNhR9zOEZ5HHS5wIOZ91eYyTJ17zvzdjFKilSRdQS';
+// Security: Uses Netlify Function to hide Discord webhook URL
 
 class DiscordSubmitter {
-    constructor(webhookUrl = DISCORD_WEBHOOK_URL) {
-        this.webhookUrl = webhookUrl;
+    constructor() {
+        // Use Netlify Function instead of direct Discord webhook
+        this.webhookUrl = '/.netlify/functions/submit-sollicitatie';
         this.codesStorageKey = 'sollicitatie_codes';
         this.cooldownStorageKey = 'sollicitatie_cooldowns';
         this.cooldownHours = 24; // 24 uur cooldown
@@ -122,7 +122,7 @@ class DiscordSubmitter {
             };
         }
 
-        // 4. Verzend naar Discord
+        // 4. Verzend naar Discord via Netlify Function (secure)
         const embed = this.createEmbed(formData, formType, username);
         
         const payload = {
@@ -140,7 +140,9 @@ class DiscordSubmitter {
                 body: JSON.stringify(payload)
             });
 
-            if (response.ok) {
+            const result = await response.json();
+
+            if (response.ok && result.success) {
                 // Set cooldown na succesvolle verzending
                 this.setCooldown(username, formType);
                 
@@ -149,7 +151,7 @@ class DiscordSubmitter {
                     message: '✅ Sollicitatie succesvol ingediend!\n\nStaff zal je sollicitatie beoordelen.' 
                 };
             } else {
-                throw new Error('Discord webhook error');
+                throw new Error(result.error || 'Server error');
             }
         } catch (error) {
             console.error('Error submitting to Discord:', error);

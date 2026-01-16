@@ -1,14 +1,35 @@
 # 🚔 Lage Landen RP - Sollicitatie Systeem
 
+## ⚠️ BELANGRIJKE SETUP (VOOR ADMIN)
+
+### Discord Webhook URL Beveiligen
+
+De Discord webhook URL moet als **environment variable** in Netlify ingesteld worden:
+
+1. Ga naar [Netlify Dashboard](https://app.netlify.com)
+2. Selecteer je site: **lagelandenrp**
+3. Ga naar **Site Settings** → **Environment Variables**
+4. Klik **Add a variable**
+5. Voeg toe:
+   - **Key**: `DISCORD_WEBHOOK_URL`
+   - **Value**: `https://discord.com/api/webhooks/1461510160059990250/vncs7XBl59lKFN-FOUZVUtIcCpgmNhR9zOEZ5HHS5wIOZ91eYyTJ17zvzdjFKilSRdQS`
+6. Klik **Save**
+7. **Redeploy** je site: Deploys → Trigger Deploy → Deploy site
+
+✅ **Na setup**: Verwijder de webhook URL uit deze README voor beveiliging!
+
+---
+
 ## Overzicht
 
 Dit systeem biedt een volledig geïntegreerde sollicitatie- en toetsomgeving voor Lage Landen RP met:
 
-- ✅ **Discord Webhook Integratie** - Alle sollicitaties worden automatisch naar Discord gestuurd
+- ✅ **Discord Webhook Integratie** - Alle sollicitaties worden automatisch naar Discord gestuurd (server-side beveiligd)
 - 🔐 **Toegangscode Systeem** - Staff genereert codes, gebruikers moeten deze invoeren
 - ⏱️ **24-uurs Cooldown** - Voorkomt spam door sollicitaties te beperken tot 1 per 24 uur
 - 👥 **Rolgebaseerde Toegang** - Admin, Staff, Agent rollen met verschillende rechten
 - 🎨 **Moderne UI** - Professionele interface met gradient designs
+- 🛡️ **Netlify Functions** - Webhook URL verborgen in server-side code
 
 ---
 
