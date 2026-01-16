@@ -277,7 +277,11 @@
             const auth = new NetlifyAuth();
             if (!auth.hasRole(['staff', 'admin'])) {
                 window.location.href = '/login.html';
+                return;
             }
+            
+            // Load codes after auth check passes
+            loadActiveCodes();
         });
 
         // Storage keys
@@ -406,9 +410,6 @@
                 loadActiveCodes();
             }
         }
-
-        // Load codes on page load
-        loadActiveCodes();
     </script>
 </body>
 </html>
