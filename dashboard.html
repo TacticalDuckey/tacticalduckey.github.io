@@ -117,6 +117,12 @@
             color: white;
         }
 
+        .role-badge.dsi {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            border: 2px solid #fbbf24;
+        }
+
         .logout-btn {
             background: var(--accent-red);
             color: white;
@@ -213,6 +219,25 @@
                     <h3>Rijbewijs Lucht</h3>
                     <p>Theorie- en praktijktoets</p>
                     <a href="Politie/Sollicitaties/8. Rijbewijs Lucht - Invulbaar.html" class="btn">Bekijk →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- DSI Toegang -->
+        <section class="access-section" id="dsi-section">
+            <h2>🔒 DSI Toegang - VERTROUWELIJK</h2>
+            <div class="access-grid">
+                <div class="access-card" id="dsi-card-1" style="border: 2px solid #dc2626; background: linear-gradient(135deg, #1a1a1a 0%, #2d1a1a 100%); color: white;">
+                    <h3 style="color: #ff0000;">📋 DSI Handboek</h3>
+                    <p style="color: #00ff41;">Volledig handboek voor de Dienst Speciale Interventies</p>
+                    <p style="color: #ffff00; font-size: 0.85em; margin-top: 0.5rem;">⚠ Beveiligingsniveau: VERTROUWELIJK</p>
+                    <a href="Handboek/DSI-Handboek.html" class="btn" style="background: #ff0000; color: white;">Toegang Aanvragen →</a>
+                </div>
+                <div class="access-card" id="dsi-card-2" style="border: 2px solid #dc2626; background: linear-gradient(135deg, #1a1a1a 0%, #2d1a1a 100%); color: white;">
+                    <h3 style="color: #ff0000;">🎯 DSI Training Fases</h3>
+                    <p style="color: #00ff41;">Training procedures en fases voor DSI operators</p>
+                    <p style="color: #ffff00; font-size: 0.85em; margin-top: 0.5rem;">⚠ Beveiligingsniveau: VERTROUWELIJK</p>
+                    <a href="DSI Training procedure/Fases.html" class="btn" style="background: #ff0000; color: white;">Toegang Aanvragen →</a>
                 </div>
             </div>
         </section>
@@ -332,12 +357,18 @@
             // Lock sections based on role
             if (role === 'guest' || role === 'user') {
                 lockSection('agent-section');
+                lockSection('dsi-section');
                 lockSection('staff-section');
                 lockSection('admin-section');
             } else if (role === 'agent') {
+                lockSection('dsi-section');
+                lockSection('staff-section');
+                lockSection('admin-section');
+            } else if (role === 'dsi') {
                 lockSection('staff-section');
                 lockSection('admin-section');
             } else if (role === 'staff') {
+                lockSection('dsi-section');
                 lockSection('admin-section');
             }
             // admin heeft overal toegang
