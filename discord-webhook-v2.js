@@ -410,14 +410,33 @@ class DiscordSubmitter {
 
         // Verzamel ALLE vragen (1-10) dynamisch
         for (let i = 1; i <= 10; i++) {
-            const antwoord = getField(`${i}.`, `vraag${i}`, `vraag${i}a`, `vraag${i}b`, `vraag${i}c`, `vraag${i}d`);
-            if (antwoord && antwoord.toString().trim()) {
-                const emoji = ['⚡', '✋', '🔫', '🔢', '🚑', '🚫', '🏃', '🎯', '📝', '💭'][i-1] || '📌';
-                embed.fields.push({
-                    name: `${emoji} Vraag ${i}`,
-                    value: antwoord.toString().substring(0, 1024),
-                    inline: false
+            // Voor vraag 6 (multi-deel vraag), verzamel alle sub-antwoorden
+            if (i === 6) {
+                const subAnswers = [];
+                ['a', 'b', 'c', 'd', 'e'].forEach(suffix => {
+                    const answer = getField(`vraag${i}${suffix}`, `${i}.`, `6.`);
+                    if (answer && answer.trim()) {
+                        subAnswers.push(answer);
+                    }
                 });
+                if (subAnswers.length > 0) {
+                    embed.fields.push({
+                        name: `🚫 Vraag ${i}`,
+                        value: subAnswers.join('\n'),
+                        inline: false
+                    });
+                }
+            } else {
+                // Normale vragen
+                const antwoord = getField(`${i}.`, `vraag${i}`, `vraag${i}a`, `vraag${i}b`, `vraag${i}c`, `vraag${i}d`);
+                if (antwoord && antwoord.toString().trim()) {
+                    const emoji = ['⚡', '✋', '🔫', '🔢', '🚑', '🚫', '🏃', '🎯', '📝', '💭'][i-1] || '📌';
+                    embed.fields.push({
+                        name: `${emoji} Vraag ${i}`,
+                        value: antwoord.toString().substring(0, 1024),
+                        inline: false
+                    });
+                }
             }
         }
     }

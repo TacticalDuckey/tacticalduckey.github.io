@@ -245,9 +245,12 @@
             // Text inputs en textareas
             document.querySelectorAll('input[type="text"], textarea').forEach(input => {
                 if (input.id === 'accessCode') return;
-                const label = input.previousElementSibling?.textContent || input.placeholder || input.id;
+                
+                // Gebruik input.id als key (bijv. "vraag8" in plaats van de volledige vraag tekst)
+                const key = input.id || (input.previousElementSibling?.textContent || input.placeholder).replace(':', '').trim();
+                
                 if (input.value && input.value.trim() !== '') {
-                    formData[label.replace(':', '').trim()] = input.value;
+                    formData[key] = input.value;
                 }
             });
             
