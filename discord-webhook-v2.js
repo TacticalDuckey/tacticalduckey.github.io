@@ -193,13 +193,29 @@ class DiscordSubmitter {
 
     // Specifieke formatting voor politie sollicitatie
     addPolitieSollicitatieFields(embed, formData) {
+        // Helper functie om field te vinden met flexibele matching
+        const getField = (...possibleKeys) => {
+            for (const key of possibleKeys) {
+                // Exacte match
+                if (formData[key]) return formData[key];
+                
+                // Zoek naar gedeeltelijke match (case-insensitive, zonder HTML tags)
+                const foundKey = Object.keys(formData).find(k => 
+                    k.toLowerCase().includes(key.toLowerCase()) || 
+                    key.toLowerCase().includes(k.toLowerCase())
+                );
+                if (foundKey && formData[foundKey]) return formData[foundKey];
+            }
+            return null;
+        };
+
         // Basisinformatie in één field
-        const gemiddeld = formData['Gemiddeld aantal uur per week actief'];
+        const gemiddeld = getField('Gemiddeld aantal uur per week actief', 'uren');
         const basisInfo = `
-👤 **Roblox:** ${formData['Roblox gebruikersnaam'] || 'N/A'}
-💬 **Discord:** ${formData['Discord naam (incl. #)'] || 'N/A'}
-🌍 **Tijdzone:** ${formData['Tijdzone'] || 'N/A'}
-🎂 **Leeftijd (IRL):** ${formData['Leeftijd (IRL)'] || 'N/A'}
+👤 **Roblox:** ${getField('Roblox gebruikersnaam', 'roblox') || 'N/A'}
+💬 **Discord:** ${getField('Discord naam (incl. #)', 'discord') || 'N/A'}
+🌍 **Tijdzone:** ${getField('Tijdzone', 'tijdzone') || 'N/A'}
+🎂 **Leeftijd (IRL):** ${getField('Leeftijd (IRL)', 'leeftijd') || 'N/A'}
 ⏰ **Gemiddeld actief:** ${gemiddeld || 'N/A'} uur per week
         `.trim();
 
@@ -214,77 +230,77 @@ class DiscordSubmitter {
             { 
                 emoji: '👮',
                 vraag: '1. Heb je eerder bij een politie, marechaussee of andere hulpdienst gezeten in Roblox?',
-                antwoord: formData['1. Heb je eerder bij een politie, marechaussee of andere hulpdienst gezeten in Roblox?']
+                antwoord: getField('1. Heb je eerder bij een politie', 'vraag1')
             },
             { 
                 emoji: '🎖️',
                 vraag: '2. Zo ja, waar en welke rang?',
-                antwoord: formData['Zo ja, waar en welke rang?']
+                antwoord: getField('Zo ja, waar en welke rang', 'vraag1b')
             },
             { 
                 emoji: '💭',
                 vraag: '3. Waarom wil jij bij de politie van De Lage Landen?',
-                antwoord: formData['3. Waarom wil jij bij de politie van De Lage Landen?']
+                antwoord: getField('3. Waarom wil jij bij de politie', 'vraag3', 'Waarom wil jij')
             },
             { 
                 emoji: '⭐',
                 vraag: '4. Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?',
-                antwoord: formData['4. Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?']
+                antwoord: getField('4. Wat zijn volgens jou', 'vraag4', 'belangrijkste eigenschappen')
             },
             {
                 emoji: '📋',
                 vraag: '5. Wat houdt een BTGV in en wanneer mag deze worden uitgegeven?',
-                antwoord: formData['5. Wat houdt een BTGV in en wanneer mag deze worden uitgegeven?']
+                antwoord: getField('5. Wat houdt een BTGV', 'vraag5', 'BTGV')
             },
             {
                 emoji: '🚔',
                 vraag: '6. Wat is het verschil tussen een staandehouding en een aanhouding?',
-                antwoord: formData['6. Wat is het verschil tussen een staandehouding en een aanhouding?']
+                antwoord: getField('6. Wat is het verschil', 'vraag6', 'staandehouding')
             },
             {
                 emoji: '⚠️',
                 vraag: '7. Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.',
-                antwoord: formData['7. Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.']
+                antwoord: getField('7. Wanneer mag een politieagent', 'vraag7', 'geweld gebruiken')
             },
             {
                 emoji: '⚖️',
                 vraag: '8. Wat betekent proportionaliteit en subsidiariteit binnen politiewerk?',
-                antwoord: formData['8. Wat betekent proportionaliteit en subsidiariteit binnen politiewerk?']
+                antwoord: getField('8. Wat betekent proportionaliteit', 'vraag8', 'proportionaliteit')
             },
             {
                 emoji: '👥',
                 vraag: '9. Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?',
-                antwoord: formData['9. Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?']
+                antwoord: getField('9. Wat doe je als een collega', 'vraag9', 'collega zich niet')
             },
             {
                 emoji: '🚗',
                 vraag: '10. Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheidt je uit. Hoe handel je dit af?',
-                antwoord: formData['10. Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheidt je uit. Hoe handel je dit af?']
+                antwoord: getField('10. Je voert een verkeerscontrole', 'vraag10', 'verkeerscontrole uit')
             },
             {
                 emoji: '🚨',
                 vraag: '11. Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?',
-                antwoord: formData['11. Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?']
+                antwoord: getField('11. Tijdens een achtervolging', 'vraag11', 'achtervolging ontstaat')
             },
             {
                 emoji: '📖',
                 vraag: '12. Toelichting',
-                antwoord: formData['Toelichting']
+                antwoord: getField('Toelichting', 'vraag12')
             },
             {
                 emoji: '📚',
                 vraag: '13. Leg kort uit wat deze termen betekenen',
-                antwoord: formData['Leg kort uit wat deze termen betekenen']
+                antwoord: getField('13. Ben je bekend', 'vraag13', 'Leg kort uit', 'FailRP')
             },
             {
                 emoji: '💡',
                 vraag: '14. Waarom zouden wij jou moeten aannemen?',
-                antwoord: formData['14. Waarom zouden wij jou moeten aannemen?']
+                antwoord: getField('14. Waarom zouden wij jou', 'vraag14')
             },
             {
                 emoji: '❓',
                 vraag: '15. Heb je nog vragen of opmerkingen?',
-                antwoord: formData['15. Heb je nog vragen of opmerkingen?']
+                antwoord: getField('15. Heb je nog vragen', 'vraag15')
             }
         ];
 
