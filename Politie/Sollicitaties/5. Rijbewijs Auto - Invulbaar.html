@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Rijbewijs Auto - De Lage Landen</title>
-    <script src="../discord-webhook.js"></script>
+    <script src="../../discord-webhook-v2.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,15 +75,47 @@
         table td {
             padding: 8px;
         }
+        .access-code-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .access-code-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .access-code-input::placeholder {
+            letter-spacing: normal;
+            text-transform: none;
+            font-family: Arial, sans-serif;
+        }
         @media print {
-            .save-button, .no-print { display: none; }
+            .save-button, .no-print, .access-code-box { display: none; }
         }
     </style>
 </head>
 <body>
+    <div class="no-print access-code-box">
+        <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+        <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een sollicitatiecode aan bij staff om toegang te krijgen</p>
+        <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+    </div>
     
     <div class="no-print">
         <button class="save-button" onclick="savePDF()">💾 Opslaan als PDF</button>
+        <button class="save-button" onclick="submitToDiscord()">✅ Indienen bij Staff</button>
     </div>
     
     <h1>🚗 RIJBEWIJS AUTO – Categorie B</h1>
@@ -206,6 +238,70 @@
             const dateStr = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
             document.getElementById('datum').value = dateStr;
         });
+        
+        // Toegangscode formatting
+        document.getElementById('accessCode').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (value.length > 3) value = value.slice(0, 3) + '-' + value.slice(3);
+            if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+            e.target.value = value.slice(0, 11);
+        });
+
+        // Discord Webhook Submit met Code Verificatie
+        async function submitToDiscord() {
+            // Haal toegangscode op
+            const accessCode = document.getElementById('accessCode').value.trim();
+            if (!accessCode || accessCode.length < 11) {
+                alert('🔐 TOEGANGSCODE VEREIST\n\nVul een geldige toegangscode in.\n\nVraag een code aan bij staff als je die nog niet hebt.');
+                return;
+            }
+
+            // Verzamel alle form data
+            const formData = {};
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            
+            inputs.forEach(input => {
+                // Skip access code veld
+                if (input.id === 'accessCode') return;
+                
+                const label = input.previousElementSibling?.textContent || input.placeholder || input.id;
+                if (input.value && input.value.trim() !== '') {
+                    formData[label.replace(':', '').trim()] = input.value;
+                }
+            });
+
+            // Check of minimaal Roblox username is ingevuld
+            const username = formData['Roblox gebruikersnaam'] || formData['Roblox Username'] || formData['roblox'];
+            if (!username) {
+                alert('⚠️ Vul eerst je Roblox gebruikersnaam in!');
+                return;
+            }
+
+            // Toon loading
+            const submitBtn = event.target;
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Verzenden...';
+
+            // Verstuur naar Discord met code verificatie
+            const result = await discordSubmitter.submitToDiscord(formData, 'rijbewijs-auto', accessCode);
+
+            // Toon resultaat
+            if (result.success) {
+                alert(result.message);
+                // Clear form
+                if (confirm('Formulier wissen?')) {
+                    document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+                        if (input.id !== 'accessCode') input.value = '';
+                    });
+                }
+            } else {
+                alert(result.message);
+            }
+
+            // Reset button
+            submitBtn.disabled = false;
+            submitBtn.textContent = '✅ Indienen bij Staff';
+        }
         
         function savePDF() {
             const naam = document.getElementById('naam').value || 'Onbekend';

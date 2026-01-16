@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sollicitatiecode Generator - Staff Only</title>
+    <script src="auth.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .generator-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .code-display {
+            background: #1e293b;
+            color: #10b981;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            display: none;
+        }
+
+        .code-display.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .code-text {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .code-info {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 15px;
+        }
+
+        .copy-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            margin-top: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+        }
+
+        .active-codes {
+            margin-top: 30px;
+        }
+
+        .active-codes h2 {
+            color: #1e3a8a;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .code-list {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .code-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .code-details {
+            flex: 1;
+        }
+
+        .code-value {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+
+        .code-meta {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .revoke-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .revoke-btn:hover {
+            background: #dc2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #94a3b8;
+            padding: 40px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 Sollicitatiecode Generator</h1>
+        <p class="subtitle">Genereer toegangscodes voor sollicitaties - Alleen voor Staff</p>
+
+        <div class="generator-section">
+            <div class="form-group">
+                <label for="sollicitatieType">Sollicitatie Type</label>
+                <select id="sollicitatieType">
+                    <option value="politie">Politie Sollicitatie</option>
+                    <option value="wtgm">WTGM Toets</option>
+                    <option value="grootwapen">Groot Wapen Toets</option>
+                    <option value="taser">Taser Toets</option>
+                    <option value="rijbewijs-auto">Rijbewijs Auto</option>
+                    <option value="rijbewijs-motor">Rijbewijs Motor</option>
+                    <option value="rijbewijs-boot">Rijbewijs Boot</option>
+                    <option value="rijbewijs-lucht">Rijbewijs Lucht</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="validDays">Geldig voor (dagen)</label>
+                <input type="number" id="validDays" value="7" min="1" max="30">
+            </div>
+
+            <button class="btn" onclick="generateCode()">🎲 Genereer Code</button>
+
+            <div class="code-display" id="codeDisplay">
+                <div class="code-text" id="generatedCode">ABC-123-XYZ</div>
+                <button class="copy-btn" onclick="copyCode()">📋 Kopieer Code</button>
+                <div class="code-info">
+                    <strong>Geef deze code aan de sollicitant</strong><br>
+                    <span id="codeExpiry"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="active-codes">
+            <h2>Actieve Codes</h2>
+            <div class="code-list" id="codeList">
+                <div class="empty-state">Geen actieve codes</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check staff access
+        window.addEventListener('DOMContentLoaded', () => {
+            const auth = new NetlifyAuth();
+            if (!auth.hasRole(['staff', 'admin'])) {
+                window.location.href = '/login.html';
+            }
+        });
+
+        // Storage keys
+        const CODES_STORAGE_KEY = 'sollicitatie_codes';
+
+        // Generate random code
+        function generateRandomCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = '';
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    code += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                if (i < 2) code += '-';
+            }
+            return code;
+        }
+
+        // Generate code
+        function generateCode() {
+            const type = document.getElementById('sollicitatieType').value;
+            const validDays = parseInt(document.getElementById('validDays').value);
+            
+            const code = generateRandomCode();
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + validDays);
+
+            // Save code
+            const codes = getSavedCodes();
+            codes.push({
+                code: code,
+                type: type,
+                createdAt: new Date().toISOString(),
+                expiresAt: expiryDate.toISOString(),
+                used: false
+            });
+            saveCodes(codes);
+
+            // Display code
+            document.getElementById('generatedCode').textContent = code;
+            document.getElementById('codeExpiry').textContent = `Geldig tot: ${expiryDate.toLocaleDateString('nl-NL')} ${expiryDate.toLocaleTimeString('nl-NL', {hour: '2-digit', minute: '2-digit'})}`;
+            document.getElementById('codeDisplay').classList.add('show');
+
+            // Refresh list
+            loadActiveCodes();
+        }
+
+        // Copy code to clipboard
+        function copyCode() {
+            const code = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Gekopieerd!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        // Get saved codes
+        function getSavedCodes() {
+            const codes = localStorage.getItem(CODES_STORAGE_KEY);
+            return codes ? JSON.parse(codes) : [];
+        }
+
+        // Save codes
+        function saveCodes(codes) {
+            localStorage.setItem(CODES_STORAGE_KEY, JSON.stringify(codes));
+        }
+
+        // Load active codes
+        function loadActiveCodes() {
+            const codes = getSavedCodes();
+            const now = new Date();
+            
+            // Filter active codes
+            const activeCodes = codes.filter(c => {
+                const expiry = new Date(c.expiresAt);
+                return expiry > now && !c.used;
+            });
+
+            const codeList = document.getElementById('codeList');
+            
+            if (activeCodes.length === 0) {
+                codeList.innerHTML = '<div class="empty-state">Geen actieve codes</div>';
+                return;
+            }
+
+            codeList.innerHTML = activeCodes.map(c => {
+                const expiry = new Date(c.expiresAt);
+                const typeLabels = {
+                    'politie': 'Politie Sollicitatie',
+                    'wtgm': 'WTGM Toets',
+                    'grootwapen': 'Groot Wapen',
+                    'taser': 'Taser',
+                    'rijbewijs-auto': 'Rijbewijs Auto',
+                    'rijbewijs-motor': 'Rijbewijs Motor',
+                    'rijbewijs-boot': 'Rijbewijs Boot',
+                    'rijbewijs-lucht': 'Rijbewijs Lucht'
+                };
+
+                return `
+                    <div class="code-item">
+                        <div class="code-details">
+                            <div class="code-value">${c.code}</div>
+                            <div class="code-meta">
+                                ${typeLabels[c.type]} • Verloopt: ${expiry.toLocaleDateString('nl-NL')} ${expiry.toLocaleTimeString('nl-NL', {hour: '2-digit', minute: '2-digit'})}
+                            </div>
+                        </div>
+                        <button class="revoke-btn" onclick="revokeCode('${c.code}')">Intrekken</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Revoke code
+        function revokeCode(code) {
+            if (!confirm(`Code ${code} intrekken?`)) return;
+            
+            const codes = getSavedCodes();
+            const index = codes.findIndex(c => c.code === code);
+            if (index !== -1) {
+                codes.splice(index, 1);
+                saveCodes(codes);
+                loadActiveCodes();
+            }
+        }
+
+        // Load codes on page load
+        loadActiveCodes();
+    </script>
+</body>
+</html>
