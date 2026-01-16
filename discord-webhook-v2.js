@@ -222,88 +222,85 @@ ${formData['3. Waarom wil jij bij de politie van De Lage Landen?'] || ''}
             });
         }
 
-        // Eigenschappen (inline voor compactheid)
-        const eigenschappen = formData['4. Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?'];
-        if (eigenschappen) {
-            embed.fields.push({
-                name: '⭐ Belangrijkste Eigenschappen',
-                value: eigenschappen.substring(0, 1024),
-                inline: false
-            });
-        }
-
-        // Kennis vragen (3 kolommen voor compactheid)
-        const kennisVragen = [
-            { q: '5. BTGV', a: formData['5. Wat houdt een BTGV in en wanneer mag deze worden uitgegeven?'] },
-            { q: '6. Aanhouding', a: formData['6. Wat is het verschil tussen een staandehouding en een aanhouding?'] },
-            { q: '7. Geweld', a: formData['7. Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.'] }
+        // Alle vragen met volledige tekst
+        const vragen = [
+            { 
+                vraag: '4. Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?',
+                antwoord: formData['4. Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?']
+            },
+            {
+                vraag: '5. Wat houdt een BTGV in en wanneer mag deze worden uitgegeven?',
+                antwoord: formData['5. Wat houdt een BTGV in en wanneer mag deze worden uitgegeven?']
+            },
+            {
+                vraag: '6. Wat is het verschil tussen een staandehouding en een aanhouding?',
+                antwoord: formData['6. Wat is het verschil tussen een staandehouding en een aanhouding?']
+            },
+            {
+                vraag: '7. Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.',
+                antwoord: formData['7. Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.']
+            },
+            {
+                vraag: '8. Wat betekent proportionaliteit en subsidiariteit binnen politiewerk?',
+                antwoord: formData['8. Wat betekent proportionaliteit en subsidiariteit binnen politiewerk?']
+            },
+            {
+                vraag: '9. Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?',
+                antwoord: formData['9. Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?']
+            },
+            {
+                vraag: '10. Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheidt je uit. Hoe handel je dit af?',
+                antwoord: formData['10. Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheidt je uit. Hoe handel je dit af?']
+            },
+            {
+                vraag: '11. Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?',
+                antwoord: formData['11. Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?']
+            },
+            {
+                vraag: 'Toelichting',
+                antwoord: formData['Toelichting']
+            }
         ];
 
-        kennisVragen.forEach((item, index) => {
-            if (item.a) {
+        // Voeg elke vraag met volledig antwoord toe
+        vragen.forEach(item => {
+            if (item.antwoord && item.antwoord.trim()) {
                 embed.fields.push({
-                    name: item.q,
-                    value: item.a.substring(0, 1024),
-                    inline: true
+                    name: item.vraag,
+                    value: item.antwoord.substring(0, 1024),
+                    inline: false
                 });
             }
         });
 
-        // Scenario & Toelichtingsvragen
-        const scenario1 = formData['8. Wat betekent proportionaliteit en subsidiariteit binnen politiewerk?'];
-        const scenario2 = formData['9. Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?'];
-        const scenario3 = formData['10. Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheidt je uit. Hoe handel je dit af?'];
+        // Overige vragen met volledige tekst
+        const slotVragen = [
+            {
+                vraag: '14. Waarom zouden wij jou moeten aannemen?',
+                antwoord: formData['14. Waarom zouden wij jou moeten aannemen?']
+            },
+            {
+                vraag: '15. Heb je nog vragen of opmerkingen?',
+                antwoord: formData['15. Heb je nog vragen of opmerkingen?']
+            }
+        ];
 
-        if (scenario1 || scenario2 || scenario3) {
-            embed.fields.push({
-                name: '📝 Scenario & Inzicht',
-                value: `${scenario1 ? '**Proportionaliteit:** ' + scenario1.substring(0, 300) : ''}
+        slotVragen.forEach(item => {
+            if (item.antwoord && item.antwoord.trim()) {
+                embed.fields.push({
+                    name: item.vraag,
+                    value: item.antwoord.substring(0, 1024),
+                    inline: false
+                });
+            }
+        });
 
-${scenario2 ? '**Collega overtredingen:** ' + scenario2.substring(0, 300) : ''}
-
-${scenario3 ? '**Verkeerscontrole:** ' + scenario3.substring(0, 300) : ''}`.trim().substring(0, 1024),
-                inline: false
-            });
-        }
-
-        // Overige kennis
-        const achtervolging = formData['11. Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?'];
-        const toelichting = formData['Toelichting'];
+        // Activiteit
         const gemiddeld = formData['Gemiddeld aantal uur per week actief'];
-
-        if (achtervolging) {
-            embed.fields.push({
-                name: '🚨 Achtervolging Scenario',
-                value: achtervolging.substring(0, 1024),
-                inline: false
-            });
-        }
-
-        if (toelichting) {
-            embed.fields.push({
-                name: '📖 Toelichting',
-                value: toelichting.substring(0, 1024),
-                inline: false
-            });
-        }
-
-        // Overige vragen kort weergeven
-        const overigeVragen = formData['14. Waarom zouden wij jou moeten aannemen?'] || formData['15. Heb je nog vragen of opmerkingen?'];
-        if (overigeVragen) {
-            embed.fields.push({
-                name: '💡 Slot',
-                value: `${formData['14. Waarom zouden wij jou moeten aannemen?'] ? '**Waarom jij?** ' + formData['14. Waarom zouden wij jou moeten aannemen?'].substring(0, 200) : ''}
-
-${formData['15. Heb je nog vragen of opmerkingen?'] ? '**Vragen:** ' + formData['15. Heb je nog vragen of opmerkingen?'].substring(0, 200) : ''}`.trim().substring(0, 1024),
-                inline: false
-            });
-        }
-
-        // Activiteit en commitment
         if (gemiddeld) {
             embed.fields.push({
-                name: '⏰ Activiteit',
-                value: `${gemiddeld} uur per week`,
+                name: '⏰ Gemiddeld aantal uur per week actief',
+                value: gemiddeld,
                 inline: true
             });
         }
