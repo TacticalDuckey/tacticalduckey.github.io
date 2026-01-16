@@ -236,11 +236,136 @@ class DiscordSubmitter {
 
     // Voeg velden toe aan embed
     addFieldsToEmbed(embed, formData, formType) {
-        // Filter lege velden
+        if (formType === 'politie') {
+            this.addPolitieSollicitatieFields(embed, formData);
+        } else {
+            this.addGenericFields(embed, formData);
+        }
+    }
+
+    // Specifieke formatting voor politie sollicitatie
+    addPolitieSollicitatieFields(embed, formData) {
+        // Basisinformatie in één field
+        const basisInfo = `
+👤 **Roblox:** ${formData['Roblox gebruikersnaam'] || 'N/A'}
+💬 **Discord:** ${formData['Discord naam (incl. #)'] || 'N/A'}
+🌍 **Tijdzone:** ${formData['Tijdzone'] || 'N/A'}
+🎂 **Leeftijd (IRL):** ${formData['Leeftijd (IRL)'] || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '📋 Basisinformatie',
+            value: basisInfo,
+            inline: false
+        });
+
+        // Motivatie & Ervaring
+        const motivatie = `
+**${formData['Zo ja, waar en welke rang?'] || ''}**
+
+${formData['3. Waarom wil jij bij de politie van De Lage Landen?'] || ''}
+        `.trim();
+
+        if (motivatie.length > 10) {
+            embed.fields.push({
+                name: '💭 Motivatie & Ervaring',
+                value: motivatie.substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Eigenschappen (inline voor compactheid)
+        const eigenschappen = formData['4. Wat zijn volgens jou de belangrijkste eigenschappen van een goede politieagent?'];
+        if (eigenschappen) {
+            embed.fields.push({
+                name: '⭐ Belangrijkste Eigenschappen',
+                value: eigenschappen.substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Kennis vragen (3 kolommen voor compactheid)
+        const kennisVragen = [
+            { q: '5. BTGV', a: formData['5. Wat houdt een BTGV in en wanneer mag deze worden uitgegeven?'] },
+            { q: '6. Aanhouding', a: formData['6. Wat is het verschil tussen een staandehouding en een aanhouding?'] },
+            { q: '7. Geweld', a: formData['7. Wanneer mag een politieagent geweld gebruiken? Noem de belangrijkste voorwaarden.'] }
+        ];
+
+        kennisVragen.forEach((item, index) => {
+            if (item.a) {
+                embed.fields.push({
+                    name: item.q,
+                    value: item.a.substring(0, 1024),
+                    inline: true
+                });
+            }
+        });
+
+        // Scenario & Toelichtingsvragen
+        const scenario1 = formData['8. Wat betekent proportionaliteit en subsidiariteit binnen politiewerk?'];
+        const scenario2 = formData['9. Wat doe je als een collega zich niet aan de regels houdt tijdens een RP-situatie?'];
+        const scenario3 = formData['10. Je voert een verkeerscontrole uit. De bestuurder weigert zijn ID te tonen en scheidt je uit. Hoe handel je dit af?'];
+
+        if (scenario1 || scenario2 || scenario3) {
+            embed.fields.push({
+                name: '📝 Scenario & Inzicht',
+                value: `${scenario1 ? '**Proportionaliteit:** ' + scenario1.substring(0, 300) : ''}
+
+${scenario2 ? '**Collega overtredingen:** ' + scenario2.substring(0, 300) : ''}
+
+${scenario3 ? '**Verkeerscontrole:** ' + scenario3.substring(0, 300) : ''}`.trim().substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Overige kennis
+        const achtervolging = formData['11. Tijdens een achtervolging ontstaat gevaar voor burgers. Wat doe je en waarom?'];
+        const toelichting = formData['Toelichting'];
+        const gemiddeld = formData['Gemiddeld aantal uur per week actief'];
+
+        if (achtervolging) {
+            embed.fields.push({
+                name: '🚨 Achtervolging Scenario',
+                value: achtervolging.substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (toelichting) {
+            embed.fields.push({
+                name: '📖 Toelichting',
+                value: toelichting.substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Overige vragen kort weergeven
+        const overigeVragen = formData['14. Waarom zouden wij jou moeten aannemen?'] || formData['15. Heb je nog vragen of opmerkingen?'];
+        if (overigeVragen) {
+            embed.fields.push({
+                name: '💡 Slot',
+                value: `${formData['14. Waarom zouden wij jou moeten aannemen?'] ? '**Waarom jij?** ' + formData['14. Waarom zouden wij jou moeten aannemen?'].substring(0, 200) : ''}
+
+${formData['15. Heb je nog vragen of opmerkingen?'] ? '**Vragen:** ' + formData['15. Heb je nog vragen of opmerkingen?'].substring(0, 200) : ''}`.trim().substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Activiteit en commitment
+        if (gemiddeld) {
+            embed.fields.push({
+                name: '⏰ Activiteit',
+                value: `${gemiddeld} uur per week`,
+                inline: true
+            });
+        }
+    }
+
+    // Generieke field formatting voor andere formulieren
+    addGenericFields(embed, formData) {
         const fields = Object.entries(formData)
             .filter(([key, value]) => value && value.trim() !== '')
             .map(([key, value]) => {
-                // Splits lange antwoorden
                 const maxLength = 1024;
                 let fieldValue = value.trim();
                 
@@ -255,10 +380,8 @@ class DiscordSubmitter {
                 };
             });
 
-        // Voeg velden toe (max 25 fields in Discord)
         embed.fields = fields.slice(0, 25);
 
-        // Als er meer dan 25 velden zijn, voeg waarschuwing toe
         if (fields.length > 25) {
             embed.fields.push({
                 name: '⚠️ Let op',
