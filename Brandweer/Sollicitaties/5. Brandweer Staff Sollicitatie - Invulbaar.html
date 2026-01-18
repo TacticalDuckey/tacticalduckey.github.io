@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brandweer Staff Sollicitatie - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #991b1b, #7c2d12);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+            border: 3px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #991b1b;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #7c2d12;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #991b1b;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #991b1b, #7c2d12);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(153, 27, 27, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #991b1b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border: 3px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            letter-spacing: 0.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .access-code-input:focus {
+            outline: none;
+            border-color: #991b1b;
+            box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.1);
+        }
+        
+        .requirement-box {
+            background: white;
+            border: 2px solid #fbbf24;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .requirement-box h3 {
+            color: #991b1b;
+            margin-top: 0;
+        }
+        
+        .requirement-box ul {
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👔 Brandweer Staff Sollicitatie</h1>
+        <p>Lage Landen RP - Managementpositie</p>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een staff sollicitatiecode aan bij de brandweerleiding</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #991b1b;">
+                💡 Staff posities zijn alleen op uitnodiging
+            </p>
+        </div>
+
+        <div class="info-box">
+            <strong>💼 Solliciteren voor Brandweer Staff</strong>
+            <p>Je solliciteert voor een managementpositie binnen de brandweer. Dit vereist ervaring, leiderschap en toewijding.</p>
+        </div>
+
+        <div class="requirement-box">
+            <h3>📋 Vereisten voor Staff Positie:</h3>
+            <ul>
+                <li>✅ Minimaal 2 weken actief bij de brandweer</li>
+                <li>✅ Alle toetsen behaald (Theorie, Pompbediende, Gereedschap)</li>
+                <li>✅ Bewezen leiderschap en inzet</li>
+                <li>✅ Goede staat van dienst (geen recente waarschuwingen)</li>
+                <li>✅ Minimaal 15 uur speeltijd per week</li>
+                <li>✅ Goede kennis van brandweer procedures en protocollen</li>
+            </ul>
+        </div>
+
+        <form id="staffForm">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required>
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required>
+            </div>
+
+            <div class="form-group">
+                <label for="huidigerang">Huidige Rang bij Brandweer*</label>
+                <input type="text" id="huidigerang" name="huidigerang" required placeholder="Bijv. Pompbediende, Manschap, etc.">
+            </div>
+
+            <div class="form-group">
+                <label for="tijdbijbrandweer">Hoe lang ben je al actief bij de brandweer?*</label>
+                <input type="text" id="tijdbijbrandweer" name="tijdbijbrandweer" required placeholder="Bijv. 3 weken, 2 maanden">
+            </div>
+
+            <h2>💼 Ervaring & Motivatie</h2>
+
+            <div class="form-group">
+                <label for="waaromstaff">Waarom wil je Staff worden bij de brandweer?*</label>
+                <textarea id="waaromstaff" name="waaromstaff" required placeholder="Geef een uitgebreide motivatie..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="leiderschapservaring">Beschrijf je leiderschapservaring (binnen en buiten de server)*</label>
+                <textarea id="leiderschapservaring" name="leiderschapservaring" required placeholder="Bijvoorbeeld: leidende rollen in andere servers, teams geleid, trainingen gegeven, etc."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="sterktezwakte">Wat zijn je sterke punten als leider en waar kan je nog aan werken?*</label>
+                <textarea id="sterktezwakte" name="sterktezwakte" required placeholder="Wees eerlijk over beide..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="bijdrage">Wat kan jij bijdragen aan het brandweer staff team?*</label>
+                <textarea id="bijdrage" name="bijdrage" required placeholder="Specifieke skills, ideeën, verbeteringen..."></textarea>
+            </div>
+
+            <h2>🎯 Visie & Plannen</h2>
+
+            <div class="form-group">
+                <label for="verbeteringen">Welke verbeteringen zou je doorvoeren binnen de brandweer als je Staff wordt?*</label>
+                <textarea id="verbeteringen" name="verbeteringen" required placeholder="Concrete ideeën en plannen..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="trainingen">Hoe zou je nieuwe brandweerlieden trainen en begeleiden?*</label>
+                <textarea id="trainingen" name="trainingen" required placeholder="Je aanpak voor training en opleiding..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="conflictoplossing">Hoe ga je om met conflicten tussen brandweerlieden?*</label>
+                <textarea id="conflictoplossing" name="conflictoplossing" required placeholder="Geef een voorbeeld situatie en jouw aanpak..."></textarea>
+            </div>
+
+            <h2>📊 Beschikbaarheid & Commitment</h2>
+
+            <div class="form-group">
+                <label for="beschikbaarheid">Wanneer ben je beschikbaar? (Dagen/Tijden)*</label>
+                <textarea id="beschikbaarheid" name="beschikbaarheid" required placeholder="Geef een realistisch overzicht..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="uren">Hoeveel uur per week kan je aan Staff taken besteden?*</label>
+                <input type="text" id="uren" name="uren" required placeholder="Bijv. 15-20 uur">
+            </div>
+
+            <div class="form-group">
+                <label for="langtermijn">Zie je jezelf lange termijn bij de brandweer? Wat zijn je doelen?*</label>
+                <textarea id="langtermijn" name="langtermijn" required placeholder="Jouw visie voor de toekomst..."></textarea>
+            </div>
+
+            <h2>🔥 Scenario Vragen</h2>
+
+            <div class="form-group">
+                <label for="scenario1">Een brandweerman maakt herhaaldelijk fouten en luistert niet naar instructies. Hoe pak je dit aan als Staff?*</label>
+                <textarea id="scenario1" name="scenario1" required placeholder="Beschrijf stap voor stap je aanpak..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario2">Er is een groot incident met meerdere slachtoffers en chaos. Jij bent de hoogste in rang. Wat doe je?*</label>
+                <textarea id="scenario2" name="scenario2" required placeholder="Hoe neem je de leiding en organiseer je het team?"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario3">Een brandweerman wordt beschuldigd van FailRP door een burger. Hoe onderzoek en behandel je deze melding?*</label>
+                <textarea id="scenario3" name="scenario3" required placeholder="Je onderzoeksproces en besluitvorming..."></textarea>
+            </div>
+
+            <h2>➕ Extra</h2>
+
+            <div class="form-group">
+                <label for="referenties">Wie kunnen een referentie voor je geven? (Namen van huidige staff/brandweerlieden)</label>
+                <input type="text" id="referenties" name="referenties" placeholder="Bijv. Agent Jan Jansen, Brandmeester Piet Pietersen">
+            </div>
+
+            <div class="form-group">
+                <label for="extra">Wil je nog iets toevoegen?</label>
+                <textarea id="extra" name="extra" placeholder="Overige informatie die relevant kan zijn..."></textarea>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Let op:</strong>
+                <ul>
+                    <li>Alle velden met * zijn verplicht</li>
+                    <li>Wees uitgebreid, eerlijk en professioneel</li>
+                    <li>Staff sollicitaties worden zorgvuldig beoordeeld</li>
+                    <li>Je kan een interview verwachten</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                👔 Staff Sollicitatie Indienen
+            </button>
+
+            <div class="success-box" id="successBox">
+                <strong>✅ Sollicitatie Verzonden!</strong>
+                <p>Je staff sollicitatie is ingediend. Je hoort zo snel mogelijk van de leiding!</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script>
+        // Toegangscode formatting
+        document.getElementById('accessCode').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (value.length > 3) value = value.slice(0, 3) + '-' + value.slice(3);
+            if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+            e.target.value = value.slice(0, 11);
+        });
+
+        // Check authenticatie
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = setInterval(() => {
+                if (window.netlifyIdentity && typeof auth !== 'undefined') {
+                    clearInterval(checkAuth);
+                    
+                    if (!auth.user) {
+                        window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/5. Brandweer Staff Sollicitatie - Invulbaar.html';
+                        return;
+                    }
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                if (typeof auth === 'undefined' || !auth.user) {
+                    window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/5. Brandweer Staff Sollicitatie - Invulbaar.html';
+            // Check toegangscode
+            const accessCode = document.getElementById('accessCode').value.trim();
+            if (!accessCode || accessCode.length < 11) {
+                alert('🔐 TOEGANGSCODE VEREIST\n\nStaff sollicitaties zijn alleen toegankelijk met een code.\n\nNeem contact op met de brandweerleiding als je bent uitgenodigd om te solliciteren.');
+                return;
+            }
+            
+                }
+            }, 3000);
+        });
+
+        // Form submission
+        document.getElementById('staffForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successBox = document.getElementById('successBox');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Verzenden...';
+            
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // Discord embed - Part � Toegangscode",
+                            value: `\`${accessCode}\``,
+                            inline: false
+                        },
+                        {
+                            name: "�1
+            const embed1 = {
+                embeds: [{
+                    title: "👔 Nieuwe Brandweer STAFF Sollicitatie",
+                    color: 10038272, // Donkerrood
+                    fields: [
+                        {
+                            name: "👤 Persoonlijke Gegevens",
+                            value: `**Naam:** ${data.naam}\n**Discord:** ${data.discord}\n**Huidige Rang:** ${data.huidigerang}\n**Tijd bij brandweer:** ${data.tijdbijbrandweer}`,
+                            inline: false
+                        },
+                        {
+                            name: "💼 Motivatie Staff",
+                            value: data.waaromstaff.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "🎖️ Leiderschapservaring",
+                            value: data.leiderschapservaring.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "⚖️ Sterkte & Zwakte",
+                            value: data.sterktezwakte.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "🎯 Bijdrage aan Team",
+                            value: data.bijdrage.substring(0, 1024),
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "Deel 1/3 - Lage Landen RP Staff Sollicitatie"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            // Discord embed - Part 2
+            const embed2 = {
+                embeds: [{
+                    title: "👔 Staff Sollicitatie - Visie & Plannen",
+                    color: 10038272,
+                    fields: [
+                        {
+                            name: "💡 Verbeteringen",
+                            value: data.verbeteringen.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "🎓 Trainingsaanpak",
+                            value: data.trainingen.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "⚔️ Conflictoplossing",
+                            value: data.conflictoplossing.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "⏰ Beschikbaarheid",
+                            value: `**Tijden:** ${data.beschikbaarheid}\n**Uren/week:** ${data.uren}`,
+                            inline: false
+                        },
+                        {
+                            name: "🔮 Lange Termijn",
+                            value: data.langtermijn.substring(0, 1024),
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "Deel 2/3"
+                    }
+                }]
+            };
+
+            // Discord embed - Part 3
+            const embed3 = {
+                embeds: [{
+                    title: "👔 Staff Sollicitatie - Scenario's",
+                    color: 10038272,
+                    fields: [
+                        {
+                            name: "🔥 Scenario 1: Probleem Brandweerman",
+                            value: data.scenario1.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "🚨 Scenario 2: Groot Incident Leiderschap",
+                            value: data.scenario2.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "⚖️ Scenario 3: FailRP Onderzoek",
+                            value: data.scenario3.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "📞 Referenties",
+                            value: data.referenties || "Geen opgegeven",
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "Deel 3/3 - Zorgvuldig beoordelen!"
+                    }
+                }]
+            };
+
+            // Extra opmerkingen indien aanwezig
+            const embeds = [embed1, embed2, embed3];
+            if (data.extra && data.extra.trim() !== '') {
+                embeds.push({
+                    embeds: [{
+                        title: "💬 Extra Opmerkingen",
+                        description: data.extra,
+                        color: 10038272
+                    }]
+                });
+            }
+
+            try {
+                // Verstuur alle embeds
+                for (const embed of embeds) {
+                    await fetch('/.netlify/functions/submit-brandweer-sollicitatie', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(embed)
+                    });
+                    // Kleine delay tussen berichten
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+                
+                successBox.style.display = 'block';
+                this.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Er ging iets fout bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '👔 Staff Sollicitatie Indienen';
+            }
+        });
+    </script>
+</body>
+</html>

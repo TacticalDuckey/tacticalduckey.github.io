@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brandweer Theorie Toets - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border: 3px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            letter-spacing: 0.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .access-code-input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        
+        h2 {
+            color: #dc2626;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .question {
+            background: #f9fafb;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #dc2626;
+        }
+        
+        .question h3 {
+            color: #991b1b;
+            margin-bottom: 1rem;
+        }
+        
+        .options {
+            margin-top: 1rem;
+        }
+        
+        .option {
+            display: block;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            border-color: #dc2626;
+            background: #fee2e2;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔥 Brandweer Theorie Toets</h1>
+        <p>Lage Landen RP - Basis Brandweerkennis</p>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een toegangscode aan bij staff</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Instructies:</strong>
+            <p>Beantwoord alle vragen naar beste vermogen. Er is geen tijdslimiet. Kies bij elke vraag het meest correcte antwoord.</p>
+        </div>
+
+        <form id="theorieForm">
+            <!-- Persoonlijke Info -->
+            <h2>📋 Persoonlijke Gegevens</h2>
+            <div style="margin: 1rem 0;">
+                <label style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Naam (IC):</label>
+                <input type="text" name="naam" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+            </div>
+            <div style="margin: 1rem 0;">
+                <label style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Discord:</label>
+                <input type="text" name="discord" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+            </div>
+
+            <!-- Vraag 1 -->
+            <div class="question">
+                <h3>Vraag 1: Wat is de eerste prioriteit bij een brandmelding?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="a" required>
+                        A. Het redden van mensenlevens
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="b">
+                        B. Het blussen van de brand
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="c">
+                        C. Het beschermen van eigendommen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="d">
+                        D. Het waarschuwen van omwonenden
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 2 -->
+            <div class="question">
+                <h3>Vraag 2: Wat betekent de afkorting "TS" bij de brandweer?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="a" required>
+                        A. Tank Spuit wagen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="b">
+                        B. Technische Service
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="c">
+                        C. Transport Systeem
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="d">
+                        D. Team Steun wagen
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 3 -->
+            <div class="question">
+                <h3>Vraag 3: Wanneer gebruik je de pieper/pager?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="a" required>
+                        A. Om meldingen te ontvangen van de meldkamer
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="b">
+                        B. Om met andere brandweerlieden te chatten
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="c">
+                        C. Om de tijd te checken
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="d">
+                        D. Om burgermeldingen te ontvangen
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 4 -->
+            <div class="question">
+                <h3>Vraag 4: Wat is de functie van de Hooligan Tool?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="a" required>
+                        A. Forceren van deuren en ramen, breken van sloten
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="b">
+                        B. Het blussen van kleine branden
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="c">
+                        C. Communicatie met de meldkamer
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="d">
+                        D. Het meten van temperaturen
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 5 -->
+            <div class="question">
+                <h3>Vraag 5: Waarvoor gebruik je de hydraulische knijpschaar?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="a" required>
+                        A. Het bevrijden van beknelde personen uit voertuigen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="b">
+                        B. Het knippen van brandslangen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="c">
+                        C. Het openen van brandkranen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="d">
+                        D. Het vernietigen van onveilige gebouwen
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 6 -->
+            <div class="question">
+                <h3>Vraag 6: Wat is de maximale hoogte die je kunt bereiken met een ladderwagen?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="a" required>
+                        A. Ongeveer 30 meter
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="b">
+                        B. Ongeveer 10 meter
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="c">
+                        C. Ongeveer 50 meter
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="d">
+                        D. Onbeperkt
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 7 -->
+            <div class="question">
+                <h3>Vraag 7: Mag je als brandweerman ALLEEN een pand binnengaan tijdens een brand?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="a" required>
+                        A. NEE - Altijd met minimaal een buddy/teamgenoot
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="b">
+                        B. JA - Als het een kleine brand is
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="c">
+                        C. JA - Als je voldoende ervaring hebt
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="d">
+                        D. Alleen als de commandant het toestaat
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 8 -->
+            <div class="question">
+                <h3>Vraag 8: Wat moet je doen als je collega bekneld raakt tijdens een actie?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="a" required>
+                        A. Direct MAYDAY roepen en bij collega blijven
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="b">
+                        B. Eerst zelf proberen te bevrijden
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="c">
+                        C. Teruggaan naar de wagen voor hulp
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="d">
+                        D. Wachten op instructies van de commandant
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 9 -->
+            <div class="question">
+                <h3>Vraag 9: Welk voertuig gebruik je voor het vervoer van groot materiaal en grote hoeveelheden water?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="a" required>
+                        A. HV (Hulpverlenings Voertuig)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="b">
+                        B. TS (Tankspuit)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="c">
+                        C. Ladderwagen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="d">
+                        D. Commandowagen
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 10 -->
+            <div class="question">
+                <h3>Vraag 10: Bij een waterongeval, wat is de eerste handeling?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="a" required>
+                        A. Veiligheid van jezelf en team waarborgen, reddingsvest aan
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="b">
+                        B. Direct het water in springen om te redden
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="c">
+                        C. De politie waarschuwen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="d">
+                        D. Een boot te water laten
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 11 -->
+            <div class="question">
+                <h3>Vraag 11: Wat is de juiste volgorde van rangen bij de brandweer (laag naar hoog)?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q11" value="a" required>
+                        A. Manschap → Pompbediende → Brandmeester (BV)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="b">
+                        B. Pompbediende → Manschap → Brandmeester (BV)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="c">
+                        C. Brandmeester → Pompbediende → Manschap
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="d">
+                        D. Manschap → Brandmeester → Pompbediende
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 12 -->
+            <div class="question">
+                <h3>Vraag 12: Welke diensten werk je als brandweer vaak mee samen?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q12" value="a" required>
+                        A. Politie en Ambulance
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="b">
+                        B. Alleen Politie
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="c">
+                        C. Taxi en ANWB
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="d">
+                        D. Gemeente en schoonmaakdienst
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 13 -->
+            <div class="question">
+                <h3>Vraag 13: Wat doe je als er gevaarlijke stoffen betrokken zijn bij een incident?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q13" value="a" required>
+                        A. Veilige afstand houden, meldkamer informeren, specialisten oproepen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="b">
+                        B. Direct ingrijpen met water
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="c">
+                        C. Wachten tot de politie arriveert
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="d">
+                        D. Evacuatie starten zonder verdere actie
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 14 -->
+            <div class="question">
+                <h3>Vraag 14: Wanneer gebruik je perslucht (ademlucht apparatuur)?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q14" value="a" required>
+                        A. Bij rookontwikkeling of giftige dampen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="b">
+                        B. Bij elk incident
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="c">
+                        C. Alleen bij waterongevallen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="d">
+                        D. Alleen als de commandant het beveelt
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 15 -->
+            <div class="question">
+                <h3>Vraag 15: Wat is de rol van de Pompbediende?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q15" value="a" required>
+                        A. Bedienen van de pomp, slangen uitrollen, watervoorziening regelen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="b">
+                        B. Alleen rijden van voertuigen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="c">
+                        C. Commanderen van het team
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="d">
+                        D. Administratieve taken op de kazerne
+                    </label>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Controleer je antwoorden:</strong>
+                <ul>
+                    <li>Alle vragen ingevuld?</li>
+                    <li>Toegangscode ingevuld?</li>
+                    <li>Na inzending kan je toets NIET meer worden aangepast</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                🚒 Toets Indienen
+            </button>
+
+            <div class="success-box" id="successBox">
+                <strong>✅ Toets Verzonden!</strong>
+                <p>Je theorie toets is succesvol ingediend. Je hoort zo snel mogelijk de resultaten!</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script>
+        // Toegangscode formatting
+        document.getElementById('accessCode').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (value.length > 3) value = value.slice(0, 3) + '-' + value.slice(3);
+            if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+            e.target.value = value.slice(0, 11);
+        });
+
+        // Check authenticatie
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = setInterval(() => {
+                if (window.netlifyIdentity && typeof auth !== 'undefined') {
+                    clearInterval(checkAuth);
+                    
+                    if (!auth.user) {
+                        window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/2. Brandweer Theorie Toets - Invulbaar.html';
+                        return;
+                    }
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                if (typeof auth === 'undefined' || !auth.user) {
+                    window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/2. Brandweer Theorie Toets - Invulbaar.html';
+                }
+            }, 3000);
+        });
+
+        // Form submission
+        document.getElementById('theorieForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Check toegangscode
+            const accessCode = document.getElementById('accessCode').value.trim();
+            if (!accessCode || accessCode.length < 11) {
+                alert('🔐 TOEGANGSCODE VEREIST\n\nVul een geldige toegangscode in (XXX-XXX-XXX).');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successBox = document.getElementById('successBox');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Verzenden...';
+            
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // Tel correcte antwoorden
+            const correctAnswers = {
+                q1: 'a', q2: 'a', q3: 'a', q4: 'a', q5: 'a',
+                q6: 'a', q7: 'a', q8: 'a', q9: 'a', q10: 'a',
+                q11: 'a', q12: 'a', q13: 'a', q14: 'a', q15: 'a'
+            };
+            
+            let score = 0;
+            let total = 15;
+            let details = '';
+            
+            for (let i = 1; i <= 15; i++) {
+                const userAnswer = data[`q${i}`];
+                const correct = correctAnswers[`q${i}`];
+                if (userAnswer === correct) {
+                    score++;
+                    details += `✅ Vraag ${i}: Correct\n`;
+                } else {
+                    details += `❌ Vraag ${i}: Fout (jouw antwoord: ${userAnswer?.toUpperCase() || 'geen'}, correct: ${correct.toUpperCase()})\n`;
+                }
+            }
+            
+            const percentage = Math.round((score / total) * 100);
+            const passed = percentage >= 80;
+            
+            // Discord embed
+            const embed = {
+                embeds: [{
+                    title: "🔥 Brandweer Theorie Toets Resultaat",
+                    color: passed ? 65280 : 16711680, // Groen als geslaagd, rood als niet
+                    fields: [
+                        {
+                            name: "🔐 Toegangscode",
+                            value: `\`${accessCode}\``,
+                            inline: false
+                        },
+                        {
+                            name: "👤 Kandidaat",
+                            value: `**Naam:** ${data.naam}\n**Discord:** ${data.discord}`,
+                            inline: false
+                        },
+                        {
+                            name: "📊 Score",
+                            value: `**${score}/${total}** (${percentage}%)`,
+                            inline: true
+                        },
+                        {
+                            name: "✅ Resultaat",
+                            value: passed ? "**GESLAAGD** ✅" : "**NIET GESLAAGD** ❌",
+                            inline: true
+                        },
+                        {
+                            name: "📝 Details per vraag",
+                            value: details.substring(0, 1024),
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: `Lage Landen RP - Brandweer Theorie | Slagingspercentage: 80%`
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+            
+            try {
+                const response = await fetch('/.netlify/functions/submit-brandweer-sollicitatie', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(embed)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Verzenden mislukt');
+                }
+                
+                // Toon resultaat
+                if (passed) {
+                    alert(`🎉 GEFELICITEERD!\n\nJe bent GESLAAGD voor de Brandweer Theorie Toets!\n\nScore: ${score}/${total} (${percentage}%)\n\nJe resultaten zijn verzonden naar staff.`);
+                } else {
+                    alert(`❌ Helaas...\n\nJe bent NIET GESLAAGD voor de Brandweer Theorie Toets.\n\nScore: ${score}/${total} (${percentage}%)\nNodig: 80%\n\nBestudeer het handboek en probeer het opnieuw.`);
+                }
+                
+                successBox.style.display = 'block';
+                this.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Er ging iets fout bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚒 Toets Indienen';
+            }
+        });
+    </script>
+</body>
+</html>

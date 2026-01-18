@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pompbediende Toets - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border: 3px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            letter-spacing: 0.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .access-code-input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        
+        h2 {
+            color: #dc2626;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .question {
+            background: #f9fafb;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #dc2626;
+        }
+        
+        .question h3 {
+            color: #991b1b;
+            margin-bottom: 1rem;
+        }
+        
+        .options {
+            margin-top: 1rem;
+        }
+        
+        .option {
+            display: block;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            border-color: #dc2626;
+            background: #fee2e2;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            min-height: 80px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>💧 Pompbediende Toets</h1>
+        <p>Lage Landen RP - Pomp & Watervoorziening</p>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een toegangscode aan bij staff</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Over deze toets:</strong>
+            <p>Deze toets test je kennis over het bedienen van de brandweerpomp, watervoorziening en slangenbeheer. Zowel theorie als praktische situaties worden getoetst.</p>
+        </div>
+
+        <form id="pompForm">
+            <!-- Persoonlijke Info -->
+            <h2>📋 Persoonlijke Gegevens</h2>
+            <div style="margin: 1rem 0;">
+                <label style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Naam (IC):</label>
+                <input type="text" name="naam" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+            </div>
+            <div style="margin: 1rem 0;">
+                <label style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Discord:</label>
+                <input type="text" name="discord" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+            </div>
+
+            <h2>Multiple Choice Vragen</h2>
+
+            <!-- Vraag 1 -->
+            <div class="question">
+                <h3>Vraag 1: Wat is de hoofdtaak van een pompbediende?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="a" required>
+                        A. Bedienen van de pomp en regelen van waterdruk
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="b">
+                        B. Het pand binnengaan om te blussen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="c">
+                        C. Verkeer regelen op de plaats delict
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="d">
+                        D. Commanderen van het team
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 2 -->
+            <div class="question">
+                <h3>Vraag 2: Waar haal je water vandaan als pompbediende?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="a" required>
+                        A. Brandkraan, open water, of de tank van de TS
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="b">
+                        B. Alleen uit de watertank
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="c">
+                        C. Van de ambulance
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="d">
+                        D. Uit huizen in de buurt
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 3 -->
+            <div class="question">
+                <h3>Vraag 3: Hoeveel liter water kan een standaard TS (Tankspuit) meenemen?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="a" required>
+                        A. Ongeveer 500-1000 liter
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="b">
+                        B. 100 liter
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="c">
+                        C. 5000 liter
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="d">
+                        D. Onbeperkt water
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 4 -->
+            <div class="question">
+                <h3>Vraag 4: Wat moet je doen als de waterdruk te laag is?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="a" required>
+                        A. Pomp hoger zetten en controleren op lekken in slangen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="b">
+                        B. Meer slangen aansluiten
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="c">
+                        C. Niets, de druk is altijd goed
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="d">
+                        D. Een tweede brandweerwagen oproepen
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 5 -->
+            <div class="question">
+                <h3>Vraag 5: Wat is het verschil tussen een persslang en een zuigslang?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="a" required>
+                        A. Persslang brengt water onder druk naar brand, zuigslang zuigt water op uit bron
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="b">
+                        B. Geen verschil, beide doen hetzelfde
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="c">
+                        C. Zuigslang is voor klein materiaal
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="d">
+                        D. Persslang is alleen voor schuim
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 6 -->
+            <div class="question">
+                <h3>Vraag 6: Hoe koppel je een slang aan een brandkraan?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="a" required>
+                        A. Met een koppelstuk, stevig vastdraaien en kraan openzetten
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="b">
+                        B. Direct zonder koppeling
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="c">
+                        C. Met ducttape
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="d">
+                        D. Alleen de commandant mag dit doen
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 7 -->
+            <div class="question">
+                <h3>Vraag 7: Wat doe je als een slang knapt tijdens het blussen?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="a" required>
+                        A. Direct de pomp uitzetten, team waarschuwen, slang vervangen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="b">
+                        B. Doorgaan met pompen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="c">
+                        C. De politie bellen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="d">
+                        D. Wachten tot het team terugkomt
+                    </label>
+                </div>
+            </div>
+
+            <!-- Vraag 8 -->
+            <div class="question">
+                <h3>Vraag 8: Mag je de TS verlaten als pompbediende tijdens een actie?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="a" required>
+                        A. NEE - Alleen in noodgevallen en na overleg met commandant
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="b">
+                        B. JA - Altijd als je wilt
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="c">
+                        C. JA - Om koffie te halen
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="d">
+                        D. Alleen om slangen uit te rollen
+                    </label>
+                </div>
+            </div>
+
+            <h2>Open Vragen</h2>
+
+            <!-- Open vraag 1 -->
+            <div class="question">
+                <h3>Vraag 9: Beschrijf stap voor stap hoe je als pompbediende watervoorziening regelt vanaf een brandkraan</h3>
+                <textarea name="q9" required placeholder="Beschrijf alle stappen vanaf aankomst..."></textarea>
+            </div>
+
+            <!-- Open vraag 2 -->
+            <div class="question">
+                <h3>Vraag 10: Je collega's roepen via de portofoon dat ze MEER waterdruk nodig hebben. Wat doe je?</h3>
+                <textarea name="q10" required placeholder="Beschrijf je acties en communicatie..."></textarea>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Belangrijk:</strong>
+                <ul>
+                    <li>Alle vragen moeten beantwoord zijn</li>
+                    <li>Open vragen: geef uitgebreide antwoorden</li>
+                    <li>Toegangscode is verplicht</li>
+                    <li>Slagingspercentage: 75%</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                💧 Toets Indienen
+            </button>
+
+            <div class="success-box" id="successBox">
+                <strong>✅ Toets Verzonden!</strong>
+                <p>Je pompbediende toets is verzonden naar staff voor beoordeling.</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script>
+        // Toegangscode formatting
+        document.getElementById('accessCode').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (value.length > 3) value = value.slice(0, 3) + '-' + value.slice(3);
+            if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+            e.target.value = value.slice(0, 11);
+        });
+
+        // Check authenticatie
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = setInterval(() => {
+                if (window.netlifyIdentity && typeof auth !== 'undefined') {
+                    clearInterval(checkAuth);
+                    
+                    if (!auth.user) {
+                        window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/3. Pompbediende Toets - Invulbaar.html';
+                        return;
+                    }
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                if (typeof auth === 'undefined' || !auth.user) {
+                    window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/3. Pompbediende Toets - Invulbaar.html';
+                }
+            }, 3000);
+        });
+
+        // Form submission
+        document.getElementById('pompForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Check toegangscode
+            const accessCode = document.getElementById('accessCode').value.trim();
+            if (!accessCode || accessCode.length < 11) {
+                alert('🔐 TOEGANGSCODE VEREIST\n\nVul een geldige toegangscode in.');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successBox = document.getElementById('successBox');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Verzenden...';
+            
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // Tel correcte antwoorden (MC vragen)
+            const correctAnswers = {
+                q1: 'a', q2: 'a', q3: 'a', q4: 'a', 
+                q5: 'a', q6: 'a', q7: 'a', q8: 'a'
+            };
+            
+            let score = 0;
+            let total = 8;
+            let mcDetails = '';
+            
+            for (let i = 1; i <= 8; i++) {
+                const userAnswer = data[`q${i}`];
+                const correct = correctAnswers[`q${i}`];
+                if (userAnswer === correct) {
+                    score++;
+                    mcDetails += `✅ Vraag ${i}: Correct\n`;
+                } else {
+                    mcDetails += `❌ Vraag ${i}: Fout\n`;
+                }
+            }
+            
+            const percentage = Math.round((score / total) * 100);
+            
+            // Discord embed
+            const embed = {
+                embeds: [{
+                    title: "💧 Pompbediende Toets",
+                    color: 14423100,
+                    fields: [
+                        {
+                            name: "🔐 Toegangscode",
+                            value: `\`${accessCode}\``,
+                            inline: false
+                        },
+                        {
+                            name: "👤 Kandidaat",
+                            value: `**Naam:** ${data.naam}\n**Discord:** ${data.discord}`,
+                            inline: false
+                        },
+                        {
+                            name: "📊 Multiple Choice Score",
+                            value: `**${score}/${total}** (${percentage}%)`,
+                            inline: false
+                        },
+                        {
+                            name: "📝 MC Details",
+                            value: mcDetails,
+                            inline: false
+                        },
+                        {
+                            name: "📖 Open Vraag 9: Watervoorziening regelen",
+                            value: data.q9.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "💪 Open Vraag 10: Meer waterdruk scenario",
+                            value: data.q10.substring(0, 1024),
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "Lage Landen RP - Pompbediende Toets | Staff: beoordeel open vragen"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+            
+            try {
+                const response = await fetch('/.netlify/functions/submit-brandweer-sollicitatie', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(embed)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Verzenden mislukt');
+                }
+                
+                successBox.style.display = 'block';
+                this.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Er ging iets fout bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '💧 Toets Indienen';
+            }
+        });
+    </script>
+</body>
+</html>
