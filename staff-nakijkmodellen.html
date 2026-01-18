@@ -73,6 +73,11 @@
         <a href="dashboard.html" style="color: white; margin-top: 1rem; display: inline-block;">← Terug naar dashboard</a>
     </div>
 
+    <div id="loading-indicator" style="text-align: center; padding: 4rem 2rem;">
+        <h2>⏳ Laden...</h2>
+        <p>Toegangsrechten controleren...</p>
+    </div>
+
     <main class="container" id="protected-content" style="display: none;">
         <div class="staff-warning">
             <h3>⚠️ Vertrouwelijke Informatie</h3>
@@ -184,7 +189,7 @@
         </div>
     </main>
 
-    <div id="auth-required" style="text-align: center; padding: 4rem 2rem; display: block;">
+    <div id="auth-required" style="text-align: center; padding: 4rem 2rem; display: none;">
         <h2>🔒 Authenticatie Vereist</h2>
         <p>Je moet ingelogd zijn als staff om deze pagina te bekijken.</p>
         <p style="margin-top: 1rem;"><a href="login.html" class="btn">Inloggen</a></p>
@@ -204,32 +209,37 @@
                 if (window.netlifyIdentity && window.auth && window.auth.user !== undefined) {
                     clearInterval(checkAuth);
                     
+                    // Verberg loading indicator
+                    document.getElementById('loading-indicator').style.display = 'none';
+                    
                     // Check of gebruiker is ingelogd EN staff of admin is
                     if (window.auth.user && window.auth.hasRole(['staff', 'admin'])) {
                         // Toon content
                         document.getElementById('protected-content').style.display = 'block';
-                        document.getElementById('auth-required').style.display = 'none';
                     } else if (!window.auth.user) {
                         // Niet ingelogd - redirect naar login
                         window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
                     } else {
                         // Wel ingelogd maar geen staff/admin
-                        document.getElementById('auth-required').innerHTML = `
+                        const authRequired = document.getElementById('auth-required');
+                        authRequired.innerHTML = `
                             <h2>🚫 Toegang Geweigerd</h2>
                             <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
                             <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
                         `;
+                        authRequired.style.display = 'block';
                     }
                 }
-            }, 100);
+            }, 50);
 
-            // Timeout na 5 seconden
+            // Timeout na 3 seconden
             setTimeout(() => {
                 clearInterval(checkAuth);
                 if (!window.auth || !window.auth.user) {
+                    document.getElementById('loading-indicator').style.display = 'none';
                     window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
                 }
-            }, 5000);
+            }, 3000);
         });
     </script>
 </body>
