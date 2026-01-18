@@ -47,9 +47,16 @@
     </header>
 
     <main class="container">
-        <!-- Banner Section -->
+        <!-- Banner Carousel Section -->
         <section class="banner-section">
-            <img src="images/banner.png" alt="Lage Landen RP Banner" class="hero-banner">
+            <div class="banner-carousel">
+                <img src="images/banner.png" alt="Lage Landen RP Banner 1" class="banner-slide active">
+                <img src="images/banner2.png" alt="Lage Landen RP Banner 2" class="banner-slide">
+                <img src="images/banner3.png" alt="Lage Landen RP Banner 3" class="banner-slide">
+                <img src="images/banner4.png" alt="Lage Landen RP Banner 4" class="banner-slide">
+                <img src="images/banner5.png" alt="Lage Landen RP Banner 5" class="banner-slide">
+                <img src="images/banner6.png" alt="Lage Landen RP Banner 6" class="banner-slide">
+            </div>
         </section>
 
         <section class="intro">
@@ -95,6 +102,28 @@
 
     <script src="auth.js"></script>
     <script>
+        // Banner Carousel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const totalSlides = slides.length;
+        
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+        
+        // Auto-advance elke 5 seconden
+        setInterval(nextSlide, 5000);
+        
         // Update UI based on login status
         if (window.netlifyIdentity) {
             netlifyIdentity.on('init', user => {

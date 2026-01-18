@@ -490,6 +490,34 @@ body {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
+.banner-carousel {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.banner-slide {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.banner-slide:first-child {
+    position: relative;
+}
+
+.banner-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* Legacy support */
 .hero-banner {
     width: 100%;
     height: auto;
