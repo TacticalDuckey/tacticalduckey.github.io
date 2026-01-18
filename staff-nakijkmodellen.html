@@ -203,44 +203,67 @@
 
     <script src="auth.js"></script>
     <script>
-        // Wacht tot alles geladen is
-        window.addEventListener('load', () => {
-            // Geef auth.js tijd om te initialiseren
-            setTimeout(() => {
-                const loadingEl = document.getElementById('loading-indicator');
-                const contentEl = document.getElementById('protected-content');
-                const authReqEl = document.getElementById('auth-required');
+        // Wacht tot auth.js geladen is
+        function checkAuthAndShow() {
+            const loadingEl = document.getElementById('loading-indicator');
+            const contentEl = document.getElementById('protected-content');
+            const authReqEl = document.getElementById('auth-required');
+            
+            console.log('Checking auth...');
+            console.log('Auth exists:', !!window.auth);
+            
+            if (!window.auth) {
+                console.log('Auth not ready yet, waiting...');
+                return false;
+            }
+            
+            console.log('User:', window.auth.user);
+            console.log('User role:', window.auth.getUserRole());
+            
+            if (loadingEl) loadingEl.style.display = 'none';
+            
+            if (window.auth.user) {
+                const userRole = window.auth.getUserRole();
+                console.log('Detected role:', userRole);
                 
-                console.log('Auth object:', window.auth);
-                console.log('User:', window.auth?.user);
-                console.log('User role:', window.auth?.getUserRole());
-                
-                if (loadingEl) loadingEl.style.display = 'none';
-                
-                // Direct checken zonder intervals
-                if (window.auth && window.auth.user) {
-                    const userRole = window.auth.getUserRole();
-                    console.log('Detected role:', userRole);
-                    
-                    if (userRole === 'admin' || userRole === 'staff') {
-                        console.log('Access granted!');
-                        contentEl.style.display = 'block';
-                    } else {
-                        console.log('Access denied - wrong role:', userRole);
-                        authReqEl.innerHTML = `
-                            <h2>🚫 Toegang Geweigerd</h2>
-                            <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
-                            <p>Je huidige rol: ${window.auth.getRoleDisplay(userRole)}</p>
-                            <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
-                        `;
-                        authReqEl.style.display = 'block';
-                    }
+                if (userRole === 'admin' || userRole === 'staff') {
+                    console.log('Access granted!');
+                    contentEl.style.display = 'block';
                 } else {
-                    console.log('Not logged in, redirecting...');
-                    window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
+                    console.log('Access denied - wrong role:', userRole);
+                    authReqEl.innerHTML = `
+                        <h2>🚫 Toegang Geweigerd</h2>
+                        <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
+                        <p>Je huidige rol: ${window.auth.getRoleDisplay(userRole)}</p>
+                        <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
+                    `;
+                    authReqEl.style.display = 'block';
                 }
-            }, 500);
-        });
+            } else {
+                console.log('Not logged in, redirecting...');
+                window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
+            }
+            
+            return true;
+        }
+        
+        // Poll totdat auth klaar is
+        let attempts = 0;
+        const maxAttempts = 50; // 5 seconden max
+        
+        const authCheck = setInterval(() => {
+            attempts++;
+            console.log('Attempt', attempts);
+            
+            if (checkAuthAndShow()) {
+                clearInterval(authCheck);
+            } else if (attempts >= maxAttempts) {
+                clearInterval(authCheck);
+                console.log('Timeout - auth not loaded');
+                document.getElementById('loading-indicator').style.display = 'none';
+                window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
+            }
+        }, 100);
     </script>
 </body>
 </html>
