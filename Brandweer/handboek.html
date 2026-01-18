@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brandweer Handboek - Lage Landen RP</title>
     <link rel="stylesheet" href="../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
         .handboek-header {
             position: relative;
@@ -1780,5 +1781,36 @@
     
     ═══════════════════════════════════════════════════════════════════════════
     -->
+
+    <script src="../auth.js"></script>
+    <script>
+        // Check authenticatie en brandweer rol
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = setInterval(() => {
+                if (window.netlifyIdentity && window.auth) {
+                    clearInterval(checkAuth);
+                    
+                    if (!auth.user) {
+                        window.location.href = '/login.html?redirect=/Brandweer/handboek.html';
+                        return;
+                    }
+
+                    const role = auth.getUserRole();
+                    // Alleen brandweer, staff en admin hebben toegang
+                    if (!['brandweer', 'staff', 'admin'].includes(role)) {
+                        alert('Je hebt geen toegang tot het Brandweer Handboek. Alleen brandweerpersoneel heeft toegang.');
+                        window.location.href = '/dashboard.html';
+                    }
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                if (!window.auth || !auth.user) {
+                    window.location.href = '/login.html?redirect=/Brandweer/handboek.html';
+                }
+            }, 3000);
+        });
+    </script>
 </body>
 </html>
