@@ -201,26 +201,35 @@
         // Beveilig deze pagina - alleen staff en admin
         document.addEventListener('DOMContentLoaded', () => {
             const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && window.auth) {
+                if (window.netlifyIdentity && window.auth && window.auth.user !== undefined) {
                     clearInterval(checkAuth);
                     
-                    // Check of gebruiker staff of admin is
-                    if (auth.requireAuth(['staff', 'admin'])) {
+                    // Check of gebruiker is ingelogd EN staff of admin is
+                    if (window.auth.user && window.auth.hasRole(['staff', 'admin'])) {
                         // Toon content
                         document.getElementById('protected-content').style.display = 'block';
                         document.getElementById('auth-required').style.display = 'none';
+                    } else if (!window.auth.user) {
+                        // Niet ingelogd - redirect naar login
+                        window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
+                    } else {
+                        // Wel ingelogd maar geen staff/admin
+                        document.getElementById('auth-required').innerHTML = `
+                            <h2>🚫 Toegang Geweigerd</h2>
+                            <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
+                            <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
+                        `;
                     }
                 }
             }, 100);
 
-            // Timeout na 3 seconden
+            // Timeout na 5 seconden
             setTimeout(() => {
                 clearInterval(checkAuth);
                 if (!window.auth || !window.auth.user) {
-                    document.getElementById('auth-required').style.display = 'block';
-                    document.getElementById('protected-content').style.display = 'none';
+                    window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
                 }
-            }, 3000);
+            }, 5000);
         });
     </script>
 </body>
