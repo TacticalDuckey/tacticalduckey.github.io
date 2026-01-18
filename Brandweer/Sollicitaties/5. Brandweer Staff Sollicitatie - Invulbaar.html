@@ -396,17 +396,17 @@
                 data[key] = value;
             });
             
-            // Discord embed - Part � Toegangscode",
-                            value: `\`${accessCode}\``,
-                            inline: false
-                        },
-                        {
-                            name: "�1
+            // Discord embed - Part 1
             const embed1 = {
                 embeds: [{
                     title: "👔 Nieuwe Brandweer STAFF Sollicitatie",
                     color: 10038272, // Donkerrood
                     fields: [
+                        {
+                            name: "🔐 Toegangscode",
+                            value: `\`${accessCode}\``,
+                            inline: false
+                        },
                         {
                             name: "👤 Persoonlijke Gegevens",
                             value: `**Naam:** ${data.naam}\n**Discord:** ${data.discord}\n**Huidige Rang:** ${data.huidigerang}\n**Tijd bij brandweer:** ${data.tijdbijbrandweer}`,
