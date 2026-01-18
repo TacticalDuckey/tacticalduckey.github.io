@@ -203,50 +203,43 @@
 
     <script src="auth.js"></script>
     <script>
-        // Beveilig deze pagina - alleen ingelogde gebruikers
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkAuth = setInterval(() => {
-                if (window.auth && window.auth.user !== undefined) {
-                    clearInterval(checkAuth);
-                    
-                    // Verberg loading indicator
-                    document.getElementById('loading-indicator').style.display = 'none';
-                    
-                    // Check of gebruiker is ingelogd
-                    if (window.auth.user) {
-                        const userRole = window.auth.getUserRole();
-                        console.log('User role:', userRole); // Debug
-                        
-                        // Check of gebruiker staff of admin is
-                        if (userRole === 'staff' || userRole === 'admin') {
-                            // Toon content
-                            document.getElementById('protected-content').style.display = 'block';
-                        } else {
-                            // Wel ingelogd maar geen staff/admin
-                            const authRequired = document.getElementById('auth-required');
-                            authRequired.innerHTML = `
-                                <h2>🚫 Toegang Geweigerd</h2>
-                                <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
-                                <p>Je huidige rol: ${window.auth.getRoleDisplay(userRole)}</p>
-                                <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
-                            `;
-                            authRequired.style.display = 'block';
-                        }
-                    } else {
-                        // Niet ingelogd - redirect naar login
-                        window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
-                    }
-                }
-            }, 50);
-
-            // Timeout na 3 seconden
+        // Wacht tot alles geladen is
+        window.addEventListener('load', () => {
+            // Geef auth.js tijd om te initialiseren
             setTimeout(() => {
-                if (!window.auth || window.auth.user === undefined) {
-                    clearInterval(checkAuth);
-                    document.getElementById('loading-indicator').style.display = 'none';
+                const loadingEl = document.getElementById('loading-indicator');
+                const contentEl = document.getElementById('protected-content');
+                const authReqEl = document.getElementById('auth-required');
+                
+                console.log('Auth object:', window.auth);
+                console.log('User:', window.auth?.user);
+                console.log('User role:', window.auth?.getUserRole());
+                
+                if (loadingEl) loadingEl.style.display = 'none';
+                
+                // Direct checken zonder intervals
+                if (window.auth && window.auth.user) {
+                    const userRole = window.auth.getUserRole();
+                    console.log('Detected role:', userRole);
+                    
+                    if (userRole === 'admin' || userRole === 'staff') {
+                        console.log('Access granted!');
+                        contentEl.style.display = 'block';
+                    } else {
+                        console.log('Access denied - wrong role:', userRole);
+                        authReqEl.innerHTML = `
+                            <h2>🚫 Toegang Geweigerd</h2>
+                            <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
+                            <p>Je huidige rol: ${window.auth.getRoleDisplay(userRole)}</p>
+                            <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
+                        `;
+                        authReqEl.style.display = 'block';
+                    }
+                } else {
+                    console.log('Not logged in, redirecting...');
                     window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
                 }
-            }, 3000);
+            }, 500);
         });
     </script>
 </body>
