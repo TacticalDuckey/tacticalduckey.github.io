@@ -132,6 +132,34 @@
             background: rgba(0,0,0,0.2);
             border-radius: 8px;
         }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border: 3px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            letter-spacing: 0.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .access-code-input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -142,6 +170,15 @@
     </div>
 
     <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een brandweer sollicitatiecode aan bij staff om toegang te krijgen</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #991b1b;">
+                💡 Neem contact op met Brandweer Staff voor een code
+            </p>
+        </div>
+
         <div class="info-box">
             <strong>💡 Welkom bij de Brandweer Sollicitatie!</strong>
             <p>Vul onderstaand formulier zo volledig en eerlijk mogelijk in. Lees de vragen goed door en neem de tijd voor je antwoorden.</p>
@@ -278,6 +315,14 @@
 
     <script src="../../auth.js"></script>
     <script>
+        // Toegangscode formatting
+        document.getElementById('accessCode').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (value.length > 3) value = value.slice(0, 3) + '-' + value.slice(3);
+            if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+            e.target.value = value.slice(0, 11);
+        });
+
         // Check authenticatie
         document.addEventListener('DOMContentLoaded', () => {
             const checkAuth = setInterval(() => {
@@ -303,6 +348,13 @@
         document.getElementById('sollicitatieForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Check toegangscode
+            const accessCode = document.getElementById('accessCode').value.trim();
+            if (!accessCode || accessCode.length < 11) {
+                alert('🔐 TOEGANGSCODE VEREIST\n\nVul een geldige toegangscode in (XXX-XXX-XXX).\n\nVraag een code aan bij Brandweer Staff als je die nog niet hebt.');
+                return;
+            }
+            
             const submitBtn = document.getElementById('submitBtn');
             const successBox = document.getElementById('successBox');
             
@@ -315,6 +367,9 @@
                 data[key] = value;
             });
             
+            // Voeg toegangscode toe aan data
+            data.accessCode = accessCode;
+            
             // Discord embed samenstellen
             const embed = {
                 embeds: [{
@@ -322,7 +377,12 @@
                     color: 14423100, // Rood
                     fields: [
                         {
-                            name: "👤 Persoonlijke Gegevens",
+                            name: "� Toegangscode",
+                            value: `\`${accessCode}\``,
+                            inline: false
+                        },
+                        {
+                            name: "�👤 Persoonlijke Gegevens",
                             value: `**Naam:** ${data.naam}\n**Discord:** ${data.discord}\n**Leeftijd:** ${data.leeftijd}\n**Telefoon:** ${data.telefoon}`,
                             inline: false
                         },
