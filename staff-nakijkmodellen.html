@@ -203,39 +203,46 @@
 
     <script src="auth.js"></script>
     <script>
-        // Beveilig deze pagina - alleen staff en admin
+        // Beveilig deze pagina - alleen ingelogde gebruikers
         document.addEventListener('DOMContentLoaded', () => {
             const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && window.auth && window.auth.user !== undefined) {
+                if (window.auth && window.auth.user !== undefined) {
                     clearInterval(checkAuth);
                     
                     // Verberg loading indicator
                     document.getElementById('loading-indicator').style.display = 'none';
                     
-                    // Check of gebruiker is ingelogd EN staff of admin is
-                    if (window.auth.user && window.auth.hasRole(['staff', 'admin'])) {
-                        // Toon content
-                        document.getElementById('protected-content').style.display = 'block';
-                    } else if (!window.auth.user) {
+                    // Check of gebruiker is ingelogd
+                    if (window.auth.user) {
+                        const userRole = window.auth.getUserRole();
+                        console.log('User role:', userRole); // Debug
+                        
+                        // Check of gebruiker staff of admin is
+                        if (userRole === 'staff' || userRole === 'admin') {
+                            // Toon content
+                            document.getElementById('protected-content').style.display = 'block';
+                        } else {
+                            // Wel ingelogd maar geen staff/admin
+                            const authRequired = document.getElementById('auth-required');
+                            authRequired.innerHTML = `
+                                <h2>🚫 Toegang Geweigerd</h2>
+                                <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
+                                <p>Je huidige rol: ${window.auth.getRoleDisplay(userRole)}</p>
+                                <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
+                            `;
+                            authRequired.style.display = 'block';
+                        }
+                    } else {
                         // Niet ingelogd - redirect naar login
                         window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
-                    } else {
-                        // Wel ingelogd maar geen staff/admin
-                        const authRequired = document.getElementById('auth-required');
-                        authRequired.innerHTML = `
-                            <h2>🚫 Toegang Geweigerd</h2>
-                            <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
-                            <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
-                        `;
-                        authRequired.style.display = 'block';
                     }
                 }
             }, 50);
 
             // Timeout na 3 seconden
             setTimeout(() => {
-                clearInterval(checkAuth);
-                if (!window.auth || !window.auth.user) {
+                if (!window.auth || window.auth.user === undefined) {
+                    clearInterval(checkAuth);
                     document.getElementById('loading-indicator').style.display = 'none';
                     window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
                 }
