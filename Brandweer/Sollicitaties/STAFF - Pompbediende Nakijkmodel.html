@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAFF - Pompbediende Toets Nakijkmodel</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="../../auth.js" defer></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #fee2e2, #fef3c7);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .staff-warning {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            color: #dc2626;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .question {
+            background: #fef3c7;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border-left: 6px solid #0284c7;
+        }
+
+        .question.open-question {
+            border-left: 6px solid #dc2626;
+        }
+
+        .question-number {
+            color: #0284c7;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        .question.open-question .question-number {
+            color: #dc2626;
+        }
+
+        .correct-answer {
+            background: #d1fae5;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #059669;
+        }
+
+        .correct-answer strong {
+            color: #059669;
+        }
+
+        .open-answer {
+            background: #fef3c7;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #dc2626;
+        }
+
+        .criteria {
+            background: #e0f2fe;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+
+        .criteria ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 6px solid #3b82f6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="protected-content" style="display: none;">
+        <div class="staff-warning">
+            <h2>⚠️ VERTROUWELIJK - ALLEEN VOOR STAFF</h2>
+            <p>Dit nakijkmodel bevat alle correcte antwoorden voor de Pompbediende Toets.</p>
+            <p>Deel deze informatie NOOIT met sollicitanten!</p>
+        </div>
+
+        <h1>💧 Pompbediende Toets - Nakijkmodel</h1>
+
+        <div class="info-box">
+            <h3>📊 Toets Informatie</h3>
+            <ul>
+                <li><strong>Multiple Choice:</strong> 8 vragen (automatisch gescoord)</li>
+                <li><strong>Open vragen:</strong> 2 vragen (handmatig nakijken)</li>
+                <li><strong>Totaal:</strong> 10 vragen</li>
+                <li><strong>Slaagpercentage MC:</strong> Minimaal 6 van 8 goed (75%)</li>
+                <li><strong>Open vragen:</strong> Beide moeten afdoende worden beantwoord</li>
+            </ul>
+        </div>
+
+        <h2 style="color: #0284c7; border-bottom: 3px solid #0ea5e9; padding-bottom: 1rem;">Multiple Choice Antwoorden</h2>
+
+        <div class="question">
+            <div class="question-number">Vraag 1: Pompdoelstelling</div>
+            <p><strong>Vraag:</strong> Wat is de belangrijkste taak van de pompbediende?</p>
+            <div class="correct-answer">
+                <strong>✓ Correct antwoord:</strong> Constante waterdruk leveren aan de blusteams
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">Vraag 2: Waterwinning locatie</div>
+            <p><strong>Vraag:</strong> Waar kan de pomp GEEN water uit winnen?</p>
+            <div class="correct-answer">
+                <strong>✓ Correct antwoord:</strong> Een gesloten watertank zonder opening
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">Vraag 3: Druk voor hoogbouw</div>
+            <p><strong>Vraag:</strong> Hoeveel bar druk is ongeveer nodig voor een hogedrukslang op 3 verdiepingen?</p>
+            <div class="correct-answer">
+                <strong>✓ Correct antwoord:</strong> 6-8 bar
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">Vraag 4: Pomp luchtsluis</div>
+            <p><strong>Vraag:</strong> De pomp slaat af of verliest druk. Meest waarschijnlijke oorzaak?</p>
+            <div class="correct-answer">
+                <strong>✓ Correct antwoord:</strong> Lucht in het systeem of lek in aanvoerslang
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">Vraag 5: Slangaansluiting</div>
+            <p><strong>Vraag:</strong> Je moet 3 hogedrukslangen aansluiten. Wat doe je?</p>
+            <div class="correct-answer">
+                <strong>✓ Correct antwoord:</strong> Verdeler gebruiken en druk gelijk verdelen over de uitgangen
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">Vraag 6: Watertankbeheer</div>
+            <p><strong>Vraag:</strong> De watertank van het voertuig raakt leeg. Wat is de beste actie?</p>
+            <div class="correct-answer">
+                <strong>✓ Correct antwoord:</strong> Overschakelen op externe waterbron (hydrant/vijver) en team waarschuwen
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">Vraag 7: Communicatie met team</div>
+            <p><strong>Vraag:</strong> Het blusteam vraagt om meer druk. Wat doe je?</p>
+            <div class="correct-answer">
+                <strong>✓ Correct antwoord:</strong> Druk geleidelijk verhogen en bevestiging vragen aan team
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">Vraag 8: Pomponderhoud tijdens inzet</div>
+            <p><strong>Vraag:</strong> Tijdens het pompen, wat moet je constant monitoren?</p>
+            <div class="correct-answer">
+                <strong>✓ Correct antwoord:</strong> Druk, temperatuur, toerental en waterpeil
+            </div>
+        </div>
+
+        <h2 style="color: #dc2626; border-bottom: 3px solid #fbbf24; padding-bottom: 1rem; margin-top: 3rem;">Open Vragen - Beoordelingscriteria</h2>
+
+        <div class="question open-question">
+            <div class="question-number">Vraag 9: Opstarten vanaf open water</div>
+            <p><strong>Vraag:</strong> Beschrijf in stappen hoe je de pomp opstart om water te winnen uit een vijver of kanaal.</p>
+            
+            <div class="criteria">
+                <h4>✓ Beoordelingscriteria (minimaal 5 van 8 punten nodig):</h4>
+                <ul>
+                    <li><strong>Voorbereiding (2 punten):</strong>
+                        <ul>
+                            <li>Controleren dat voertuig stabiel staat en veilig is</li>
+                            <li>Juiste slangen en apparatuur klaarleggen</li>
+                        </ul>
+                    </li>
+                    <li><strong>Slangaansluiting (2 punten):</strong>
+                        <ul>
+                            <li>Aanvoerslang aansluiten op pomp</li>
+                            <li>Slang in waterbron plaatsen met zandfilter/mandje</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pomp voorbereiden (2 punten):</strong>
+                        <ul>
+                            <li>Pomp vullen met water (primen) indien nodig</li>
+                            <li>Alle uitgangen en ventielen correct instellen</li>
+                        </ul>
+                    </li>
+                    <li><strong>Opstarten en testen (2 punten):</strong>
+                        <ul>
+                            <li>Pomp opstarten op laag toerental</li>
+                            <li>Druk geleidelijk opbouwen en controleren</li>
+                            <li>Lekken checken voordat hogedrukslang aangesloten wordt</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>Let op:</strong> Kandidaat hoeft niet exact deze bewoordingen te gebruiken, maar moet de essentie van elke stap laten zien.</p>
+            </div>
+        </div>
+
+        <div class="question open-question">
+            <div class="question-number">Vraag 10: Noodsituatie drukval</div>
+            <p><strong>Vraag:</strong> Je ziet plotseling dat de druk flink daalt terwijl het blusteam actief is. Wat is je actieplan?</p>
+            
+            <div class="criteria">
+                <h4>✓ Beoordelingscriteria (minimaal 4 van 6 punten nodig):</h4>
+                <ul>
+                    <li><strong>Directe communicatie (2 punten):</strong>
+                        <ul>
+                            <li>Onmiddellijk team waarschuwen over drukprobleem</li>
+                            <li>Vragen of zij verandering merken</li>
+                        </ul>
+                    </li>
+                    <li><strong>Diagnose (2 punten):</strong>
+                        <ul>
+                            <li>Meters en indicatoren checken (druk, toerental, waterpeil)</li>
+                            <li>Visuele inspectie op lekken of beschadigingen</li>
+                            <li>Controle wateraanvoer (is bron leeg? Slang afgeknikt?)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Actie en escalatie (2 punten):</strong>
+                        <ul>
+                            <li>Probleem proberen te verhelpen (bijv. overschakelen op andere waterbron)</li>
+                            <li>Als niet opgelost: commandovoerder informeren</li>
+                            <li>Team adviseren om voorzichtig te zijn of tijdelijk te stoppen</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>Let op:</strong> Focus op veiligheid en communicatie. Een kandidaat die onmiddellijk escaleert en communiceert is beter dan iemand die zelf alles probeert op te lossen zonder team te waarschuwen.</p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>📝 Algemene Beoordelingsrichtlijnen</h3>
+            <ul>
+                <li><strong>Multiple Choice:</strong> Automatisch gescoord, minimaal 6/8 goed</li>
+                <li><strong>Open vragen:</strong> Beide vragen moeten minimaal 50% van de punten scoren</li>
+                <li><strong>Totaalbeoordeling:</strong>
+                    <ul>
+                        <li>✅ GESLAAGD: MC ≥ 6/8 EN beide open vragen ≥ 50%</li>
+                        <li>❌ NIET GESLAAGD: MC &lt; 6/8 OF één van open vragen &lt; 50%</li>
+                    </ul>
+                </li>
+                <li><strong>Feedback:</strong> Geef altijd concrete feedback bij open vragen, ook bij geslaagde kandidaten</li>
+            </ul>
+        </div>
+
+        <div class="info-box" style="background: #fef3c7; border-left-color: #dc2626;">
+            <h3>💡 Tips voor beoordeling open vragen</h3>
+            <ul>
+                <li>Accepteer verschillende bewoordingen als de kern klopt</li>
+                <li>Praktijkervaring en logisch denken wegen zwaarder dan perfecte theorie</li>
+                <li>Let op veiligheidsdenken en teamcommunicatie - dit is essentieel!</li>
+                <li>Geef partial credit: als 3 van 4 stappen goed zijn, is dat nog steeds 75%</li>
+            </ul>
+        </div>
+
+        <a href="../../staff-nakijkmodellen.html" class="back-btn">← Terug naar Overzicht</a>
+    </div>
+
+    <div id="auth-required" style="text-align: center; padding: 4rem 2rem;">
+        <h2>🔒 Authenticatie Vereist</h2>
+        <p>Je moet ingelogd zijn om deze pagina te bekijken.</p>
+    </div>
+</body>
+</html>
