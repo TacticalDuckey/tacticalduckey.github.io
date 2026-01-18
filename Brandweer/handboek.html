@@ -1787,7 +1787,7 @@
         // Check authenticatie en brandweer rol
         document.addEventListener('DOMContentLoaded', () => {
             const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && window.auth) {
+                if (window.netlifyIdentity && typeof auth !== 'undefined') {
                     clearInterval(checkAuth);
                     
                     if (!auth.user) {
@@ -1806,7 +1806,7 @@
 
             setTimeout(() => {
                 clearInterval(checkAuth);
-                if (!window.auth || !auth.user) {
+                if (typeof auth === 'undefined' || !auth.user) {
                     window.location.href = '/login.html?redirect=/Brandweer/handboek.html';
                 }
             }, 3000);
