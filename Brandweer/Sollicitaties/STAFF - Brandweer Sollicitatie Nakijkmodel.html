@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAFF - Brandweer Sollicitatie Nakijkmodel</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #991b1b, #7c2d12);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border: 3px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .criteria-section {
+            background: #f9fafb;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .criteria-section h3 {
+            color: #dc2626;
+            margin-top: 0;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+        }
+        
+        .good-answer {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .bad-answer {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .rating-scale {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .rating-item {
+            background: #f3f4f6;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .rating-item.excellent { border-color: #10b981; background: #d1fae5; }
+        .rating-item.good { border-color: #3b82f6; background: #dbeafe; }
+        .rating-item.average { border-color: #f59e0b; background: #fef3c7; }
+        .rating-item.poor { border-color: #ef4444; background: #fee2e2; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        th {
+            background: #dc2626;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        .key-points {
+            background: #dbeafe;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .key-points ul {
+            margin: 0.5rem 0;
+        }
+
+        .scoring-guide {
+            background: #fef3c7;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 2px solid #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔒 STAFF ONLY - Brandweer Sollicitatie Nakijkmodel</h1>
+        <p>Beoordelingscriteria en voorbeeld antwoorden</p>
+        <a href="../../staff-nakijkmodellen.html" class="back-link">← Terug naar nakijkmodellen</a>
+    </div>
+
+    <div class="container">
+        <div class="warning-box">
+            <strong>⚠️ VERTROUWELIJK - ALLEEN VOOR STAFF</strong>
+            <p>Dit document bevat de beoordelingscriteria voor brandweer sollicitaties. Deel deze informatie NIET met spelers.</p>
+        </div>
+
+        <div class="scoring-guide">
+            <h3>📊 Algemene Beoordelingsrichtlijnen</h3>
+            <p><strong>Totaal puntensysteem:</strong> 100 punten</p>
+            <ul>
+                <li><strong>90-100 punten:</strong> Uitstekend - Direct aannemen</li>
+                <li><strong>75-89 punten:</strong> Goed - Aannemen na kort gesprek</li>
+                <li><strong>60-74 punten:</strong> Voldoende - Aannemen met proeftijd</li>
+                <li><strong>50-59 punten:</strong> Twijfelachtig - Interview nodig</li>
+                <li><strong>0-49 punten:</strong> Onvoldoende - Afwijzen</li>
+            </ul>
+        </div>
+
+        <h2>📋 Puntenverdeling per Sectie</h2>
+
+        <table>
+            <tr>
+                <th>Sectie</th>
+                <th>Max Punten</th>
+                <th>Beoordeling</th>
+            </tr>
+            <tr>
+                <td>Persoonlijke Gegevens</td>
+                <td>5 punten</td>
+                <td>Volledigheid en duidelijkheid</td>
+            </tr>
+            <tr>
+                <td>Huidige Situatie</td>
+                <td>10 punten</td>
+                <td>Eerlijkheid en detail</td>
+            </tr>
+            <tr>
+                <td>Motivatie (Waarom brandweer)</td>
+                <td>20 punten</td>
+                <td>Diepgang, passie, realistische verwachtingen</td>
+            </tr>
+            <tr>
+                <td>Sterke/Zwakke Punten</td>
+                <td>15 punten</td>
+                <td>Zelfreflectie en eerlijkheid</td>
+            </tr>
+            <tr>
+                <td>Scenario 1 (Woningbrand)</td>
+                <td>15 punten</td>
+                <td>Procedure, veiligheid, prioriteiten</td>
+            </tr>
+            <tr>
+                <td>Scenario 2 (Beknelde Collega)</td>
+                <td>15 punten</td>
+                <td>Noodhulp, communicatie, snelheid</td>
+            </tr>
+            <tr>
+                <td>Scenario 3 (Verkeersongeval)</td>
+                <td>10 punten</td>
+                <td>Samenwerking, rol begrip</td>
+            </tr>
+            <tr>
+                <td>Beschikbaarheid</td>
+                <td>5 punten</td>
+                <td>Realistische inzet</td>
+            </tr>
+            <tr>
+                <td>Algemene Indruk</td>
+                <td>5 punten</td>
+                <td>Algehele kwaliteit en effort</td>
+            </tr>
+        </table>
+
+        <!-- MOTIVATIE VRAAG -->
+        <div class="criteria-section">
+            <h3>💪 Waarom wil je bij de brandweer? (20 punten)</h3>
+            
+            <div class="key-points">
+                <strong>Let op deze punten:</strong>
+                <ul>
+                    <li>✅ Passie voor helpen van mensen</li>
+                    <li>✅ Interesse in teamwork</li>
+                    <li>✅ Realistische verwachtingen</li>
+                    <li>✅ Begrip van brandweer taken</li>
+                    <li>✅ Lange termijn commitment</li>
+                    <li>❌ Alleen voor wapens/actie</li>
+                    <li>❌ "Voor het geld"</li>
+                    <li>❌ Gebrek aan motivatie</li>
+                </ul>
+            </div>
+
+            <div class="good-answer">
+                <strong>✅ Voorbeeld GOED antwoord (18-20 punten):</strong>
+                <p>"Ik wil bij de brandweer omdat ik graag mensen help in noodsituaties. Ik heb altijd al interesse gehad in reddingswerk en vind het belangrijk om als team samen te werken om levens te redden. De brandweer is meer dan alleen blussen - het gaat om snel en effectief handelen, technische kennis, en altijd klaar staan voor de gemeenschap. Ik ben bereid om trainingen te volgen en wil me op lange termijn committeren aan het korps. Het lijkt me een uitdagende maar zeer bevredigende rol waar ik echt een verschil kan maken."</p>
+            </div>
+
+            <div class="bad-answer">
+                <strong>❌ Voorbeeld SLECHT antwoord (0-10 punten):</strong>
+                <p>"Brandweer lijkt me wel gaaf. Je kan met coole voertuigen rijden en veel actie hebben. Ook lijkt het salaris goed."</p>
+                <p><em>Probleem: Oppervlakkig, focus op verkeerde dingen, geen begrip van echte brandweer werk.</em></p>
+            </div>
+        </div>
+
+        <!-- SCENARIO 1: WONINGBRAND -->
+        <div class="criteria-section">
+            <h3>🔥 Scenario 1: Woningbrand met mensen binnen (15 punten)</h3>
+            
+            <div class="key-points">
+                <strong>Correcte stappen (in volgorde):</strong>
+                <ol>
+                    <li><strong>Veiligheid eerst:</strong> Beoordeel situatie, informeer commandant</li>
+                    <li><strong>Communicatie:</strong> Meld aan meldkamer/team dat er mensen binnen zijn</li>
+                    <li><strong>Prioriteit:</strong> Levensreddende handelingen gaan voor materiaal</li>
+                    <li><strong>Uitrusting:</strong> Neem ademlucht apparatuur (perslucht)</li>
+                    <li><strong>Team:</strong> GA NOOIT ALLEEN naar binnen - altijd met buddy</li>
+                    <li><strong>Systematisch zoeken:</strong> Rookduiker procedure</li>
+                    <li><strong>Brand bestrijding:</strong> Pas na/tijdens redding</li>
+                </ol>
+            </div>
+
+            <div class="good-answer">
+                <strong>✅ Voorbeeld GOED antwoord (13-15 punten):</strong>
+                <p>"Als eerste zou ik de situatie inschatten en direct melden aan de commandant dat er nog mensen binnen zijn. Ik trek perslucht aan en ga NOOIT alleen - altijd met een buddy. We voeren een systematische zoektocht uit volgens de rookduiker procedure, beginnend bij de meest waarschijnlijke locaties (slaapkamers, woonkamer). Zodra we slachtoffers vinden brengen we ze naar buiten en overdragen aan ambulance. Ondertussen blijft een ander team de brand bestrijden. Communicatie met het team is cruciaal - we houden constant contact via de portofoon."</p>
+            </div>
+
+            <div class="bad-answer">
+                <strong>❌ Voorbeeld SLECHT antwoord (0-7 punten):</strong>
+                <p>"Ik ren naar binnen en probeer de mensen te redden. Daarna blus ik de brand."</p>
+                <p><em>Probleem: Geen procedure, niet veilig (geen perslucht genoemd), geen teamwork, veel te kort.</em></p>
+            </div>
+        </div>
+
+        <!-- SCENARIO 2: BEKNELDE COLLEGA -->
+        <div class="criteria-section">
+            <h3>🚑 Scenario 2: Beknelde Collega (15 punten)</h3>
+            
+            <div class="key-points">
+                <strong>Kritieke acties:</strong>
+                <ul>
+                    <li>🔴 <strong>MAYDAY roepen</strong> - Direct noodsignaal</li>
+                    <li>🔴 <strong>Locatie doorgeven</strong></li>
+                    <li>🔴 <strong>Blijf bij collega</strong> - Verlaat hem/haar NOOIT</li>
+                    <li>🟡 Probeer te bevrijden (indien veilig)</li>
+                    <li>🟡 Roep om extra hulp/uitrusting</li>
+                    <li>🟡 Monitor collega (bewustzijn, ademhaling)</li>
+                    <li>🟡 Wacht op back-up team</li>
+                </ul>
+            </div>
+
+            <div class="good-answer">
+                <strong>✅ Voorbeeld GOED antwoord (13-15 punten):</strong>
+                <p>"EERSTE ACTIE: Direct MAYDAY roepen via de portofoon - 'Mayday, mayday, mayday - brandweerman bekneld op locatie [exacte locatie]'. Ik blijf bij mijn collega en verlaat hem of haar NIET. Ik controleer of mijn collega bij bewustzijn is en nog ademt. Als het veilig is, probeer ik voorzichtig te bevrijden, maar neem GEEN risico's die de situatie verergeren. Ik vraag specifiek om hydraulisch gereedschap (knijpschaar) en een extra reddingsteam. Ondertussen blijf ik mijn collega geruststellen en monitoren totdat hulp arriveert."</p>
+            </div>
+
+            <div class="bad-answer">
+                <strong>❌ Voorbeeld SLECHT antwoord (0-7 punten):</strong>
+                <p>"Ik help mijn collega om los te komen en dan gaan we samen naar buiten."</p>
+                <p><em>Probleem: Geen MAYDAY, geen communicatie met team, te simpel, geen veiligheidsbewustzijn.</em></p>
+            </div>
+        </div>
+
+        <!-- SCENARIO 3: VERKEERSONGEVAL -->
+        <div class="criteria-section">
+            <h3>🚗 Scenario 3: Groot Verkeersongeval (10 punten)</h3>
+            
+            <div class="key-points">
+                <strong>Rol van brandweer bij MVA (Motor Vehicle Accident):</strong>
+                <ul>
+                    <li>✅ Bevrijden beknelde slachtoffers (hydraulisch gereedschap)</li>
+                    <li>✅ Wegdek veilig maken (absorberend materiaal bij lekken)</li>
+                    <li>✅ Samenwerken met ambulance (zij doen medische zorg)</li>
+                    <li>✅ Samenwerken met politie (zij doen onderzoek/verkeer)</li>
+                    <li>✅ Brandpreventie (accu loskoppelen, brandgevaar)</li>
+                    <li>❌ NIET: Medische handelingen (is voor ambulance)</li>
+                    <li>❌ NIET: Verkeersregeling (is voor politie)</li>
+                </ul>
+            </div>
+
+            <div class="good-answer">
+                <strong>✅ Voorbeeld GOED antwoord (8-10 punten):</strong>
+                <p>"Als brandweer bij een MVA is onze primaire taak het bevrijden van beknelde slachtoffers met hydraulisch gereedschap (spreiders, knijpschaar). We koppelen de accu's los om brandgevaar te voorkomen en controleren op lekkende vloeistoffen. We werken nauw samen met ambulance - zij doen de medische zorg en wij zorgen voor toegang tot de slachtoffers. De politie regelt het verkeer en doet onderzoek, wij focussen op technische redding. Als er brandgevaar is, staan we paraat met blusapparatuur."</p>
+            </div>
+        </div>
+
+        <!-- STERKE/ZWAKKE PUNTEN -->
+        <div class="criteria-section">
+            <h3>⚖️ Sterke en Zwakke Punten (15 punten totaal)</h3>
+            
+            <div class="key-points">
+                <strong>Sterke punten - zoek naar:</strong>
+                <ul>
+                    <li>✅ Teamwork / Samenwerking</li>
+                    <li>✅ Stressbestendigheid / Kalmte onder druk</li>
+                    <li>✅ Technische vaardigheden</li>
+                    <li>✅ Communicatie</li>
+                    <li>✅ Fysieke fitheid / Doorzettingsvermogen</li>
+                    <li>✅ Leervermogen / Wil om te groeien</li>
+                </ul>
+            </div>
+
+            <div class="key-points">
+                <strong>Zwakke punten - let op:</strong>
+                <ul>
+                    <li>✅ Eerlijkheid (iedereen heeft zwakke punten)</li>
+                    <li>✅ Zelfreflectie (weet de persoon dit van zichzelf?)</li>
+                    <li>✅ Verbetering (werkt persoon eraan?)</li>
+                    <li>❌ Red flags: "Ik heb geen zwakke punten"</li>
+                    <li>❌ Red flags: Ernstige zwaktes voor brandweer (bv. "Ik word snel boos", "Ik kan niet samenwerken")</li>
+                </ul>
+            </div>
+
+            <div class="good-answer">
+                <strong>✅ Voorbeeld GOEDE zwakke punten:</strong>
+                <p>"Mijn zwakke punt is dat ik soms te perfectionistisch ben en daardoor langer over taken doe. Ik werk hieraan door beter prioriteiten te stellen en te accepteren dat niet alles 100% perfect hoeft. Ook ben ik soms wat stil in grote groepen, maar in kleinere teams of onder druk communiceer ik juist heel effectief."</p>
+            </div>
+        </div>
+
+        <!-- BESCHIKBAARHEID -->
+        <div class="criteria-section">
+            <h3>⏰ Beschikbaarheid (5 punten)</h3>
+            
+            <p><strong>Minimale verwachtingen:</strong></p>
+            <ul>
+                <li>Minimaal 2-3 diensten per week</li>
+                <li>Duidelijke tijden opgeven (geen "soms")</li>
+                <li>Realistische beschikbaarheid</li>
+            </ul>
+
+            <div class="good-answer">
+                <strong>✅ Goed:</strong> "Maandag t/m Vrijdag 19:00-23:00, Weekend 14:00-01:00. Ik kan 3-4 diensten per week draaien van ongeveer 2-3 uur."
+            </div>
+
+            <div class="bad-answer">
+                <strong>❌ Slecht:</strong> "Hangt ervan af, soms wel soms niet" of "Alleen in weekenden als ik zin heb"
+            </div>
+        </div>
+
+        <!-- RED FLAGS -->
+        <div class="criteria-section">
+            <h3>🚩 Red Flags - Direct Afwijzen</h3>
+            
+            <ul>
+                <li>❌ Alleen geïnteresseerd in wapens/voertuigen</li>
+                <li>❌ "Voor het geld" motivatie</li>
+                <li>❌ Geen tijd/commitment</li>
+                <li>❌ Copy-paste antwoorden (duidelijk van internet)</li>
+                <li>❌ Agressief of onprofessioneel taalgebruik</li>
+                <li>❌ Totaal geen kennis van brandweer werk</li>
+                <li>❌ "Ik heb geen zwakke punten"</li>
+                <li>❌ Zeer korte antwoorden (1 zin) op belangrijke vragen</li>
+            </ul>
+        </div>
+
+        <!-- BEOORDELING TEMPLATE -->
+        <div class="criteria-section">
+            <h3>📝 Beoordelingssjabloon</h3>
+            
+            <textarea style="width: 100%; min-height: 300px; padding: 1rem; font-family: monospace; border: 2px solid #dc2626; border-radius: 8px;" readonly>
+=== BRANDWEER SOLLICITATIE BEOORDELING ===
+Naam: [NAAM KANDIDAAT]
+Discord: [DISCORD]
+Beoordelaar: [STAFF NAAM]
+Datum: [DATUM]
+
+--- PUNTEN PER SECTIE ---
+[ /5]  Persoonlijke Gegevens
+[ /10] Huidige Situatie  
+[ /20] Motivatie
+[ /15] Sterke/Zwakke Punten
+[ /15] Scenario 1 (Woningbrand)
+[ /15] Scenario 2 (Beknelde Collega)
+[ /10] Scenario 3 (Verkeersongeval)
+[ /5]  Beschikbaarheid
+[ /5]  Algemene Indruk
+
+TOTAAL: [ /100] punten
+
+--- AANBEVELING ---
+☐ AANNEMEN - Uitstekende kandidaat
+☐ AANNEMEN - Goed, na kort gesprek
+☐ AANNEMEN - Met proeftijd
+☐ INTERVIEW - Meer informatie nodig
+☐ AFWIJZEN
+
+--- OPMERKINGEN ---
+[Noteer sterke punten, aandachtspunten, en algemene indruk]
+
+--- ACTIES ---
+☐ Uitnodigen voor gesprek
+☐ Verstuur acceptatie bericht
+☐ Verstuur afwijzing
+☐ Plan training/introductie
+            </textarea>
+        </div>
+
+        <div class="warning-box">
+            <strong>📌 Belangrijk:</strong>
+            <ul>
+                <li>Wees consistent in beoordeling tussen verschillende kandidaten</li>
+                <li>Bij twijfel: vraag second opinion van andere staff</li>
+                <li>Documenteer alle beslissingen</li>
+                <li>Geef constructieve feedback bij afwijzing</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script>
+        // Check staff authenticatie
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = setInterval(() => {
+                if (window.netlifyIdentity && typeof auth !== 'undefined') {
+                    clearInterval(checkAuth);
+                    
+                    if (!auth.user) {
+                        alert('Je moet ingelogd zijn om dit te bekijken');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    const userRole = getUserRole();
+                    if (userRole !== 'admin' && userRole !== 'staff') {
+                        alert('Deze pagina is alleen toegankelijk voor STAFF');
+                        window.location.href = '/dashboard.html';
+                        return;
+                    }
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                if (typeof auth === 'undefined' || !auth.user) {
+                    window.location.href = '/login.html';
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

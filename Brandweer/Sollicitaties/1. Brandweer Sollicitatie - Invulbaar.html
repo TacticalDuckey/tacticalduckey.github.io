@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brandweer Sollicitatie - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #dc2626;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #991b1b;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚒 Brandweer Sollicitatie</h1>
+        <p>Lage Landen RP - Brandweer Korps</p>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="info-box">
+            <strong>💡 Welkom bij de Brandweer Sollicitatie!</strong>
+            <p>Vul onderstaand formulier zo volledig en eerlijk mogelijk in. Lees de vragen goed door en neem de tijd voor je antwoorden.</p>
+        </div>
+
+        <form id="sollicitatieForm">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required placeholder="Jan de Vries">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required placeholder="gebruiker#1234">
+            </div>
+
+            <div class="form-group">
+                <label for="leeftijd">Leeftijd (IC)*</label>
+                <input type="number" id="leeftijd" name="leeftijd" required min="18" max="65" placeholder="25">
+            </div>
+
+            <div class="form-group">
+                <label for="telefoon">Telefoonnummer (IC)*</label>
+                <input type="text" id="telefoon" name="telefoon" required placeholder="06-12345678">
+            </div>
+
+            <h2>🏢 Huidige Situatie</h2>
+
+            <div class="form-group">
+                <label for="huidigebaan">Wat is je huidige baan binnen de stad?*</label>
+                <input type="text" id="huidigebaan" name="huidigebaan" required placeholder="Bijv. Taxichauffeur, Werkloos, etc.">
+            </div>
+
+            <div class="form-group">
+                <label for="andereorganisaties">Ben je actief bij andere overheidsdiensten? (Politie, Ambulance, etc.)*</label>
+                <textarea id="andereorganisaties" name="andereorganisaties" required placeholder="Zo ja, welke? Zo nee, typ 'Nee'"></textarea>
+            </div>
+
+            <h2>💪 Motivatie en Ervaring</h2>
+
+            <div class="form-group">
+                <label for="waarom">Waarom wil je bij de brandweer werken?*</label>
+                <textarea id="waarom" name="waarom" required placeholder="Geef een uitgebreide motivatie..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="sterke">Wat zijn je sterke punten?*</label>
+                <textarea id="sterke" name="sterke" required placeholder="Denk aan: teamwork, stressbestendigheid, technische vaardigheden, etc."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="zwakke">Wat zijn je zwakke punten?*</label>
+                <textarea id="zwakke" name="zwakke" required placeholder="Wees eerlijk - iedereen heeft zwakke punten"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="ervaring">Heb je ervaring met brandweerwerk (in andere servers of IRL kennis)?*</label>
+                <textarea id="ervaring" name="ervaring" required placeholder="Beschrijf je ervaring of typ 'Geen ervaring'"></textarea>
+            </div>
+
+            <h2>🔥 Situatie Vragen</h2>
+
+            <div class="form-group">
+                <label for="scenario1">Je wordt opgeroepen voor een woningbrand. Bij aankomst zie je dat er nog mensen binnen zijn. Wat doe je?*</label>
+                <textarea id="scenario1" name="scenario1" required placeholder="Beschrijf stap voor stap je handelingen..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario2">Je collega raakt bekneld tijdens een reddingsactie. Wat is je eerste handeling?*</label>
+                <textarea id="scenario2" name="scenario2" required placeholder="Beschrijf je actieplan..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario3">Er is een groot verkeersongeval met meerdere beknelde slachtoffers. De politie en ambulance zijn al ter plaatse. Wat is jouw rol als brandweerman?*</label>
+                <textarea id="scenario3" name="scenario3" required placeholder="Beschrijf je taken bij dit scenario..."></textarea>
+            </div>
+
+            <h2>⏰ Beschikbaarheid</h2>
+
+            <div class="form-group">
+                <label for="beschikbaarheid">Wanneer ben je beschikbaar om te spelen? (Dagen/Tijden)*</label>
+                <textarea id="beschikbaarheid" name="beschikbaarheid" required placeholder="Bijv. Ma t/m Vr 18:00-23:00, Weekend hele dag"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="diensten">Hoeveel diensten denk je per week te kunnen draaien?*</label>
+                <input type="text" id="diensten" name="diensten" required placeholder="Bijv. 3-4 diensten">
+            </div>
+
+            <h2>🎯 Aanvullende Vragen</h2>
+
+            <div class="form-group">
+                <label for="rijbewijs">Heb je een rijbewijs voor voertuigen? (Zo ja, welke?)*</label>
+                <input type="text" id="rijbewijs" name="rijbewijs" required placeholder="Bijv. Auto, Motor, Boot">
+            </div>
+
+            <div class="form-group">
+                <label for="opleiding">Ben je bereid om trainingen en opleidingen te volgen?*</label>
+                <input type="text" id="opleiding" name="opleiding" required placeholder="Ja/Nee">
+            </div>
+
+            <div class="form-group">
+                <label for="verwachtingen">Wat verwacht je van de brandweer bij Lage Landen RP?*</label>
+                <textarea id="verwachtingen" name="verwachtingen" required placeholder="Beschrijf je verwachtingen..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="extra">Wil je nog iets toevoegen?</label>
+                <textarea id="extra" name="extra" placeholder="Optioneel - Overige opmerkingen of informatie"></textarea>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Belangrijk:</strong>
+                <ul>
+                    <li>Velden gemarkeerd met * zijn verplicht</li>
+                    <li>Wees eerlijk en uitgebreid in je antwoorden</li>
+                    <li>Controleer je antwoorden voordat je indient</li>
+                    <li>Na inzending kan je sollicitatie NIET meer worden aangepast</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                🚒 Sollicitatie Indienen
+            </button>
+
+            <div class="success-box" id="successBox">
+                <strong>✅ Sollicitatie Verzonden!</strong>
+                <p>Je sollicitatie is succesvol ingediend. Je hoort zo snel mogelijk van ons!</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../auth.js"></script>
+    <script>
+        // Check authenticatie
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = setInterval(() => {
+                if (window.netlifyIdentity && typeof auth !== 'undefined') {
+                    clearInterval(checkAuth);
+                    
+                    if (!auth.user) {
+                        window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/1. Brandweer Sollicitatie - Invulbaar.html';
+                        return;
+                    }
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                if (typeof auth === 'undefined' || !auth.user) {
+                    window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/1. Brandweer Sollicitatie - Invulbaar.html';
+                }
+            }, 3000);
+        });
+
+        // Form submission
+        document.getElementById('sollicitatieForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successBox = document.getElementById('successBox');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Verzenden...';
+            
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // Discord embed samenstellen
+            const embed = {
+                embeds: [{
+                    title: "🚒 Nieuwe Brandweer Sollicitatie",
+                    color: 14423100, // Rood
+                    fields: [
+                        {
+                            name: "👤 Persoonlijke Gegevens",
+                            value: `**Naam:** ${data.naam}\n**Discord:** ${data.discord}\n**Leeftijd:** ${data.leeftijd}\n**Telefoon:** ${data.telefoon}`,
+                            inline: false
+                        },
+                        {
+                            name: "🏢 Huidige Situatie",
+                            value: `**Huidige baan:** ${data.huidigebaan}\n**Andere organisaties:** ${data.andereorganisaties}`,
+                            inline: false
+                        },
+                        {
+                            name: "💪 Motivatie",
+                            value: data.waarom.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "✅ Sterke Punten",
+                            value: data.sterke.substring(0, 1024),
+                            inline: true
+                        },
+                        {
+                            name: "⚠️ Zwakke Punten",
+                            value: data.zwakke.substring(0, 1024),
+                            inline: true
+                        },
+                        {
+                            name: "📚 Ervaring",
+                            value: data.ervaring.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "🔥 Scenario 1: Woningbrand",
+                            value: data.scenario1.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "🚑 Scenario 2: Beknelde Collega",
+                            value: data.scenario2.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "🚗 Scenario 3: Verkeersongeval",
+                            value: data.scenario3.substring(0, 1024),
+                            inline: false
+                        },
+                        {
+                            name: "⏰ Beschikbaarheid",
+                            value: `**Tijden:** ${data.beschikbaarheid}\n**Diensten/week:** ${data.diensten}`,
+                            inline: false
+                        },
+                        {
+                            name: "🎯 Aanvullend",
+                            value: `**Rijbewijs:** ${data.rijbewijs}\n**Opleiding:** ${data.opleiding}\n**Verwachtingen:** ${data.verwachtingen.substring(0, 500)}`,
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "Lage Landen RP - Brandweer Sollicitaties"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+            
+            // Extra opmerkingen apart versturen als die er zijn
+            if (data.extra && data.extra.trim() !== '') {
+                embed.embeds.push({
+                    title: "💬 Extra Opmerkingen",
+                    description: data.extra,
+                    color: 14423100
+                });
+            }
+            
+            try {
+                // Verstuur via Netlify Function
+                const response = await fetch('/.netlify/functions/submit-brandweer-sollicitatie', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(embed)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Verzenden mislukt');
+                }
+                
+                // Toon success
+                successBox.style.display = 'block';
+                this.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Er ging iets fout bij het verzenden. Probeer het opnieuw of neem contact op met staff.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚒 Sollicitatie Indienen';
+            }
+        });
+    </script>
+</body>
+</html>
