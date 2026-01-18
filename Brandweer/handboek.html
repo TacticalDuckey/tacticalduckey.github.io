@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brandweer Handboek - Lage Landen RP</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .handboek-header {
+            position: relative;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 0;
+            text-align: center;
+            border-bottom: 3px solid #fbbf24;
+            overflow: hidden;
+        }
+
+        .header-banner {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            opacity: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .handboek-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #dc2626;
+            border-bottom: 3px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section h3 {
+            color: #991b1b;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section ul {
+            line-height: 1.8;
+            margin: 1rem 0;
+        }
+
+        .section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .section ol {
+            line-height: 1.8;
+            margin: 1rem 0;
+        }
+
+        .section ol li {
+            margin-bottom: 0.75rem;
+        }
+
+        .section p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .equipment-item {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid #dc2626;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .equipment-item h4 {
+            color: #991b1b;
+            margin-bottom: 0.75rem;
+        }
+
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
+        }
+
+        .warning-box strong {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .warning-box ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .warning-box ul li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .info-box ul li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .success-box strong {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: #065f46;
+        }
+
+        .rank-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .rank-card {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .rank-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .rank-stripes {
+            height: 60px;
+            margin: 1rem auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .stripe {
+            width: 80%;
+            height: 6px;
+            background: #fbbf24;
+            border-radius: 2px;
+        }
+
+        .stripe.red {
+            background: #dc2626;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 1.5rem;
+        }
+
+        .responsibility-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .responsibility-card:hover {
+            border-color: #fbbf24;
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
+        }
+
+        .responsibility-card h4 {
+            color: #dc2626;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-list li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-left: 3px solid #fbbf24;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .task-list li:hover {
+            background: #fef3c7;
+            transform: translateX(5px);
+        }
+
+        .task-list li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .procedure-steps {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .procedure-steps > li {
+            counter-increment: step-counter;
+            background: #f3f4f6;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 3.5rem;
+        }
+
+        .procedure-steps > li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            background: #dc2626;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            line-height: 2rem;
+            text-align: center;
+        }
+
+        .procedure-steps li ul,
+        .procedure-steps li ol {
+            margin-top: 0.5rem;
+            margin-left: 0;
+            padding-left: 1.5rem;
+        }
+
+        .procedure-steps li ul li::before,
+        .procedure-steps li ol li::before {
+            display: none;
+        }
+
+        .nav-menu {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu h3 {
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-menu a {
+            color: #991b1b;
+            text-decoration: none;
+            padding: 0.5rem;
+            display: block;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background: #fee2e2;
+            padding-left: 1rem;
+        }
+
+        .vehicle-specs {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .vehicle-specs dt {
+            font-weight: bold;
+            color: #991b1b;
+            margin-top: 0.5rem;
+        }
+
+        .vehicle-specs dd {
+            margin-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="handboek-header">
+        <img src="../images/brandweerbanner.png" alt="Brandweer Banner" class="header-banner">
+        <div class="header-content">
+            <h1>🚒 Brandweer Handboek</h1>
+            <p>Lage Landen RP - Brandweer Dienst</p>
+            <a href="../dashboard.html" style="color: white; margin-top: 1rem; display: inline-block; background: rgba(0,0,0,0.3); padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; transition: all 0.3s;">← Terug naar dashboard</a>
+        </div>
+    </div>
+
+    <main class="handboek-container">
+        <div class="nav-menu">
+            <h3>📑 Inhoudsopgave</h3>
+            <ul>
+                <li><a href="#rangen">⭐ Rangen en Functies</a></li>
+                <li><a href="#pieper">🔔 Pieper/Pager Systeem</a></li>
+                <li><a href="#gereedschappen">🔧 Gereedschappen</a></li>
+                <li><a href="#brandslangen">🚿 Brandslangen en Watervoorziening</a></li>
+                <li><a href="#voertuigen">🚒 Voertuigen</a></li>
+                <li><a href="#waterongevallen">🌊 Water Ongevallen</a></li>
+            </ul>
+        </div>
+
+        <!-- SECTIE 0: RANGEN EN FUNCTIES -->
+        <section id="rangen" class="section">
+            <h2>⭐ Rangen en Functies</h2>
+            <p>De brandweer kent een duidelijke hiërarchie met verschillende rangen en functies. Elke rang heeft specifieke verantwoordelijkheden en taken tijdens een uitruk.</p>
+
+            <h3>Rangensysteem</h3>
+            <div class="rank-grid">
+                <div class="rank-card">
+                    <h4>Aspirant/Algemene Functies</h4>
+                    <div class="rank-stripes">
+                        <div style="font-size: 2rem;">🔥</div>
+                    </div>
+                    <p>In opleiding, leert de basis van brandweerwerk</p>
+                </div>
+
+                <div class="rank-card">
+                    <h4>Brandwacht</h4>
+                    <div class="rank-stripes">
+                        <div class="stripe"></div>
+                    </div>
+                    <p>Basisniveau, uitvoerende taken</p>
+                </div>
+
+                <div class="rank-card">
+                    <h4>Hoofdbrandwacht</h4>
+                    <div class="rank-stripes">
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                    </div>
+                    <p>Ervaren brandweerman, kan leiding geven aan kleine teams</p>
+                </div>
+
+                <div class="rank-card">
+                    <h4>Brandmeester</h4>
+                    <div class="rank-stripes">
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe red"></div>
+                    </div>
+                    <p>Ploegchef, verantwoordelijk voor een ploeg</p>
+                </div>
+
+                <div class="rank-card">
+                    <h4>Hoofdbrandmeester</h4>
+                    <div class="rank-stripes">
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe red"></div>
+                        <div class="star">⭐</div>
+                    </div>
+                    <p>Senior ploegchef, complexe operaties</p>
+                </div>
+
+                <div class="rank-card">
+                    <h4>Commandeur</h4>
+                    <div class="rank-stripes">
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe red"></div>
+                        <div class="star">⭐</div>
+                    </div>
+                    <p>Bevelvoerder, leiding bij grotere incidenten</p>
+                </div>
+
+                <div class="rank-card">
+                    <h4>Adjunct Hoofdcommandeur</h4>
+                    <div class="rank-stripes">
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe red"></div>
+                        <div class="star">⭐</div>
+                    </div>
+                    <p>Hoge officier, strategische beslissingen</p>
+                </div>
+
+                <div class="rank-card">
+                    <h4>Hoofdcommandeur</h4>
+                    <div class="rank-stripes">
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe"></div>
+                        <div class="stripe red"></div>
+                        <div class="star">⭐⭐</div>
+                    </div>
+                    <p>Hoogste rang, eindverantwoordelijk voor alle operaties</p>
+                </div>
+            </div>
+
+            <h3>Functies tijdens Uitruk</h3>
+            
+            <div class="responsibility-card">
+                <h4>👨‍🚒 Bevelvoerder (BV)</h4>
+                <p><strong>Verantwoordelijkheid:</strong> Leiding geven aan de gehele operatie ter plaatse</p>
+                
+                <h4 style="font-size: 1.1rem; margin-top: 1.5rem; color: #991b1b;">📋 Checklist bij aankomst:</h4>
+                <ul class="task-list">
+                    <li><strong>Openbare weg?</strong> Zo ja → Politie inschakelen (indien niet mogelijk: pompbediende laten doen)</li>
+                    <li><strong>Mogelijk slachtoffers?</strong> Zo ja → Ambulance inschakelen</li>
+                    <li><strong>Giftige stoffen aanwezig?</strong> Zo ja → OVD (Officier van Dienst) inschakelen</li>
+                    <li><strong>Beoordeel de situatie:</strong> Bepaal de ernst en benodigde middelen</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>📊 Opschalingsniveaus:</strong>
+                    <ul>
+                        <li><strong>Kleine brand (Standaard):</strong> 1 TS met volledige bemanning</li>
+                        <li><strong>Middelbrand:</strong> 2 TS + OVD rijdt standaard mee</li>
+                        <li><strong>Grote brand:</strong> Volledige inzet korps + externe ondersteuning</li>
+                        <li><strong>Zeer grote brand:</strong> Multi-korps inzet, GRIP-procedure</li>
+                    </ul>
+                </div>
+
+                <h4 style="font-size: 1.1rem; margin-top: 1.5rem; color: #991b1b;">📢 Opdrachten die de BV geeft:</h4>
+                <ul class="task-list">
+                    <li>Manschap 1 en 2: Verkennen en situatie rapporteren</li>
+                    <li>Pompbediende: Pomp gereed maken en watervoorziening regelen</li>
+                    <li>Inzet strategie bepalen: Aanvalslijn of defensieve positie</li>
+                    <li>Communicatie met meldkamer: Updates geven over situatie</li>
+                    <li>Veiligheid bewaken: Continu toezicht op veiligheid van de manschappen</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ Belangrijke verantwoordelijkheden BV:</strong>
+                    <ul>
+                        <li>De BV is eindverantwoordelijk voor de veiligheid van alle aanwezigen</li>
+                        <li>Bij twijfel: schakel altijd op naar de OVD</li>
+                        <li>Houd overzicht - blijf niet in het gebouw maar coördineer van buitenaf</li>
+                        <li>Zorg voor duidelijke communicatie via portofoon</li>
+                        <li>Voer een PAR-telling uit (Personnel Accountability Report) bij risicovolle situaties</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="responsibility-card">
+                <h4>⚙️ Pompbediende (PB)</h4>
+                <p><strong>Verantwoordelijkheid:</strong> Besturen van het voertuig en bedienen van de pomp</p>
+                
+                <h4 style="font-size: 1.1rem; margin-top: 1.5rem; color: #991b1b;">🚗 Tijdens uitruk:</h4>
+                <ul class="task-list">
+                    <li><strong>Veilig rijden:</strong> Snel maar verantwoord naar de melding, gebruik van zwaailicht en sirene</li>
+                    <li><strong>Strategische positionering:</strong> Voertuig zo neerzetten dat vluchtwegen vrij blijven</li>
+                    <li><strong>Communicatie:</strong> In verbinding blijven met de BV via portofoon</li>
+                </ul>
+
+                <h4 style="font-size: 1.1rem; margin-top: 1.5rem; color: #991b1b;">💧 Taken ter plaatse:</h4>
+                <ul class="task-list">
+                    <li><strong>Pomp gereed maken:</strong> Watertoevoer regelen (tank of brandkraan)</li>
+                    <li><strong>Druk regelen:</strong> Juiste druk leveren aan de slangen (8 bar LD / 40 bar HD)</li>
+                    <li><strong>Veilige werkplek creëren:</strong> Waarschuwingsborden, afzetting (tenzij politie dit doet)</li>
+                    <li><strong>Hulpdiensten begeleiden:</strong> Ambulance en politie aanwijzen waar ze kunnen staan</li>
+                    <li><strong>Bij slachtoffers:</strong> Als ambulance er nog niet is, blijft pompbediende bij slachtoffers</li>
+                    <li><strong>Materiaal aanreiken:</strong> Extra slangen of apparatuur klaarzetten</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>💡 Tips voor Pompbediende:</strong>
+                    <ul>
+                        <li>Ken je voertuig uit je hoofd - waar ligt welk materiaal?</li>
+                        <li>Oefen regelmatig met pompbediening tijdens kazernediensten</li>
+                        <li>Blijf altijd bij het voertuig tenzij de BV anders opdraagt</li>
+                        <li>Monitor brandstofniveau en watervoorraad continu</li>
+                        <li>Bij problemen: direct melden aan de BV</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="responsibility-card">
+                <h4>🔥 Manschap 1 & 2</h4>
+                <p><strong>Verantwoordelijkheid:</strong> Uitvoerende brandweertaken en directe brandbestrijding</p>
+                
+                <h4 style="font-size: 1.1rem; margin-top: 1.5rem; color: #991b1b;">👔 Voorbereiding:</h4>
+                <ul class="task-list">
+                    <li><strong>Omhangen:</strong> Wanneer de BV het sein geeft (meestal bij aankomst)</li>
+                    <li><strong>Ademlucht controleren:</strong> Check drukmeter perslucht (minimaal 200 bar)</li>
+                    <li><strong>Maatje-systeem:</strong> Werk ALTIJD samen - nooit alleen een gebouw in</li>
+                </ul>
+
+                <h4 style="font-size: 1.1rem; margin-top: 1.5rem; color: #991b1b;">🔍 Taken:</h4>
+                <ul class="task-list">
+                    <li><strong>Eerste opdracht: Verkennen</strong>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                            <li>Situatie inschatten: waar is de brand, hoe groot, welke richting?</li>
+                            <li>Zijn er slachtoffers aanwezig?</li>
+                            <li>Zijn er gevaarlijke stoffen (gasflessen, chemicaliën)?</li>
+                            <li>Wat is de toegang? Welke deuren/ramen?</li>
+                            <li>Direct rapporteren aan BV via portofoon</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pomp gereed maken helpen:</strong> Slangen uitrollen, koppelingen aansluiten</li>
+                    <li><strong>Brandbestrijding:</strong> Met straalpijp de brand blussen onder leiding van BV</li>
+                    <li><strong>Redding:</strong> Slachtoffers uit gebouw halen (indien veilig)</li>
+                    <li><strong>Ventilatie:</strong> Ramen/deuren openzetten voor rookafvoer (op commando BV!)</li>
+                    <li><strong>Nacontrole:</strong> Controleren op smeulende brandhaarden</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ VEILIGHEIDSREGELS voor Manschap:</strong>
+                    <ul>
+                        <li><strong>NOOIT alleen:</strong> Altijd met minimaal 2 personen een brandend gebouw in</li>
+                        <li><strong>Blijf in contact:</strong> Continue communicatie via portofoon met BV</li>
+                        <li><strong>Lage kruip houding:</strong> Rook stijgt - blijf laag bij de grond</li>
+                        <li><strong>Vluchtweg vrij houden:</strong> Houd altijd een vrije vluchtroute</li>
+                        <li><strong>Ademlucht monitoren:</strong> Bij 1/3 verbruik: terugtrekken!</li>
+                        <li><strong>Mayday-procedure:</strong> Bij gevaar 3x "MAYDAY" roepen via portofoon</li>
+                        <li><strong>Geen helden:</strong> Bij levensgevaar direct terugtrekken</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Teamwork is essentieel:</strong>
+                    <p>Brandweerwerk doe je nooit alleen. Vertrouw op je team, communiceer duidelijk en let op elkaar. Een goede samenwerking redt levens!</p>
+                </div>
+            </div>
+
+            <h3>Communicatie tijdens Inzet</h3>
+            <div class="info-box">
+                <strong>📻 Portofoon gebruik - Standaard berichten:</strong>
+                <ul>
+                    <li><strong>"Manschap 1 aan BV, over"</strong> - Verzoek om te communiceren</li>
+                    <li><strong>"BV aan manschap 1, ga je gang"</strong> - BV geeft toestemming</li>
+                    <li><strong>"We zijn binnen, verkennen nu"</strong> - Update tijdens verkenning</li>
+                    <li><strong>"Brand gelokaliseerd, eerste verdieping, woonkamer"</strong> - Heldere rapportage</li>
+                    <li><strong>"Geen slachtoffers aangetroffen"</strong> - Belangrijke info</li>
+                    <li><strong>"We hebben meer water nodig, druk verhogen"</strong> - Verzoek aan pompbediende</li>
+                    <li><strong>"We trekken ons terug, te gevaarlijk"</strong> - Veiligheidsbeslissing</li>
+                    <li><strong>"Klaar, brand onder controle"</strong> - Melding van succes</li>
+                </ul>
+                
+                <div class="warning-box" style="margin-top: 1rem;">
+                    <strong>🚨 NOODCOMMUNICATIE:</strong>
+                    <ul>
+                        <li><strong>"MAYDAY MAYDAY MAYDAY - Manschap 1"</strong> - Levensgevaar, directe hulp nodig!</li>
+                        <li>Bij mayday: direct locatie en situatie doorgeven</li>
+                        <li>Alle andere communicatie stopt - alleen noodverkeer</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+            <h2>🔔 Pieper/Pager Systeem</h2>
+            
+            <h3>Wat is de pieper?</h3>
+            <p>De pieper (ook wel pager genoemd) is het primaire alarmeringssysteem van de brandweer. Dit apparaat draagt elke brandweerman/vrouw bij zich en wordt gebruikt om personeel op te roepen bij incidenten. De pieper zorgt ervoor dat brandweerlieden 24/7 bereikbaar zijn voor noodoproepen.</p>
+
+            <div class="info-box">
+                <strong>💡 Belangrijk:</strong> De pieper moet ALTIJD bij je worden gedragen wanneer je in dienst bent. Ook tijdens rusttijden moet het apparaat aan blijven staan en binnen gehoorsafstand zijn.
+            </div>
+
+            <h3>Hoe werkt de pieper?</h3>
+            <p>Wanneer de meldkamer een noodmelding ontvangt, wordt er via het C2000 netwerk (landelijk communicatienetwerk voor hulpdiensten) een signaal naar alle piepers gestuurd. Het signaal bevat:</p>
+            <ul>
+                <li><strong>Type incident:</strong> Brand, ongeval, wateroverlast, etc.</li>
+                <li><strong>Locatie:</strong> Adres en plaats van het incident</li>
+                <li><strong>Prioriteit:</strong> Prio 1 (zeer urgent), Prio 2 (urgent), of Prio 3 (niet urgent)</li>
+                <li><strong>Benodigde eenheden:</strong> Welke voertuigen en specialismen nodig zijn</li>
+            </ul>
+
+            <h3>Verschillende soorten alarmeringen</h3>
+            <div class="equipment-grid">
+                <div class="equipment-item">
+                    <h4>🔴 Prio 1 - Zeer Urgent</h4>
+                    <p><strong>Toon:</strong> Continu piepsignaal</p>
+                    <p><strong>Betekenis:</strong> Levensbedreigende situatie, onmiddellijke uitruk vereist</p>
+                    <p><strong>Voorbeelden:</strong> Woningbrand met personen aanwezig, groot verkeersongeval, persoon te water</p>
+                </div>
+                <div class="equipment-item">
+                    <h4>🟠 Prio 2 - Urgent</h4>
+                    <p><strong>Toon:</strong> Regelmatig piepsignaal</p>
+                    <p><strong>Betekenis:</strong> Spoedeisend incident, snelle uitruk gewenst</p>
+                    <p><strong>Voorbeelden:</strong> Buitenbrand, automatische brandmelding, gaslucht</p>
+                </div>
+                <div class="equipment-item">
+                    <h4>🟡 Prio 3 - Standaard</h4>
+                    <p><strong>Toon:</strong> Enkele pieptoon</p>
+                    <p><strong>Betekenis:</strong> Niet urgent, normale responstijd</p>
+                    <p><strong>Voorbeelden:</strong> Assistentie politie, wateroverlast, dier in nood</p>
+                </div>
+            </div>
+
+            <h3>Procedure bij alarmering</h3>
+            <ol class="procedure-steps">
+                <li><strong>Pieper ontvangen:</strong> Luister goed naar de meldingstekst. Let op type incident, locatie en benodigde middelen.</li>
+                <li><strong>Melden:</strong> Geef via portofoon aan de meldkamer door dat je de melding hebt ontvangen en uitrukt.</li>
+                <li><strong>Naar kazerne:</strong> Begeef je veilig maar snel naar de brandweerkazerne. Let op: je mag GEEN gebruik maken van zwaailichten of sirene in je privévoertuig!</li>
+                <li><strong>Uitruk voorbereiden:</strong> Trek je brandweerpak aan, controleer je uitrusting en neem positie in het voertuig.</li>
+                <li><strong>Vertrek:</strong> Rijd uit zodra het sein wordt gegeven door de voertuigcommandant.</li>
+            </ol>
+
+            <div class="warning-box">
+                <strong>⚠️ LET OP:</strong> 
+                <ul>
+                    <li>Test je pieper regelmatig om er zeker van te zijn dat deze werkt</li>
+                    <li>Houd de batterij altijd opgeladen</li>
+                    <li>Meld defecten onmiddellijk aan de kazernechef</li>
+                    <li>De pieper is persoonlijk materieel - behandel deze met zorg</li>
+                    <li>Bij verlies of diefstal: direct melden aan de meldkamer</li>
+                </ul>
+            </div>
+
+            <h3>Geluidsvoorbeeld pieper</h3>
+            <p>In de praktijk zal je verschillende tonen horen. Leer deze uit je hoofd zodat je direct weet wat de prioriteit is:</p>
+            <ul>
+                <li><strong>Prio 1:</strong> "BIIIIIIIIIIIIIEP" (aanhoudend)</li>
+                <li><strong>Prio 2:</strong> "BIEP-BIEP-BIEP-BIEP" (herhalend)</li>
+                <li><strong>Prio 3:</strong> "BIEP ... BIEP" (met tussenpozen)</li>
+                <li><strong>Test:</strong> "BIEP" (enkele korte piep om 12:00 uur elke maandag)</li>
+            </ul>
+        </section>
+
+        <!-- SECTIE 2: GEREEDSCHAPPEN -->
+        <section id="gereedschappen" class="section">
+            <h2>🔧 Gereedschappen</h2>
+            <p>De brandweer maakt gebruik van verschillende gespecialiseerde gereedschappen voor verschillende typen incidenten. Hieronder een overzicht van de belangrijkste gereedschappen en hun toepassingen.</p>
+
+            <h3>Hooligan Tool (Breekijzer)</h3>
+            <div class="equipment-item">
+                <h4>🔨 Beschrijving</h4>
+                <p>De Hooligan Tool is een multifunctioneel breekgereedschap dat speciaal is ontworpen voor de brandweer. Het is vernoemd naar de New Yorkse brandweer kapitein Hugh Halligan. Dit gereedschap combineert meerdere functies in één robuust werktuig.</p>
+                
+                <h4>Onderdelen en functies:</h4>
+                <ul>
+                    <li><strong>Forked End (Vorkvormig uiteinde):</strong> Voor het forceren van deuren en ramen, en het trekken van spijkers</li>
+                    <li><strong>Adze (Bijlkop):</strong> Voor het doorhakken van houten deuren en vloeren</li>
+                    <li><strong>Pike (Spits einde):</strong> Voor het penetreren van materialen en het maken van gaten</li>
+                    <li><strong>Gas Shut-off (Gassluiting):</strong> Speciale inkeping voor het afsluiten van gaskranen</li>
+                </ul>
+
+                <h4>Toepassingen:</h4>
+                <ul>
+                    <li>Geforceerd binnen gaan bij deuren die van binnen op slot zitten</li>
+                    <li>Ramen en deuren openbreken</li>
+                    <li>Vloerplanken en wandpanelen verwijderen om bij brandbronnen te komen</li>
+                    <li>Puin ruimen en objecten verplaatsen</li>
+                    <li>Nooduitgangen forceren</li>
+                    <li>Gasleidingen afsluiten in noodsituaties</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ Veiligheidsvoorschriften Hooligan Tool:</strong>
+                    <ul>
+                        <li>Draag ALTIJD handschoenen bij gebruik - scherpe randen!</li>
+                        <li>Controleer voor gebruik op beschadigingen en barsten</li>
+                        <li>Let op omstanders bij slagbewegingen</li>
+                        <li>Gebruik het juiste deel voor de juiste klus</li>
+                        <li>Houd vast met beide handen voor maximale controle</li>
+                        <li>Na gebruik schoonmaken en controleren op slijtage</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Knijpschaar (Hydraulische Schaar)</h3>
+            <div class="equipment-item">
+                <h4>✂️ Beschrijving</h4>
+                <p>De knijpschaar is een hydraulisch aangedreven redgereedschap dat wordt gebruikt bij verkeersongevallen en andere hulpverleningssituaties. Het gereedschap kan metaal, plastic en andere materialen doorknippen met een enorme kracht (tot 80 ton knijpkracht).</p>
+
+                <h4>Technische specificaties:</h4>
+                <ul>
+                    <li><strong>Knijpkracht:</strong> 60-80 ton (afhankelijk van model)</li>
+                    <li><strong>Opening:</strong> Maximaal 20-30 cm tussen de bekken</li>
+                    <li><strong>Gewicht:</strong> Ongeveer 15-20 kg</li>
+                    <li><strong>Aandrijving:</strong> Hydraulisch (verbonden met hydraulische pomp)</li>
+                    <li><strong>Bedrijfsdruk:</strong> 720 bar</li>
+                </ul>
+
+                <h4>Toepassingen:</h4>
+                <ul>
+                    <li><strong>Verkeersongevallen:</strong> Doorknippen van A-, B- en C-stijlen van auto's</li>
+                    <li><strong>Beknellingen:</strong> Bevrijden van beknelde personen</li>
+                    <li><strong>Deuren verwijderen:</strong> Complete autodeuren eruit knippen</li>
+                    <li><strong>Dashboard wegdrukken:</strong> Ruimte creëren voor beknelde benen</li>
+                    <li><strong>Stuurkolom doorknippen:</strong> Om beknelling te verhelpen</li>
+                    <li><strong>Metalen constructies:</strong> Doorknippen van hekwerk, leuningen, etc.</li>
+                </ul>
+
+                <h4>Bediening knijpschaar:</h4>
+                <ol class="procedure-steps">
+                    <li><strong>Voorbereiding:</strong> Controleer de hydraulische slangen op lekkage. Zorg dat de pomp correct is aangesloten.</li>
+                    <li><strong>Positie bepalen:</strong> Bepaal waar je wilt knippen. Let op airbags, brandstoftank en batterij!</li>
+                    <li><strong>Schaar plaatsen:</strong> Open de bekken volledig en plaats deze rond het te knippen materiaal.</li>
+                    <li><strong>Knippen:</strong> Activeer de hydrauliek via de bedieningsknop. De bekken sluiten automatisch.</li>
+                    <li><strong>Openen:</strong> Gebruik de openingsknop om de bekken weer te openen na het knippen.</li>
+                    <li><strong>Herhalen:</strong> Herhaal het proces tot het gewenste resultaat is bereikt.</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>⚠️ BELANGRIJKE VEILIGHEIDSREGELS:</strong>
+                    <ul>
+                        <li><strong>ALTIJD</strong> controleren op airbags voordat je gaat knippen!</li>
+                        <li>Let op elektrische bedrading - kan kortlsluiting veroorzaken</li>
+                        <li>Draag gelaatsbescherming - metaalsplinters kunnen wegvliegen</li>
+                        <li>Communiceer duidelijk met je teammaat die de pomp bedient</li>
+                        <li>Stabiliseer het voertuig EERST voordat je begint met knippen</li>
+                        <li>Let op de positie van het slachtoffer - voorkom extra letsels</li>
+                        <li>Bij twijfel: STOP en overleg met de voertuigcommandant</li>
+                        <li>Test de knijpschaar regelmatig (minimaal 1x per maand)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Overige belangrijke gereedschappen</h3>
+            <div class="equipment-grid">
+                <div class="equipment-item">
+                    <h4>🪓 Bijl</h4>
+                    <p><strong>Gebruik:</strong> Deuren forceren, vloeren en daken openhakken, ventilatie creëren</p>
+                    <p><strong>Let op:</strong> Scherp houden, veilig opbergen, controleren op losse kop</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🔦 Zaklamp (explosieveilig)</h4>
+                    <p><strong>Gebruik:</strong> Verlichting in donkere en rokerige ruimtes</p>
+                    <p><strong>Let op:</strong> ATEX-gecertificeerd, batterijen altijd vol, reserve bij je dragen</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🔧 Leidingsleutel</h4>
+                    <p><strong>Gebruik:</strong> Afsluiten van waterleidingen en gaskranen, koppelingen vastdraaien</p>
+                    <p><strong>Let op:</strong> Verschillende maten beschikbaar op de wagen</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>⚡ Hydraulische Spreider</h4>
+                    <p><strong>Gebruik:</strong> Deuren openwringen, dashboards wegdrukken, objecten uit elkaar duwen</p>
+                    <p><strong>Spreiding:</strong> Tot 80 cm met enorme kracht (>30 ton)</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>⛏️ Pickhead Axe (Pikhouweel)</h4>
+                    <p><strong>Gebruik:</strong> Beton doorbreken, ijzeren deuren forceren, muren openbreken</p>
+                    <p><strong>Let op:</strong> Zware en krachtige tool - veilig hanteren</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🪚 Motorzaag</h4>
+                    <p><strong>Gebruik:</strong> Bomen verzagen, houten constructies doorzagen, toegangswegen vrijmaken</p>
+                    <p><strong>Let op:</strong> Speciaal gecertificeerd personeel, gehoorbescherming verplicht</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🔌 Stroomgenerator</h4>
+                    <p><strong>Gebruik:</strong> Elektrische gereedschappen voeden, verlichting, pompen</p>
+                    <p><strong>Vermogen:</strong> 5-10 kW, meerdere stopcontacten</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🎚️ Hydraulische Pomp</h4>
+                    <p><strong>Gebruik:</strong> Aandrijving voor knijpschaar, spreider en andere hydraulische tools</p>
+                    <p><strong>Druk:</strong> 720 bar werkdruk</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Algemene gereedschapscontrole:</strong>
+                <p>Elk begin van de dienst worden alle gereedschappen gecontroleerd op:</p>
+                <ul>
+                    <li>Zichtbare beschadigingen</li>
+                    <li>Werking en functionaliteit</li>
+                    <li>Slijtage en corrosie</li>
+                    <li>Volledigheid (alle onderdelen aanwezig)</li>
+                    <li>Batterijstatus (indien van toepassing)</li>
+                </ul>
+                <p>Meld defecten ONMIDDELLIJK aan de ploegchef!</p>
+            </div>
+        </section>
+
+        <!-- SECTIE 3: BRANDSLANGEN EN WATERVOORZIENING -->
+        <section id="brandslangen" class="section">
+            <h2>🚿 Brandslangen en Watervoorziening</h2>
+            <p>Water is het belangrijkste blusmiddel van de brandweer. Brandslangen en de bijbehorende koppelingen zorgen ervoor dat water van de bron naar de brandhaard wordt getransporteerd. Het is essentieel dat elke brandweerman/vrouw de verschillende slangen en koppelingen kent en kan bedienen.</p>
+
+            <h3>Soorten Brandslangen</h3>
+            <div class="equipment-grid">
+                <div class="equipment-item">
+                    <h4>💧 B-Slang (70mm)</h4>
+                    <p><strong>Diameter:</strong> 70mm</p>
+                    <p><strong>Lengte:</strong> 20 meter per sectie</p>
+                    <p><strong>Capaciteit:</strong> Ongeveer 800 liter/minuut bij 8 bar</p>
+                    <p><strong>Gebruik:</strong> Wateraanvoer van brandkraan naar voertuig, of van voertuig naar verzamelstuk</p>
+                    <p><strong>Kleur:</strong> Meestal grijs of wit</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>💦 C-Slang (52mm)</h4>
+                    <p><strong>Diameter:</strong> 52mm</p>
+                    <p><strong>Lengte:</strong> 20 meter per sectie</p>
+                    <p><strong>Capaciteit:</strong> Ongeveer 400 liter/minuut bij 8 bar</p>
+                    <p><strong>Gebruik:</strong> Aanvoerslang naar straalpijpen, middelgrote branden</p>
+                    <p><strong>Kleur:</strong> Meestal rood of oranje</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>💨 D-Slang (25mm)</h4>
+                    <p><strong>Diameter:</strong> 25mm</p>
+                    <p><strong>Lengte:</strong> 15 meter per sectie</p>
+                    <p><strong>Capaciteit:</strong> Ongeveer 100 liter/minuut</p>
+                    <p><strong>Gebruik:</strong> Kleine branden, nacontrole, mobiele inzet in gebouwen</p>
+                    <p><strong>Kleur:</strong> Meestal geel</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🌊 A-Slang (110mm)</h4>
+                    <p><strong>Diameter:</strong> 110mm</p>
+                    <p><strong>Lengte:</strong> 20 meter per sectie</p>
+                    <p><strong>Capaciteit:</strong> Tot 2000 liter/minuut</p>
+                    <p><strong>Gebruik:</strong> Grote wateraanvoer, lange afstanden, grote branden</p>
+                    <p><strong>Kleur:</strong> Meestal zwart of grijs</p>
+                </div>
+            </div>
+
+            <h3>Koppelingen</h3>
+            <p>Brandweerkoppelingen zijn gestandaardiseerd volgens de Storz-norm. Dit betekent dat alle Nederlandse brandweerkorpsen dezelfde koppelingen gebruiken en dus kunnen samenwerken.</p>
+
+            <div class="equipment-item">
+                <h4>🔗 Storz Koppeling</h4>
+                <p>De Storz-koppeling is een snelkoppeling zonder schroefdraad. Twee koppelingen worden aan elkaar gedraaid door een kwartslag beweging.</p>
+                
+                <h4>Koppelen procedure:</h4>
+                <ol class="procedure-steps">
+                    <li><strong>Controleer:</strong> Inspecteer beide koppelingen op beschadigingen en vervuiling. Maak zo nodig schoon.</li>
+                    <li><strong>Uitlijnen:</strong> Houd beide koppelingen voor elkaar met de nokken tegenover de uitsparingen.</li>
+                    <li><strong>Samenvoegen:</strong> Druk de koppelingen tegen elkaar aan totdat de nokken in de uitsparingen vallen.</li>
+                    <li><strong>Draaien:</strong> Draai één koppeling een kwartslag (90 graden) met de klok mee tot je weerstand voelt.</li>
+                    <li><strong>Vergrendelen:</strong> Controleer of de koppeling goed vast zit door eraan te trekken.</li>
+                </ol>
+
+                <h4>Ontkoppelen:</h4>
+                <ul>
+                    <li>Draai de koppeling een kwartslag TEGEN de klok in</li>
+                    <li>Trek de koppelingen uit elkaar</li>
+                    <li>Let op: ALTIJD eerst de druk eraf halen voordat je ontkoppelt!</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ VEILIGHEID BIJ KOPPELINGEN:</strong>
+                <ul>
+                    <li>NOOIT een koppeling losdraaien terwijl er druk op staat - kan levensgevaarlijk zijn!</li>
+                    <li>Controleer altijd op lekkages na het koppelen</li>
+                    <li>Beschadigde koppelingen NIET gebruiken - direct vervangen</li>
+                    <li>Let op je vingers bij het koppelen - knelgevaar!</li>
+                    <li>Houd koppelingen schoon - zand en grind beschadigen de afdichting</li>
+                </ul>
+            </div>
+
+            <h3>Straalpijpen</h3>
+            <div class="equipment-grid">
+                <div class="equipment-item">
+                    <h4>🚿 Hogedruk Straalpijp (HD)</h4>
+                    <p><strong>Druk:</strong> 40 bar</p>
+                    <p><strong>Gebruik:</strong> Zeer effectief voor binnenbranden, fijne nevel koelt snel af</p>
+                    <p><strong>Voordeel:</strong> Minder waterschade, zeer effectieve koeling</p>
+                    <p><strong>Nadeel:</strong> Korter bereik</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>💦 Lagedruk Straalpijp (LD)</h4>
+                    <p><strong>Druk:</strong> 8 bar</p>
+                    <p><strong>Gebruik:</strong> Buitenbranden, grotere afstanden</p>
+                    <p><strong>Voordeel:</strong> Groot bereik (tot 40 meter)</p>
+                    <p><strong>Standen:</strong> Volle straal, sproeistraal, nevelstraal</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🌀 Schuimstraalpijp</h4>
+                    <p><strong>Gebruik:</strong> Brandbaar vloeistof branden (olie, benzine)</p>
+                    <p><strong>Werking:</strong> Mengt schuimmiddel met water en lucht</p>
+                    <p><strong>Belangrijk:</strong> Speciale opleiding vereist</p>
+                </div>
+            </div>
+
+            <h3>Waterwinning</h3>
+            <div class="equipment-item">
+                <h4>💧 Brandkranen (Bovengronds en Ondergronds)</h4>
+                <p>Brandkranen zijn aangesloten op het waterleidingnet en bieden een constante watertoevoer.</p>
+                
+                <h4>Soorten:</h4>
+                <ul>
+                    <li><strong>Bovengrondse brandkraan:</strong> Zichtbaar langs de weg, snel te gebruiken, risico op bevriezing in winter</li>
+                    <li><strong>Ondergrondse brandkraan:</strong> Verborgen onder een deksel in de grond, moet eerst worden opgegraven met speciale sleutel</li>
+                </ul>
+
+                <h4>Procedure brandkraan gebruiken:</h4>
+                <ol class="procedure-steps">
+                    <li><strong>Lokaliseren:</strong> Vind de dichtstbijzijnde brandkraan (herkenbaar aan rood/gele markering of bordjes).</li>
+                    <li><strong>Openen:</strong> Gebruik de standpijpsleutel om de kraan volledig open te draaien.</li>
+                    <li><strong>Aansluiten:</strong> Koppel de B-slang aan de brandkraan met een Storz-koppeling.</li>
+                    <li><strong>Luchten:</strong> Laat eerst even water lopen om lucht en vuil uit de leiding te spoelen.</li>
+                    <li><strong>Watertransport:</strong> Verbind de slang met de pomp van het voertuig of een verzamelstuk.</li>
+                    <li><strong>Druk regelen:</strong> De pompbediener regelt de druk naar de gewenste waarde (meestal 8-10 bar).</li>
+                </ol>
+            </div>
+
+            <div class="equipment-item">
+                <h4>🌊 Open Water (Sloten, Kanalen, Meren)</h4>
+                <p>Bij grote branden of als er geen brandkranen beschikbaar zijn, kan water worden gewonnen uit open water.</p>
+                
+                <h4>Benodigde apparatuur:</h4>
+                <ul>
+                    <li><strong>Zuigslang:</strong> Stijve slang die niet inklapt bij onderdruk (meestal 110mm, lengte 2,5m per sectie)</li>
+                    <li><strong>Voetklep:</strong> Klep met zeef aan het einde van de zuigslang, voorkomt dat vuil wordt opgezogen</li>
+                    <li><strong>Zweefstuk:</strong> Drijvend platform om de voetklep op juiste diepte te houden</li>
+                    <li><strong>Strainer (Zeef):</strong> Filtert grove verontreinigingen uit het water</li>
+                </ul>
+
+                <h4>Procedure waterwinning open water:</h4>
+                <ol class="procedure-steps">
+                    <li><strong>Toegang:</strong> Zoek een veilige en toegankelijke plek bij het water.</li>
+                    <li><strong>Zuigslang uitleggen:</strong> Bouw de zuigslang op met voldoende secties om het water te bereiken.</li>
+                    <li><strong>Voetklep plaatsen:</strong> Zorg dat de voetklep minimaal 30cm onder water staat, maar niet op de bodem ligt (modder!).</li>
+                    <li><strong>Aansluiten:</strong> Koppel de zuigslang aan de zuigaansluiting van de pomp.</li>
+                    <li><strong>Ontluchten:</strong> Activeer de vacuümpomp om lucht uit de zuigslang te zuigen.</li>
+                    <li><strong>Water oppompen:</strong> Als het vacuüm is bereikt, begint het water automatisch te stromen.</li>
+                    <li><strong>Controle:</strong> Controleer regelmatig of de voetklep nog onder water staat (bij laag water).</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>⚠️ GEVAREN BIJ OPEN WATER:</strong>
+                    <ul>
+                        <li>Gladde, steile oevers - valgevaar!</li>
+                        <li>Modderige bodem - vast komen te zitten</li>
+                        <li>Stroming in rivieren - draag reddingsvest bij sterke stroming</li>
+                        <li>Bevriezing in winter - ijslaag kan gevaarlijk dun zijn</li>
+                        <li>Diepte onbekend - nooit zomaar het water in lopen!</li>
+                        <li>Zwemmers/boten - let op omstanders</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Waterschade Preventie</h3>
+            <div class="info-box">
+                <strong>💡 Minimaliseren van waterschade:</strong>
+                <p>Water kan net zoveel schade aanrichten als vuur. Houd rekening met het volgende:</p>
+                <ul>
+                    <li><strong>Gebruik hogedruk waar mogelijk:</strong> HD-straalpijpen gebruiken minder water en zijn effectiever</li>
+                    <li><strong>Niet meer blussen dan nodig:</strong> Stop met blussen zodra het vuur uit is</li>
+                    <li><strong>Bescherm waardevolle spullen:</strong> Dek meubels en elektronica af met dekzeilen indien mogelijk</li>
+                    <li><strong>Drainage:</strong> Zorg voor afvoer van bluswater via ramen, deuren of afvoerputten</li>
+                    <li><strong>Communicatie:</strong> Informeer eigenaar over te verwachten waterschade</li>
+                    <li><strong>Nacontrole:</strong> Gebruik D-slang voor kleine nacontroles in plaats van grote straalpijpen</li>
+                </ul>
+            </div>
+
+            <h3>Onderhoud Brandslangen</h3>
+            <div class="equipment-item">
+                <h4>🔧 Periodiek Onderhoud</h4>
+                <p>Brandslangen moeten regelmatig worden gecontroleerd en onderhouden:</p>
+                <ul>
+                    <li><strong>Na elk gebruik:</strong> Slangen spoelen met schoon water, laten drogen, controleren op beschadigingen</li>
+                    <li><strong>Maandelijks:</strong> Visuele inspectie van alle slangen op de wagen</li>
+                    <li><strong>Jaarlijks:</strong> Drukproef bij 15 bar, volledige inspectie door vakpersoneel</li>
+                    <li><strong>Opslag:</strong> Droog, donker en koel bewaren, niet in direct zonlicht</li>
+                    <li><strong>Afrollen:</strong> Periodiek afrollen en opnieuw oprollen om permanente vouwen te voorkomen</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ DEFECTE SLANGEN:</strong>
+                    <ul>
+                        <li>Slangen met scheuren, gaten of ernstige slijtage DIRECT uit dienst nemen</li>
+                        <li>Label defecte slangen duidelijk met "DEFECT - NIET GEBRUIKEN"</li>
+                        <li>Meld defecten bij de materiaalverantwoordelijke</li>
+                        <li>NOOIT een gelapte slang gebruiken bij hoge druk</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTIE 4: VOERTUIGEN -->
+        <section id="voertuigen" class="section">
+            <h2>🚒 Brandweer Voertuigen</h2>
+            <p>De brandweer beschikt over verschillende gespecialiseerde voertuigen, elk met een specifieke taak en uitrusting. Hieronder een overzicht van de belangrijkste voertuigen.</p>
+
+            <h3>🚒 TS - Tankautospuit</h3>
+            <div class="equipment-item">
+                <h4>Beschrijving</h4>
+                <p>De Tankautospuit (TS) is het standaard blusvoertuig van de brandweer en wordt ingezet bij de meeste branden. Het voertuig combineert een watertank met een krachtige pomp en uitgebreide blusmaterialen.</p>
+
+                <dl class="vehicle-specs">
+                    <dt>🚗 Voertuiggegevens:</dt>
+                    <dd><strong>Merk:</strong> Scania, DAF, Mercedes-Benz, of Volvo (afhankelijk van korps)</dd>
+                    <dd><strong>Gewicht:</strong> 12.000 - 16.000 kg (vol beladen)</dd>
+                    <dd><strong>Bemanning:</strong> 1+5 (chauffeur + 5 brandweerlieden)</dd>
+                    <dd><strong>Bereik:</strong> Volledig operationeel rayon</dd>
+
+                    <dt>💧 Watersysteem:</dt>
+                    <dd><strong>Tankinhoud:</strong> 2.000 - 3.000 liter water</dd>
+                    <dd><strong>Schuimmiddel:</strong> 200 liter AFFF (Aqueous Film Forming Foam)</dd>
+                    <dd><strong>Pomp:</strong> Centrifugaalpomp met capaciteit van 2.000-4.000 liter/minuut</dd>
+                    <dd><strong>Druk:</strong> Lagedruk (8 bar) en Hogedruk (40 bar) systeem</dd>
+
+                    <dt>🔧 Uitrusting:</dt>
+                    <dd>• Brandslangen (A, B, C, D-slangen in verschillende lengtes)</dd>
+                    <dd>• Straalpijpen (HD en LD)</dd>
+                    <dd>• Ademluchttoestellen (6 stuks + reserveflessen)</dd>
+                    <dd>• Ladders (Steekladder 7m, Schuifladder 10m)</dd>
+                    <dd>• Handgereedschap (Hooligan tool, bijlen, zagen, breekijzers)</dd>
+                    <dd>• Meetapparatuur (Gasmeters, warmtebeeldcamera)</dd>
+                    <dd>• Elektrische aggregaat (stroomgenerator)</dd>
+                    <dd>• Verlichting (schijnwerpers, handlampen)</dd>
+                    <dd>• Persoonlijke beschermingsmiddelen</dd>
+                    <dd>• Blusmaterialen (poederblusser, CO2-blusser)</dd>
+                </dl>
+
+                <h4>Inzet TS:</h4>
+                <ul>
+                    <li><strong>Eerste uitruk:</strong> Bij vrijwel alle brandmeldingen gaat minimaal 1 TS uit</li>
+                    <li><strong>Woningbranden:</strong> Standaard inzet met minimaal 2 TS'en</li>
+                    <li><strong>Buitenbranden:</strong> Natuurbranden, voertuigbranden, containerbranden</li>
+                    <li><strong>Hulpverlening:</strong> Ondersteuning bij ongevallen waar water nodig is</li>
+                    <li><strong>Zeer grote branden:</strong> Meerdere TS'en voor continue watervoorziening</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>💡 Belangrijk voor TS-chauffeurs:</strong>
+                    <ul>
+                        <li>Dagelijkse controle voor dienstbegin (water, brandstof, olie, banden)</li>
+                        <li>Pompproef wekelijks uitvoeren</li>
+                        <li>Bij uitruk: veilig maar snel rijden, voorrang nemen waar toegestaan</li>
+                        <li>Bij aankomst: voertuig strategisch positioneren (vluchtwegen vrijhouden!)</li>
+                        <li>Pomp altijd in stationair bedienen - NOOIT onder het rijden</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>🚑 HV - Hulpverleningsvoertuig</h3>
+            <div class="equipment-item">
+                <h4>Beschrijving</h4>
+                <p>Het Hulpverleningsvoertuig (HV) is gespecialiseerd in technische hulpverlening bij ongevallen. Dit voertuig wordt ingezet bij verkeersongevallen, beknellingen, instortingen en andere situaties waar gespecialiseerd reddingsmateriaal nodig is.</p>
+
+                <dl class="vehicle-specs">
+                    <dt>🚗 Voertuiggegevens:</dt>
+                    <dd><strong>Merk:</strong> Scania, MAN, Mercedes-Benz (vaak grotere cabine dan TS)</dd>
+                    <dd><strong>Gewicht:</strong> 14.000 - 18.000 kg</dd>
+                    <dd><strong>Bemanning:</strong> 1+3 of 1+5 (allemaal technische hulpverlening getraind)</dd>
+                    <dd><strong>Uitrukkingen:</strong> Gemiddeld 300-500 per jaar (afhankelijk van regio)</dd>
+
+                    <dt>💪 Hydraulisch Materiaal:</dt>
+                    <dd><strong>Knijpschaar:</strong> 2 stuks (verschillende formaten, tot 80 ton knijpkracht)</dd>
+                    <dd><strong>Spreiders:</strong> 2 stuks (tot 30 ton spreidkracht)</dd>
+                    <dd><strong>Hydraulische cilinders:</strong> Trek- en duwcilinders in verschillende maten</dd>
+                    <dd><strong>Hydraulische pompen:</strong> Elektrisch en benzine-aangedreven (720 bar)</dd>
+                    <dd><strong>Combi-tool:</strong> Combineert knippen en spreiden in één apparaat</dd>
+
+                    <dt>🔧 Gereedschap & Materiaal:</dt>
+                    <dd>• Slijpschijven en reciprozaag (doorzagen metaal en kunststof)</dd>
+                    <dd>• Kettingzaag en motorzaag (voor hout en constructies)</dd>
+                    <dd>• Luchtkussens (voor tillen van zware lasten, 1-60 ton)</dd>
+                    <dd>• Stabilo stempels (stabilisatie van voertuigen en gebouwen)</dd>
+                    <dd>• Breekgereedschap (hooligan, slagmoersleutels, koevoeten)</dd>
+                    <dd>• Signalisatie en verlichting (schijnwerpers, pylonen, waarschuwingsborden)</dd>
+                    <dd>• Absorbentia (voor olie- en brandstoflekkages)</dd>
+                    <dd>• Heipalen en schoren (voor instortingsgevaar)</dd>
+                    <dd>• Meetapparatuur (afstandmeters, waterpasmeters)</dd>
+                    <dd>• Reddingsmateriaal (touw, karabijnhaken, harnas)</dd>
+
+                    <dt>⚡ Energie & Verlichting:</dt>
+                    <dd><strong>Generator:</strong> 15-20 kVA (voor alle elektrische gereedschappen)</dd>
+                    <dd><strong>Lichtmast:</strong> Uitschuifbare mast tot 8 meter hoog</dd>
+                    <dd><strong>LED-schijnwerpers:</strong> Meerdere stuks voor volledig uitgelichte werkplek</dd>
+                </dl>
+
+                <h4>Typische Inzetten HV:</h4>
+                <ul>
+                    <li><strong>Verkeersongevallen:</strong> Bevrijden beknelde inzittenden uit voertuigen</li>
+                    <li><strong>Spoorwegongevallen:</strong> Specialistische reddingen bij treinen/trams</li>
+                    <li><strong>Bouwongevallen:</strong> Instortingen, personen vast tussen materiaal</li>
+                    <li><strong>Hoogwerker/Hijskraan ongevallen:</strong> Gespecialiseerde reddingen op hoogte</li>
+                    <li><strong>Lift opsluiting:</strong> Bevrijden van personen uit defecte liften</li>
+                    <li><strong>Dier in nood:</strong> Grote dieren (paarden, koeien) uit sloten/putten</li>
+                    <li><strong>Stormschade:</strong> Verwijderen omgevallen bomen, losliggende dakpannen</li>
+                    <li><strong>Assistentie aan TS:</strong> Forceren van deuren bij brand</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ VEILIGHEID BIJ HV-INZET:</strong>
+                    <ul>
+                        <li><strong>Voertuig stabiliseren:</strong> ALTIJD eerst stabiliseren voordat je gaat knippen!</li>
+                        <li><strong>Batterij loskoppelen:</strong> Voorkom kortsluiting en airbag-activatie</li>
+                        <li><strong>Airbags identificeren:</strong> Moderne auto's hebben 6-12 airbags - markeer ze!</li>
+                        <li><strong>Brandstof:</strong> Let op lekkende brandstof - vonkgevaar!</li>
+                        <li><strong>Elektrische/Hybride voertuigen:</strong> Oranje kabels = HOOGSPANNING (400-800V!)</li>
+                        <li><strong>Communicatie:</strong> Continue overleg met het slachtoffer en medisch personeel</li>
+                        <li><strong>Eigen veiligheid:</strong> Gelaatsbescherming, handschoenen, veiligheidsschoenen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>🪜 AL - Autoladder / Ladderwagen</h3>
+            <div class="equipment-item">
+                <h4>Beschrijving</h4>
+                <p>De Autoladder (AL) of Ladderwagen is uitgerust met een lange hydraulische ladder en wordt ingezet bij hoogbouw, reddingen op hoogte en om een overzicht te krijgen bij grote branden.</p>
+
+                <dl class="vehicle-specs">
+                    <dt>🚗 Voertuiggegevens:</dt>
+                    <dd><strong>Merk:</strong> Bronto Skylift, Magirus, Metz (specialistische laddermerken)</dd>
+                    <dd><strong>Gewicht:</strong> 16.000 - 24.000 kg</dd>
+                    <dd><strong>Lengte:</strong> 10-12 meter (lang voertuig!)</dd>
+                    <dd><strong>Bemanning:</strong> 1+2 (chauffeur-pompbediener + 2 bevelvoerders)</dd>
+
+                    <dt>🪜 Ladder Specificaties:</dt>
+                    <dd><strong>Werkh hoogte:</strong> 30 meter (standaard) tot 52 meter (grote steden)</dd>
+                    <dd><strong>Horizontaal bereik:</strong> Tot 28 meter (afhankelijk van hoek)</dd>
+                    <dd><strong>Draagvermogen korf:</strong> 400 kg (ongeveer 4-5 personen)</dd>
+                    <dd><strong>Watercapaciteit:</strong> Geïntegreerde waterleiding in de ladder (500-800 l/min)</dd>
+                    <dd><strong>Stabilisatie:</strong> 4 hydraulische stempels voor stabiele opstelling</dd>
+                    <dd><strong>Besturing:</strong> Vanaf korf en vanaf grondniveau</dd>
+                    <dd><strong>Rotatie:</strong> 360 graden draaibaar</dd>
+
+                    <dt>🎯 Uitrusting:</dt>
+                    <dd>• Reddingskorf (vaak met ingebouwde monitor/straalpijp)</dd>
+                    <dd>• Waterleidingsysteem door de ladder</dd>
+                    <dd>• Verlichting op de ladder en in de korf</dd>
+                    <dd>• Warmtebeeldcamera op de korf</dd>
+                    <dd>• Draagbaar materiaal in de korf (EHBO, reddingslijn)</dd>
+                    <dd>• Communicatie apparatuur</dd>
+                </dl>
+
+                <h4>Inzet Autoladder:</h4>
+                <ul>
+                    <li><strong>Hoogbouwbranden:</strong> Reddingen vanaf hogere verdiepingen (boven 3e etage)</li>
+                    <li><strong>Verkenning:</strong> Overzicht krijgen bij grote branden</li>
+                    <li><strong>Bluswerkzaamheden van bovenaf:</strong> Aanvallen van brand van buitenaf</li>
+                    <li><strong>Reddingen:</strong> Personen evacueren via ladder/korf</li>
+                    <li><strong>Dakbranden:</strong> Toegang tot moeilijk bereikbare daken</li>
+                    <li><strong>Gevelsanering:</strong> Verwijderen losse geveldelen na brand</li>
+                    <li><strong>Assistentie hulpdiensten:</strong> Politie/ambulance bij hoogbouw</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>💡 Opstellen Autoladder:</strong>
+                    <ol class="procedure-steps">
+                        <li><strong>Positie kiezen:</strong> Stabiele ondergrond, voldoende afstand tot gebouw (afhankelijk van hoogte)</li>
+                        <li><strong>Stempels plaatsen:</strong> Alle 4 stempels volledig uitschuiven en belasten</li>
+                        <li><strong>Nivelleren:</strong> Voertuig waterpas stellen (ingebouwde waterpas controleren)</li>
+                        <li><strong>Omgeving controleren:</strong> Bovenleiding! Hoogspanningskabels! Bomen!</li>
+                        <li><strong>Ladder uitschuiven:</strong> Langzaam en gecontroleerd uitschuiven richting doel</li>
+                        <li><strong>Communicatie:</strong> Continue contact tussen ladderbediener en korfbemanning</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ GEVAREN AUTOLADDER:</strong>
+                    <ul>
+                        <li><strong>BOVENLEIDING:</strong> Minimaal 3 meter afstand tot hoogspanningskabels!</li>
+                        <li><strong>Ondergrond:</strong> Zacht/onstabiel terrein kan leiden tot kantelen!</li>
+                        <li><strong>Wind:</strong> Bij windkracht 7+ (13 m/s) niet gebruiken</li>
+                        <li><strong>Gewicht in korf:</strong> NOOIT meer dan maximale belasting!</li>
+                        <li><strong>Obstructies:</strong> Let op bomen, balkons, uitstekende gevels tijdens bewegen</li>
+                        <li><strong>Technisch defect:</strong> Bij storing noodprocedure volgen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>🚙 Overige Voertuigen</h3>
+            <div class="equipment-grid">
+                <div class="equipment-item">
+                    <h4>📞 Commandowagen (COPI)</h4>
+                    <p><strong>Gebruik:</strong> Commandopost bij grote incidenten</p>
+                    <p><strong>Uitrusting:</strong> Communicatiemateriaal, whiteboards, kaarten, computers</p>
+                    <p><strong>Bemanning:</strong> Officier van Dienst, voorlichter, sectiecommandanten</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🚛 Watertankwagen</h4>
+                    <p><strong>Capaciteit:</strong> 8.000 - 12.000 liter water</p>
+                    <p><strong>Gebruik:</strong> Wateraanvoer bij branden zonder brandkranen (landelijk gebied)</p>
+                    <p><strong>Pendeldienst:</strong> Heen-en-weer rijden tussen brandlocatie en vulpunt</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🧪 Specialistische voertuigen</h4>
+                    <p><strong>OGS:</strong> Ongevallen Gevaarlijke Stoffen (chemische incidenten)</p>
+                    <p><strong>Duikwagen:</strong> Waterongevallen en reddingen onder water</p>
+                    <p><strong>Haakarmvoertuig:</strong> Transport van containers met speciaal materiaal</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🚗 Dienstauto Officier</h4>
+                    <p><strong>Gebruik:</strong> Snel ter plaatse voor leiding geven</p>
+                    <p><strong>Uitrusting:</strong> Communicatiemiddelen, beschermende kleding, meetapparatuur</p>
+                    <p><strong>Bemanning:</strong> Officier van Dienst (vaak Brandweercommandant)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTIE 5: WATER ONGEVALLEN -->
+        <section id="waterongevallen" class="section">
+            <h2>🌊 Water Ongevallen en Reddingen</h2>
+            <p>Waterongevallen vormen een specifieke uitdaging voor de brandweer. Nederland heeft veel water en daarom is kennis over waterreddingen essentieel. De brandweer beschikt over gespecialiseerde teams en materialen voor waterongevallen.</p>
+
+            <h3>Soorten Waterongevallen</h3>
+            <div class="equipment-grid">
+                <div class="equipment-item">
+                    <h4>🚗 Voertuig te Water</h4>
+                    <p>Auto, motor of vrachtwagen te water geraakt</p>
+                    <p><strong>Gevaar:</strong> Snel zinkend voertuig, beknelde inzittenden, koude water</p>
+                    <p><strong>Prioriteit:</strong> PRIO 1 - Levensgevaar</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>👤 Persoon te Water</h4>
+                    <p>Persoon gevallen of gesprungen in water</p>
+                    <p><strong>Gevaar:</strong> Verdrinking, onderkoeling, stroming</p>
+                    <p><strong>Tijd kritisch:</strong> Elke seconde telt!</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>⛵ Boot/Schip in Problemen</h4>
+                    <p>Boot gezonken, vastgelopen of kapseist</p>
+                    <p><strong>Gevaar:</strong> Meerdere slachtoffers, moeilijke bereikbaarheid</p>
+                    <p><strong>Samenwerking:</strong> Vaak met KNRM en politie</p>
+                </div>
+
+                <div class="equipment-item">
+                    <h4>🧊 IJsongevallen</h4>
+                    <p>Persoon door het ijs gezakt (winter)</p>
+                    <p><strong>Gevaar:</strong> Extreem gevaarlijk - onderkoeling treedt snel op</p>
+                    <p><strong>Extra risico:</strong> Redders kunnen ook door ijs zakken</p>
+                </div>
+            </div>
+
+            <h3>Reddingsmateriaal Waterongevallen</h3>
+            <div class="equipment-item">
+                <h4>🛟 Persoonlijke Beschermingsmiddelen</h4>
+                <ul>
+                    <li><strong>Reddingsvest:</strong> VERPLICHT voor iedereen die bij water werkt - 50-150 Newton drijfvermogen</li>
+                    <li><strong>Droogpak/Wetsuit:</strong> Bescherming tegen onderkoeling, drijfvermogen</li>
+                    <li><strong>Zwemvliezen:</strong> Voor sneller zwemmen bij reddingsacties</li>
+                    <li><strong>Reddingshelm:</strong> Bescherming hoofd bij stroming en objecten in water</li>
+                    <li><strong>Veiligheidslijn:</strong> Beveiliging redder aan vaste punt op oever</li>
+                    <li><strong>Signaalfluit:</strong> Communicatie tussen redders en team op oever</li>
+                </ul>
+            </div>
+
+            <div class="equipment-item">
+                <h4>⛑️ Reddingsmaterialen</h4>
+                <ul>
+                    <li><strong>Reddingsboei/Reddingsring:</strong> Werpen naar drenkeling voor drijfvermogen</li>
+                    <li><strong>Reddingslijn (Throwbag):</strong> Zak met 20-30 meter touw, werpen naar slachtoffer</li>
+                    <li><strong>Bereikhaak:</strong> Lange haak (4-8 meter) om slachtoffer te bereiken vanaf kant</li>
+                    <li><strong>Reddingsplatform:</strong> Drijvend platform om slachtoffer op te tillen</li>
+                    <li><strong>Reddingsboot (RIB):</strong> Opblaasbare boot met buitenboordmotor</li>
+                    <li><strong>Spineboard:</strong> Drijvende nek-/rugplank voor transport slachtoffer</li>
+                    <li><strong>Warming blankets:</strong> Speciale dekens tegen onderkoeling na redding</li>
+                    <li><strong>IJsreddingsslee:</strong> Speciale slee voor redding op ijs (spreidt gewicht)</li>
+                </ul>
+            </div>
+
+            <h3>Procedure Waterredding - REACH, THROW, ROW, GO</h3>
+            <div class="info-box">
+                <strong>💡 Prioriteitsvolgorde (van veilig naar gevaarlijk):</strong>
+                <p>Gebruik altijd de veiligste methode eerst. Ga NOOIT onnodig zelf het water in!</p>
+            </div>
+
+            <ol class="procedure-steps">
+                <li>
+                    <strong>REACH - Reiken vanaf de kant</strong>
+                    <p>Probeer het slachtoffer te bereiken vanaf de oever zonder zelf het water in te gaan.</p>
+                    <ul>
+                        <li>Gebruik bereikhaak, ladder of lange stok</li>
+                        <li>Leg plat op de grond voor betere balans</li>
+                        <li>Laat slachtoffer zich vasthouden, trek langzaam binnen</li>
+                        <li><strong>Veiligst:</strong> Jij blijft droog en veilig</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>THROW - Werpen van reddingsmiddel</strong>
+                    <p>Als reiken niet lukt, gooi reddingsmateriaal naar het slachtoffer.</p>
+                    <ul>
+                        <li>Gebruik reddingsboei of throwbag (werpzak)</li>
+                        <li>Roep naar slachtoffer: "IK GOOI EEN LIJN!" voordat je werpt</li>
+                        <li>Gooi VOORBIJ het slachtoffer, trek terug zodat lijn in handen komt</li>
+                        <li>Trek slachtoffer langzaam naar kant (niet te snel - uitputting!)</li>
+                        <li><strong>Belangrijk:</strong> Oefen regelmatig met werpen - moet in één keer goed gaan</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>ROW - Varen met boot</strong>
+                    <p>Als werpen niet lukt of slachtoffer te ver weg is, gebruik reddingsboot.</p>
+                    <ul>
+                        <li>Minimaal 2 personen: 1 vaart, 1 redt</li>
+                        <li>Beide dragen reddingsvest</li>
+                        <li>Nader slachtoffer vanaf BENEDENSTROOMS (bij rivier)</li>
+                        <li>Schakel motor UIT bij slachtoffer (verwondingsgevaar!)</li>
+                        <li>Til slachtoffer aan ACHTERZIJDE boot in (stabielste punt)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>GO - Zwemmend redden</strong>
+                    <p>LAATSTE OPTIE - alleen door getrainde waterredders met volledige uitrusting!</p>
+                    <ul>
+                        <li><strong>VERPLICHT:</strong> Reddingsvest, wetsuit, beveiliging met lijn</li>
+                        <li>Minimaal 2 redders: 1 gaat water in, 1 beveiligt vanaf kant</li>
+                        <li>Neem reddingsboei of drijfmiddel mee voor slachtoffer</li>
+                        <li>Benader van achteren (voorkom vastgrijpen door panische drenkeling)</li>
+                        <li>Houd afstand - schuif eerst reddingsboei naar slachtoffer</li>
+                        <li>Communiceer continue met team op oever via fluit of roepen</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="warning-box">
+                <strong>⚠️ LEVENSGEVAARLIJKE SITUATIES - NOOIT DOEN:</strong>
+                <ul>
+                    <li>❌ NOOIT zonder reddingsvest het water in</li>
+                    <li>❌ NOOIT alleen het water in - altijd minimaal één collega als back-up</li>
+                    <li>❌ NOOIT zwemmen in stroming zonder training en beveiliging</li>
+                    <li>❌ NOOIT op dun ijs lopen zonder IJsreddingspak en beveiliging</li>
+                    <li>❌ NOOIT duiken naar gezonken voertuig zonder duikteam</li>
+                    <li>❌ NOOIT onderschat de kracht van stromend water (6 km/u = volwassene omver!)</li>
+                    <li>❌ NOOIT direct fysiek contact met panische drenkeling zonder bescherming</li>
+                </ul>
+                <p><strong>🚨 Eigen veiligheid gaat ALTIJD voor! Dode helden redden niemand!</strong></p>
+            </div>
+
+            <h3>Voertuig te Water - Specifieke Procedure</h3>
+            <div class="equipment-item">
+                <h4>🚗 Actiepunten Voertuig in Water</h4>
+                <ol class="procedure-steps">
+                    <li>
+                        <strong>Aanrijden en verkenning</strong>
+                        <ul>
+                            <li>Bepaal exacte locatie voertuig (drijvend, zinkend, gezonken?)</li>
+                            <li>Tel aantal inzittenden via getuigen</li>
+                            <li>Beoordeel diepte water, stroming en bodemgesteldheid</li>
+                            <li>Vraag direct duikteam aan bij gezonken voertuig</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Eerste reddingspoging (drijvend voertuig)</strong>
+                        <ul>
+                            <li>Schreeuw naar inzittenden: "OPEN HET RAAM!"</li>
+                            <li>Als raam open kan: help personen via raam naar buiten</li>
+                            <li>Gebruik bereikhaak of ladder als brug naar voertuig</li>
+                            <li>SNEL handelen - auto zinkt vaak binnen 30-90 seconden!</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Auto zinkt/gezonken</strong>
+                        <ul>
+                            <li>⏰ TIJD IS KRITISCH: na 4-6 minuten onderwater weinig overlevingskans</li>
+                            <li>Markeer positie gezonken voertuig (boei of GPS-coördinaten)</li>
+                            <li>ALLEEN getraind duikteam mag naar gezonken auto duiken</li>
+                            <li>Bereid takelmateriaal en HV voor om auto uit water te trekken</li>
+                            <li>Richt schijnwerpers op water voor duikteam</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Na redding</strong>
+                        <ul>
+                            <li>Onmiddellijk opwarmen slachtoffer (dekens, warme ruimte ambulance)</li>
+                            <li>ALLE personen te water geweest MOETEN naar ziekenhuis (onderkoeling/shock)</li>
+                            <li>Voertuig bergen (milieugevaar door olie/brandstof)</li>
+                            <li>Nabestaandenbegeleiding indien slachtoffer overleden</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="info-box">
+                    <strong>💡 Feit over auto te water:</strong>
+                    <p>Moderne auto's hebben elektrische ramen. Als de auto onder water staat, werkt de elektronica vaak niet meer. Ramen kunnen dan NIET meer geopend worden. Daarom:</p>
+                    <ul>
+                        <li>Adviseer inwoners om noodhamertje in auto te hebben</li>
+                        <li>Raambrekend gereedschap altijd bij de hand houden bij waterreddingen</li>
+                        <li>Bij trainingen oefenen met onder water voertuig</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>IJsredding - Winterprotocol</h3>
+            <div class="equipment-item">
+                <h4>🧊 Speciale Overwegingen bij IJs</h4>
+                <p>IJsongevallen zijn extreem gevaarlijk. Onderkoeling treedt razendsnel op (bewusteloos binnen 15 minuten in ijskoud water!).</p>
+
+                <h4>IJsreddingsprocedure:</h4>
+                <ol class="procedure-steps">
+                    <li>
+                        <strong>Waarschuw vanaf vaste grond</strong>
+                        <ul>
+                            <li>Roep naar slachtoffer: "BLIJF KALM! BEWEEG NIET! HULP KOMT!"</li>
+                            <li>Beweging maakt het ijs zwakker en versnelt onderkoeling</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Probeer REACH en THROW eerst</strong>
+                        <ul>
+                            <li>Schuif ladder over ijs naar slachtoffer (spreidt gewicht)</li>
+                            <li>Gooi reddingslijn met drijfmiddel</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>IJsredding door specialist</strong>
+                        <ul>
+                            <li>Alleen met IJsreddingspak (droogpak met extra drijfvermogen)</li>
+                            <li>Beveiligd met lijn naar vast punt op oever</li>
+                            <li>Gebruik ijsreddingsslee om gewicht te spreiden</li>
+                            <li>Kruip op buik/rug over ijs (NOOIT rechtop lopen!)</li>
+                            <li>Bij slachtoffer: trek op slee en laat team terugrekken</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Onderkoeling bestrijden</strong>
+                        <ul>
+                            <li>ONMIDDELLIJK natte kleding uit</li>
+                            <li>Droge dekens en warme omgeving (ambulance)</li>
+                            <li>GEEN alcohol of hete dranken! (verergert onderkoeling)</li>
+                            <li>Lauwwarme dranken (max 40°C)</li>
+                            <li>Altijd naar ziekenhuis - ook bij "lichte" onderkoeling</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>⚠️ IJS VEILIGHEID:</strong>
+                    <ul>
+                        <li>Minimaal 15 cm dik ijs nodig om 1 persoon te dragen</li>
+                        <li>Stromend water = ijs ALTIJD dunner (rivier, uitstroom sluis)</li>
+                        <li>Ijs bij riet en oevers is zwakker</li>
+                        <li>Bewolking en sneeuw verbergen dunne plekken</li>
+                        <li>Herstellende ijszakker heeft bijna geen draagkracht meer</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Samenwerking met Andere Hulpdiensten</h3>
+            <div class="info-box">
+                <strong>💡 Waterongevallen = Multidisciplinair:</strong>
+                <ul>
+                    <li><strong>Politie:</strong> Afzetting, verkeersregeling, onderzoek ongeval, contacten nabestaanden</li>
+                    <li><strong>Ambulance:</strong> Medische zorg slachtoffer, behandeling onderkoeling</li>
+                    <li><strong>KNRM:</strong> Reddingen op zee en grote rivieren (24/7 paraat)</li>
+                    <li><strong>Duikteam:</strong> Gezonken voertuigen, persoon onder water, berging</li>
+                    <li><strong>Traumahelikopter:</strong> Snelle medische zorg bij ernstige gevallen</li>
+                    <li><strong>Gemeentelijke diensten:</strong> Kraan voor bergen voertuig, bergers</li>
+                </ul>
+            </div>
+
+            <h3>Training en Certificering</h3>
+            <div class="equipment-item">
+                <h4>📋 Waterreddingsopleiding</h4>
+                <p>Niet elke brandweerman mag waterreddingen uitvoeren. Speciale certificering is vereist:</p>
+                <ul>
+                    <li><strong>Basis Waterredding:</strong> 3-daagse cursus - REACH, THROW, ROW technieken</li>
+                    <li><strong>Gevorderd Waterredding:</strong> 5-daagse cursus - GO-technieken, stroming, nachtredding</li>
+                    <li><strong>IJsredding Certificaat:</strong> 2-daagse cursus - specifiek voor ijsongevallen</li>
+                    <li><strong>Duikdiploma:</strong> Voor duikteam leden - maanden training</li>
+                    <li><strong>RIB-vaarbewijs:</strong> Voor bedienen reddingsboot</li>
+                    <li><strong>Jaarlijkse herhalingstraining:</strong> Vaardigheden up-to-date houden</li>
+                </ul>
+                <p><strong>Zonder certificaat: ALLEEN ondersteuning vanaf kant - NIET het water in!</strong></p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Lage Landen RP - Brandweer Handboek</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                <a href="../dashboard.html" style="color: white;">Dashboard</a> | 
+                <a href="../index.html" style="color: white;">Home</a> | 
+                <a href="../Politie Procedures.html" style="color: white;">Politie Procedures</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll voor navigatie links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight actieve sectie in navigatie
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 100) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.background = '';
+                link.style.fontWeight = '';
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.style.background = '#fee2e2';
+                    link.style.fontWeight = 'bold';
+                    link.style.paddingLeft = '1rem';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
