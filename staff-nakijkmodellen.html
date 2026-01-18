@@ -203,38 +203,36 @@
 
     <script src="auth.js"></script>
     <script>
-        // Wacht tot auth.js geladen is
-        function checkAuthAndShow() {
+        // Direct met Netlify Identity werken
+        function initPage() {
             const loadingEl = document.getElementById('loading-indicator');
             const contentEl = document.getElementById('protected-content');
             const authReqEl = document.getElementById('auth-required');
             
-            console.log('Checking auth...');
-            console.log('Auth exists:', !!window.auth);
-            
-            if (!window.auth) {
-                console.log('Auth not ready yet, waiting...');
+            if (!window.netlifyIdentity) {
+                console.log('Netlify Identity not loaded yet');
                 return false;
             }
             
-            console.log('User:', window.auth.user);
-            console.log('User role:', window.auth.getUserRole());
+            const user = window.netlifyIdentity.currentUser();
+            console.log('Current user:', user);
             
             if (loadingEl) loadingEl.style.display = 'none';
             
-            if (window.auth.user) {
-                const userRole = window.auth.getUserRole();
-                console.log('Detected role:', userRole);
+            if (user) {
+                const roles = user.app_metadata?.roles || [];
+                console.log('User roles:', roles);
                 
-                if (userRole === 'admin' || userRole === 'staff') {
+                if (roles.includes('admin') || roles.includes('staff')) {
                     console.log('Access granted!');
                     contentEl.style.display = 'block';
                 } else {
-                    console.log('Access denied - wrong role:', userRole);
+                    console.log('Access denied - no admin/staff role');
+                    const roleDisplay = roles.length > 0 ? roles.join(', ') : 'geen rollen';
                     authReqEl.innerHTML = `
                         <h2>🚫 Toegang Geweigerd</h2>
                         <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
-                        <p>Je huidige rol: ${window.auth.getRoleDisplay(userRole)}</p>
+                        <p>Je huidige rollen: ${roleDisplay}</p>
                         <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
                     `;
                     authReqEl.style.display = 'block';
@@ -247,23 +245,21 @@
             return true;
         }
         
-        // Poll totdat auth klaar is
+        // Wacht op Netlify Identity
         let attempts = 0;
-        const maxAttempts = 50; // 5 seconden max
-        
-        const authCheck = setInterval(() => {
+        const checkInterval = setInterval(() => {
             attempts++;
-            console.log('Attempt', attempts);
+            console.log('Init attempt', attempts);
             
-            if (checkAuthAndShow()) {
-                clearInterval(authCheck);
-            } else if (attempts >= maxAttempts) {
-                clearInterval(authCheck);
-                console.log('Timeout - auth not loaded');
+            if (initPage()) {
+                clearInterval(checkInterval);
+            } else if (attempts >= 30) {
+                clearInterval(checkInterval);
+                console.log('Timeout waiting for Netlify Identity');
                 document.getElementById('loading-indicator').style.display = 'none';
                 window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
             }
-        }, 100);
+        }, 200);
     </script>
 </body>
 </html>
