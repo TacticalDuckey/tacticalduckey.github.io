@@ -212,9 +212,29 @@
         <a href="../../staff-nakijkmodellen.html" class="back-btn">← Terug naar Overzicht</a>
     </div>
 
-    <div id="auth-required" style="text-align: center; padding: 4rem 2rem;">
+    <div id="auth-required" style="text-align: center; padding: 4rem 2rem; display: none;">
         <h2>🔒 Authenticatie Vereist</h2>
         <p>Je moet ingelogd zijn om deze pagina te bekijken.</p>
     </div>
+
+    <script>
+        function initPage() {
+            if (!window.netlifyIdentity) return false;
+            
+            const user = window.netlifyIdentity.currentUser();
+            document.getElementById('protected-content').style.display = user ? 'block' : 'none';
+            document.getElementById('auth-required').style.display = user ? 'none' : 'block';
+            
+            if (!user) {
+                setTimeout(() => window.location.href = '/login.html', 2000);
+            }
+            return true;
+        }
+        
+        let attempts = 0;
+        const check = setInterval(() => {
+            if (initPage() || ++attempts > 30) clearInterval(check);
+        }, 200);
+    </script>
 </body>
 </html>
