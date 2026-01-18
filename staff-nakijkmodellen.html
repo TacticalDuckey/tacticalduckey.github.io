@@ -28,6 +28,42 @@
             color: var(--accent-red);
             margin-bottom: 0.5rem;
         }
+
+        .toets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toets-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .toets-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .toets-card h3 {
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .toets-card p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .section-header {
+            padding-bottom: 1rem;
+            margin: 3rem 0 2rem 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -44,52 +80,52 @@
         </div>
 
         <!-- POLITIE SECTIE -->
-        <h2 style="color: #1e40af; border-bottom: 3px solid #3b82f6; padding-bottom: 1rem; margin: 3rem 0 2rem 0;">🚔 Politie Nakijkmodellen</h2>
+        <h2 class="section-header" style="color: #1e40af; border-bottom: 3px solid #3b82f6;">🚔 Politie Nakijkmodellen</h2>
         
-        <div class="toets-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-            <div class="toets-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+        <div class="toets-grid">
+            <div class="toets-card">
                 <h3>Sollicitatie Beoordeling</h3>
                 <p>Politie sollicitatie beoordelingsformulier</p>
                 <a href="Politie/Sollicitaties/STAFF - Politie Sollicitatie Beoordelingsformulier.html" class="btn">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+            <div class="toets-card">
                 <h3>WTGM Nakijkmodel</h3>
                 <p>Antwoorden WTGM toets</p>
                 <a href="Politie/Sollicitaties/STAFF - WTGM Toets Nakijkmodel.html" class="btn">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+            <div class="toets-card">
                 <h3>Groot Wapen Nakijkmodel</h3>
                 <p>Antwoorden groot wapen toets</p>
                 <a href="Politie/Sollicitaties/STAFF - Groot Wapen Nakijkmodel.html" class="btn">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+            <div class="toets-card">
                 <h3>Taser Nakijkmodel</h3>
                 <p>Antwoorden taser toets</p>
                 <a href="Politie/Sollicitaties/STAFF - Taser Nakijkmodel.html" class="btn">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+            <div class="toets-card">
                 <h3>Rijbewijs Auto Nakijkmodel</h3>
                 <p>Antwoorden autorijbewijs toets</p>
                 <a href="Politie/Sollicitaties/STAFF - Rijbewijs Auto Nakijkmodel.html" class="btn">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+            <div class="toets-card">
                 <h3>Rijbewijs Motor Nakijkmodel</h3>
                 <p>Antwoorden motorrijbewijs toets</p>
                 <a href="Politie/Sollicitaties/STAFF - Rijbewijs Motor Nakijkmodel.html" class="btn">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+            <div class="toets-card">
                 <h3>Rijbewijs Boot Nakijkmodel</h3>
                 <p>Antwoorden bootrijbewijs toets</p>
                 <a href="Politie/Sollicitaties/STAFF - Rijbewijs Boot Nakijkmodel.html" class="btn">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+            <div class="toets-card">
                 <h3>Rijbewijs Lucht Nakijkmodel</h3>
                 <p>Antwoorden vliegbewijs toets</p>
                 <a href="Politie/Sollicitaties/STAFF - Rijbewijs Lucht Nakijkmodel.html" class="btn">Bekijk →</a>
@@ -97,34 +133,62 @@
         </div>
 
         <!-- BRANDWEER SECTIE -->
-        <h2 style="color: #dc2626; border-bottom: 3px solid #fbbf24; padding-bottom: 1rem; margin: 3rem 0 2rem 0;">🚒 Brandweer Nakijkmodellen</h2>
+        <h2 class="section-header" style="color: #dc2626; border-bottom: 3px solid #fbbf24;">🚒 Brandweer Nakijkmodellen</h2>
         
-        <div class="toets-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-            <div class="toets-card" style="background: linear-gradient(135deg, #fee2e2, #fef3c7); padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); border-left: 4px solid #dc2626;">
+        <div class="toets-grid">
+            <div class="toets-card" style="background: linear-gradient(135deg, #fee2e2, #fef3c7); border-left: 4px solid #dc2626;">
                 <h3>🚒 Brandweer Sollicitatie Nakijkmodel</h3>
                 <p>Beoordelingscriteria brandweer sollicitatie</p>
                 <a href="Brandweer/Sollicitaties/STAFF - Brandweer Sollicitatie Nakijkmodel.html" class="btn" style="background: #dc2626;">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: linear-gradient(135deg, #fef3c7, #fee2e2); padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); border-left: 4px solid #dc2626;">
+            <div class="toets-card" style="background: linear-gradient(135deg, #fef3c7, #fee2e2); border-left: 4px solid #dc2626;">
                 <h3>🔥 Theorie Toets Nakijkmodel</h3>
                 <p>Antwoorden theorie toets (15 vragen)</p>
                 <a href="Brandweer/Sollicitaties/STAFF - Theorie Toets Nakijkmodel.html" class="btn" style="background: #dc2626;">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: linear-gradient(135deg, #fee2e2, #fef3c7); padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); border-left: 4px solid #dc2626;">
+            <div class="toets-card" style="background: linear-gradient(135deg, #fee2e2, #fef3c7); border-left: 4px solid #dc2626;">
                 <h3>💧 Pompbediende Nakijkmodel</h3>
                 <p>Antwoorden pompbediende toets</p>
                 <a href="Brandweer/Sollicitaties/STAFF - Pompbediende Nakijkmodel.html" class="btn" style="background: #dc2626;">Bekijk →</a>
             </div>
 
-            <div class="toets-card" style="background: linear-gradient(135deg, #fef3c7, #fee2e2); padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow); border-left: 4px solid #dc2626;">
+            <div class="toets-card" style="background: linear-gradient(135deg, #fef3c7, #fee2e2); border-left: 4px solid #dc2626;">
                 <h3>🔧 Gereedschap Nakijkmodel</h3>
                 <p>Antwoorden gereedschap toets</p>
                 <a href="Brandweer/Sollicitaties/STAFF - Gereedschap Nakijkmodel.html" class="btn" style="background: #dc2626;">Bekijk →</a>
             </div>
         </div>
+
+        <!-- AMBULANCE SECTIE -->
+        <h2 class="section-header" style="color: #059669; border-bottom: 3px solid #10b981;">🚑 Ambulance Nakijkmodellen</h2>
+        
+        <div class="toets-grid">
+            <div class="toets-card" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-left: 4px solid #059669; opacity: 0.6;">
+                <h3>🏥 Nog geen nakijkmodellen beschikbaar</h3>
+                <p>Ambulance sollicitaties en toetsen komen binnenkort</p>
+                <span class="btn" style="background: #6b7280; cursor: not-allowed;">Binnenkort →</span>
+            </div>
+        </div>
+
+        <!-- KONINKLIJKE MARECHAUSSEE SECTIE -->
+        <h2 class="section-header" style="color: #7c3aed; border-bottom: 3px solid #a78bfa;">👮 Koninklijke Marechaussee Nakijkmodellen</h2>
+        
+        <div class="toets-grid">
+            <div class="toets-card" style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-left: 4px solid #7c3aed; opacity: 0.6;">
+                <h3>🎖️ Nog geen nakijkmodellen beschikbaar</h3>
+                <p>KMar sollicitaties en toetsen komen binnenkort</p>
+                <span class="btn" style="background: #6b7280; cursor: not-allowed;">Binnenkort →</span>
+            </div>
+        </div>
     </main>
+
+    <div id="auth-required" style="text-align: center; padding: 4rem 2rem; display: block;">
+        <h2>🔒 Authenticatie Vereist</h2>
+        <p>Je moet ingelogd zijn als staff om deze pagina te bekijken.</p>
+        <p style="margin-top: 1rem;"><a href="login.html" class="btn">Inloggen</a></p>
+    </div>
 
     <footer>
         <div class="container">
@@ -144,6 +208,7 @@
                     if (auth.requireAuth(['staff', 'admin'])) {
                         // Toon content
                         document.getElementById('protected-content').style.display = 'block';
+                        document.getElementById('auth-required').style.display = 'none';
                     }
                 }
             }, 100);
@@ -151,8 +216,9 @@
             // Timeout na 3 seconden
             setTimeout(() => {
                 clearInterval(checkAuth);
-                if (!auth.user) {
-                    window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
+                if (!window.auth || !window.auth.user) {
+                    document.getElementById('auth-required').style.display = 'block';
+                    document.getElementById('protected-content').style.display = 'none';
                 }
             }, 3000);
         });
