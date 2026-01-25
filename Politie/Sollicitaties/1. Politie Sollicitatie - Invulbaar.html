@@ -249,7 +249,47 @@
                 return;
             }
 
-            // Verzamel alle form data
+            // Toon loading
+            const submitBtn = event.target;
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Valideren...';
+
+            // STAP 1: Valideer de code via Netlify Function
+            try {
+                const verifyResponse = await fetch('/.netlify/functions/verify-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'verify',
+                        code: accessCode,
+                        type: 'politie'
+                    })
+                });
+
+                const verifyResult = await verifyResponse.json();
+
+                if (!verifyResult.valid) {
+                    alert(verifyResult.message || '❌ Ongeldige code!');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                    return;
+                }
+
+                // Code is geldig! Ga door met verzenden
+                submitBtn.textContent = '⏳ Verzenden...';
+
+            } catch (error) {
+                console.error('Error verifying code:', error);
+                alert('❌ Netwerkfout bij valideren code.\n\nCheck je internetverbinding en probeer opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                return;
+            }
+
+            // STAP 2: Verzamel alle form data
             const formData = {};
             const inputs = document.querySelectorAll('input[type="text"], textarea');
             
@@ -266,33 +306,35 @@
             // Check of minimaal Roblox username is ingevuld
             if (!formData['Roblox gebruikersnaam'] && !formData['roblox']) {
                 alert('⚠️ Vul eerst je Roblox gebruikersnaam in!');
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
                 return;
             }
 
-            // Toon loading
-            const submitBtn = event.target;
-            submitBtn.disabled = true;
-            submitBtn.textContent = '⏳ Verzenden...';
+            // STAP 3: Verstuur naar Discord (zonder extra code check, die is al gedaan)
+            try {
+                const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(formData, 'politie', accessCode);
 
-            // Verstuur naar Discord met code verificatie
-            const result = await discordSubmitter.submitToDiscord(formData, 'politie', accessCode);
-
-            // Toon resultaat
-            if (result.success) {
-                alert(result.message);
-                // Clear form
-                if (confirm('Formulier wissen?')) {
-                    document.querySelectorAll('input[type="text"], textarea').forEach(input => {
-                        if (input.id !== 'accessCode') input.value = '';
-                    });
+                // Toon resultaat
+                if (result.success) {
+                    alert(result.message);
+                    // Clear form
+                    if (confirm('Formulier wissen?')) {
+                        document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+                            input.value = '';
+                        });
+                    }
+                } else {
+                    alert(result.message);
                 }
-            } else {
-                alert(result.message);
+            } catch (error) {
+                console.error('Error submitting:', error);
+                alert('❌ Fout bij verzenden. Probeer opnieuw of neem contact op met staff.');
             }
 
             // Reset button
             submitBtn.disabled = false;
-            submitBtn.textContent = '✅ Indienen bij Staff';
+            submitBtn.textContent = originalText;
         }
 
         function savePDF() {

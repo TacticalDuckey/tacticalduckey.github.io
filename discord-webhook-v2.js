@@ -51,7 +51,7 @@ class DiscordSubmitter {
 
     // ==================== DISCORD SUBMISSION ====================
 
-    // Hoofd functie: Verzend sollicitatie naar Discord
+    // Hoofd functie: Verzend sollicitatie naar Discord (met code check)
     async submitToDiscord(formData, formType, accessCode) {
         // 1. Check toegangscode
         const codeCheck = this.verifyCode(accessCode, formType);
@@ -63,7 +63,13 @@ class DiscordSubmitter {
             };
         }
 
-        // 2. Haal username op (flexibel voor verschillende formulieren)
+        // Ga door met verzenden
+        return this.submitToDiscordWithoutCodeCheck(formData, formType, accessCode);
+    }
+
+    // Nieuwe functie: Verzend zonder extra code check (code is al gevalideerd)
+    async submitToDiscordWithoutCodeCheck(formData, formType, accessCode) {
+        // 1. Haal username op (flexibel voor verschillende formulieren)
         const username = formData['Roblox gebruikersnaam'] || 
                         formData['Naam'] || 
                         formData['naam'] || 
@@ -77,8 +83,17 @@ class DiscordSubmitter {
             };
         }
 
-        // 3. Verzend naar Discord via Netlify Function (secure)
+        // 2. Verzend naar Discord via Netlify Function (secure)
         const embed = this.createEmbed(formData, formType, username);
+        
+        // Voeg code toe aan embed
+        if (accessCode) {
+            embed.fields.unshift({
+                name: '🔑 Toegangscode',
+                value: `\`${accessCode}\``,
+                inline: true
+            });
+        }
         
         const payload = {
             username: "Lage Landen RP - Sollicitaties",

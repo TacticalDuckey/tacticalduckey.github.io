@@ -323,49 +323,52 @@
         // Start check when DOM ready
         window.addEventListener('DOMContentLoaded', checkAuthAndLoad);
 
-        // Storage keys
-        const CODES_STORAGE_KEY = 'sollicitatie_codes';
-
-        // Generate random code
-        function generateRandomCode() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let code = '';
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 3; j++) {
-                    code += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                if (i < 2) code += '-';
-            }
-            return code;
-        }
-
-        // Generate code
-        function generateCode() {
+        // Generate code via Netlify Function
+        async function generateCode() {
             const type = document.getElementById('sollicitatieType').value;
             const validDays = parseInt(document.getElementById('validDays').value);
             
-            const code = generateRandomCode();
-            const expiryDate = new Date();
-            expiryDate.setDate(expiryDate.getDate() + validDays);
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Genereren...';
 
-            // Save code
-            const codes = getSavedCodes();
-            codes.push({
-                code: code,
-                type: type,
-                createdAt: new Date().toISOString(),
-                expiresAt: expiryDate.toISOString(),
-                used: false
-            });
-            saveCodes(codes);
+            try {
+                const response = await fetch('/.netlify/functions/verify-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'generate',
+                        type: type,
+                        validDays: validDays
+                    })
+                });
 
-            // Display code
-            document.getElementById('generatedCode').textContent = code;
-            document.getElementById('codeExpiry').textContent = `Geldig tot: ${expiryDate.toLocaleDateString('nl-NL')} ${expiryDate.toLocaleTimeString('nl-NL', {hour: '2-digit', minute: '2-digit'})}`;
-            document.getElementById('codeDisplay').classList.add('show');
+                const result = await response.json();
 
-            // Refresh list
-            loadActiveCodes();
+                if (result.success && result.code) {
+                    const code = result.code;
+                    const expiryDate = new Date(code.expiresAt);
+
+                    // Display code
+                    document.getElementById('generatedCode').textContent = code.code;
+                    document.getElementById('codeExpiry').textContent = `Geldig tot: ${expiryDate.toLocaleDateString('nl-NL')} ${expiryDate.toLocaleTimeString('nl-NL', {hour: '2-digit', minute: '2-digit'})}`;
+                    document.getElementById('codeDisplay').classList.add('show');
+
+                    // Refresh list
+                    await loadActiveCodes();
+                } else {
+                    alert('❌ Fout bij genereren code. Probeer opnieuw.');
+                }
+            } catch (error) {
+                console.error('Error generating code:', error);
+                alert('❌ Netwerkfout bij genereren code. Check je internetverbinding.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
         }
 
         // Copy code to clipboard
@@ -384,73 +387,93 @@
             });
         }
 
-        // Get saved codes
-        function getSavedCodes() {
-            const codes = localStorage.getItem(CODES_STORAGE_KEY);
-            return codes ? JSON.parse(codes) : [];
-        }
+        // Load active codes from server
+        async function loadActiveCodes() {
+            try {
+                const response = await fetch('/.netlify/functions/verify-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'list'
+                    })
+                });
 
-        // Save codes
-        function saveCodes(codes) {
-            localStorage.setItem(CODES_STORAGE_KEY, JSON.stringify(codes));
-        }
+                const result = await response.json();
 
-        // Load active codes
-        function loadActiveCodes() {
-            const codes = getSavedCodes();
-            const now = new Date();
-            
-            // Filter active codes
-            const activeCodes = codes.filter(c => {
-                const expiry = new Date(c.expiresAt);
-                return expiry > now && !c.used;
-            });
+                if (!result.success || !result.codes) {
+                    console.error('Failed to load codes:', result);
+                    return;
+                }
 
-            const codeList = document.getElementById('codeList');
-            
-            if (activeCodes.length === 0) {
-                codeList.innerHTML = '<div class="empty-state">Geen actieve codes</div>';
-                return;
-            }
+                const activeCodes = result.codes;
+                const codeList = document.getElementById('codeList');
+                
+                if (activeCodes.length === 0) {
+                    codeList.innerHTML = '<div class="empty-state">Geen actieve codes</div>';
+                    return;
+                }
 
-            codeList.innerHTML = activeCodes.map(c => {
-                const expiry = new Date(c.expiresAt);
-                const typeLabels = {
-                    'politie': 'Politie Sollicitatie',
-                    'brandweer': '🚒 Brandweer Sollicitatie',
-                    'wtgm': 'WTGM Toets',
-                    'grootwapen': 'Groot Wapen',
-                    'taser': 'Taser',
-                    'rijbewijs-auto': 'Rijbewijs Auto',
-                    'rijbewijs-motor': 'Rijbewijs Motor',
-                    'rijbewijs-boot': 'Rijbewijs Boot',
-                    'rijbewijs-lucht': 'Rijbewijs Lucht'
-                };
+                codeList.innerHTML = activeCodes.map(c => {
+                    const expiry = new Date(c.expiresAt);
+                    const typeLabels = {
+                        'politie': '🚔 Politie Sollicitatie',
+                        'brandweer': '🚒 Brandweer Sollicitatie',
+                        'wtgm': '🔫 WTGM Toets',
+                        'grootwapen': '⚔️ Groot Wapen',
+                        'taser': '⚡ Taser',
+                        'rijbewijs-auto': '🚗 Rijbewijs Auto',
+                        'rijbewijs-motor': '🏍️ Rijbewijs Motor',
+                        'rijbewijs-boot': '🚤 Rijbewijs Boot',
+                        'rijbewijs-lucht': '✈️ Rijbewijs Lucht'
+                    };
 
-                return `
-                    <div class="code-item">
-                        <div class="code-details">
-                            <div class="code-value">${c.code}</div>
-                            <div class="code-meta">
-                                ${typeLabels[c.type]} • Verloopt: ${expiry.toLocaleDateString('nl-NL')} ${expiry.toLocaleTimeString('nl-NL', {hour: '2-digit', minute: '2-digit'})}
+                    return `
+                        <div class="code-item">
+                            <div class="code-details">
+                                <div class="code-value">${c.code}</div>
+                                <div class="code-meta">
+                                    ${typeLabels[c.type] || c.type} • Verloopt: ${expiry.toLocaleDateString('nl-NL')} ${expiry.toLocaleTimeString('nl-NL', {hour: '2-digit', minute: '2-digit'})}
+                                </div>
                             </div>
+                            <button class="revoke-btn" onclick="revokeCode('${c.code}')">Intrekken</button>
                         </div>
-                        <button class="revoke-btn" onclick="revokeCode('${c.code}')">Intrekken</button>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading codes:', error);
+                const codeList = document.getElementById('codeList');
+                codeList.innerHTML = '<div class="empty-state" style="color: #ef4444;">Fout bij laden codes</div>';
+            }
         }
 
         // Revoke code
-        function revokeCode(code) {
+        async function revokeCode(code) {
             if (!confirm(`Code ${code} intrekken?`)) return;
             
-            const codes = getSavedCodes();
-            const index = codes.findIndex(c => c.code === code);
-            if (index !== -1) {
-                codes.splice(index, 1);
-                saveCodes(codes);
-                loadActiveCodes();
+            try {
+                const response = await fetch('/.netlify/functions/verify-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'revoke',
+                        code: code
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    await loadActiveCodes();
+                } else {
+                    alert('Fout bij intrekken code: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error revoking code:', error);
+                alert('Netwerkfout bij intrekken code.');
             }
         }
     </script>
