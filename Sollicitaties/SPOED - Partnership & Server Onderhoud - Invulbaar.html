@@ -556,7 +556,7 @@
             data.type = 'SPOED - Partnership & Server Onderhoud';
 
             try {
-                const response = await fetch('/.netlify/functions/submit-sollicitatie', {
+                const response = await fetch('/.netlify/functions/submit-spoed-sollicitatie', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
