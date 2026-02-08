@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAFF - SPOED Partnership Nakijkmodel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8fafc;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .staff-badge {
+            background: #fbbf24;
+            color: #991b1b;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .urgent-badge {
+            background: #7c3aed;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        
+        .section {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            color: #7c3aed;
+            border-bottom: 3px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .question {
+            background: #f8fafc;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #7c3aed;
+            border-radius: 4px;
+        }
+        
+        .question-label {
+            font-weight: bold;
+            color: #4c1d95;
+            margin-bottom: 0.5rem;
+        }
+        
+        .answer-key {
+            background: #d1fae5;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-radius: 4px;
+            border-left: 3px solid #10b981;
+        }
+        
+        .answer-title {
+            font-weight: bold;
+            color: #047857;
+            margin-bottom: 0.3rem;
+        }
+        
+        .points {
+            background: #dbeafe;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .grading-scale {
+            background: #fef3c7;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #f59e0b;
+        }
+
+        .grading-scale h3 {
+            margin-top: 0;
+            color: #92400e;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        th, td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f59e0b;
+            color: white;
+            font-weight: bold;
+        }
+
+        .red-flag {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 0.3rem;
+        }
+
+        .green-flag {
+            background: #d1fae5;
+            color: #047857;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 0.3rem;
+        }
+
+        ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        ul li {
+            margin-bottom: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="staff-badge">🛡️ STAFF NAKIJKMODEL</div>
+        <h1>SPOED Sollicitatie Beoordeling <span class="urgent-badge">⚡ URGENT</span></h1>
+        <p>Partnership & Server Onderhoud Sollicitaties</p>
+    </div>
+
+    <div class="warning-box">
+        <strong>⚠️ VERTROUWELIJK STAFF DOCUMENT</strong>
+        <p>Dit nakijkmodel is strikt vertrouwelijk en alleen bedoeld voor staff leden die sollicitaties beoordelen. Deel dit NIET met sollicitanten.</p>
+    </div>
+
+    <div class="info-box">
+        <strong>📋 Over deze Functie:</strong>
+        <p>Deze sollicitatie is voor Partnership & Server Onderhoud medewerkers. Deze functie vereist geen specifiek team lidmaatschap, maar focust op server groei door partnerships en algemeen onderhoud.</p>
+        <p><strong>Minimale Vereisten:</strong></p>
+        <ul>
+            <li>Minimaal 2 partnerships per week regelen</li>
+            <li>Professionele communicatie</li>
+            <li>Basis RP kennis</li>
+            <li>Discord kennis</li>
+            <li>Zelfstandig kunnen werken</li>
+        </ul>
+    </div>
+
+    <div class="grading-scale">
+        <h3>📊 Beoordelingsschaal</h3>
+        <table>
+            <tr>
+                <th>Score</th>
+                <th>Betekenis</th>
+                <th>Actie</th>
+            </tr>
+            <tr>
+                <td><strong>90-100 punten</strong></td>
+                <td>Uitstekend - Perfect voor de functie</td>
+                <td>✅ Directe aanname aanbevelen</td>
+            </tr>
+            <tr>
+                <td><strong>75-89 punten</strong></td>
+                <td>Goed - Geschikt met kleine verbeterpunten</td>
+                <td>✅ Aanname met trainingsplan</td>
+            </tr>
+            <tr>
+                <td><strong>60-74 punten</strong></td>
+                <td>Voldoende - Basis aanwezig, veel training nodig</td>
+                <td>⚠️ Proefperiode met intensieve begeleiding</td>
+            </tr>
+            <tr>
+                <td><strong>< 60 punten</strong></td>
+                <td>Onvoldoende - Niet geschikt</td>
+                <td>❌ Afwijzen met uitleg</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- RP & GAME KENNIS SECTIE -->
+    <div class="section">
+        <h2 class="section-title">🎮 RP & Game Kennis (25 punten)</h2>
+
+        <div class="question">
+            <div class="question-label">Vraag: Wat is "Fail to Roleplay" (FailRP)? Geef een definitie en een voorbeeld.</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Correcte Antwoorden:</div>
+                <strong>Definitie:</strong>
+                <ul>
+                    <li>FailRP = Handelen buiten je karakter/rol</li>
+                    <li>Dingen doen die je personage realistisch niet zou doen/weten</li>
+                    <li>Breaking character / niet realistisch roleplaying</li>
+                    <li>Informatie gebruiken die je IC niet kunt weten (meta-gaming kan onderdeel zijn)</li>
+                </ul>
+                
+                <strong>Goede Voorbeelden:</strong>
+                <ul>
+                    <li>Na een shoot-out direct weer opstaan en verder gaan alsof er niets gebeurd is</li>
+                    <li>Zonder angst een wapen trekken terwijl er een pistool op je gericht is</li>
+                    <li>Je karakter heeft Superman-achtige krachten zonder RP reden</li>
+                    <li>OOC praten in IC situaties</li>
+                    <li>Politie ontwijken door te combat-loggen</li>
+                </ul>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Correcte definitie: 5 punten<br>
+                • Goed voorbeeld gegeven: 3 punten<br>
+                • Beide correct en uitgebreid: 8 punten<br>
+                <span class="red-flag">🚩 RED FLAG: Totaal geen idee wat FailRP is = -10 punten</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Scenario: Je speelt in onze Roblox RP game en ziet iemand met een wapen in het midden van de stad staan zwaaien. Wat doe je (In Character)?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Goede IC Reacties:</div>
+                <ul>
+                    <li>Dekking zoeken en 911 bellen (politie)</li>
+                    <li>Wegrennen uit de gevaarlijke situatie</li>
+                    <li>Schreeuwen/waarschuwen naar anderen</li>
+                    <li>Angst tonen (RP'en dat je bang bent)</li>
+                    <li>NIET direct confronteren zonder wapen zelf</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <strong>❌ Foute Antwoorden:</strong>
+                    <ul>
+                        <li>"Ik pak mijn wapen en schiet hem neer" (zonder context = RDM)</li>
+                        <li>"Ik negeer het en loop door" (geen realistische angst)</li>
+                        <li>"Ik report hem in OOC" (moet eerst IC reageren)</li>
+                        <li>Meteen admin waarschuwen zonder IC te spelen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Realistisch IC gedrag met angst: 5 punten<br>
+                • Politie bellen/hulp zoeken: 3 punten<br>
+                • Veiligheid eerst (dekking/vluchten): 3 punten<br>
+                <span class="red-flag">🚩 RED FLAG: RDM gedrag in antwoord = -5 punten</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Scenario: Een speler begint te RDM'en (Random Deathmatch) in de stad. Wat is RDM en hoe zou je dit als staff lid aanpakken?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Correcte Definitie RDM:</div>
+                <ul>
+                    <li>Random Deathmatch = Mensen willekeurig doden zonder RP reden</li>
+                    <li>Vechten/schieten zonder valid roleplay achtergrond</li>
+                    <li>Killing zonder enige interactie of waarschuwing</li>
+                </ul>
+
+                <div class="answer-title">✓ Goede Staff Aanpak:</div>
+                <ol>
+                    <li>Speler freezen/naar staff ruimte brengen</li>
+                    <li>Situatie uitleggen wat er fout ging</li>
+                    <li>Vragen naar hun kant van het verhaal</li>
+                    <li>Logs/bewijs checken</li>
+                    <li>Waarschuwing of ban geven op basis van ernst en eerdere overtredingen</li>
+                    <li>Slachtoffers compenseren als nodig (revive/items teruggeven)</li>
+                </ol>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • RDM correct uitgelegd: 4 punten<br>
+                • Professionele staff aanpak: 5 punten<br>
+                <span class="green-flag">✅ BONUS: Vermeldt slachtoffer compensatie = +2 punten</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARTNERSHIP MANAGEMENT SECTIE -->
+    <div class="section">
+        <h2 class="section-title">🤝 Partnership Management (30 punten)</h2>
+
+        <div class="question">
+            <div class="question-label">Beschrijf in je eigen woorden: hoe zou je een partnership regelen met een andere server?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Essentiële Stappen:</div>
+                <ol>
+                    <li><strong>Server zoeken:</strong> Vergelijkbare servers vinden (zelfde genre, ongeveer zelfde grootte)</li>
+                    <li><strong>Joinen:</strong> De server joinen via invite of partner lijst</li>
+                    <li><strong>Ticket maken:</strong> Partnership ticket aanmaken in hun server</li>
+                    <li><strong>Professioneel bericht:</strong> Duidelijk voorstellen met server info (link, leden, wat we bieden)</li>
+                    <li><strong>Afspraken maken:</strong> Bespreken waar berichten geplaatst worden</li>
+                    <li><strong>Berichten uitwisselen:</strong> Ze sturen hun bericht, wij sturen ons bericht</li>
+                    <li><strong>Plaatsing:</strong> Hun bericht in onze partnership kanaal, ons bericht in hun kanaal</li>
+                    <li><strong>Verificatie:</strong> Checken of beide berichten geplaatst zijn</li>
+                    <li><strong>Onderhoud:</strong> Contact blijven houden, partnership actief houden</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>Let op bij beoordeling:</strong>
+                    <ul>
+                        <li>Moet minstens 4-5 stappen noemen</li>
+                        <li>Professionaliteit moet duidelijk zijn</li>
+                        <li>Wederzijds voordeel begrijpen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • 4-5 stappen correct: 8 punten<br>
+                • 6+ stappen professioneel: 12 punten<br>
+                • Vermeldt verificatie/follow-up: +3 bonus punten<br>
+                <span class="red-flag">🚩 Minder dan 3 stappen = max 5 punten</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Een partner server wil @everyone tags in onze server gebruiken. Wat is ons beleid hierover?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Correcte Antwoorden:</div>
+                <ul>
+                    <li><strong>Standaard NIET toegestaan:</strong> @everyone is niet gratis toegestaan</li>
+                    <li><strong>Uitzondering:</strong> Alleen mogelijk met aanbetaling in overleg met management</li>
+                    <li><strong>Alternatief:</strong> Normale berichten zonder @everyone zijn altijd welkom</li>
+                </ul>
+
+                <strong>Goede response zou zijn:</strong>
+                <p>"@everyone tags zijn standaard niet toegestaan in onze partnership overeenkomsten. Echter, in specifieke gevallen en met een financiële bijdrage is dit bespreekbaar met ons management team. Normale partnership berichten zonder @everyone zijn altijd mogelijk."</p>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Weet dat @everyone niet standaard mag: 5 punten<br>
+                • Vermeldt uitzondering met aanbetaling: 5 punten<br>
+                • Professionele uitleg: +3 bonus punten<br>
+                <span class="red-flag">🚩 RED FLAG: Zegt "ja, altijd mag" = 0 punten</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Hoeveel partnerships moet je minimaal per week regelen als staff?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Correct Antwoord:</div>
+                <h3 style="color: #10b981; font-size: 2rem; margin: 0.5rem 0;">MINIMAAL 2 PER WEEK</h3>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Dit is een VERPLICHTE EIS</strong>
+                    <p>Als ze dit niet weten of een lager getal noemen, is dit een serieus probleem - de eis staat duidelijk vermeld in de sollicitatie omschrijving.</p>
+                </div>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Correct antwoord "2 per week": 5 punten<br>
+                • "Meer dan 2" of "minimaal 2": 5 punten<br>
+                <span class="red-flag">🚩 CRITICAL: Minder dan 2 of "weet ik niet" = -10 punten en serieus heroverwegen</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Hoe zou jij een partnership bericht schrijven naar een andere server?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Elementen van een Goed Partnership Bericht:</div>
+                <ul>
+                    <li><strong>Professionele begroeting:</strong> "Beste [Server naam] team," of "Hallo [Server naam],"</li>
+                    <li><strong>Introductie:</strong> Wie ben je, van welke server kom je</li>
+                    <li><strong>Server info:</strong>
+                        <ul>
+                            <li>Server naam: Lage Landen RP</li>
+                            <li>Genre: Roblox Roleplay / Nederlands RP</li>
+                            <li>Aantal leden (bij benadering)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Wat we bieden:</strong> Actieve community, politie, brandweer, etc.</li>
+                    <li><strong>Partnership voorstel:</strong> Wederzijdse berichten plaatsen</li>
+                    <li><strong>Call to action:</strong> "Laat het ons weten als jullie geïnteresseerd zijn"</li>
+                    <li><strong>Professionele afsluiting:</strong> "Met vriendelijke groet," + naam/functie</li>
+                </ul>
+
+                <strong>Voorbeeld Goed Bericht:</strong>
+                <div style="background: #f8fafc; padding: 1rem; border-left: 3px solid #10b981; margin-top: 0.5rem;">
+                    <p>Hallo [Server Naam] team,</p>
+                    <p>Ik ben [Naam] van Lage Landen RP, een groeiende Nederlandse Roblox Roleplay server met [X] actieve leden. Wij bieden een realistische RP ervaring met politie, brandweer, ambulance en diverse civiele banen.</p>
+                    <p>We zijn op zoek naar partnership mogelijkheden met servers zoals de jouwe. We stellen voor om elkaars berichten te plaatsen in onze partnership kanalen, zodat beide communities kunnen groeien.</p>
+                    <p>Zijn jullie hier geïnteresseerd in? Laat het me weten!</p>
+                    <p>Met vriendelijke groet,<br>[Naam]<br>Partnership Manager - Lage Landen RP</p>
+                </div>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Professionele toon: 3 punten<br>
+                • Server info vermeld: 3 punten<br>
+                • Duidelijk partnership voorstel: 3 punten<br>
+                • Goede structuur (intro, body, afsluiting): 3 punten<br>
+                <span class="green-flag">✅ EXCELLENT: Alle elementen aanwezig en professioneel = 15/12 punten</span><br>
+                <span class="red-flag">🚩 Onprofessioneel (slang, emojis overload, geen structuur) = max 5 punten</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMMUNICATIE & VAARDIGHEDEN SECTIE -->
+    <div class="section">
+        <h2 class="section-title">💪 Communicatie & Vaardigheden (20 punten)</h2>
+
+        <div class="question">
+            <div class="question-label">Hoe zou je je communicatieve vaardigheden beoordelen? (1-10) En waarom?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Beoordeling:</div>
+                <ul>
+                    <li><strong>Cijfer 8-10:</strong> Goed, als ze dit kunnen onderbouwen met voorbeelden</li>
+                    <li><strong>Cijfer 6-7:</strong> Gemiddeld, acceptabel als ze eerlijk zijn over verbeterpunten</li>
+                    <li><strong>Cijfer < 6:</strong> Te laag voor deze functie</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Let op:</strong>
+                    <ul>
+                        <li>Eerlijkheid is belangrijk - zeer hoog cijfer zonder onderbouwing = red flag</li>
+                        <li>Goede onderbouwing is belangrijker dan het cijfer zelf</li>
+                        <li>Moet voorbeelden geven van communicatie ervaring</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Cijfer 7-8 met goede onderbouwing: 5 punten<br>
+                • Cijfer 9-10 met uitstekende voorbeelden: 7 punten<br>
+                • Cijfer 6 maar realistisch/eerlijk: 4 punten<br>
+                <span class="red-flag">🚩 Cijfer 10 zonder onderbouwing of < 6 = max 2 punten</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Kun je zelfstandig werken en taken uitvoeren zonder constant toezicht?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Verwacht Antwoord:</div>
+                <p><strong>"Ja, ik werk graag zelfstandig"</strong> is het ideale antwoord voor deze functie.</p>
+                
+                <p>Partnerships regelen vereist veel zelfstandigheid omdat:</p>
+                <ul>
+                    <li>Je zelf servers moet zoeken en benaderen</li>
+                    <li>Je zelf je tijd moet indelen</li>
+                    <li>Management niet elke stap kan volgen</li>
+                    <li>Je initiatief moet nemen</li>
+                </ul>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • "Ja, zelfstandig werken": 8 punten<br>
+                • "Soms begeleiding nodig": 5 punten (acceptabel met goede uitleg)<br>
+                <span class="red-flag">🚩 RED FLAG: "Nee, veel begeleiding" = 0 punten - NIET GESCHIKT</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Kun je professioneel contact onderhouden met andere server owners/staff?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Verwacht Antwoord:</div>
+                <p><strong>"Ja, absoluut"</strong> is het ENIGE acceptabele antwoord.</p>
+                
+                <div class="warning-box">
+                    <strong>⚠️ KRITIEK PUNT:</strong>
+                    <p>Deze functie vertegenwoordigt onze server naar buiten toe. Als iemand niet professioneel kan communiceren, schaadt dit onze reputatie.</p>
+                </div>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • "Ja, absoluut": 5 punten<br>
+                • "Grotendeels wel": 2 punten (discussiepunt)<br>
+                <span class="red-flag">🚩 CRITICAL: "Nee, moeite mee" = AUTO-REJECT</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SITUATIE VRAGEN SECTIE -->
+    <div class="section">
+        <h2 class="section-title">🎯 Situatie Vragen (15 punten)</h2>
+
+        <div class="question">
+            <div class="question-label">Een andere server accepteert onze partnership, maar plaatst ons bericht niet binnen 48 uur. Wat doe je?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Goede Aanpak:</div>
+                <ol>
+                    <li><strong>Vriendelijke reminder:</strong> Beleefd vragen of ze het bericht nog gaan plaatsen</li>
+                    <li><strong>Begrip tonen:</strong> Misschien zijn ze het vergeten of hebben ze het druk</li>
+                    <li><strong>Deadline geven:</strong> "Kunnen jullie het voor [datum] plaatsen?"</li>
+                    <li><strong>Escaleren bij geen reactie:</strong> Na meerdere pogingen contact opnemen met management</li>
+                    <li><strong>Documenteren:</strong> Screenshots bewaren van afspraken</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>❌ Foute Aanpakken:</strong>
+                    <ul>
+                        <li>Direct boos worden of dreigen</li>
+                        <li>Ons bericht ook niet plaatsen uit wraak</li>
+                        <li>Partnership direct verbreken zonder communicatie</li>
+                        <li>Niets doen en afwachten (geen initiatief)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Professionele reminder: 3 punten<br>
+                • Begrip en geduld: 2 punten<br>
+                • Escalatie procedure: 2 punten<br>
+                <span class="red-flag">🚩 Agressieve/onprofessionele reactie = 0 punten</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Je krijgt een negatieve reactie van een server owner over onze server. Hoe ga je hiermee om?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Professionele Aanpak:</div>
+                <ol>
+                    <li><strong>Kalm blijven:</strong> Niet defensief of boos worden</li>
+                    <li><strong>Vragen stellen:</strong> "Kun je uitleggen wat je bedoelt?" / "Wat is je ervaring geweest?"</li>
+                    <li><strong>Luisteren:</strong> Hun kant van het verhaal aanhoren</li>
+                    <li><strong>Verdedigen indien nodig:</strong> Professioneel corrigeren als het misinformatie is</li>
+                    <li><strong>Management informeren:</strong> Doorsturen naar hoger management voor serieuze klachten</li>
+                    <li><strong>Geen ruzie maken:</strong> Als het niet opgelost kan worden, professioneel afstand nemen</li>
+                </ol>
+
+                <strong>Voorbeeld Goede Response:</strong>
+                <p>"Bedankt voor je feedback. Het spijt me dat je die ervaring hebt gehad. Kun je me vertellen wat er precies gebeurd is? We nemen feedback serieus en willen constant verbeteren."</p>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Kalm en professioneel blijven: 3 punten<br>
+                • Management informeren: 2 punten<br>
+                • Niet impulsief reageren: 2 punten<br>
+                <span class="green-flag">✅ Vermeldt "in de-escalatie" technieken = +1 bonus</span><br>
+                <span class="red-flag">🚩 "Ik ga in discussie/ruzie" = -5 punten</span>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-label">Je ziet dat een partner server onze regels overtreedt (bijv. ze gebruiken @everyone zonder toestemming). Wat doe je?</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Correcte Procedure:</div>
+                <ol>
+                    <li><strong>Documenteren:</strong> Screenshot maken van de overtreding</li>
+                    <li><strong>Direct contact:</strong> Vriendelijk maar duidelijk aangeven dat dit niet mag volgens afspraak</li>
+                    <li><strong>Herinnering aan regels:</strong> "@everyone is niet toegestaan zonder voorafgaande betaling en toestemming"</li>
+                    <li><strong>Vragen verwijderen:</strong> Beleefd vragen om het bericht te verwijderen of aan te passen</li>
+                    <li><strong>Management informeren:</strong> Laten weten wat er gebeurd is</li>
+                    <li><strong>Sancties indien nodig:</strong> Bij herhaling partnership beëindigen</li>
+                </ol>
+            </div>
+
+            <div class="points">
+                <strong>Punten toekenning:</strong><br>
+                • Documenteert overtreding: 2 punten<br>
+                • Professionele communicatie: 2 punten<br>
+                • Management informeren: 2 punten<br>
+                <span class="green-flag">✅ Vermeldt mogelijke sancties bij herhaling = +1 bonus</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TECHNISCHE VAARDIGHEDEN SECTIE -->
+    <div class="section">
+        <h2 class="section-title">💻 Technische Vaardigheden (10 punten)</h2>
+
+        <div class="question">
+            <div class="question-label">Hoe goed ken je Discord? (Kanalen, rollen, webhooks, embeds, etc.)</div>
+            
+            <div class="answer-key">
+                <div class="answer-title">✓ Vereiste Kennis:</div>
+                <p><strong>Minimaal "Gevorderd" niveau verwacht</strong></p>
+                
+                <ul>
+                    <li><strong>Expert:</strong> Perfect, kent webhooks, embeds, permissions - 10 punten</li>
+                    <li><strong>Gevorderd:</strong> Kent de meeste dingen, kan snel leren - 7 punten</li>
+                    <li><strong>Basis:</strong> Alleen basics, moet veel leren - 4 punten</li>
+                    <li><strong>Beginner:</strong> Te weinig kennis voor functie - 0-2 punten</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Waarom belangrijk:</strong>
+                    <p>Partnership management vereist begrip van Discord features om professioneel te communiceren en partnerships correct in te stellen.</p>
+                </div>
+            </div>
+
+            <div class="points">
+                <strong>Punten volgens keuze:</strong><br>
+                • Expert: 10 punten<br>
+                • Gevorderd: 7 punten<br>
+                • Basis: 4 punten<br>
+                • Beginner: 0-2 punten
+            </div>
+        </div>
+    </div>
+
+    <!-- EINDCRITERIA -->
+    <div class="section">
+        <h2 class="section-title">🎯 Eindcriteria & Beslissing</h2>
+
+        <div class="grading-scale">
+            <h3>📊 Totaal Punten Berekening</h3>
+            <table>
+                <tr>
+                    <th>Categorie</th>
+                    <th>Max Punten</th>
+                </tr>
+                <tr>
+                    <td>RP & Game Kennis</td>
+                    <td>25 punten</td>
+                </tr>
+                <tr>
+                    <td>Partnership Management</td>
+                    <td>30 punten</td>
+                </tr>
+                <tr>
+                    <td>Communicatie & Vaardigheden</td>
+                    <td>20 punten</td>
+                </tr>
+                <tr>
+                    <td>Situatie Vragen</td>
+                    <td>15 punten</td>
+                </tr>
+                <tr>
+                    <td>Technische Vaardigheden</td>
+                    <td>10 punten</td>
+                </tr>
+                <tr>
+                    <th>TOTAAL</th>
+                    <th>100 punten</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <h3>🚨 AUTO-REJECT CRITERIA</h3>
+            <p><strong>Direct afwijzen als één of meer van deze punten van toepassing is:</strong></p>
+            <ul>
+                <li>❌ Kan niet professioneel communiceren (eigen opgave)</li>
+                <li>❌ Weet niet dat er minimaal 2 partnerships/week nodig zijn</li>
+                <li>❌ Geen idee wat FailRP of RDM is</li>
+                <li>❌ Kan niet zelfstandig werken (vereist veel begeleiding)</li>
+                <li>❌ Onprofessionele toon in partnership voorbeeldbericht</li>
+                <li>❌ Totaalscore onder de 50 punten</li>
+                <li>❌ Agressief of onvolwassen gedrag in scenario antwoorden</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h3>✅ GROENE VLAGGEN (Positieve Indicatoren)</h3>
+            <ul>
+                <li>✅ Eerdere ervaring met partnerships of server management</li>
+                <li>✅ Uitgebreide RP kennis met goede voorbeelden</li>
+                <li>✅ Professionele communicatie consistentdoor hele sollicitatie</li>
+                <li>✅ Concreet actieplan voor partnerships</li>
+                <li>✅ Realistische zelfbeoordeling (niet overschatten)</li>
+                <li>✅ Creatieve ideeën voor server groei</li>
+                <li>✅ Gevorderde Discord kennis</li>
+                <li>✅ Begrijpt wederzijdig voordeel van partnerships</li>
+            </ul>
+        </div>
+
+        <h3>📝 Feedback Sjablonen</h3>
+        
+        <div style="background: #d1fae5; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+            <strong>✅ ACCEPTATIE (90+ punten):</strong>
+            <p>"Gefeliciteerd! Je sollicitatie is goedgekeurd. Je hebt uitstekende kennis van RP, partnerships en communicatieve vaardigheden getoond. We nemen binnenkort contact met je op voor onboarding en verdere instructies. Welkom bij het team!"</p>
+        </div>
+
+        <div style="background: #dbeafe; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+            <strong>⚠️ VOORWAARDELIJKE ACCEPTATIE (75-89 punten):</strong>
+            <p>"Je sollicitatie is positief beoordeeld! Je hebt de basis goed onder de knie, maar we zien enkele verbeterpunten op gebied van [specifieke punten]. We bieden je een plek aan met een trainingsperiode waarin je hiermee geholpen wordt. Interesse om verder te gaan?"</p>
+        </div>
+
+        <div style="background: #fee2e2; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+            <strong>❌ AFWIJZING (< 60 punten):</strong>
+            <p>"Bedankt voor je sollicitatie. Helaas kunnen we je op dit moment niet aannemen voor de partnership functie. We zoeken iemand met [specifieke ontbrekende vaardigheden]. We moedigen je aan om meer ervaring op te doen met [gebieden] en in de toekomst opnieuw te solliciteren. Succes!"</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">📋 Checklist voor Beoordelaar</h2>
+        
+        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+            <h4>Voor je de beoordeling afrondt:</h4>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li>☐ Alle secties beoordeeld en punten toegekend</li>
+                <li>☐ Totaalscore berekend</li>
+                <li>☐ Auto-reject criteria gecheckt</li>
+                <li>☐ Groene/rode vlaggen genoteerd</li>
+                <li>☐ Realistische beschikbaarheid (commitgegevens tot 2 partnerships/week)</li>
+                <li>☐ Discord naam correct genoteerd voor contact</li>
+                <li>☐ Feedback opgesteld (indien afwijzing: constructief!)</li>
+                <li>☐ Beslissing gedocumenteerd in sollicitatie systeem</li>
+                <li>☐ Bij twijfel: tweede mening gevraagd aan andere staff</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="warning-box" style="margin-top: 2rem;">
+        <strong>⚡ SPOED SOLLICITATIE - VERWERKINGSTIJD</strong>
+        <p>Omdat dit een spoed sollicitatie is, probeer deze binnen <strong>24-48 uur</strong> te beoordelen. We hebben snel mensen nodig voor partnership growth.</p>
+    </div>
+
+</body>
+</html>

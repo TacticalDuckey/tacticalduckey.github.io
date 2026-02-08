@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPOED Sollicitatie - Partnership & Server Onderhoud</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c3aed, #4c1d95);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .urgent-badge {
+            background: #dc2626;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #7c3aed;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #4c1d95;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #7c3aed;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #7c3aed, #4c1d95);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .task-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border: 3px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            letter-spacing: 0.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .access-code-input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="urgent-badge">⚡ SPOED SOLLICITATIE</div>
+        <h1>🤝 Partnership & Server Onderhoud</h1>
+        <p>Lage Landen RP - Server Management Team</p>
+        <a href="../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een sollicitatiecode aan bij management om toegang te krijgen</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #991b1b;">
+                💡 Neem contact op met Server Management voor een code
+            </p>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Welkom bij de Spoed Sollicitatie!</strong>
+            <p>We zoeken gemotiveerde medewerkers voor partnership management en server onderhoud. Deze functie vereist geen specifiek team, maar je werkt direct voor het behoud en de groei van onze server.</p>
+        </div>
+
+        <div class="task-box">
+            <strong>📋 Belangrijkste Taken:</strong>
+            <ul>
+                <li>Server onderhouden en behouden</li>
+                <li>Partnerships regelen (min. 2 per week vereist)</li>
+                <li>Via andere partnerservers joinen en tickets aanmaken</li>
+                <li>Partnership berichten uitwisselen en plaatsen</li>
+                <li>Links delen tussen servers voor groei</li>
+            </ul>
+        </div>
+
+        <form id="sollicitatieForm">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required placeholder="Jan de Vries">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required placeholder="gebruiker#1234">
+            </div>
+
+            <div class="form-group">
+                <label for="leeftijd">Leeftijd (OOC/Real Life)*</label>
+                <input type="number" id="leeftijd" name="leeftijd" required min="16" max="99" placeholder="18">
+            </div>
+
+            <div class="form-group">
+                <label for="timezone">Tijdzone / Locatie*</label>
+                <input type="text" id="timezone" name="timezone" required placeholder="Bijv. Nederland (CET/CEST)">
+            </div>
+
+            <h2>💼 Ervaring & Kennis</h2>
+
+            <div class="form-group">
+                <label for="serverervaring">Heb je ervaring met server management of partnerships? Zo ja, waar?*</label>
+                <textarea id="serverervaring" name="serverervaring" required placeholder="Beschrijf je ervaring met Discord servers, partnerships, etc. Of typ 'Geen ervaring'"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="rpervaring">Heb je ervaring met RP (Roleplay) servers? Zo ja, welke?*</label>
+                <textarea id="rpervaring" name="rpervaring" required placeholder="Bijv. FiveM, Roblox RP, andere Roblox RP servers, etc."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="waarom">Waarom wil je voor ons server partnerships regelen?*</label>
+                <textarea id="waarom" name="waarom" required placeholder="Geef een uitgebreide motivatie..."></textarea>
+            </div>
+
+            <h2>🎮 RP & Game Kennis</h2>
+
+            <div class="form-group">
+                <label for="failrp">Wat is "Fail to Roleplay" (FailRP)? Geef een definitie en een voorbeeld.*</label>
+                <textarea id="failrp" name="failrp" required placeholder="Bijv. FailRP is wanneer..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="rpscenario1">Scenario: Je speelt in onze Roblox RP game en ziet iemand met een wapen in het midden van de stad staan zwaaien. Wat doe je (In Character)?*</label>
+                <textarea id="rpscenario1" name="rpscenario1" required placeholder="Beschrijf je IC reactie..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="rpscenario2">Scenario: Een speler begint te RDM'en (Random Deathmatch) in de stad. Wat is RDM en hoe zou je dit als staff lid aanpakken?*</label>
+                <textarea id="rpscenario2" name="rpscenario2" required placeholder="Leg uit wat RDM is en hoe je het aanpakt..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="rpregels">Noem 3 belangrijke RP regels die je kent van RP servers*</label>
+                <textarea id="rpregels" name="rpregels" required placeholder="Bijv. 1. Geen FailRP, 2..."></textarea>
+            </div>
+
+            <h2>🤝 Partnership Management</h2>
+
+            <div class="form-group">
+                <label for="partnerervaring">Heb je ervaring met het regelen van partnerships tussen Discord servers?*</label>
+                <select id="partnerervaring" name="partnerervaring" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja-veel">Ja, veel ervaring</option>
+                    <option value="ja-beetje">Ja, een beetje ervaring</option>
+                    <option value="nee">Nee, geen ervaring</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="partnerstappen">Beschrijf in je eigen woorden: hoe zou je een partnership regelen met een andere server?*</label>
+                <textarea id="partnerstappen" name="partnerstappen" required placeholder="Stap 1: ..., Stap 2: ..., etc."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="partnerregel1">Een partner server wil @everyone tags in onze server gebruiken. Wat is ons beleid hierover?*</label>
+                <textarea id="partnerregel1" name="partnerregel1" required placeholder="Leg uit wat het beleid is..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="partnerregel2">Hoeveel partnerships moet je minimaal per week regelen als staff?*</label>
+                <input type="text" id="partnerregel2" name="partnerregel2" required placeholder="Vul een aantal in">
+            </div>
+
+            <div class="form-group">
+                <label for="partnervoorbeeld">Hoe zou jij een partnership bericht schrijven naar een andere server? (Geef een voorbeeld)*</label>
+                <textarea id="partnervoorbeeld" name="partnervoorbeeld" required placeholder="Beste [Server naam], wij van Lage Landen RP..."></textarea>
+            </div>
+
+            <h2>⏰ Beschikbaarheid & Inzet</h2>
+
+            <div class="form-group">
+                <label for="beschikbaarheid">Wanneer ben je beschikbaar om partnerships te regelen? (Dagen/Tijden)*</label>
+                <textarea id="beschikbaarheid" name="beschikbaarheid" required placeholder="Bijv. Ma t/m Vr 17:00-22:00, Weekend hele dag"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="ureninzet">Hoeveel uur per week kun je hier aan besteden?*</label>
+                <input type="text" id="ureninzet" name="ureninzet" required placeholder="Bijv. 5-10 uur per week">
+            </div>
+
+            <div class="form-group">
+                <label for="commitment">Ben je bereid om minimaal 2 partnerships per week te regelen?*</label>
+                <select id="commitment" name="commitment" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja">Ja, zeker</option>
+                    <option value="misschien">Misschien, hangt af van de week</option>
+                    <option value="nee">Nee, dit is te veel</option>
+                </select>
+            </div>
+
+            <h2>💪 Vaardigheden & Persoonlijkheid</h2>
+
+            <div class="form-group">
+                <label for="communicatie">Hoe zou je je communicatieve vaardigheden beoordelen? (1-10) En waarom?*</label>
+                <textarea id="communicatie" name="communicatie" required placeholder="Cijfer: ... Omdat..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="professioneel">Kun je professioneel contact onderhouden met andere server owners/staff?*</label>
+                <select id="professioneel" name="professioneel" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja">Ja, absoluut</option>
+                    <option value="beetje">Grotendeels wel</option>
+                    <option value="nee">Nee, moeite mee</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="zelfstandig">Kun je zelfstandig werken en taken uitvoeren zonder constant toezicht?*</label>
+                <select id="zelfstandig" name="zelfstandig" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja">Ja, ik werk graag zelfstandig</option>
+                    <option value="soms">Soms, ik heb af en toe begeleiding nodig</option>
+                    <option value="nee">Nee, ik heb veel begeleiding nodig</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sterktepunten">Wat zijn je 3 grootste sterke punten voor deze functie?*</label>
+                <textarea id="sterktepunten" name="sterktepunten" required placeholder="1. ..., 2. ..., 3. ..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="zwaktepunten">Wat zijn je zwakke punten? (Eerlijkheid wordt gewaardeerd)*</label>
+                <textarea id="zwaktepunten" name="zwaktepunten" required placeholder="Bijv. Soms te perfectionistisch, etc."></textarea>
+            </div>
+
+            <h2>🎯 Situatie Vragen</h2>
+
+            <div class="form-group">
+                <label for="situatie1">Een andere server accepteert onze partnership, maar plaatst ons bericht niet binnen 48 uur. Wat doe je?*</label>
+                <textarea id="situatie1" name="situatie1" required placeholder="Beschrijf je aanpak..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="situatie2">Je krijgt een negatieve reactie van een server owner over onze server. Hoe ga je hiermee om?*</label>
+                <textarea id="situatie2" name="situatie2" required placeholder="Beschrijf hoe je dit professioneel afhandelt..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="situatie3">Je ziet dat een partner server onze regels overtreedt (bijv. ze gebruiken @everyone zonder toestemming). Wat doe je?*</label>
+                <textarea id="situatie3" name="situatie3" required placeholder="Beschrijf je actieplan..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="situatie4">Je bent in een andere server om partnership te regelen, maar niemand reageert op je ticket. Wat is je strategie?*</label>
+                <textarea id="situatie4" name="situatie4" required placeholder="Hoe pak je dit aan?"></textarea>
+            </div>
+
+            <h2>📱 Technische Vaardigheden</h2>
+
+            <div class="form-group">
+                <label for="discord_kennis">Hoe goed ken je Discord? (Kanalen, rollen, webhooks, embeds, etc.)*</label>
+                <select id="discord_kennis" name="discord_kennis" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="expert">Expert - Ik ken alles</option>
+                    <option value="gevorderd">Gevorderd - Ik ken de meeste dingen</option>
+                    <option value="basis">Basis - Ik ken de basics</option>
+                    <option value="beginnner">Beginner - Ik leer nog</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="embed">Weet je wat een Discord embed is en hoe je die maakt?*</label>
+                <textarea id="embed" name="embed" required placeholder="Ja/Nee en leg uit..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="tools">Welke tools of bots ken je die handig zijn voor server management?*</label>
+                <textarea id="tools" name="tools" required placeholder="Bijv. MEE6, Dyno, Carl-bot, etc. Of 'Geen'"></textarea>
+            </div>
+
+            <h2>✨ Aanvullende Informatie</h2>
+
+            <div class="form-group">
+                <label for="ideeen">Heb je ideeën om onze server te laten groeien?*</label>
+                <textarea id="ideeen" name="ideeen" required placeholder="Deel je ideeën voor server groei, partnerships, events, etc."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="verwachtingen">Wat verwacht je van deze functie?*</label>
+                <textarea id="verwachtingen" name="verwachtingen" required placeholder="Beschrijf wat je verwacht..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="extra">Nog iets wat we moeten weten?</label>
+                <textarea id="extra" name="extra" placeholder="Optioneel - Overige informatie die relevant kan zijn"></textarea>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Belangrijk:</strong>
+                <ul>
+                    <li>Velden gemarkeerd met * zijn verplicht</li>
+                    <li>Wees eerlijk en uitgebreid in je antwoorden</li>
+                    <li>Controleer je antwoorden voordat je indient</li>
+                    <li>Valse informatie leidt tot directe afwijzing</li>
+                    <li>Deze functie vereist actieve inzet en commitment</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <strong>📌 Partnership Regels (ter herinnering):</strong>
+                <ul>
+                    <li>Geen @everyone tags in onze server (wel mogelijk met aanbetaling in overleg)</li>
+                    <li>Minimaal 2 partnerships per week regelen</li>
+                    <li>Berichten moeten binnen 48 uur geplaatst worden</li>
+                    <li>Professionele communicatie te allen tijde</li>
+                    <li>Beide servers plaatsen elkaars bericht in hun partnership kanaal</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                📨 Sollicitatie Indienen
+            </button>
+
+            <div class="success-box" id="successMessage">
+                <strong>✅ Sollicitatie Verzonden!</strong>
+                <p>Je sollicitatie is succesvol ingediend. Je ontvangt binnen 48-72 uur een reactie via Discord.</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../discord-webhook-v2.js"></script>
+    <script>
+        // Access code verification
+        const validCodes = []; // Codes worden via staff-code-generator gegenereerd
+        const accessCodeInput = document.getElementById('accessCode');
+        const form = document.getElementById('sollicitatieForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Disable form initially
+        const formElements = form.querySelectorAll('input, textarea, select, button');
+        formElements.forEach(el => el.disabled = true);
+
+        // Check if code is already verified
+        if (sessionStorage.getItem('spoed_code_verified') === 'true') {
+            formElements.forEach(el => el.disabled = false);
+            accessCodeInput.disabled = true;
+            accessCodeInput.value = '✓ GEVERIFIEERD';
+            accessCodeInput.style.borderColor = '#10b981';
+            accessCodeInput.style.color = '#10b981';
+        }
+
+        accessCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            if (value.length > 3 && value.indexOf('-') === -1) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            }
+            if (value.length > 7 && value.lastIndexOf('-') === 3) {
+                value = value.slice(0, 7) + '-' + value.slice(7);
+            }
+            
+            e.target.value = value;
+
+            // Verify code
+            fetch('/.netlify/functions/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    code: value,
+                    type: 'spoed'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    e.target.style.borderColor = '#10b981';
+                    e.target.style.color = '#10b981';
+                    e.target.value = '✓ GEVERIFIEERD';
+                    e.target.disabled = true;
+                    sessionStorage.setItem('spoed_code_verified', 'true');
+                    
+                    // Enable form
+                    formElements.forEach(el => el.disabled = false);
+                }
+            })
+            .catch(err => console.error('Code verificatie mislukt:', err));
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (sessionStorage.getItem('spoed_code_verified') !== 'true') {
+                alert('Voer eerst een geldige toegangscode in!');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 Verzenden...';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Add timestamp
+            data.datum = new Date().toLocaleString('nl-NL');
+            data.type = 'SPOED - Partnership & Server Onderhoud';
+
+            try {
+                const response = await fetch('/.netlify/functions/submit-sollicitatie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    form.reset();
+                    sessionStorage.removeItem('spoed_code_verified');
+                    
+                    setTimeout(() => {
+                        window.location.href = '../dashboard.html';
+                    }, 3000);
+                } else {
+                    throw new Error('Verzenden mislukt');
+                }
+            } catch (error) {
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 Sollicitatie Indienen';
+            }
+        });
+
+        // Auto-format input
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('blur', function() {
+                this.value = this.value.trim();
+            });
+        });
+    </script>
+</body>
+</html>

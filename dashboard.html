@@ -143,6 +143,18 @@
         .logout-btn:hover {
             background: #a01020;
         }
+
+        /* Pulse animatie voor spoed sollicitatie */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.02);
+            }
+        }
     </style>
 </head>
 <body>
@@ -173,6 +185,48 @@
                     <h3>Politie Procedures</h3>
                     <p>Procedures voor de politiedienst</p>
                     <a href="Politie Procedures.html" class="btn">Bekijk →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPOED SOLLICITATIE -->
+        <section class="access-section" id="spoed-section" style="background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); padding: 2rem; border-radius: 12px; border: 3px solid #f59e0b; margin-bottom: 3rem;">
+            <h2 style="color: #7c3aed; animation: pulse 2s infinite;">⚡ SPOED SOLLICITATIE - NU OPEN!</h2>
+            <div class="access-grid">
+                <div class="access-card" style="background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); border-left: 4px solid #fbbf24; color: white; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 10px; right: 10px; background: #dc2626; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: bold; animation: pulse 2s infinite;">
+                        🔥 URGENT
+                    </div>
+                    <h3 style="color: white;">🤝 Partnership & Server Onderhoud</h3>
+                    <p style="color: #e9d5ff;">Werk mee aan server groei door partnerships te regelen en de server te onderhouden</p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 0.75rem; border-radius: 8px; margin: 1rem 0; font-size: 0.85em;">
+                        <strong style="color: #fbbf24;">Taken:</strong>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: #e9d5ff;">
+                            <li>Min. 2 partnerships per week regelen</li>
+                            <li>Server onderhouden & behouden</li>
+                            <li>Contact met andere servers</li>
+                            <li>Partnership berichten beheren</li>
+                        </ul>
+                    </div>
+                    <p style="font-size: 0.85em; margin-top: 0.5rem; color: #fbbf24;">
+                        🔐 Toegangscode vereist bij management
+                    </p>
+                    <a href="Sollicitaties/SPOED - Partnership & Server Onderhoud - Invulbaar.html" class="btn" style="background: #fbbf24; color: #4c1d95; font-weight: bold;">⚡ Solliciteer NU →</a>
+                </div>
+
+                <div class="access-card" style="background: white; border-left: 4px solid #7c3aed;">
+                    <h3 style="color: #7c3aed;">📋 Vereisten</h3>
+                    <ul style="font-size: 0.9em; color: #4c1d95; margin: 0; padding-left: 1.5rem;">
+                        <li><strong>Communicatief sterk</strong></li>
+                        <li>Zelfstandig kunnen werken</li>
+                        <li>Basis RP kennis</li>
+                        <li>Discord ervaring</li>
+                        <li>Professioneel kunnen zijn</li>
+                        <li>Min. 5-10 uur per week tijd</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-size: 0.85em; color: #7c3aed; font-weight: bold;">
+                        ⏱️ Snelle beoordeling binnen 48 uur!
+                    </p>
                 </div>
             </div>
         </section>
