@@ -230,7 +230,7 @@
             </ul>
         </div>
 
-        <form id="sollicitatieForm">
+        <form id="sollicitatieForm" onsubmit="return false;">
             <h2>📋 Persoonlijke Gegevens</h2>
             
             <div class="form-group">
@@ -470,8 +470,7 @@
 
     <script src="../discord-webhook-v2.js"></script>
     <script>
-        // Initialize Discord submitter
-        const discordSubmitter = new DiscordSubmitter();
+        // Use global discordSubmitter from discord-webhook-v2.js
         
         // Access code verification
         const validCodes = []; // Codes worden via staff-code-generator gegenereerd
