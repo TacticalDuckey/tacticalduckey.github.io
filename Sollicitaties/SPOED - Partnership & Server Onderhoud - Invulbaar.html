@@ -551,11 +551,19 @@
             
             const accessCode = sessionStorage.getItem('spoed_access_code') || 'UNKNOWN';
 
+            console.log('🚀 Starting submission...');
+            console.log('Form data:', data);
+            console.log('Access code:', accessCode);
+
             try {
                 // Use discord-webhook-v2.js helper
+                console.log('📤 Calling submitToDiscordWithoutCodeCheck...');
                 const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(data, 'spoed', accessCode);
 
+                console.log('📥 Result:', result);
+
                 if (result.success) {
+                    console.log('✅ Success!');
                     document.getElementById('successMessage').style.display = 'block';
                     form.reset();
                     sessionStorage.removeItem('spoed_code_verified');
@@ -565,11 +573,12 @@
                         window.location.href = '../dashboard.html';
                     }, 3000);
                 } else {
+                    console.error('❌ Submission failed:', result.message);
                     throw new Error(result.message || 'Verzenden mislukt');
                 }
             } catch (error) {
-                console.error('Submit error:', error);
-                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.\n\n' + error.message);
+                console.error('💥 Submit error:', error);
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.\n\nFout: ' + error.message + '\n\nCheck de console (F12) voor meer details.');
                 submitBtn.disabled = false;
                 submitBtn.textContent = '📨 Sollicitatie Indienen';
             }
