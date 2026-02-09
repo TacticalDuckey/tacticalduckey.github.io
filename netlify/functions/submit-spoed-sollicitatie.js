@@ -56,8 +56,11 @@ exports.handler = async (event, context) => {
         const WEBHOOK_URL = process.env.SOLLICITATIE_WEBHOOK_URL;
         
         if (!WEBHOOK_URL) {
+            console.error('SOLLICITATIE_WEBHOOK_URL not configured');
             throw new Error('SPOED Webhook URL not configured');
         }
+
+        console.log('Sending to Discord webhook...');
 
         // Verstuur naar Discord
         const response = await fetch(WEBHOOK_URL, {
@@ -69,8 +72,12 @@ exports.handler = async (event, context) => {
         });
 
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Discord API error:', response.status, errorText);
             throw new Error(`Discord API error: ${response.status}`);
         }
+
+        console.log('Successfully sent to Discord');
 
         return {
             statusCode: 200,

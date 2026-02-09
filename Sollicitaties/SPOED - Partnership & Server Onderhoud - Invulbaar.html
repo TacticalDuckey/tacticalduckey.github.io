@@ -470,6 +470,9 @@
 
     <script src="../discord-webhook-v2.js"></script>
     <script>
+        // Initialize Discord submitter
+        const discordSubmitter = new DiscordSubmitter();
+        
         // Access code verification
         const validCodes = []; // Codes worden via staff-code-generator gegenereerd
         const accessCodeInput = document.getElementById('accessCode');
@@ -519,6 +522,7 @@
                     e.target.value = '✓ GEVERIFIEERD';
                     e.target.disabled = true;
                     sessionStorage.setItem('spoed_code_verified', 'true');
+                    sessionStorage.setItem('spoed_access_code', value);
                     
                     // Enable form
                     formElements.forEach(el => el.disabled = false);
@@ -540,32 +544,32 @@
             submitBtn.textContent = '📤 Verzenden...';
 
             const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
             
-            // Add timestamp
-            data.datum = new Date().toLocaleString('nl-NL');
-            data.type = 'SPOED - Partnership & Server Onderhoud';
+            const accessCode = sessionStorage.getItem('spoed_access_code') || 'UNKNOWN';
 
             try {
-                const response = await fetch('/.netlify/functions/submit-spoed-sollicitatie', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+                // Use discord-webhook-v2.js helper
+                const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(data, 'spoed', accessCode);
 
-                if (response.ok) {
+                if (result.success) {
                     document.getElementById('successMessage').style.display = 'block';
                     form.reset();
                     sessionStorage.removeItem('spoed_code_verified');
+                    sessionStorage.removeItem('spoed_access_code');
                     
                     setTimeout(() => {
                         window.location.href = '../dashboard.html';
                     }, 3000);
                 } else {
-                    throw new Error('Verzenden mislukt');
+                    throw new Error(result.message || 'Verzenden mislukt');
                 }
             } catch (error) {
-                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.');
+                console.error('Submit error:', error);
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.\n\n' + error.message);
                 submitBtn.disabled = false;
                 submitBtn.textContent = '📨 Sollicitatie Indienen';
             }

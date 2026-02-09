@@ -74,6 +74,7 @@ class DiscordSubmitter {
                         formData['Naam'] || 
                         formData['naam'] || 
                         formData['roblox'] || 
+                        formData['discord'] ||
                         formData['Roblox Username'];
         if (!username || username.trim() === '') {
             return {
@@ -83,7 +84,13 @@ class DiscordSubmitter {
             };
         }
 
-        // 2. Verzend naar Discord via Netlify Function (secure)
+        // 2. Select correct webhook URL based on form type
+        let webhookUrl = '/.netlify/functions/submit-sollicitatie';
+        if (formType === 'spoed') {
+            webhookUrl = '/.netlify/functions/submit-spoed-sollicitatie';
+        }
+
+        // 3. Verzend naar Discord via Netlify Function (secure)
         const embed = this.createEmbed(formData, formType, username);
         
         // Voeg code toe aan embed
@@ -102,10 +109,10 @@ class DiscordSubmitter {
         };
 
         try {
-            console.log('📤 Submitting to Netlify Function:', this.webhookUrl);
+            console.log('📤 Submitting to Netlify Function:', webhookUrl);
             console.log('📦 Payload size:', JSON.stringify(payload).length, 'bytes');
             
-            const response = await fetch(this.webhookUrl, {
+            const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,6 +182,7 @@ class DiscordSubmitter {
     getFormTitle(formType) {
         const titles = {
             'politie': '🚔 Nieuwe Politie Sollicitatie',
+            'spoed': '⚡ SPOED - Partnership & Server Onderhoud',
             'wtgm': '🔫 WTGM Toets Inzending',
             'grootwapen': '⚔️ Groot Wapen Toets',
             'taser': '⚡ Taser Toets',
@@ -190,6 +198,7 @@ class DiscordSubmitter {
     getFormColor(formType) {
         const colors = {
             'politie': 0x0047AB,        // Politie blauw
+            'spoed': 0x7c3aed,          // Paars (SPOED)
             'wtgm': 0xC8102E,           // Rood
             'grootwapen': 0x8B0000,     // Donkerrood
             'taser': 0xFFD700,          // Goud
@@ -205,6 +214,8 @@ class DiscordSubmitter {
     addFieldsToEmbed(embed, formData, formType) {
         if (formType === 'politie') {
             this.addPolitieSollicitatieFields(embed, formData);
+        } else if (formType === 'spoed') {
+            this.addSpoedSollicitatieFields(embed, formData);
         } else if (formType === 'wtgm') {
             this.addWTGMFields(embed, formData);
         } else if (formType === 'grootwapen') {
@@ -341,6 +352,99 @@ class DiscordSubmitter {
                 });
             }
         });
+    }
+
+    // SPOED Partnership & Server Onderhoud Sollicitatie
+    addSpoedSollicitatieFields(embed, formData) {
+        const getField = (...possibleKeys) => {
+            for (const key of possibleKeys) {
+                if (formData[key]) return formData[key];
+                const foundKey = Object.keys(formData).find(k => 
+                    k.toLowerCase().includes(key.toLowerCase()) || 
+                    key.toLowerCase().includes(k.toLowerCase())
+                );
+                if (foundKey && formData[foundKey]) return formData[foundKey];
+            }
+            return null;
+        };
+
+        // Basisinformatie
+        const basisInfo = `
+👤 **Naam (IC):** ${getField('naam') || 'N/A'}
+💬 **Discord:** ${getField('discord') || 'N/A'}
+🎂 **Leeftijd:** ${getField('leeftijd') || 'N/A'}
+🌍 **Tijdzone:** ${getField('timezone') || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '📋 Persoonlijke Gegevens',
+            value: basisInfo,
+            inline: false
+        });
+
+        // Ervaring
+        if (getField('serverervaring')) {
+            embed.fields.push({
+                name: '💼 Server Management Ervaring',
+                value: getField('serverervaring').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('waarom')) {
+            embed.fields.push({
+                name: '💭 Motivatie',
+                value: getField('waarom').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Partnership Management
+        const partnerInfo = `
+**Ervaring:** ${getField('partnerervaring') || 'N/A'}
+**Partnerships per week:** ${getField('partnerregel2') || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '🤝 Partnership Management',
+            value: partnerInfo,
+            inline: false
+        });
+
+        // Beschikbaarheid
+        const beschikbaarheid = `
+**Dagen/Tijden:** ${getField('beschikbaarheid') || 'N/A'}
+**Uren per week:** ${getField('ureninzet') || 'N/A'}
+**Commitment:** ${getField('commitment') || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '⏰ Beschikbaarheid',
+            value: beschikbaarheid,
+            inline: false
+        });
+
+        // Vaardigheden
+        const vaardigheden = `
+**Communicatie:** ${getField('communicatie')?.substring(0, 200) || 'N/A'}
+**Sterke punten:** ${getField('sterktepunten')?.substring(0, 200) || 'N/A'}
+**Discord kennis:** ${getField('discord_kennis') || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '💪 Vaardigheden',
+            value: vaardigheden,
+            inline: false
+        });
+
+        // Ideeën
+        if (getField('ideeen')) {
+            embed.fields.push({
+                name: '✨ Ideeën voor Server Groei',
+                value: getField('ideeen').substring(0, 1024),
+                inline: false
+            });
+        }
     }
 
     // WTGM Toets formatting
