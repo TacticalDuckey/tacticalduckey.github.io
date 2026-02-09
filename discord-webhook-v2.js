@@ -382,7 +382,7 @@ class DiscordSubmitter {
             inline: false
         });
 
-        // Ervaring
+        // Ervaring & Kennis
         if (getField('serverervaring')) {
             embed.fields.push({
                 name: '💼 Server Management Ervaring',
@@ -391,10 +391,51 @@ class DiscordSubmitter {
             });
         }
 
+        if (getField('rpervaring')) {
+            embed.fields.push({
+                name: '🎮 RP Ervaring',
+                value: getField('rpervaring').substring(0, 1024),
+                inline: false
+            });
+        }
+
         if (getField('waarom')) {
             embed.fields.push({
-                name: '💭 Motivatie',
+                name: '💭 Motivatie - Waarom partnerships regelen?',
                 value: getField('waarom').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // RP & Game Kennis
+        if (getField('failrp')) {
+            embed.fields.push({
+                name: '📖 Wat is FailRP?',
+                value: getField('failrp').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('rpscenario1')) {
+            embed.fields.push({
+                name: '🎯 Scenario: Wapen in stad',
+                value: getField('rpscenario1').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('rpscenario2')) {
+            embed.fields.push({
+                name: '⚠️ Scenario: RDM - Wat is het en hoe pak je het aan?',
+                value: getField('rpscenario2').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('rpregels')) {
+            embed.fields.push({
+                name: '📋 3 Belangrijke RP Regels',
+                value: getField('rpregels').substring(0, 1024),
                 inline: false
             });
         }
@@ -411,37 +452,137 @@ class DiscordSubmitter {
             inline: false
         });
 
+        if (getField('partnerstappen')) {
+            embed.fields.push({
+                name: '📝 Hoe regel je een partnership?',
+                value: getField('partnerstappen').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('partnerregel1')) {
+            embed.fields.push({
+                name: '🔔 Beleid @everyone tags',
+                value: getField('partnerregel1').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('partnervoorbeeld')) {
+            embed.fields.push({
+                name: '✉️ Partnership Bericht Voorbeeld',
+                value: getField('partnervoorbeeld').substring(0, 1024),
+                inline: false
+            });
+        }
+
         // Beschikbaarheid
         const beschikbaarheid = `
 **Dagen/Tijden:** ${getField('beschikbaarheid') || 'N/A'}
 **Uren per week:** ${getField('ureninzet') || 'N/A'}
-**Commitment:** ${getField('commitment') || 'N/A'}
+**Commitment (2 partnerships/week):** ${getField('commitment') || 'N/A'}
         `.trim();
 
         embed.fields.push({
-            name: '⏰ Beschikbaarheid',
+            name: '⏰ Beschikbaarheid & Inzet',
             value: beschikbaarheid,
             inline: false
         });
 
-        // Vaardigheden
-        const vaardigheden = `
-**Communicatie:** ${getField('communicatie')?.substring(0, 200) || 'N/A'}
-**Sterke punten:** ${getField('sterktepunten')?.substring(0, 200) || 'N/A'}
-**Discord kennis:** ${getField('discord_kennis') || 'N/A'}
+        // Vaardigheden & Persoonlijkheid
+        if (getField('communicatie')) {
+            embed.fields.push({
+                name: '💬 Communicatieve Vaardigheden (1-10)',
+                value: getField('communicatie').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        const persoonlijkheid = `
+**Professioneel:** ${getField('professioneel') || 'N/A'}
+**Zelfstandig werken:** ${getField('zelfstandig') || 'N/A'}
         `.trim();
 
         embed.fields.push({
-            name: '💪 Vaardigheden',
-            value: vaardigheden,
+            name: '👔 Professioneel & Zelfstandigheid',
+            value: persoonlijkheid,
             inline: false
         });
 
-        // Ideeën
+        if (getField('sterktepunten')) {
+            embed.fields.push({
+                name: '⭐ Sterke Punten (Top 3)',
+                value: getField('sterktepunten').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('zwaktepunten')) {
+            embed.fields.push({
+                name: '📉 Zwakke Punten',
+                value: getField('zwaktepunten').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Situatie Vragen
+        if (getField('situatie1')) {
+            embed.fields.push({
+                name: '🤔 Situatie: Bericht niet binnen 48u geplaatst',
+                value: getField('situatie1').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('situatie2')) {
+            embed.fields.push({
+                name: '😠 Situatie: Negatieve reactie server owner',
+                value: getField('situatie2').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('situatie4')) {
+            embed.fields.push({
+                name: '⌛ Situatie: Geen reactie op ticket',
+                value: getField('situatie4').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Technische Vaardigheden
+        const technisch = `
+**Discord kennis:** ${getField('discord_kennis') || 'N/A'}
+**Tools/Bots:** ${getField('tools')?.substring(0, 300) || 'N/A'}
+        `.trim();
+
+        embed.fields.push({
+            name: '📱 Technische Vaardigheden',
+            value: technisch,
+            inline: false
+        });
+
+        // Aanvullende Informatie
         if (getField('ideeen')) {
             embed.fields.push({
                 name: '✨ Ideeën voor Server Groei',
                 value: getField('ideeen').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('verwachtingen')) {
+            embed.fields.push({
+                name: '🎯 Verwachtingen van deze functie',
+                value: getField('verwachtingen').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('extra') && getField('extra').trim()) {
+            embed.fields.push({
+                name: '📝 Extra Informatie',
+                value: getField('extra').substring(0, 1024),
                 inline: false
             });
         }
