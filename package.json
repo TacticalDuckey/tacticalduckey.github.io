@@ -1,0 +1,25 @@
+{
+  "name": "lage-landen-rp-portal",
+  "version": "1.0.0",
+  "description": "Lage Landen RP Hulpdiensten Portal met Discord Blacklist Integration",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build needed'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "keywords": [
+    "roleplay",
+    "discord",
+    "blacklist",
+    "hulpdiensten"
+  ],
+  "author": "Lage Landen RP",
+  "license": "MIT"
+}

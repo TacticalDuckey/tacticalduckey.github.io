@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partnerschapseisen - Lage Landen RP</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .partnership-header {
+            background: linear-gradient(135deg, #0a1628, #1a2642);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 3px solid var(--primary-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partnership-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 61, 165, 0.2) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .partnership-header h1 {
+            position: relative;
+            z-index: 1;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .partnership-header p {
+            position: relative;
+            z-index: 1;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .partnership-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .intro-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .intro-section h2 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .intro-section p {
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .requirements-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .requirements-section h2 {
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 0.5rem;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-blue);
+            transition: all 0.3s ease;
+        }
+
+        .requirement-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 61, 165, 0.2);
+        }
+
+        .requirement-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .requirement-content h3 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .requirement-content p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .important-note {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+            margin-top: 2rem;
+        }
+
+        .important-note h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .important-note p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .blacklist-section {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-red);
+            margin-top: 2rem;
+        }
+
+        .blacklist-section h3 {
+            color: #991b1b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .blacklist-section p {
+            color: #7f1d1d;
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .contact-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-section p {
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background: white;
+            color: var(--primary-blue);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-back:hover {
+            background: var(--light-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-contact {
+            display: inline-block;
+            background: white;
+            color: var(--primary-blue);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-contact:hover {
+            background: var(--light-bg);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .blacklist-examples {
+            background: white;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #991b1b;
+        }
+
+        .blacklist-examples h4 {
+            color: #991b1b;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .blacklist-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .blacklist-list li {
+            color: #7f1d1d;
+            padding: 0.5rem;
+            background: #fef2f2;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            list-style: none;
+        }
+
+        .blacklist-list li::before {
+            content: "❌ ";
+            margin-right: 0.5rem;
+        }
+
+        .discord-link {
+            display: inline-block;
+            background: #5865F2;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .discord-link:hover {
+            background: #4752C4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Emergency lights animation -->
+    <div class="emergency-lights">
+        <div class="light blue"></div>
+        <div class="light red"></div>
+        <div class="light blue"></div>
+    </div>
+
+    <header class="partnership-header">
+        <h1>🤝 Partnerschapseisen</h1>
+        <p>Voorwaarden voor samenwerking met Lage Landen RP</p>
+    </header>
+
+    <div class="partnership-container">
+        <!-- Introductie -->
+        <section class="intro-section">
+            <h2>Welkom</h2>
+            <p>
+                Bedankt voor je interesse in een partnerschap met Lage Landen RP! 
+                Wij zoeken serieuze community partners die onze waarden delen en een positieve, 
+                veilige omgeving creëren voor hun leden. Hieronder vind je onze partnerschapseisen.
+            </p>
+        </section>
+
+        <!-- Eisen -->
+        <section class="requirements-section">
+            <h2>Onze Eisen</h2>
+
+            <div class="requirement-item">
+                <div class="requirement-icon">👥</div>
+                <div class="requirement-content">
+                    <h3>Minimaal Ledenaantal</h3>
+                    <p>
+                        Jouw server moet minimaal <strong>35 leden</strong> hebben om in aanmerking te komen 
+                        voor een partnerschap. Dit zorgt ervoor dat we samenwerken met actieve en stabiele communities.
+                    </p>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div class="requirement-icon">🔕</div>
+                <div class="requirement-content">
+                    <h3>Geen @everyone of @here Tags</h3>
+                    <p>
+                        Wij gebruiken geen @everyone of @here tags voor partnerschapsaankondigingen. 
+                        Dit is alleen mogelijk tegen betaling en in overleg. We respecteren de rust van onze leden.
+                    </p>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div class="requirement-icon">⚖️</div>
+                <div class="requirement-content">
+                    <h3>Wederzijdse Voorwaarden</h3>
+                    <p>
+                        Als jij in je partnerschapseisen hebt staan dat wij in jouw server moeten blijven, 
+                        dan geldt dit ook andersom. Wij verwachten <strong>wederzijds respect en gelijkwaardige voorwaarden</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div class="requirement-icon">🔞</div>
+                <div class="requirement-content">
+                    <h3>Geen NSFW Content</h3>
+                    <p>
+                        Jouw server mag <strong>geen NSFW content, gore, of andere ongepaste materialen</strong> bevatten. 
+                        Wij streven naar een professionele en veilige omgeving voor alle leeftijden.
+                    </p>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div class="requirement-icon">📋</div>
+                <div class="requirement-content">
+                    <h3>Discord Blacklist Naleving</h3>
+                    <p>
+                        Wij volgen de <strong>Discord Blacklist</strong>. Jouw server en leden mogen niet voorkomen 
+                        op deze lijst. Dit is een voorwaarde zonder uitzonderingen.
+                    </p>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div class="requirement-icon">✅</div>
+                <div class="requirement-content">
+                    <h3>Discord Community Guidelines</h3>
+                    <p>
+                        Jouw server moet voldoen aan de <strong>Discord Terms of Service en Community Guidelines</strong>. 
+                        Servers die deze regels overtreden komen niet in aanmerking voor een partnerschap.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Belangrijke Notities -->
+            <div class="important-note">
+                <h3>⚠️ Belangrijk</h3>
+                <p>
+                    Alle partnerschappen worden regelmatig geëvalueerd. Indien jouw server niet meer voldoet 
+                    aan onze eisen of de Discord richtlijnen schendt, behouden wij ons het recht voor om het 
+                    partnerschap te beëindigen zonder voorafgaande kennisgeving.
+                </p>
+            </div>
+
+            <!-- Blacklist Sectie -->
+            <div class="blacklist-section">
+                <h3>🚫 Discord Blacklist</h3>
+                <p>
+                    Wij nemen de Discord Blacklist zeer serieus. Servers of gebruikers die op deze lijst staan, 
+                    komen niet in aanmerking voor enige vorm van samenwerking. Dit helpt ons een veilige en 
+                    betrouwbare community te behouden.
+                </p>
+                
+                <!-- Blacklist Voorbeelden -->
+                <div class="blacklist-examples">
+                    <h4>📋 Servers op de Blacklist:</h4>
+                    <p style="color: #7f1d1d; margin-bottom: 1rem; font-size: 0.9rem;">
+                        <em>Deze lijst wordt automatisch bijgewerkt. Onderstaande servers zijn geblacklist en komen niet in aanmerking voor partnerships:</em>
+                    </p>
+                    
+                    <!-- Loading indicator -->
+                    <div id="blacklist-loading" style="text-align: center; padding: 2rem;">
+                        <p style="color: #7f1d1d;">Blacklist wordt geladen...</p>
+                    </div>
+                    
+                    <!-- Blacklist container (dynamically filled) -->
+                    <ul class="blacklist-list" id="blacklist-container" style="display: none;">
+                        <!-- Wordt dynamisch gevuld via JavaScript -->
+                    </ul>
+                    
+                    <!-- Last updated info -->
+                    <p id="blacklist-updated" style="color: #7f1d1d; margin-top: 1rem; font-size: 0.85rem; font-style: italic; display: none;">
+                        <!-- Wordt dynamisch gevuld -->
+                    </p>
+                    
+                    <p style="color: #7f1d1d; margin-top: 1rem; font-weight: 600;" id="blacklist-count">
+                        <!-- Wordt dynamisch gevuld -->
+                    </p>
+                    
+                    <p style="color: #7f1d1d; margin-top: 1rem;">
+                        Wil je de volledige en actuele blacklist checken? Join dan de officiële Discord Blacklist server:
+                    </p>
+                    <a href="https://discord.gg/yBsrWcCMDf" target="_blank" class="discord-link">
+                        💬 Join Discord Blacklist Server
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Sectie -->
+        <section class="contact-section">
+            <h2>Interesse in een Partnerschap?</h2>
+            <p>
+                Voldoe je aan alle eisen en wil je graag een partnerschap aangaan met Lage Landen RP? 
+                Neem dan contact met ons op via onze Discord server.
+            </p>
+            <a href="index.html" class="btn-contact">📧 Neem Contact Op</a>
+        </section>
+
+        <!-- Terug knop -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="index.html" class="btn-back">← Terug naar Home</a>
+        </div>
+    </div>
+
+    <!-- Blacklist Dynamic Loading Script -->
+    <script>
+        // Load blacklist dynamically from API
+        async function loadBlacklist() {
+            const loadingEl = document.getElementById('blacklist-loading');
+            const containerEl = document.getElementById('blacklist-container');
+            const updatedEl = document.getElementById('blacklist-updated');
+            const countEl = document.getElementById('blacklist-count');
+
+            try {
+                // Fetch blacklist from Netlify function
+                const response = await fetch('/.netlify/functions/get-blacklist');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load blacklist');
+                }
+
+                const data = await response.json();
+                
+                // Hide loading, show container
+                loadingEl.style.display = 'none';
+                containerEl.style.display = 'grid';
+                updatedEl.style.display = 'block';
+                
+                // Clear container
+                containerEl.innerHTML = '';
+                
+                // Add each server to the list
+                if (data.servers && data.servers.length > 0) {
+                    data.servers.forEach(server => {
+                        const li = document.createElement('li');
+                        li.textContent = server;
+                        containerEl.appendChild(li);
+                    });
+                    
+                    // Update count
+                    countEl.textContent = `⚠️ ${data.servers.length} servers staan momenteel op de blacklist.`;
+                } else {
+                    containerEl.innerHTML = '<li style="grid-column: 1/-1; text-align: center;">Geen servers op de blacklist</li>';
+                    countEl.textContent = '✅ Momenteel geen servers op de blacklist.';
+                }
+                
+                // Update last updated time
+                if (data.lastUpdated) {
+                    const lastUpdated = new Date(data.lastUpdated);
+                    const formattedDate = lastUpdated.toLocaleDateString('nl-NL', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    updatedEl.textContent = `Laatst bijgewerkt: ${formattedDate}`;
+                }
+                
+            } catch (error) {
+                console.error('Error loading blacklist:', error);
+                loadingEl.innerHTML = '<p style="color: #991b1b;">❌ Fout bij laden van blacklist. Probeer later opnieuw.</p>';
+            }
+        }
+
+        // Load blacklist when page loads
+        document.addEventListener('DOMContentLoaded', loadBlacklist);
+
+        // Auto-refresh every 5 minutes
+        setInterval(loadBlacklist, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
