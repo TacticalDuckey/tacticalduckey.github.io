@@ -62,6 +62,36 @@ exports.handler = async (event, context) => {
             );
 
             if (serverExists) {
+                // Stuur waarschuwing naar Discord
+                await fetch(
+                    `https://discord.com/api/v10/channels/${channelId}/messages`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bot ${botToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            embeds: [{
+                                title: '⚠️ Server Al op Blacklist',
+                                description: `**${serverName}** staat al op de blacklist`,
+                                color: 0xFFA500, // Oranje
+                                fields: [
+                                    {
+                                        name: '📊 Totaal Blacklist',
+                                        value: `${existingMessages.length} servers`,
+                                        inline: true
+                                    }
+                                ],
+                                timestamp: new Date().toISOString(),
+                                footer: {
+                                    text: 'Lage Landen RP • Blacklist Systeem'
+                                }
+                            }]
+                        })
+                    }
+                );
+
                 return {
                     statusCode: 200,
                     headers: {
@@ -123,6 +153,41 @@ exports.handler = async (event, context) => {
             const messages = await countResponse.json();
             totalServers = messages.length;
         }
+
+        // Stuur bevestigingsbericht in Discord kanaal
+        await fetch(
+            `https://discord.com/api/v10/channels/${channelId}/messages`,
+            {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bot ${botToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    embeds: [{
+                        title: '✅ Server Toegevoegd aan Blacklist',
+                        description: `**${serverName}** is succesvol toegevoegd aan de blacklist`,
+                        color: 0xC8102E, // Rood (Lage Landen RP kleur)
+                        fields: [
+                            {
+                                name: '🎮 Server',
+                                value: serverName,
+                                inline: true
+                            },
+                            {
+                                name: '📊 Totaal Blacklist',
+                                value: `${totalServers} servers`,
+                                inline: true
+                            }
+                        ],
+                        timestamp: new Date().toISOString(),
+                        footer: {
+                            text: 'Lage Landen RP • Blacklist Systeem'
+                        }
+                    }]
+                })
+            }
+        );
 
         return {
             statusCode: 200,
