@@ -1,43 +1,36 @@
-// Netlify Function: Discord Webhook -> Blacklist Update
-// Ontvangt Discord webhook messages en update de blacklist
-// Environment Variable: DISCORD_BLACKLIST (webhook URL)
+// Netlify Function: Update Blacklist (Supabase)
+// Voegt een server toe aan de blacklist in Supabase
 
-const fs = require('fs');
-const path = require('path');
+const { createClient } = require('@supabase/supabase-js');
 
 // Optioneel: Stuur confirmation naar Discord
 async function sendDiscordNotification(serverName, totalServers) {
     const webhookUrl = process.env.DISCORD_BLACKLIST;
     
     if (!webhookUrl) {
-        // Geen webhook geconfigureerd, skip notificatie
         return;
     }
 
     try {
-        // Use native fetch (available in Node 18+) or skip if not available
-        if (typeof fetch !== 'undefined') {
-            await fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    embeds: [{
-                        title: '✅ Server Toegevoegd aan Blacklist',
-                        description: `**${serverName}** is toegevoegd aan de blacklist`,
-                        color: 0xC8102E, // Rood
-                        fields: [
-                            { name: 'Server', value: serverName, inline: true },
-                            { name: 'Totaal', value: totalServers.toString(), inline: true }
-                        ],
-                        timestamp: new Date().toISOString(),
-                        footer: { text: 'Lage Landen RP Blacklist System' }
-                    }]
-                })
-            });
-        }
+        const response = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                embeds: [{
+                    title: '✅ Server Toegevoegd aan Blacklist',
+                    description: `**${serverName}** is toegevoegd aan de blacklist`,
+                    color: 0xC8102E,
+                    fields: [
+                        { name: 'Server', value: serverName, inline: true },
+                        { name: 'Totaal', value: totalServers.toString(), inline: true }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: { text: 'Lage Landen RP Blacklist System' }
+                }]
+            })
+        });
     } catch (error) {
         console.error('Discord notification failed:', error);
-        // Negeer errors - notificatie is optioneel
     }
 }
 
@@ -46,6 +39,10 @@ exports.handler = async (event, context) => {
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
             body: JSON.stringify({ error: 'Method not allowed' })
         };
     }
@@ -53,68 +50,51 @@ exports.handler = async (event, context) => {
     try {
         const payload = JSON.parse(event.body);
         
-        // Verificatie: Check of het een Discord webhook is
-        if (!payload.content && !payload.embeds) {
-            return {
-                statusCode: 400,
-                body: JSON.stringify({ error: 'Invalid Discord webhook payload' })
-            };
-        }
-
         // Extract server naam uit bericht
-        const content = payload.content || '';
-        const serverName = content.trim();
+        const serverName = (payload.content || '').trim();
 
         if (!serverName || serverName.length === 0) {
             return {
                 statusCode: 400,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
                 body: JSON.stringify({ error: 'Server name cannot be empty' })
             };
         }
 
-        // Vind blacklist bestand
-        const paths = [
-            path.join(__dirname, '../../blacklist.json'),
-            path.join(process.cwd(), 'blacklist.json'),
-            '/var/task/blacklist.json'
-        ];
-        
-        let blacklistPath;
-        for (const testPath of paths) {
-            if (fs.existsSync(testPath)) {
-                blacklistPath = testPath;
-                break;
-            }
-        }
-        
-        if (!blacklistPath) {
-            // Maak nieuw bestand in de eerste mogelijke locatie
-            blacklistPath = paths[0];
-            const dir = path.dirname(blacklistPath);
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
-            }
-        }
-        
-        // Lees huidige blacklist
-        let blacklistData;
-        
-        try {
-            if (fs.existsSync(blacklistPath)) {
-                const fileContent = fs.readFileSync(blacklistPath, 'utf8');
-                blacklistData = JSON.parse(fileContent);
-            } else {
-                blacklistData = { servers: [], lastUpdated: null };
-            }
-        } catch (error) {
-            // Als bestand niet bestaat of corrupt is, maak een nieuwe lijst
-            blacklistData = { servers: [], lastUpdated: null };
+        // Initialize Supabase client
+        const supabaseUrl = process.env.SUPABASE_URL;
+        const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+        if (!supabaseUrl || !supabaseKey) {
+            return {
+                statusCode: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ error: 'Supabase configuration missing' })
+            };
         }
 
-        // Check of server al op de lijst staat
-        if (blacklistData.servers.includes(serverName)) {
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // Check of server al bestaat
+        const { data: existing } = await supabase
+            .from('blacklist')
+            .select('id')
+            .eq('server_name', serverName)
+            .single();
+
+        if (existing) {
             return {
                 statusCode: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
                 body: JSON.stringify({ 
                     message: 'Server already on blacklist',
                     serverName: serverName 
@@ -122,33 +102,52 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Voeg server toe aan blacklist
-        blacklistData.servers.push(serverName);
-        blacklistData.lastUpdated = new Date().toISOString();
+        // Voeg server toe
+        const { data, error } = await supabase
+            .from('blacklist')
+            .insert([
+                { 
+                    server_name: serverName,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                }
+            ])
+            .select();
 
-        // Sorteer alfabetisch voor overzichtelijkheid
-        blacklistData.servers.sort();
+        if (error) {
+            console.error('Supabase insert error:', error);
+            return {
+                statusCode: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ 
+                    error: 'Failed to add server',
+                    details: error.message 
+                })
+            };
+        }
 
-        // Schrijf terug naar bestand
-        fs.writeFileSync(
-            blacklistPath, 
-            JSON.stringify(blacklistData, null, 2),
-            'utf8'
-        );
+        // Tel totaal aantal servers
+        const { count } = await supabase
+            .from('blacklist')
+            .select('*', { count: 'exact', head: true });
 
-        // Optioneel: Stuur bevestiging naar Discord
-        await sendDiscordNotification(serverName, blacklistData.servers.length);
+        // Optioneel: Stuur Discord notificatie
+        await sendDiscordNotification(serverName, count || 0);
 
         return {
             statusCode: 200,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({ 
                 success: true,
                 message: 'Server added to blacklist',
                 serverName: serverName,
-                totalServers: blacklistData.servers.length
+                totalServers: count || 0
             })
         };
 
@@ -156,6 +155,10 @@ exports.handler = async (event, context) => {
         console.error('Error updating blacklist:', error);
         return {
             statusCode: 500,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
             body: JSON.stringify({ 
                 error: 'Failed to update blacklist',
                 details: error.message 

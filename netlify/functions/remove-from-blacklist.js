@@ -1,14 +1,17 @@
-// Netlify Function: Remove from Blacklist
-// Verwijdert een server van de blacklist (alleen voor geauthoriseerde verzoeken)
+// Netlify Function: Remove from Blacklist (Supabase)
+// Verwijdert een server van de blacklist in Supabase
 
-const fs = require('fs');
-const path = require('path');
+const { createClient } = require('@supabase/supabase-js');
 
 exports.handler = async (event, context) => {
     // Only allow POST requests
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
             body: JSON.stringify({ error: 'Method not allowed' })
         };
     }
@@ -17,12 +20,16 @@ exports.handler = async (event, context) => {
         const payload = JSON.parse(event.body);
         const { serverName, authKey } = payload;
 
-        // Simpele authenticatie (vervang door je eigen secret key)
+        // Authenticatie
         const validAuthKey = process.env.BLACKLIST_AUTH_KEY || 'CHANGE_THIS_SECRET';
         
         if (authKey !== validAuthKey) {
             return {
                 statusCode: 403,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
                 body: JSON.stringify({ error: 'Unauthorized' })
             };
         }
@@ -30,45 +37,60 @@ exports.handler = async (event, context) => {
         if (!serverName) {
             return {
                 statusCode: 400,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
                 body: JSON.stringify({ error: 'Server name is required' })
             };
         }
 
-        // Vind blacklist bestand
-        const paths = [
-            path.join(__dirname, '../../blacklist.json'),
-            path.join(process.cwd(), 'blacklist.json'),
-            '/var/task/blacklist.json'
-        ];
-        
-        let blacklistPath;
-        for (const testPath of paths) {
-            if (fs.existsSync(testPath)) {
-                blacklistPath = testPath;
-                break;
-            }
-        }
-        
-        if (!blacklistPath) {
+        // Initialize Supabase client
+        const supabaseUrl = process.env.SUPABASE_URL;
+        const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+        if (!supabaseUrl || !supabaseKey) {
             return {
-                statusCode: 404,
-                body: JSON.stringify({ error: 'Blacklist file not found' })
+                statusCode: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ error: 'Supabase configuration missing' })
             };
         }
 
-        // Lees huidige blacklist
-        const fileContent = fs.readFileSync(blacklistPath, 'utf8');
-        const blacklistData = JSON.parse(fileContent);
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // Verwijder server van de lijst
-        const originalLength = blacklistData.servers.length;
-        blacklistData.servers = blacklistData.servers.filter(
-            server => server !== serverName
-        );
+        // Verwijder server
+        const { data, error } = await supabase
+            .from('blacklist')
+            .delete()
+            .eq('server_name', serverName)
+            .select();
 
-        if (blacklistData.servers.length === originalLength) {
+        if (error) {
+            console.error('Supabase delete error:', error);
+            return {
+                statusCode: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ 
+                    error: 'Failed to remove server',
+                    details: error.message 
+                })
+            };
+        }
+
+        if (!data || data.length === 0) {
             return {
                 statusCode: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
                 body: JSON.stringify({ 
                     error: 'Server not found on blacklist',
                     serverName: serverName 
@@ -76,25 +98,22 @@ exports.handler = async (event, context) => {
             };
         }
 
-        blacklistData.lastUpdated = new Date().toISOString();
-
-        // Schrijf terug naar bestand
-        fs.writeFileSync(
-            blacklistPath, 
-            JSON.stringify(blacklistData, null, 2),
-            'utf8'
-        );
+        // Tel totaal aantal servers
+        const { count } = await supabase
+            .from('blacklist')
+            .select('*', { count: 'exact', head: true });
 
         return {
             statusCode: 200,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({ 
                 success: true,
                 message: 'Server removed from blacklist',
                 serverName: serverName,
-                totalServers: blacklistData.servers.length
+                totalServers: count || 0
             })
         };
 
@@ -102,6 +121,10 @@ exports.handler = async (event, context) => {
         console.error('Error removing from blacklist:', error);
         return {
             statusCode: 500,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
             body: JSON.stringify({ 
                 error: 'Failed to remove from blacklist',
                 details: error.message 
