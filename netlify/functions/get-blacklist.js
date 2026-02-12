@@ -1,5 +1,5 @@
-// Netlify Function: Get Blacklist (Supabase REST API)
-// Retourneert de blacklist uit Supabase database via REST API
+// Netlify Function: Get Blacklist (Discord Database)
+// Haalt alle blacklisted servers op uit Discord kanaal (elk bericht = 1 server)
 
 exports.handler = async (event, context) => {
     // Allow GET requests
@@ -15,10 +15,10 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        const supabaseUrl = process.env.SUPABASE_URL;
-        const supabaseKey = process.env.SUPABASE_ANON_KEY;
+        const botToken = process.env.DISCORD_BOT_TOKEN;
+        const channelId = process.env.DISCORD_CHANNEL_ID;
 
-        if (!supabaseUrl || !supabaseKey) {
+        if (!botToken || !channelId) {
             return {
                 statusCode: 500,
                 headers: {
@@ -26,34 +26,50 @@ exports.handler = async (event, context) => {
                     'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify({ 
-                    error: 'Supabase configuration missing',
+                    error: 'Discord configuration missing',
                     servers: [],
                     lastUpdated: null
                 })
             };
         }
 
-        // Fetch via Supabase REST API
-        const response = await fetch(`${supabaseUrl}/rest/v1/blacklist?select=*&order=server_name.asc`, {
-            headers: {
-                'apikey': supabaseKey,
-                'Authorization': `Bearer ${supabaseKey}`
+        // Haal berichten op uit Discord kanaal (laatste 100)
+        const response = await fetch(
+            `https://discord.com/api/v10/channels/${channelId}/messages?limit=100`,
+            {
+                headers: {
+                    'Authorization': `Bot ${botToken}`
+                }
             }
-        });
+        );
 
         if (!response.ok) {
-            throw new Error(`Supabase API error: ${response.status}`);
+            const errorText = await response.text();
+            console.error('Discord API error:', errorText);
+            return {
+                statusCode: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ 
+                    error: 'Failed to fetch from Discord',
+                    servers: [],
+                    lastUpdated: null
+                })
+            };
         }
 
-        const data = await response.json();
+        const messages = await response.json();
 
-        // Transform data
-        const servers = data.map(row => row.server_name);
-        const lastUpdated = data.length > 0 
-            ? data.reduce((latest, row) => {
-                const rowDate = new Date(row.updated_at || row.created_at);
-                return rowDate > latest ? rowDate : latest;
-              }, new Date(0)).toISOString()
+        // Elk bericht content = server naam
+        const servers = messages
+            .map(msg => msg.content.trim())
+            .filter(content => content.length > 0)
+            .reverse(); // Oudste eerst
+
+        const lastUpdated = messages.length > 0 
+            ? messages[0].timestamp 
             : null;
 
         return {

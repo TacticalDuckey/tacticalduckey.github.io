@@ -1,5 +1,5 @@
-// Netlify Function: Remove from Blacklist (Supabase REST API)
-// Verwijdert een server uit de blacklist in Supabase via REST API
+// Netlify Function: Remove from Blacklist (Discord Database)
+// Verwijdert een server door het Discord bericht te deleten
 // Vereist authenticatie met BLACKLIST_AUTH_KEY
 
 exports.handler = async (event, context) => {
@@ -44,39 +44,33 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Supabase credentials
-        const supabaseUrl = process.env.SUPABASE_URL;
-        const supabaseKey = process.env.SUPABASE_ANON_KEY;
+        const botToken = process.env.DISCORD_BOT_TOKEN;
+        const channelId = process.env.DISCORD_CHANNEL_ID;
 
-        if (!supabaseUrl || !supabaseKey) {
+        if (!botToken || !channelId) {
             return {
                 statusCode: 500,
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*'
                 },
-                body: JSON.stringify({ error: 'Supabase configuration missing' })
+                body: JSON.stringify({ error: 'Discord configuration missing' })
             };
         }
 
-        const headers = {
-            'apikey': supabaseKey,
-            'Authorization': `Bearer ${supabaseKey}`,
-            'Content-Type': 'application/json'
-        };
-
-        // Delete via REST API
-        const deleteResponse = await fetch(
-            `${supabaseUrl}/rest/v1/blacklist?server_name=eq.${encodeURIComponent(serverName)}`,
+        // Zoek het bericht met deze server naam
+        const messagesResponse = await fetch(
+            `https://discord.com/api/v10/channels/${channelId}/messages?limit=100`,
             {
-                method: 'DELETE',
-                headers: headers
+                headers: {
+                    'Authorization': `Bot ${botToken}`
+                }
             }
         );
 
-        if (!deleteResponse.ok) {
-            const errorText = await deleteResponse.text();
-            console.error('Supabase delete error:', errorText);
+        if (!messagesResponse.ok) {
+            const errorText = await messagesResponse.text();
+            console.error('Discord fetch error:', errorText);
             return {
                 statusCode: 500,
                 headers: {
@@ -84,23 +78,59 @@ exports.handler = async (event, context) => {
                     'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify({ 
-                    error: 'Failed to delete server',
+                    error: 'Failed to fetch messages from Discord',
                     details: errorText 
                 })
             };
         }
 
-        // Tel totaal aantal servers
-        const countResponse = await fetch(
-            `${supabaseUrl}/rest/v1/blacklist?select=id`,
-            { 
-                headers,
-                method: 'HEAD'
+        const messages = await messagesResponse.json();
+        const messageToDelete = messages.find(
+            msg => msg.content.trim().toLowerCase() === serverName.toLowerCase()
+        );
+
+        if (!messageToDelete) {
+            return {
+                statusCode: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ 
+                    error: 'Server not found on blacklist',
+                    serverName: serverName 
+                })
+            };
+        }
+
+        // Delete het bericht
+        const deleteResponse = await fetch(
+            `https://discord.com/api/v10/channels/${channelId}/messages/${messageToDelete.id}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bot ${botToken}`
+                }
             }
         );
-        
-        const countHeader = countResponse.headers.get('content-range');
-        const totalServers = countHeader ? parseInt(countHeader.split('/')[1]) : 0;
+
+        if (!deleteResponse.ok) {
+            const errorText = await deleteResponse.text();
+            console.error('Discord delete error:', errorText);
+            return {
+                statusCode: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ 
+                    error: 'Failed to delete message from Discord',
+                    details: errorText 
+                })
+            };
+        }
+
+        const totalServers = messages.length - 1; // -1 omdat we er net 1 hebben verwijderd
 
         return {
             statusCode: 200,
