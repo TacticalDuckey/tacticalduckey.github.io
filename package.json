@@ -8,9 +8,6 @@
     "build": "echo 'No build needed'",
     "deploy": "netlify deploy --prod"
   },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.39.0"
-  },
   "devDependencies": {
     "netlify-cli": "^17.0.0"
   },

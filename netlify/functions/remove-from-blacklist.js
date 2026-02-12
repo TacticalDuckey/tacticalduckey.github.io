@@ -1,7 +1,6 @@
-// Netlify Function: Remove from Blacklist (Supabase)
-// Verwijdert een server van de blacklist in Supabase
-
-const { createClient } = require('@supabase/supabase-js');
+// Netlify Function: Remove from Blacklist (Supabase REST API)
+// Verwijdert een server uit de blacklist in Supabase via REST API
+// Vereist authenticatie met BLACKLIST_AUTH_KEY
 
 exports.handler = async (event, context) => {
     // Only allow POST requests
@@ -45,7 +44,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Initialize Supabase client
+        // Supabase credentials
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
@@ -60,17 +59,24 @@ exports.handler = async (event, context) => {
             };
         }
 
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const headers = {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json'
+        };
 
-        // Verwijder server
-        const { data, error } = await supabase
-            .from('blacklist')
-            .delete()
-            .eq('server_name', serverName)
-            .select();
+        // Delete via REST API
+        const deleteResponse = await fetch(
+            `${supabaseUrl}/rest/v1/blacklist?server_name=eq.${encodeURIComponent(serverName)}`,
+            {
+                method: 'DELETE',
+                headers: headers
+            }
+        );
 
-        if (error) {
-            console.error('Supabase delete error:', error);
+        if (!deleteResponse.ok) {
+            const errorText = await deleteResponse.text();
+            console.error('Supabase delete error:', errorText);
             return {
                 statusCode: 500,
                 headers: {
@@ -78,30 +84,23 @@ exports.handler = async (event, context) => {
                     'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify({ 
-                    error: 'Failed to remove server',
-                    details: error.message 
-                })
-            };
-        }
-
-        if (!data || data.length === 0) {
-            return {
-                statusCode: 404,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ 
-                    error: 'Server not found on blacklist',
-                    serverName: serverName 
+                    error: 'Failed to delete server',
+                    details: errorText 
                 })
             };
         }
 
         // Tel totaal aantal servers
-        const { count } = await supabase
-            .from('blacklist')
-            .select('*', { count: 'exact', head: true });
+        const countResponse = await fetch(
+            `${supabaseUrl}/rest/v1/blacklist?select=id`,
+            { 
+                headers,
+                method: 'HEAD'
+            }
+        );
+        
+        const countHeader = countResponse.headers.get('content-range');
+        const totalServers = countHeader ? parseInt(countHeader.split('/')[1]) : 0;
 
         return {
             statusCode: 200,
@@ -113,7 +112,7 @@ exports.handler = async (event, context) => {
                 success: true,
                 message: 'Server removed from blacklist',
                 serverName: serverName,
-                totalServers: count || 0
+                totalServers: totalServers
             })
         };
 

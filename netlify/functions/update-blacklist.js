@@ -1,7 +1,5 @@
-// Netlify Function: Update Blacklist (Supabase)
-// Voegt een server toe aan de blacklist in Supabase
-
-const { createClient } = require('@supabase/supabase-js');
+// Netlify Function: Update Blacklist (Supabase REST API)
+// Voegt een server toe aan de blacklist in Supabase via REST API
 
 // Optioneel: Stuur confirmation naar Discord
 async function sendDiscordNotification(serverName, totalServers) {
@@ -64,7 +62,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Initialize Supabase client
+        // Supabase credentials
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
@@ -79,16 +77,22 @@ exports.handler = async (event, context) => {
             };
         }
 
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const headers = {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+        };
 
         // Check of server al bestaat
-        const { data: existing } = await supabase
-            .from('blacklist')
-            .select('id')
-            .eq('server_name', serverName)
-            .single();
+        const checkResponse = await fetch(
+            `${supabaseUrl}/rest/v1/blacklist?server_name=eq.${encodeURIComponent(serverName)}&select=id`,
+            { headers }
+        );
 
-        if (existing) {
+        const existing = await checkResponse.json();
+
+        if (existing && existing.length > 0) {
             return {
                 statusCode: 200,
                 headers: {
@@ -102,20 +106,23 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Voeg server toe
-        const { data, error } = await supabase
-            .from('blacklist')
-            .insert([
-                { 
+        // Voeg server toe via REST API
+        const insertResponse = await fetch(
+            `${supabaseUrl}/rest/v1/blacklist`,
+            {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
                     server_name: serverName,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
-                }
-            ])
-            .select();
+                })
+            }
+        );
 
-        if (error) {
-            console.error('Supabase insert error:', error);
+        if (!insertResponse.ok) {
+            const errorText = await insertResponse.text();
+            console.error('Supabase insert error:', errorText);
             return {
                 statusCode: 500,
                 headers: {
@@ -124,18 +131,25 @@ exports.handler = async (event, context) => {
                 },
                 body: JSON.stringify({ 
                     error: 'Failed to add server',
-                    details: error.message 
+                    details: errorText 
                 })
             };
         }
 
         // Tel totaal aantal servers
-        const { count } = await supabase
-            .from('blacklist')
-            .select('*', { count: 'exact', head: true });
+        const countResponse = await fetch(
+            `${supabaseUrl}/rest/v1/blacklist?select=id`,
+            { 
+                headers,
+                method: 'HEAD'
+            }
+        );
+        
+        const countHeader = countResponse.headers.get('content-range');
+        const totalServers = countHeader ? parseInt(countHeader.split('/')[1]) : 0;
 
         // Optioneel: Stuur Discord notificatie
-        await sendDiscordNotification(serverName, count || 0);
+        await sendDiscordNotification(serverName, totalServers);
 
         return {
             statusCode: 200,
@@ -147,7 +161,7 @@ exports.handler = async (event, context) => {
                 success: true,
                 message: 'Server added to blacklist',
                 serverName: serverName,
-                totalServers: count || 0
+                totalServers: totalServers
             })
         };
 

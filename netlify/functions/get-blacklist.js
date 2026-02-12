@@ -1,7 +1,5 @@
-// Netlify Function: Get Blacklist (Supabase)
-// Retourneert de blacklist uit Supabase database
-
-const { createClient } = require('@supabase/supabase-js');
+// Netlify Function: Get Blacklist (Supabase REST API)
+// Retourneert de blacklist uit Supabase database via REST API
 
 exports.handler = async (event, context) => {
     // Allow GET requests
@@ -17,7 +15,6 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // Initialize Supabase client
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
@@ -36,29 +33,19 @@ exports.handler = async (event, context) => {
             };
         }
 
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        // Fetch via Supabase REST API
+        const response = await fetch(`${supabaseUrl}/rest/v1/blacklist?select=*&order=server_name.asc`, {
+            headers: {
+                'apikey': supabaseKey,
+                'Authorization': `Bearer ${supabaseKey}`
+            }
+        });
 
-        // Fetch all blacklisted servers
-        const { data, error } = await supabase
-            .from('blacklist')
-            .select('*')
-            .order('server_name', { ascending: true });
-
-        if (error) {
-            console.error('Supabase error:', error);
-            return {
-                statusCode: 500,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ 
-                    error: 'Database error',
-                    servers: [],
-                    lastUpdated: null
-                })
-            };
+        if (!response.ok) {
+            throw new Error(`Supabase API error: ${response.status}`);
         }
+
+        const data = await response.json();
 
         // Transform data
         const servers = data.map(row => row.server_name);
@@ -74,7 +61,7 @@ exports.handler = async (event, context) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=60' // Cache 1 minuut
+                'Cache-Control': 'public, max-age=60'
             },
             body: JSON.stringify({
                 servers: servers,
