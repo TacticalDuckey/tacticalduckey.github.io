@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "netlify dev",
     "build": "echo 'No build needed'",
-    "deploy": "netlify deploy --prod"
+    "deploy": "netlify deploy --prod",
+    "bot": "node discord-bot/bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1"
   },
   "devDependencies": {
     "netlify-cli": "^17.0.0"
@@ -16,8 +20,11 @@
     "discord",
     "blacklist",
     "hulpdiensten",
-    "supabase"
+    "discord-bot"
   ],
   "author": "Lage Landen RP",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
