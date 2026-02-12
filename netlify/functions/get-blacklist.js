@@ -15,7 +15,7 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        const botToken = process.env.DISCORD_BOT_TOKEN;
+        const botToken = process.env.BOT_TOKEN;
         const channelId = process.env.DISCORD_CHANNEL_ID;
 
         if (!botToken || !channelId) {
