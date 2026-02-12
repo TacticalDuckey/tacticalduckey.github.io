@@ -1,7 +1,7 @@
 // Netlify Function: Remove from Blacklist
 // Verwijdert een server van de blacklist (alleen voor geauthoriseerde verzoeken)
 
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 
 exports.handler = async (event, context) => {
@@ -34,9 +34,30 @@ exports.handler = async (event, context) => {
             };
         }
 
+        // Vind blacklist bestand
+        const paths = [
+            path.join(__dirname, '../../blacklist.json'),
+            path.join(process.cwd(), 'blacklist.json'),
+            '/var/task/blacklist.json'
+        ];
+        
+        let blacklistPath;
+        for (const testPath of paths) {
+            if (fs.existsSync(testPath)) {
+                blacklistPath = testPath;
+                break;
+            }
+        }
+        
+        if (!blacklistPath) {
+            return {
+                statusCode: 404,
+                body: JSON.stringify({ error: 'Blacklist file not found' })
+            };
+        }
+
         // Lees huidige blacklist
-        const blacklistPath = path.join(process.cwd(), 'blacklist.json');
-        const fileContent = await fs.readFile(blacklistPath, 'utf8');
+        const fileContent = fs.readFileSync(blacklistPath, 'utf8');
         const blacklistData = JSON.parse(fileContent);
 
         // Verwijder server van de lijst
@@ -58,7 +79,7 @@ exports.handler = async (event, context) => {
         blacklistData.lastUpdated = new Date().toISOString();
 
         // Schrijf terug naar bestand
-        await fs.writeFile(
+        fs.writeFileSync(
             blacklistPath, 
             JSON.stringify(blacklistData, null, 2),
             'utf8'

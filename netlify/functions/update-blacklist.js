@@ -2,9 +2,8 @@
 // Ontvangt Discord webhook messages en update de blacklist
 // Environment Variable: DISCORD_BLACKLIST (webhook URL)
 
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
-const fetch = require('node-fetch');
 
 // Optioneel: Stuur confirmation naar Discord
 async function sendDiscordNotification(serverName, totalServers) {
@@ -16,23 +15,26 @@ async function sendDiscordNotification(serverName, totalServers) {
     }
 
     try {
-        await fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                embeds: [{
-                    title: '✅ Server Toegevoegd aan Blacklist',
-                    description: `**${serverName}** is toegevoegd aan de blacklist`,
-                    color: 0xC8102E, // Rood
-                    fields: [
-                        { name: 'Server', value: serverName, inline: true },
-                        { name: 'Totaal', value: totalServers.toString(), inline: true }
-                    ],
-                    timestamp: new Date().toISOString(),
-                    footer: { text: 'Lage Landen RP Blacklist System' }
-                }]
-            })
-        });
+        // Use native fetch (available in Node 18+) or skip if not available
+        if (typeof fetch !== 'undefined') {
+            await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    embeds: [{
+                        title: '✅ Server Toegevoegd aan Blacklist',
+                        description: `**${serverName}** is toegevoegd aan de blacklist`,
+                        color: 0xC8102E, // Rood
+                        fields: [
+                            { name: 'Server', value: serverName, inline: true },
+                            { name: 'Totaal', value: totalServers.toString(), inline: true }
+                        ],
+                        timestamp: new Date().toISOString(),
+                        footer: { text: 'Lage Landen RP Blacklist System' }
+                    }]
+                })
+            });
+        }
     } catch (error) {
         console.error('Discord notification failed:', error);
         // Negeer errors - notificatie is optioneel
@@ -70,15 +72,42 @@ exports.handler = async (event, context) => {
             };
         }
 
+        // Vind blacklist bestand
+        const paths = [
+            path.join(__dirname, '../../blacklist.json'),
+            path.join(process.cwd(), 'blacklist.json'),
+            '/var/task/blacklist.json'
+        ];
+        
+        let blacklistPath;
+        for (const testPath of paths) {
+            if (fs.existsSync(testPath)) {
+                blacklistPath = testPath;
+                break;
+            }
+        }
+        
+        if (!blacklistPath) {
+            // Maak nieuw bestand in de eerste mogelijke locatie
+            blacklistPath = paths[0];
+            const dir = path.dirname(blacklistPath);
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+        }
+        
         // Lees huidige blacklist
-        const blacklistPath = path.join(process.cwd(), 'blacklist.json');
         let blacklistData;
         
         try {
-            const fileContent = await fs.readFile(blacklistPath, 'utf8');
-            blacklistData = JSON.parse(fileContent);
+            if (fs.existsSync(blacklistPath)) {
+                const fileContent = fs.readFileSync(blacklistPath, 'utf8');
+                blacklistData = JSON.parse(fileContent);
+            } else {
+                blacklistData = { servers: [], lastUpdated: null };
+            }
         } catch (error) {
-            // Als bestand niet bestaat, maak een nieuwe lijst
+            // Als bestand niet bestaat of corrupt is, maak een nieuwe lijst
             blacklistData = { servers: [], lastUpdated: null };
         }
 
@@ -101,7 +130,7 @@ exports.handler = async (event, context) => {
         blacklistData.servers.sort();
 
         // Schrijf terug naar bestand
-        await fs.writeFile(
+        fs.writeFileSync(
             blacklistPath, 
             JSON.stringify(blacklistData, null, 2),
             'utf8'

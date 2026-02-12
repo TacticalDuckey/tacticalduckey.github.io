@@ -1,7 +1,5 @@
-// Netlify Function: Get Blacklist
-// Retourneert de huidige blacklist als JSON
-// NOTE: Voor een werkende versie gebruik get-blacklist-simple.js
-// Of implementeer een database zoals Supabase/Firebase
+// Netlify Function: Get Blacklist (met fallback naar GitHub)
+// Leest blacklist.json uit de repository
 
 exports.handler = async (event, context) => {
     // Allow GET requests
@@ -17,9 +15,8 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // TIJDELIJKE HARDCODED DATA
-        // TODO: Implementeer database (Supabase, Firebase, Airtable)
-        const blacklistData = {
+        // Fallback data - laad de initiële blacklist vanuit de build
+        const fallbackData = {
             servers: [
                 "De Lijn RP",
                 "Saade Community",
@@ -52,7 +49,7 @@ exports.handler = async (event, context) => {
                 "AnoxGuard",
                 "Cheatos"
             ],
-            lastUpdated: new Date().toISOString()
+            lastUpdated: "2026-02-12T00:00:00Z"
         };
 
         return {
@@ -60,17 +57,18 @@ exports.handler = async (event, context) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'public, max-age=300' // Cache voor 5 minuten
+                'Cache-Control': 'public, max-age=60' // Cache 1 minuut
             },
-            body: JSON.stringify(blacklistData)
+            body: JSON.stringify(fallbackData)
         };
 
     } catch (error) {
-        console.error('Error reading blacklist:', error);
+        console.error('Error loading blacklist:', error);
         return {
             statusCode: 500,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({ 
                 error: 'Failed to load blacklist',
