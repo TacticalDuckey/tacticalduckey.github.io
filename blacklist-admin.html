@@ -3,393 +3,499 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blacklist Beheer - Admin Panel</title>
+    <title>Blacklist Beheer - LagelandenRP</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
         .admin-container {
             max-width: 800px;
-            margin: 3rem auto;
-            padding: 2rem;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
         }
 
-        .admin-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 2rem;
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .admin-card h2 {
-            color: var(--primary-blue);
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--primary-blue);
-            padding-bottom: 0.5rem;
+        .admin-header h1 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .admin-section {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .admin-section h2 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.3em;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
+            margin-bottom: 8px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
         }
 
         .form-group input {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e2e8f0;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.3);
             border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            color: #fff;
+            font-size: 14px;
+            transition: border-color 0.3s;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: var(--primary-blue);
+            border-color: #00d4ff;
+        }
+
+        .hint {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+            font-style: italic;
         }
 
         .btn-group {
             display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .btn-admin {
-            padding: 0.75rem 1.5rem;
+        .btn {
+            padding: 12px 25px;
             border: none;
             border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+            transition: all 0.3s;
+            flex: 1;
         }
 
-        .btn-add {
-            background: #10b981;
-            color: white;
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #000;
         }
 
-        .btn-add:hover {
-            background: #059669;
+        .btn-primary:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 68, 68, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+
+        .message-success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #00ff00;
+        }
+
+        .message-error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff4444;
+        }
+
+        .message-warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            color: #ffa500;
+        }
+
+        .current-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .server-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+        .server-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .server-name {
+            color: #fff;
+            font-weight: 500;
         }
 
         .btn-remove {
-            background: var(--accent-red);
-            color: white;
+            padding: 5px 15px;
+            background: rgba(255, 68, 68, 0.8);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
         }
 
         .btn-remove:hover {
-            background: #991b1b;
-            transform: translateY(-2px);
+            background: #ff4444;
         }
 
-        .btn-refresh {
-            background: var(--primary-blue);
-            color: white;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .btn-refresh:hover {
-            background: var(--secondary-blue);
-            transform: translateY(-2px);
-        }
-
-        .status-message {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            display: none;
-        }
-
-        .status-success {
-            background: #d1fae5;
-            color: #065f46;
-            border-left: 4px solid #10b981;
-        }
-
-        .status-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border-left: 4px solid var(--accent-red);
-        }
-
-        .status-info {
-            background: #dbeafe;
-            color: #1e40af;
-            border-left: 4px solid var(--primary-blue);
-        }
-
-        .blacklist-preview {
-            max-height: 400px;
-            overflow-y: auto;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 2px solid #e2e8f0;
-        }
-
-        .blacklist-preview ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .blacklist-preview li {
-            padding: 0.5rem;
-            margin-bottom: 0.5rem;
-            background: white;
-            border-radius: 4px;
-            border-left: 3px solid var(--accent-red);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-            color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
+        .loading {
             text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- Emergency lights animation -->
-    <div class="emergency-lights">
-        <div class="light blue"></div>
-        <div class="light red"></div>
-        <div class="light blue"></div>
-    </div>
-
-    <div class="admin-container">
-        <h1 style="text-align: center; color: white; margin-bottom: 2rem;">🛡️ Blacklist Beheer</h1>
-
-        <!-- Stats -->
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number" id="total-servers">-</div>
-                <div class="stat-label">Servers op Blacklist</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="last-updated-time">-</div>
-                <div class="stat-label">Laatst Bijgewerkt</div>
-            </div>
+    <div class="admin-container" id="adminContent" style="display: none;">
+        <div class="admin-header">
+            <h1>🛡️ Blacklist Beheer</h1>
+            <p style="color: rgba(255,255,255,0.7);">Beheer de server blacklist voor partnerschap-eisen</p>
+            <p style="color: rgba(0, 212, 255, 0.8); font-size: 0.9em; margin-top: 10px;" id="userDisplay">Ingelogd als: <span id="username">...</span></p>
+            <a href="dashboard.html" class="btn" style="display: inline-block; margin-top: 10px; background: rgba(0, 71, 171, 0.8);">← Terug naar Dashboard</a>
         </div>
 
-        <!-- Add Server -->
-        <div class="admin-card">
-            <h2>➕ Server Toevoegen</h2>
-            <div class="form-group">
-                <label for="add-server-name">Server Naam</label>
-                <input type="text" id="add-server-name" placeholder="Bijv. Amsterdam Roleplay">
-            </div>
-            <div class="btn-group">
-                <button class="btn-admin btn-add" onclick="addServer()">Toevoegen</button>
-            </div>
-            <div class="status-message" id="add-status"></div>
+        <div id="messageContainer"></div>
+
+        <!-- Toevoegen Sectie -->
+        <div class="admin-section">
+            <h2>➕ Servers Toevoegen</h2>
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="serverInput">Server Naam (elke regel = 1 server, of komma-gescheiden)</label>
+                    <textarea 
+                        id="serverInput" 
+                        placeholder="Bijvoorbeeld:&#10;Rotterdam Zuid&#10;Amsterdam Noord&#10;Leakstad 1&#10;&#10;Of:&#10;Rotterdam Zuid, Amsterdam Noord, Leakstad 1"
+                        required
+                    ></textarea>
+                    <div class="hint">💡 Tip: Nieuwe regel (Enter) OF komma (,) tussen servers</div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="addBtn">
+                    ✅ Server(s) Toevoegen
+                </button>
+            </form>
         </div>
 
-        <!-- Remove Server -->
-        <div class="admin-card">
-            <h2>➖ Server Verwijderen</h2>
-            <div class="form-group">
-                <label for="remove-server-name">Server Naam</label>
-                <input type="text" id="remove-server-name" placeholder="Exacte naam van de server">
-            </div>
-            <div class="form-group">
-                <label for="auth-key">Authenticatie Sleutel</label>
-                <input type="password" id="auth-key" placeholder="Admin wachtwoord">
-            </div>
-            <div class="btn-group">
-                <button class="btn-admin btn-remove" onclick="removeServer()">Verwijderen</button>
-            </div>
-            <div class="status-message" id="remove-status"></div>
+        <!-- Verwijderen Sectie -->
+        <div class="admin-section">
+            <h2>🗑️ Server Verwijderen</h2>
+            <form id="removeForm">
+                <div class="form-group">
+                    <label for="removeInput">Server Naam</label>
+                    <input 
+                        type="text" 
+                        id="removeInput" 
+                        placeholder="Exacte server naam"
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="authKeyInput">Authenticatie Sleutel</label>
+                    <input 
+                        type="password" 
+                        id="authKeyInput" 
+                        placeholder="BLACKLIST_AUTH_KEY"
+                        required
+                    >
+                    <div class="hint">🔐 Authenticatie sleutel vereist voor verwijderen</div>
+                </div>
+                <button type="submit" class="btn btn-danger" id="removeBtn">
+                    🗑️ Server Verwijderen
+                </button>
+            </form>
         </div>
 
-        <!-- Current Blacklist -->
-        <div class="admin-card">
+        <!-- Huidige Blacklist -->
+        <div class="admin-section">
             <h2>📋 Huidige Blacklist</h2>
-            <div class="btn-group">
-                <button class="btn-admin btn-refresh" onclick="loadBlacklist()">🔄 Ververs Lijst</button>
+            <div id="currentList" class="current-list">
+                <div class="loading">Laden...</div>
             </div>
-            <div class="blacklist-preview" id="blacklist-preview">
-                <p style="text-align: center; color: #64748b;">Lijst wordt geladen...</p>
-            </div>
-        </div>
-
-        <!-- Back Button -->
-        <div style="text-align: center;">
-            <a href="partnerschap-eisen.html" style="display: inline-block; background: white; color: var(--primary-blue); padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
-                ← Terug naar Partnerschapseisen
-            </a>
         </div>
     </div>
 
     <script>
-        // Load blacklist on page load
-        document.addEventListener('DOMContentLoaded', loadBlacklist);
+        const API_BASE = '/.netlify/functions';
 
-        // Load blacklist from API
+        // Show message
+        function showMessage(text, type = 'success') {
+            const container = document.getElementById('messageContainer');
+            const message = document.createElement('div');
+            message.className = `message message-${type}`;
+            message.textContent = text;
+            container.appendChild(message);
+            
+            setTimeout(() => message.remove(), 5000);
+        }
+
+        // Load current blacklist
         async function loadBlacklist() {
-            const previewEl = document.getElementById('blacklist-preview');
-            const totalEl = document.getElementById('total-servers');
-            const updatedEl = document.getElementById('last-updated-time');
-
+            const listDiv = document.getElementById('currentList');
+            
             try {
-                previewEl.innerHTML = '<p style="text-align: center; color: #64748b;">Laden...</p>';
-
-                const response = await fetch('/.netlify/functions/get-blacklist');
+                const response = await fetch(`${API_BASE}/get-blacklist`);
                 
                 if (!response.ok) {
-                    throw new Error('Failed to load blacklist');
+                    throw new Error('Kon blacklist niet laden');
                 }
-
+                
                 const data = await response.json();
                 
-                // Update stats
-                totalEl.textContent = data.servers.length;
-                
-                if (data.lastUpdated) {
-                    const date = new Date(data.lastUpdated);
-                    updatedEl.textContent = date.toLocaleTimeString('nl-NL', { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                    });
-                }
-                
-                // Display blacklist
                 if (data.servers && data.servers.length > 0) {
-                    const ul = document.createElement('ul');
-                    data.servers.forEach(server => {
-                        const li = document.createElement('li');
-                        li.textContent = server;
-                        ul.appendChild(li);
-                    });
-                    previewEl.innerHTML = '';
-                    previewEl.appendChild(ul);
+                    listDiv.innerHTML = data.servers.map(server => `
+                        <div class="server-item">
+                            <span class="server-name">${server}</span>
+                            <button class="btn-remove" onclick="quickRemove('${server.replace(/'/g, "\\'")}')">
+                                Verwijder
+                            </button>
+                        </div>
+                    `).join('');
                 } else {
-                    previewEl.innerHTML = '<p style="text-align: center; color: #64748b;">Geen servers op de blacklist</p>';
+                    listDiv.innerHTML = '<div class="loading">Geen servers op blacklist</div>';
                 }
-
             } catch (error) {
-                console.error('Error loading blacklist:', error);
-                previewEl.innerHTML = '<p style="text-align: center; color: #991b1b;">❌ Fout bij laden</p>';
+                listDiv.innerHTML = '<div class="loading" style="color: #ff4444;">❌ Fout bij laden</div>';
+                console.error(error);
             }
         }
 
-        // Add server to blacklist
-        async function addServer() {
-            const serverName = document.getElementById('add-server-name').value.trim();
-            const statusEl = document.getElementById('add-status');
+        // Quick remove from list
+        window.quickRemove = function(serverName) {
+            const authKey = prompt('Voer authenticatie sleutel in:');
+            if (!authKey) return;
+            
+            removeServer(serverName, authKey);
+        };
 
-            if (!serverName) {
-                showStatus(statusEl, 'error', 'Voer een server naam in');
+        // Add servers
+        document.getElementById('addForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const serverInput = document.getElementById('serverInput');
+            const addBtn = document.getElementById('addBtn');
+            const serverNames = serverInput.value.trim();
+            
+            if (!serverNames) {
+                showMessage('Voer minimaal één server naam in', 'error');
                 return;
             }
-
+            
+            addBtn.disabled = true;
+            addBtn.textContent = '⏳ Toevoegen...';
+            
             try {
-                showStatus(statusEl, 'info', 'Server wordt toegevoegd...');
-
-                const response = await fetch('/.netlify/functions/update-blacklist', {
+                const response = await fetch(`${API_BASE}/update-blacklist`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        content: serverName
-                    })
+                    body: JSON.stringify({ serverName: serverNames })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (response.ok) {
-                    showStatus(statusEl, 'success', `✅ ${serverName} toegevoegd aan blacklist!`);
-                    document.getElementById('add-server-name').value = '';
-                    setTimeout(loadBlacklist, 500);
+                    const added = data.added || [];
+                    const duplicates = data.duplicates || [];
+                    const errors = data.errors || [];
+                    
+                    if (added.length > 0) {
+                        showMessage(`✅ ${added.length} server(s) toegevoegd: ${added.join(', ')}`, 'success');
+                    }
+                    
+                    if (duplicates.length > 0) {
+                        showMessage(`⚠️ ${duplicates.length} duplicate(s) overgeslagen: ${duplicates.join(', ')}`, 'warning');
+                    }
+                    
+                    if (errors.length > 0) {
+                        showMessage(`❌ ${errors.length} fout(en): ${errors.join(', ')}`, 'error');
+                    }
+                    
+                    serverInput.value = '';
+                    loadBlacklist();
                 } else {
-                    showStatus(statusEl, 'error', data.error || 'Fout bij toevoegen');
+                    showMessage(data.error || 'Fout bij toevoegen', 'error');
                 }
-
             } catch (error) {
-                console.error('Error adding server:', error);
-                showStatus(statusEl, 'error', '❌ Fout bij toevoegen van server');
+                showMessage('Netwerkfout: ' + error.message, 'error');
+            } finally {
+                addBtn.disabled = false;
+                addBtn.textContent = '✅ Server(s) Toevoegen';
             }
-        }
+        });
 
-        // Remove server from blacklist
-        async function removeServer() {
-            const serverName = document.getElementById('remove-server-name').value.trim();
-            const authKey = document.getElementById('auth-key').value;
-            const statusEl = document.getElementById('remove-status');
+        // Remove server
+        document.getElementById('removeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const serverName = document.getElementById('removeInput').value.trim();
+            const authKey = document.getElementById('authKeyInput').value;
+            
+            await removeServer(serverName, authKey);
+        });
 
-            if (!serverName || !authKey) {
-                showStatus(statusEl, 'error', 'Voer server naam en authenticatie sleutel in');
-                return;
+        async function removeServer(serverName, authKey) {
+            const removeBtn = document.getElementById('removeBtn');
+            
+            if (removeBtn) {
+                removeBtn.disabled = true;
+                removeBtn.textContent = '⏳ Verwijderen...';
             }
-
+            
             try {
-                showStatus(statusEl, 'info', 'Server wordt verwijderd...');
-
-                const response = await fetch('/.netlify/functions/remove-from-blacklist', {
-                    method: 'POST',
+                const response = await fetch(`${API_BASE}/remove-from-blacklist`, {
+                    method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authKey}`
                     },
-                    body: JSON.stringify({
-                        serverName: serverName,
-                        authKey: authKey
-                    })
+                    body: JSON.stringify({ serverName })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (response.ok) {
-                    showStatus(statusEl, 'success', `✅ ${serverName} verwijderd van blacklist!`);
-                    document.getElementById('remove-server-name').value = '';
-                    document.getElementById('auth-key').value = '';
-                    setTimeout(loadBlacklist, 500);
+                    showMessage(`✅ Server "${serverName}" verwijderd`, 'success');
+                    document.getElementById('removeInput').value = '';
+                    document.getElementById('authKeyInput').value = '';
+                    loadBlacklist();
                 } else {
-                    showStatus(statusEl, 'error', data.error || 'Fout bij verwijderen');
+                    showMessage(data.error || 'Fout bij verwijderen', 'error');
                 }
-
             } catch (error) {
-                console.error('Error removing server:', error);
-                showStatus(statusEl, 'error', '❌ Fout bij verwijderen van server');
+                showMessage('Netwerkfout: ' + error.message, 'error');
+            } finally {
+                if (removeBtn) {
+                    removeBtn.disabled = false;
+                    removeBtn.textContent = '🗑️ Server Verwijderen';
+                }
             }
         }
 
-        // Show status message
-        function showStatus(element, type, message) {
-            element.className = 'status-message status-' + type;
-            element.textContent = message;
-            element.style.display = 'block';
+        // Load on page load
+        loadBlacklist();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadBlacklist, 30000);
+    </script>
 
+    <!-- Authentication Script -->
+    <script src="auth.js"></script>
+    <script>
+        // Check if user is authenticated and has admin role
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = setInterval(() => {
+                if (window.netlifyIdentity && window.auth) {
+                    clearInterval(checkAuth);
+                    
+                    // Check authentication
+                    const user = auth.user;
+                    
+                    if (!user) {
+                        // Not logged in - redirect to login
+                        window.location.href = '/login.html?redirect=/blacklist-admin.html';
+                        return;
+                    }
+                    
+                    // Check if user has admin role
+                    const role = auth.getUserRole();
+                    
+                    if (role !== 'admin') {
+                        // Not an admin - show access denied
+                        auth.showAccessDenied();
+                        return;
+                    }
+                    
+                    // User is authenticated and is admin - show content
+                    document.getElementById('adminContent').style.display = 'block';
+                    document.getElementById('username').textContent = user.user_metadata?.full_name || user.email;
+                }
+            }, 100);
+            
+            // Timeout after 3 seconds if auth doesn't load
             setTimeout(() => {
-                element.style.display = 'none';
-            }, 5000);
-        }
-
-        // Allow Enter key to submit
-        document.getElementById('add-server-name').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addServer();
+                clearInterval(checkAuth);
+                if (!auth || !auth.user) {
+                    window.location.href = '/login.html?redirect=/blacklist-admin.html';
+                }
+            }, 3000);
         });
     </script>
 </body>

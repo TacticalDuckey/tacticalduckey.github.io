@@ -1,0 +1,35 @@
+# flyctl launch added from .gitignore
+# Environment variables (never commit these!)
+**\.env
+**\.env.local
+**\.env.production
+
+# Secrets and credentials
+**\*webhook*.txt
+**\secrets.txt
+**\credentials.txt
+
+# Node modules (if you add npm later)
+**\node_modules
+
+# OS files
+**\.DS_Store
+**\Thumbs.db
+**\desktop.ini
+
+# IDE files
+**\.vscode
+**\.idea
+**\*.swp
+**\*.swo
+**\*~
+
+# Logs
+**\*.log
+**\npm-debug.log*
+
+# flyctl launch added from discord-bot\.gitignore
+discord-bot\**\node_modules
+discord-bot\**\.env
+discord-bot\**\*.log
+fly.toml

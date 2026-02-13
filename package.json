@@ -10,7 +10,8 @@
     "bot": "node discord-bot/bot.js"
   },
   "dependencies": {
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.25.1",
+    "dotenv": "^16.6.1"
   },
   "devDependencies": {
     "netlify-cli": "^17.0.0"

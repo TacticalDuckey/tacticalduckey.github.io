@@ -1,0 +1,18 @@
+# fly.toml app configuration file generated for discord-dingen on 2026-02-12T19:35:08+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'discord-dingen'
+primary_region = 'ams'
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

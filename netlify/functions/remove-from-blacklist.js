@@ -1,163 +1,110 @@
-// Netlify Function: Remove from Blacklist (Discord Database)
-// Verwijdert een server door het Discord bericht te deleten
-// Vereist authenticatie met BLACKLIST_AUTH_KEY
+exports.handler = async function(event, context) {
+  const channelId = process.env.DISCORD_CHANNEL_ID;
+  const botToken = process.env.BOT_TOKEN;
+  const authKey = process.env.BLACKLIST_AUTH_KEY;
 
-exports.handler = async (event, context) => {
-    // Only allow POST requests
-    if (event.httpMethod !== 'POST') {
-        return {
-            statusCode: 405,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({ error: 'Method not allowed' })
-        };
+  if (!channelId || !botToken || !authKey) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Missing environment variables' })
+    };
+  }
+
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+        'Access-Control-Allow-Methods': 'DELETE, OPTIONS'
+      },
+      body: ''
+    };
+  }
+
+  if (event.httpMethod !== 'DELETE') {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
+  }
+
+  try {
+    // Check auth
+    const providedKey = event.headers['authorization']?.replace('Bearer ', '');
+    
+    if (providedKey !== authKey) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ error: 'Unauthorized' })
+      };
     }
 
-    try {
-        const payload = JSON.parse(event.body);
-        const { serverName, authKey } = payload;
+    const data = JSON.parse(event.body);
+    const serverName = data.serverName?.trim();
 
-        // Authenticatie
-        const validAuthKey = process.env.BLACKLIST_AUTH_KEY || 'CHANGE_THIS_SECRET';
-        
-        if (authKey !== validAuthKey) {
-            return {
-                statusCode: 403,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ error: 'Unauthorized' })
-            };
-        }
-
-        if (!serverName) {
-            return {
-                statusCode: 400,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ error: 'Server name is required' })
-            };
-        }
-
-        const botToken = process.env.BOT_TOKEN;
-        const channelId = process.env.DISCORD_CHANNEL_ID;
-
-        if (!botToken || !channelId) {
-            return {
-                statusCode: 500,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ error: 'Discord configuration missing' })
-            };
-        }
-
-        // Zoek het bericht met deze server naam
-        const messagesResponse = await fetch(
-            `https://discord.com/api/v10/channels/${channelId}/messages?limit=100`,
-            {
-                headers: {
-                    'Authorization': `Bot ${botToken}`
-                }
-            }
-        );
-
-        if (!messagesResponse.ok) {
-            const errorText = await messagesResponse.text();
-            console.error('Discord fetch error:', errorText);
-            return {
-                statusCode: 500,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ 
-                    error: 'Failed to fetch messages from Discord',
-                    details: errorText 
-                })
-            };
-        }
-
-        const messages = await messagesResponse.json();
-        const messageToDelete = messages.find(
-            msg => msg.content.trim().toLowerCase() === serverName.toLowerCase()
-        );
-
-        if (!messageToDelete) {
-            return {
-                statusCode: 404,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ 
-                    error: 'Server not found on blacklist',
-                    serverName: serverName 
-                })
-            };
-        }
-
-        // Delete het bericht
-        const deleteResponse = await fetch(
-            `https://discord.com/api/v10/channels/${channelId}/messages/${messageToDelete.id}`,
-            {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bot ${botToken}`
-                }
-            }
-        );
-
-        if (!deleteResponse.ok) {
-            const errorText = await deleteResponse.text();
-            console.error('Discord delete error:', errorText);
-            return {
-                statusCode: 500,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ 
-                    error: 'Failed to delete message from Discord',
-                    details: errorText 
-                })
-            };
-        }
-
-        const totalServers = messages.length - 1; // -1 omdat we er net 1 hebben verwijderd
-
-        return {
-            statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({ 
-                success: true,
-                message: 'Server removed from blacklist',
-                serverName: serverName,
-                totalServers: totalServers
-            })
-        };
-
-    } catch (error) {
-        console.error('Error removing from blacklist:', error);
-        return {
-            statusCode: 500,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({ 
-                error: 'Failed to remove from blacklist',
-                details: error.message 
-            })
-        };
+    if (!serverName) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Server naam is verplicht' })
+      };
     }
+
+    // Zoek het bericht met deze server naam
+    const response = await fetch(
+      `https://discord.com/api/v10/channels/${channelId}/messages?limit=100`,
+      {
+        headers: {
+          'Authorization': `Bot ${botToken}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch messages');
+    }
+
+    const messages = await response.json();
+    const messageToDelete = messages.find(
+      msg => msg.content?.toLowerCase() === serverName.toLowerCase()
+    );
+
+    if (!messageToDelete) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ error: 'Server niet gevonden op blacklist' })
+      };
+    }
+
+    // Verwijder het bericht
+    const deleteResponse = await fetch(
+      `https://discord.com/api/v10/channels/${channelId}/messages/${messageToDelete.id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bot ${botToken}`
+        }
+      }
+    );
+
+    if (!deleteResponse.ok) {
+      throw new Error('Failed to delete message');
+    }
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({ success: true, serverName })
+    };
+
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message })
+    };
+  }
 };
