@@ -2,7 +2,7 @@
   "name": "lage-landen-rp-portal",
   "version": "1.0.0",
   "description": "Lage Landen RP Hulpdiensten Portal met Discord Blacklist Integration",
-  "main": "index.html",
+  "main": "index.js",
   "scripts": {
     "dev": "netlify dev",
     "build": "echo 'No build needed'",
