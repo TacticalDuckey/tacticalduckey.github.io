@@ -197,6 +197,62 @@
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
         }
+
+        .blacklist-section {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 2px solid #991b1b;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .blacklist-section h3 {
+            color: #991b1b;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .blacklist-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            padding: 0;
+        }
+
+        .blacklist-list li {
+            color: #7f1d1d;
+            padding: 0.75rem;
+            background: #fef2f2;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            list-style: none;
+            border: 1px solid #fecaca;
+        }
+
+        .blacklist-list li::before {
+            content: "❌ ";
+            margin-right: 0.5rem;
+        }
+
+        .discord-link {
+            display: inline-block;
+            background: #5865F2;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .discord-link:hover {
+            background: #4752C4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -330,6 +386,42 @@
                     <li>Server staat op de blacklist</li>
                 </ul>
             </div>
+
+            <!-- Blacklist Sectie -->
+            <div class="blacklist-section">
+                <h3>🚫 Discord Blacklist</h3>
+                <p style="color: #7f1d1d; line-height: 1.8;">
+                    Wij nemen de Discord Blacklist zeer serieus. Servers of gebruikers die op deze lijst staan,
+                    komen niet in aanmerking voor enige vorm van samenwerking. Dit helpt ons een veilige en
+                    betrouwbare community te behouden.
+                </p>
+
+                <!-- Loading indicator -->
+                <div id="blacklist-loading" style="text-align: center; padding: 2rem;">
+                    <p style="color: #7f1d1d;">🔄 Blacklist wordt geladen...</p>
+                </div>
+
+                <!-- Blacklist container (dynamically filled) -->
+                <ul class="blacklist-list" id="blacklist-container" style="display: none;">
+                    <!-- Wordt dynamisch gevuld via JavaScript -->
+                </ul>
+
+                <!-- Last updated info -->
+                <p id="blacklist-updated" style="color: #7f1d1d; margin-top: 1rem; font-size: 0.85rem; font-style: italic; display: none;">
+                    <!-- Wordt dynamisch gevuld -->
+                </p>
+
+                <p style="color: #7f1d1d; margin-top: 1rem; font-weight: 600;" id="blacklist-count">
+                    <!-- Wordt dynamisch gevuld -->
+                </p>
+
+                <p style="color: #7f1d1d; margin-top: 1.5rem;">
+                    Wil je de volledige en actuele blacklist checken? Join dan de officiële Discord Blacklist server:
+                </p>
+                <a href="https://discord.gg/yBsrWcCMDf" target="_blank" class="discord-link">
+                    💬 Join Discord Blacklist Server
+                </a>
+            </div>
         </div>
 
         <!-- Benefits -->
@@ -374,5 +466,72 @@
             <p class="footer-note">Partnership richtlijnen kunnen zonder voorafgaande kennisgeving worden gewijzigd</p>
         </div>
     </footer>
+
+    <!-- Blacklist Dynamic Loading Script -->
+    <script>
+        // Load blacklist dynamically from API
+        async function loadBlacklist() {
+            const loadingEl = document.getElementById('blacklist-loading');
+            const containerEl = document.getElementById('blacklist-container');
+            const updatedEl = document.getElementById('blacklist-updated');
+            const countEl = document.getElementById('blacklist-count');
+
+            try {
+                // Fetch blacklist from Netlify function
+                const response = await fetch('/.netlify/functions/get-blacklist');
+                if (!response.ok) {
+                    throw new Error('Failed to load blacklist');
+                }
+
+                const data = await response.json();
+
+                // Hide loading, show container
+                loadingEl.style.display = 'none';
+                containerEl.style.display = 'grid';
+                updatedEl.style.display = 'block';
+
+                // Clear container
+                containerEl.innerHTML = '';
+
+                // Add each server to the list
+                if (data.servers && data.servers.length > 0) {
+                    data.servers.forEach(server => {
+                        const li = document.createElement('li');
+                        li.textContent = server;
+                        containerEl.appendChild(li);
+                    });
+
+                    // Update count
+                    countEl.textContent = `⚠️ ${data.servers.length} servers staan momenteel op de blacklist.`;
+                } else {
+                    containerEl.innerHTML = '<li style="grid-column: 1/-1; text-align: center;">✅ Geen servers op de blacklist</li>';
+                    countEl.textContent = '✅ Momenteel geen servers op de blacklist.';
+                }
+
+                // Update last updated time
+                if (data.lastUpdated) {
+                    const lastUpdated = new Date(data.lastUpdated);
+                    const formattedDate = lastUpdated.toLocaleDateString('nl-NL', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    updatedEl.textContent = `Laatst bijgewerkt: ${formattedDate}`;
+                }
+
+            } catch (error) {
+                console.error('Error loading blacklist:', error);
+                loadingEl.innerHTML = '<p style="color: #991b1b;">❌ Fout bij laden van blacklist. Probeer later opnieuw.</p>';
+            }
+        }
+
+        // Load blacklist when page loads
+        document.addEventListener('DOMContentLoaded', loadBlacklist);
+
+        // Auto-refresh every 5 minutes
+        setInterval(loadBlacklist, 5 * 60 * 1000);
+    </script>
 </body>
 </html>
