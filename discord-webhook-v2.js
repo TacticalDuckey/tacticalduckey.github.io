@@ -189,7 +189,13 @@ class DiscordSubmitter {
             'rijbewijs-auto': '🚗 Rijbewijs Auto Toets',
             'rijbewijs-motor': '🏍️ Rijbewijs Motor Toets',
             'rijbewijs-boot': '🚤 Rijbewijs Boot Toets',
-            'rijbewijs-lucht': '✈️ Rijbewijs Lucht Toets'
+            'rijbewijs-lucht': '✈️ Rijbewijs Lucht Toets',
+            'ambulance': '🚑 Nieuwe Ambulance Sollicitatie',
+            'ambulance-ehbo': '🩹 EHBO Toets Inzending',
+            'ambulance-aed': '⚡ AED & Reanimatie Toets',
+            'ambulance-trauma': '🩸 Traumazorg Toets',
+            'ambulance-bhv': '🩹 BHV & Tourniquet Toets',
+            'ambulance-staff': '👔 Ambulance Staff Sollicitatie'
         };
         return titles[formType] || '📝 Sollicitatie';
     }
@@ -205,7 +211,13 @@ class DiscordSubmitter {
             'rijbewijs-auto': 0x2ECC71, // Groen
             'rijbewijs-motor': 0xE74C3C,// Rood
             'rijbewijs-boot': 0x3498DB, // Blauw
-            'rijbewijs-lucht': 0x9B59B6 // Paars
+            'rijbewijs-lucht': 0x9B59B6,// Paars
+            'ambulance': 0xDC2626,      // Ambulance rood
+            'ambulance-ehbo': 0xEF4444, // Licht rood
+            'ambulance-aed': 0xF97316,  // Oranje-rood
+            'ambulance-trauma': 0x991B1B,// Donkerrood (ernstig)
+            'ambulance-bhv': 0xDC2626,  // Rood
+            'ambulance-staff': 0x7C2D12 // Donker bruin-rood
         };
         return colors[formType] || 0x0047AB;
     }
@@ -218,6 +230,12 @@ class DiscordSubmitter {
             this.addSpoedSollicitatieFields(embed, formData);
         } else if (formType === 'wtgm') {
             this.addWTGMFields(embed, formData);
+        } else if (formType === 'ambulance') {
+            this.addAmbulanceSollicitatieFields(embed, formData);
+        } else if (formType === 'ambulance-staff') {
+            this.addAmbulanceStaffFields(embed, formData);
+        } else if (formType.startsWith('ambulance-')) {
+            this.addAmbulanceToetsFields(embed, formData, formType);
         } else if (formType === 'grootwapen') {
             this.addGrootWapenFields(embed, formData);
         } else if (formType === 'taser') {
@@ -778,6 +796,200 @@ class DiscordSubmitter {
             embed.fields.push({
                 name: '⚠️ Let op',
                 value: `Formulier bevat ${fields.length} velden. Alleen eerste 25 worden getoond.`,
+                inline: false
+            });
+        }
+    }
+
+    // ==================== AMBULANCE SOLLICITATIE FIELDS ====================
+
+    addAmbulanceSollicitatieFields(embed, formData) {
+        const getField = this.createFieldGetter(formData);
+
+        // Persoonlijke gegevens
+        const basisInfo = [];
+        if (getField('naam')) basisInfo.push(`**Naam:** ${getField('naam')}`);
+        if (getField('discord')) basisInfo.push(`**Discord:** ${getField('discord')}`);
+        if (getField('leeftijd')) basisInfo.push(`**Leeftijd:** ${getField('leeftijd')}`);
+        
+        if (basisInfo.length > 0) {
+            embed.fields.push({
+                name: '👤 Persoonlijke Gegevens',
+                value: basisInfo.join('\n'),
+                inline: false
+            });
+        }
+
+        // Motivatie
+        if (getField('motivatie')) {
+            embed.fields.push({
+                name: '💭 Motivatie',
+                value: getField('motivatie').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Scenario's - compact format
+        for (let i = 1; i <= 5; i++) {
+            const scenario = getField(`scenario${i}`);
+            if (scenario) {
+                embed.fields.push({
+                    name: `🚑 Scenario ${i}`,
+                    value: scenario.substring(0, 1024),
+                    inline: false
+                });
+            }
+        }
+
+        // Extra velden
+        const extraFields = ['beschikbaarheid', 'ervaring', 'rp_ervaring', 'toevoegen'];
+        extraFields.forEach(field => {
+            const value = getField(field);
+            if (value) {
+                embed.fields.push({
+                    name: field.charAt(0).toUpperCase() + field.slice(1).replace('_', ' '),
+                    value: value.substring(0, 1024),
+                    inline: field !== 'toevoegen'
+                });
+            }
+        });
+    }
+
+    addAmbulanceStaffFields(embed, formData) {
+        const getField = this.createFieldGetter(formData);
+
+        // Basis info
+        const basisInfo = [];
+        if (getField('naam')) basisInfo.push(`**Naam:** ${getField('naam')}`);
+        if (getField('discord')) basisInfo.push(`**Discord:** ${getField('discord')}`);
+        if (getField('leeftijd')) basisInfo.push(`**Leeftijd:** ${getField('leeftijd')}`);
+        if (getField('huidigerang')) basisInfo.push(`**Huidige rang:** ${getField('huidigerang')}`);
+        if (getField('ervaring')) basisInfo.push(`**Ervaring:** ${getField('ervaring')}`);
+        
+        if (basisInfo.length > 0) {
+            embed.fields.push({
+                name: '👤 Basis Informatie',
+                value: basisInfo.join('\n'),
+                inline: false
+            });
+        }
+
+        // Motivatie & Visie
+        if (getField('motivatie')) {
+            embed.fields.push({
+                name: '💼 Motivatie',
+                value: getField('motivatie').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        if (getField('visie')) {
+            embed.fields.push({
+                name: '🎯 Visie',
+                value: getField('visie').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Sterke/zwakke punten
+        const eigenschappen = [];
+        if (getField('sterke_punten')) eigenschappen.push(`**✅ Sterke punten:**\n${getField('sterke_punten')}`);
+        if (getField('zwakke_punten')) eigenschappen.push(`**⚠️ Ontwikkelpunten:**\n${getField('zwakke_punten')}`);
+        
+        if (eigenschappen.length > 0) {
+            embed.fields.push({
+                name: '👥 Eigenschappen',
+                value: eigenschappen.join('\n\n').substring(0, 1024),
+                inline: false
+            });
+        }
+
+        // Management scenario's (short)
+        for (let i = 1; i <= 5; i++) {
+            const scenario = getField(`scenario${i}`);
+            if (scenario) {
+                const preview = scenario.length > 200 ? scenario.substring(0, 197) + '...' : scenario;
+                embed.fields.push({
+                    name: `👔 Management Scenario ${i}`,
+                    value: preview,
+                    inline: false
+                });
+            }
+        }
+
+        // Extra info (compact)
+        const extraInfo = [];
+        if (getField('certificaten')) extraInfo.push(`**Certificaten:** ${getField('certificaten')}`);
+        if (getField('beschikbaarheid')) extraInfo.push(`**Beschikbaarheid:** ${getField('beschikbaarheid')}`);
+        if (getField('leiderschapservaring')) extraInfo.push(`**Leiderschapservaring:** ${getField('leiderschapservaring')}`);
+        
+        if (extraInfo.length > 0) {
+            embed.fields.push({
+                name: '📋 Aanvullende Info',
+                value: extraInfo.join('\n'),
+                inline: false
+            });
+        }
+    }
+
+    addAmbulanceToetsFields(embed, formData, formType) {
+        const getField = this.createFieldGetter(formData);
+
+        // Bepaal toets naam
+        const toetsNamen = {
+            'ambulance-ehbo': 'EHBO',
+            'ambulance-aed': 'AED & Reanimatie',
+            'ambulance-trauma': 'Traumazorg',
+            'ambulance-bhv': 'BHV & Tourniquet'
+        };
+        const toetsNaam = toetsNamen[formType] || 'Ambulance Toets';
+
+        // Basis info
+        const basisInfo = [];
+        if (getField('naam')) basisInfo.push(`**Naam:** ${getField('naam')}`);
+        if (getField('discord')) basisInfo.push(`**Discord:** ${getField('discord')}`);
+        
+        if (basisInfo.length > 0) {
+            embed.fields.push({
+                name: '👤 Deelnemer',
+                value: basisInfo.join('\n'),
+                inline: false
+            });
+        }
+
+        // Tel antwoorden
+        let aantalVragen = 0;
+        const maxVragen = formType === 'ambulance-ehbo' ? 20 : 
+                          formType === 'ambulance-aed' ? 15 :
+                          formType === 'ambulance-trauma' ? 18 : 16;
+
+        for (let i = 1; i <= maxVragen; i++) {
+            if (getField(`vraag${i}`)) aantalVragen++;
+        }
+
+        embed.fields.push({
+            name: '📊 Toets Informatie',
+            value: `**Type:** ${toetsNaam}\n**Aantal vragen:** ${aantalVragen}/${maxVragen}\n**Status:** ⏳ Wacht op beoordeling`,
+            inline: false
+        });
+
+        // Voeg eerste 5 antwoorden toe als preview
+        for (let i = 1; i <= Math.min(5, maxVragen); i++) {
+            const vraag = getField(`vraag${i}`);
+            if (vraag) {
+                const preview = vraag.length > 150 ? vraag.substring(0, 147) + '...' : vraag;
+                embed.fields.push({
+                    name: `❓ Vraag ${i}`,
+                    value: preview,
+                    inline: false
+                });
+            }
+        }
+
+        if (aantalVragen > 5) {
+            embed.fields.push({
+                name: '📝 Opmerking',
+                value: `*Nog ${aantalVragen - 5} antwoorden niet getoond. Bekijk volledig formulier voor alle antwoorden.*`,
                 inline: false
             });
         }

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AED Reanimatie Toets - Nakijkmodel (STAFF ONLY)</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c2d12, #dc2626);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            background: #f9fafb;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #dc2626;
+            border-radius: 8px;
+        }
+        
+        .question-number {
+            color: #7c2d12;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        
+        .answer-correct {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            padding: 1rem;
+            border-left: 4px solid #10b981;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+        
+        .answer-wrong {
+            background: #fee2e2;
+            padding: 0.5rem 1rem;
+            border-left: 3px solid #ef4444;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            opacity: 0.7;
+        }
+        
+        .explanation {
+            background: #fef3c7;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 6px;
+            font-size: 14px;
+            border-left: 3px solid #f59e0b;
+        }
+        
+        .stats-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .stats-box h3 {
+            margin: 0 0 1rem 0;
+            color: #1e40af;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #dc2626;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .correct-icon::before {
+            content: "✅ ";
+        }
+        
+        .wrong-icon::before {
+            content: "❌ ";
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚡ AED & Reanimatie Toets - Nakijkmodel</h1>
+        <p>UITSLUITEND VOOR STAFF LEDEN</p>
+        <a href="../../staff-nakijkmodellen.html" class="back-link">← Terug naar nakijkmodellen</a>
+    </div>
+
+    <div class="container">
+        <div class="warning-box">
+            <strong>⚠️ VERTROUWELIJK</strong>
+            <p>Dit document bevat alle antwoorden en is alleen toegankelijk voor staff. Deel deze informatie NOOIT met sollicitanten!</p>
+        </div>
+
+        <div class="stats-box">
+            <h3>📊 Toets Statistieken</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">Aantal vragen</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">80%</div>
+                    <div class="stat-label">Minimaal vereist</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12/15</div>
+                    <div class="stat-label">Vragen goed = geslaagd</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vraag 1 -->
+        <div class="question">
+            <div class="question-number">Vraag 1</div>
+            <div class="question-text">Wat betekent AED?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Automatisch Elektrisch Defibrillator</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Automatische Externe Defibrillator</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Acute Eerste-hulp Dienst</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Actief Elektro Diagnosesysteem</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> AED staat voor Automatische Externe Defibrillator - een apparaat dat het hartritme analyseert en een elektrische schok geeft.
+            </div>
+        </div>
+
+        <!-- Vraag 2 -->
+        <div class="question">
+            <div class="question-number">Vraag 2</div>
+            <div class="question-text">Wanneer gebruik je een AED?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Bij bewusteloze persoon</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Bij een hartaanval</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Bij hartstilstand (bewusteloos EN niet of abnormaal ademend)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Bij iedereen die op de grond ligt</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> AED ALLEEN bij hartstilstand: persoon is bewusteloos EN ademt niet of abnormaal. Check altijd ademhaling!
+            </div>
+        </div>
+
+        <!-- Vraag 3 -->
+        <div class="question">
+            <div class="question-number">Vraag 3</div>
+            <div class="question-text">In welke volgorde handel je bij een hartstilstand?</div>
+            <div class="answer-wrong"><span class="wrong-icon">AED halen, 112 bellen, reanimeren</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">112 bellen, reanimatie starten, AED zo snel mogelijk aansluiten</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen AED gebruiken, geen reanimatie</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Eerst 5 minuten reanimeren, dan AED</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Direct 112, meteen reanimatie beginnen, AED zo snel mogelijk (laat iemand anders halen indien mogelijk).
+            </div>
+        </div>
+
+        <!-- Vraag 4 -->
+        <div class="question">
+            <div class="question-number">Vraag 4</div>
+            <div class="question-text">Wat is de juiste frequentie voor borstcompressies?</div>
+            <div class="answer-wrong"><span class="wrong-icon">60-80 per minuut</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">80-100 per minuut</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">100-120 per minuut</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">120-140 per minuut</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> 100-120 compressies per minuut. Denk aan het ritme van "Stayin' Alive" of "Baby Shark".
+            </div>
+        </div>
+
+        <!-- Vraag 5 -->
+        <div class="question">
+            <div class="question-number">Vraag 5</div>
+            <div class="question-text">Hoe diep moet je indrukken bij borstcompressies (volwassene)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">2-3 cm</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">3-4 cm</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">5-6 cm</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">7-8 cm</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> 5-6 cm diep bij volwassenen. Volledig laten terugveren tussen compressies. Druk hard en snel!
+            </div>
+        </div>
+
+        <!-- Vraag 6 -->
+        <div class="question">
+            <div class="question-number">Vraag 6</div>
+            <div class="question-text">Wat is de juiste verhouding tussen compressies en beademingen (1 hulpverlener)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">15:2</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">30:2</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">30:1</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen compressies, geen beademing</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> 30 compressies gevolgd door 2 beademingen. Herhaal dit tot AED er is of hulpdiensten overnemen.
+            </div>
+        </div>
+
+        <!-- Vraag 7 -->
+        <div class="question">
+            <div class="question-number">Vraag 7</div>
+            <div class="question-text">Wat zijn de stappen voor AED gebruik?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">1. Aanzetten 2. Plakkers plaatsen 3. Analyseren 4. Schok (indien geadviseerd) 5. Direct reanimeren</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen plakkers plaatsen en toestel laten werken</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Eerst schok, dan plakkers plaatsen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">AED vervangt reanimatie volledig</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> AED aan → plakkers → analyseer → schok (als geadviseerd) → DIRECT verder reanimeren. AED geeft instructies!
+            </div>
+        </div>
+
+        <!-- Vraag 8 -->
+        <div class="question">
+            <div class="question-number">Vraag 8</div>
+            <div class="question-text">Wat roep je ALTIJD voor je een schok geeft?</div>
+            <div class="answer-wrong"><span class="wrong-icon">"Iedereen opzij!"</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">"Niet aanraken!" (of "Stand back!")</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">"Schok komt eraan!"</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Je hoeft niets te roepen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> "NIET AANRAKEN!" - check dat niemand het slachtoffer aanraakt voordat je de schokknop indrukt. Gevaar voor anderen!
+            </div>
+        </div>
+
+        <!-- Vraag 9 -->
+        <div class="question">
+            <div class="question-number">Vraag 9</div>
+            <div class="question-text">Wat doe je als het slachtoffer nat is of in/bij water ligt?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct AED aansluiten, water maakt niet uit</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Slachtoffer uit water halen, borst droogwrijven, dan pas AED</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">AED niet gebruiken, te gevaarlijk</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">AED op waterdichte modus zetten</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Slachtoffer wegslepen uit water, borst goed droogwrijven (handdoek/kleding), DAN pas AED plakkers plaatsen.
+            </div>
+        </div>
+
+        <!-- Vraag 10 -->
+        <div class="question">
+            <div class="question-number">Vraag 10</div>
+            <div class="question-text">Wat doe je als het slachtoffer een pacemaker heeft (voelbare bult onder huid)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">AED niet gebruiken</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct op de pacemaker plakken</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Plakkers minimaal 8 cm van pacemaker plaatsen</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Eerst pacemaker verwijderen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Pacemaker herken je aan bult onder huid (meestal linkerboven). Plaats plakkers minimaal 8 cm ervan af.
+            </div>
+        </div>
+
+        <!-- Vraag 11 -->
+        <div class="question">
+            <div class="question-number">Vraag 11</div>
+            <div class="question-text">Wanneer stop je met reanimeren?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Na 10 minuten</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Als je moe wordt</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Als slachtoffer weer ademt, ambulance overneemt, of je volledig uitgeput bent</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Als AED zegt "geen schok geadviseerd"</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Stop ALLEEN als: persoon weer ademt, professionals overnemen, of je kunt echt niet meer (wissel af met anderen!).
+            </div>
+        </div>
+
+        <!-- Vraag 12 -->
+        <div class="question">
+            <div class="question-number">Vraag 12</div>
+            <div class="question-text">Wat doe je als je alleen bent en iemand een hartstilstand heeft?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Eerst 112 bellen (luidspreker), dan direct reanimeren</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Eerst 2 minuten reanimeren, dan bellen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Eerst AED halen voordat je belt</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Wachten op hulp, niet zelf beginnen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Als je alleen bent: 112 op luidspreker, dan DIRECT reanimeren. Telefonist blijft aan de lijn en helpt je.
+            </div>
+        </div>
+
+        <!-- Vraag 13 -->
+        <div class="question">
+            <div class="question-number">Vraag 13</div>
+            <div class="question-text">Waar plaats je de AED plakkers?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Beide op de borst</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Eén rechts boven onder sleutelbeen, één links onder oksel (zoals op plaatjes)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Op rug en borst</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Beide op de buik</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Volg de plaatjes op de plakkers! Meestal: rechts boven (onder sleutelbeen), links onder oksel. Blote huid!
+            </div>
+        </div>
+
+        <!-- Vraag 14 -->
+        <div class="question">
+            <div class="question-number">Vraag 14</div>
+            <div class="question-text">Wat betekent het als de AED zegt "Geen schok geadviseerd"?</div>
+            <div class="answer-wrong"><span class="wrong-icon">De persoon is weer normaal, stop met reanimeren</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">AED is defect</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Het hartritme is niet schokbaar, DIRECT verder reanimeren 30:2</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Wacht tot AED opnieuw analyseert</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> "Geen schok geadviseerd" betekent ritme is niet te defibrilleren - ga DIRECT verder met 30:2 reanimatie! AED blijft analyseren.
+            </div>
+        </div>
+
+        <!-- Vraag 15 -->
+        <div class="question">
+            <div class="question-number">Vraag 15</div>
+            <div class="question-text">Je bent aan het reanimeren en het slachtoffer begint te ademen. Wat doe je?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct stoppen en weggaan</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Doorgaan met reanimeren tot ambulance er is</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Stabiele zijligging, AED aangesloten laten, blijven monitoren</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">AED verwijderen en persoon wakker maken</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Als persoon weer ademt: stabiele zijligging, AED blijft aan (monitoring), blijf bij persoon tot ambulance er is!
+            </div>
+        </div>
+
+        <div class="stats-box" style="margin-top: 3rem;">
+            <h3>🎯 Beoordelingsrichtlijnen</h3>
+            <ul style="margin: 0;">
+                <li><strong>12-15 punten (80-100%):</strong> ✅ GESLAAGD - AED certificering toegekend</li>
+                <li><strong>10-11 punten (67-73%):</strong> ⚠️ ONVOLDOENDE - Herkansing verplicht</li>
+                <li><strong>0-9 punten (&lt;67%):</strong> ❌ GEZAKT - Her-scholing vereist, nieuwe toets over 1 week</li>
+            </ul>
+            <p style="margin: 1rem 0 0 0; padding: 1rem; background: white; border-radius: 8px;">
+                <strong>💡 Let op:</strong> AED certificering vereist minimaal 80% vanwege levensreddend belang. Bij twijfel: praktijktest met oefenpop.
+            </p>
+        </div>
+    </div>
+
+    <script src="../../auth.js"></script>
+</body>
+</html>

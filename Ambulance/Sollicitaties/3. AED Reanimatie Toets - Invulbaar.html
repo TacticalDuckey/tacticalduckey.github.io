@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AED & Reanimatie Toets - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #dc2626;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #991b1b;
+        }
+        
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-box {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #fef3c7, #fef08a);
+            border-left: 4px solid #eab308;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .info-box ul {
+            margin: 0.5rem 0 0 1.5rem;
+        }
+        
+        .info-box strong {
+            color: #854d0e;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #dc2626;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 3px solid #dc2626 !important;
+            max-width: 300px;
+            margin: 10px auto;
+            display: block;
+        }
+        
+        .question-number {
+            background: #dc2626;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚡ AED & Reanimatie Toets</h1>
+        <p>Automated External Defibrillator & Cardiopulmonale Reanimatie</p>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een toegangscode aan bij je leidinggevende</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #991b1b;">
+                💡 Deze toets is verplicht voor alle ambulancemedewerkers
+            </p>
+        </div>
+
+        <div class="info-box">
+            <strong>⚡ Over deze toets:</strong>
+            <p>Deze toets test je kennis over het gebruik van de AED (Automatische Externe Defibrillator) en reanimatietechnieken. Deze kennis is essentieel voor elke ambulancemedewerker.</p>
+            <ul>
+                <li>Tijd: Geen tijdslimiet</li>
+                <li>Vragen: 15 (mix van meerkeuzevragen en praktijkscenario's)</li>
+                <li>Slagingspercentage: 80%</li>
+            </ul>
+        </div>
+
+        <form id="toetsForm" onsubmit="return false;">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required placeholder="Jan de Vries">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required placeholder="gebruiker#1234">
+            </div>
+
+            <h2>❓ Toets Vragen</h2>
+
+            <!-- Vraag 1 -->
+            <div class="form-group">
+                <label><span class="question-number">1</span>Wat betekent AED?*</label>
+                <input type="text" id="vraag1" name="vraag1" required placeholder="Voluit schrijven...">
+            </div>
+
+            <!-- Vraag 2 -->
+            <div class="form-group">
+                <label><span class="question-number">2</span>Wanneer gebruik je een AED?*</label>
+                <select id="vraag2" name="vraag2" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Bij hartstilstand / bewusteloze persoon die niet ademt</option>
+                    <option value="b">Bij alle bewusteloze personen</option>
+                    <option value="c">Bij pijn op de borst</option>
+                    <option value="d">Bij een hartaanval</option>
+                </select>
+            </div>
+
+            <!-- Vraag 3 -->
+            <div class="form-group">
+                <label><span class="question-number">3</span>Wat is de eerste stap bij het vinden van een bewusteloze persoon?*</label>
+                <select id="vraag3" name="vraag3" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Direct AED halen</option>
+                    <option value="b">Direct starten met reanimeren</option>
+                    <option value="c">Controleren bewustzijn en ademhaling</option>
+                    <option value="d">112 bellen</option>
+                </select>
+            </div>
+
+            <!-- Vraag 4 -->
+            <div class="form-group">
+                <label><span class="question-number">4</span>Beschrijf de juiste volgorde van handelen bij reanimatie (vanaf het moment dat je vaststelt dat iemand niet ademt)*</label>
+                <textarea id="vraag4" name="vraag4" required placeholder="Geef een stapsgewijze beschrijving..." style="min-height: 120px;"></textarea>
+            </div>
+
+            <!-- Vraag 5 -->
+            <div class="form-group">
+                <label><span class="question-number">5</span>Hoeveel borstcompressies geef je per minuut?*</label>
+                <select id="vraag5" name="vraag5" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">60-80</option>
+                    <option value="b">80-100</option>
+                    <option value="c">100-120</option>
+                    <option value="d">120-140</option>
+                </select>
+            </div>
+
+            <!-- Vraag 6 -->
+            <div class="form-group">
+                <label><span class="question-number">6</span>Hoe diep moet je indrukken bij borstcompressies bij een volwassene?*</label>
+                <select id="vraag6" name="vraag6" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">3-4 cm</option>
+                    <option value="b">4-5 cm</option>
+                    <option value="c">5-6 cm</option>
+                    <option value="d">6-7 cm</option>
+                </select>
+            </div>
+
+            <!-- Vraag 7 -->
+            <div class="form-group">
+                <label><span class="question-number">7</span>Wat is de verhouding tussen borstcompressies en beademingen?*</label>
+                <select id="vraag7" name="vraag7" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">15 : 2</option>
+                    <option value="b">30 : 2</option>
+                    <option value="c">30 : 5</option>
+                    <option value="d">Alleen borstcompressies, geen beademing</option>
+                </select>
+            </div>
+
+            <!-- Vraag 8 -->
+            <div class="form-group">
+                <label><span class="question-number">8</span>Beschrijf stap voor stap hoe je een AED gebruikt*</label>
+                <textarea id="vraag8" name="vraag8" required placeholder="Van aanzetten tot schok toedienen..." style="min-height: 120px;"></textarea>
+            </div>
+
+            <!-- Vraag 9 -->
+            <div class="form-group">
+                <label><span class="question-number">9</span>Mag je een AED gebruiken bij een bewusteloze persoon die nog wel ademt?*</label>
+                <select id="vraag9" name="vraag9" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Nee, alleen bij hartstilstand (geen ademhaling)</option>
+                    <option value="b">Ja, altijd bij bewusteloosheid</option>
+                    <option value="c">Alleen als de AED het aangeeft</option>
+                    <option value="d">Ja, voor de zekerheid</option>
+                </select>
+            </div>
+
+            <!-- Vraag 10 -->
+            <div class="form-group">
+                <label><span class="question-number">10</span>Wat zeg je voordat de AED een schok afgeeft?*</label>
+                <select id="vraag10" name="vraag10" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">"Niet aanraken!" of "Blijf van de patiënt af!"</option>
+                    <option value="b">"Schok komt eraan!"</option>
+                    <option value="c">"Iedereen klaar?"</option>
+                    <option value="d">Je hoeft niets te zeggen</option>
+                </select>
+            </div>
+
+            <!-- Vraag 11 -->
+            <div class="form-group">
+                <label><span class="question-number">11</span>Mag je een AED gebruiken bij een persoon die nat is of in het water ligt?*</label>
+                <select id="vraag11" name="vraag11" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Nee, eerst droog maken en uit het water halen</option>
+                    <option value="b">Ja, dat maakt niet uit</option>
+                    <option value="c">Alleen als de AED waterdicht is</option>
+                    <option value="d">Ja, maar alleen in zout water</option>
+                </select>
+            </div>
+
+            <!-- Vraag 12 -->
+            <div class="form-group">
+                <label><span class="question-number">12</span>Een persoon heeft een pacemaker (zie je aan de bobbel op de borst). Mag je de AED-elektrode daar plakken?*</label>
+                <select id="vraag12" name="vraag12" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Nee, minimaal 8 cm van de pacemaker af plakken</option>
+                    <option value="b">Ja, dat maakt niet uit</option>
+                    <option value="c">Nee, geen AED gebruiken bij pacemaker</option>
+                    <option value="d">Ja, juist precies op de pacemaker</option>
+                </select>
+            </div>
+
+            <!-- Vraag 13 -->
+            <div class="form-group">
+                <label><span class="question-number">13</span>Wanneer stop je met reanimeren?*</label>
+                <textarea id="vraag13" name="vraag13" required placeholder="Noem minimaal 3 redenen om te stoppen..."></textarea>
+            </div>
+
+            <!-- Vraag 14 -->
+            <div class="form-group">
+                <label><span class="question-number">14</span>Scenario: Je bent alleen en vindt een bewusteloze persoon die niet ademt. Wat doe je eerst?*</label>
+                <select id="vraag14" name="vraag14" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">112 bellen / alarm slaan, dan pas reanimeren</option>
+                    <option value="b">Direct reanimeren, anderen laten bellen</option>
+                    <option value="c">AED halen</option>
+                    <option value="d">Controleren of er een pols is</option>
+                </select>
+            </div>
+
+            <!-- Vraag 15 -->
+            <div class="form-group">
+                <label><span class="question-number">15</span>De AED analyseert het hartritme en zegt "GEEN SCHOK GEADVISEERD". Wat doe je?*</label>
+                <select id="vraag15" name="vraag15" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Direct doorgaan met reanimeren (30:2)</option>
+                    <option value="b">Stoppen, de patiënt is stabiel</option>
+                    <option value="c">Wachten op instructies van de AED</option>
+                    <option value="d">De patiënt in stabiele zijligging leggen</option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                📨 Toets Indienen
+            </button>
+
+            <div class="success-box" id="successMessage">
+                <strong>✅ Toets Verzonden!</strong>
+                <p>Je toets is succesvol ingediend. Je ontvangt binnen 24-48 uur de resultaten via Discord.</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../discord-webhook-v2.js"></script>
+    <script>
+        // Access code verification
+        const accessCodeInput = document.getElementById('accessCode');
+        const form = document.getElementById('toetsForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Disable form initially
+        const formElements = form.querySelectorAll('input, textarea, select, button');
+        formElements.forEach(el => el.disabled = true);
+
+        // Check if code is already verified
+        if (sessionStorage.getItem('ambulance_aed_code_verified') === 'true') {
+            formElements.forEach(el => el.disabled = false);
+            accessCodeInput.disabled = true;
+            accessCodeInput.value = '✓ GEVERIFIEERD';
+            accessCodeInput.style.borderColor = '#10b981';
+            accessCodeInput.style.color = '#10b981';
+        }
+
+        accessCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            if (value.length > 3 && value.indexOf('-') === -1) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            }
+            if (value.length > 7 && value.lastIndexOf('-') === 3) {
+                value = value.slice(0, 7) + '-' + value.slice(7);
+            }
+            
+            e.target.value = value;
+
+            // Verify code
+            fetch('/.netlify/functions/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'verify',
+                    code: value,
+                    type: 'ambulance-aed'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    e.target.style.borderColor = '#10b981';
+                    e.target.style.color = '#10b981';
+                    e.target.value = '✓ GEVERIFIEERD';
+                    e.target.disabled = true;
+                    sessionStorage.setItem('ambulance_aed_code_verified', 'true');
+                    sessionStorage.setItem('ambulance_aed_access_code', value);
+                    
+                    // Enable form
+                    formElements.forEach(el => el.disabled = false);
+                }
+            })
+            .catch(err => console.error('Code verificatie mislukt:', err));
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (sessionStorage.getItem('ambulance_aed_code_verified') !== 'true') {
+                alert('Voer eerst een geldige toegangscode in!');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 Verzenden...';
+
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            const accessCode = sessionStorage.getItem('ambulance_aed_access_code') || 'UNKNOWN';
+
+            try {
+                const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(data, 'ambulance-aed', accessCode);
+
+                if (result.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    form.reset();
+                    sessionStorage.removeItem('ambulance_aed_code_verified');
+                    sessionStorage.removeItem('ambulance_aed_access_code');
+                    
+                    setTimeout(() => {
+                        window.location.href = '../../dashboard.html';
+                    }, 3000);
+                } else {
+                    throw new Error(result.message || 'Verzenden mislukt');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 Toets Indienen';
+            }
+        });
+    </script>
+</body>
+</html>

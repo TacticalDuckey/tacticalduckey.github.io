@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EHBO Toets - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #10b981;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #dc2626;
+            border-bottom: 2px solid #10b981;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #991b1b;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-box {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .info-box ul {
+            margin: 0.5rem 0 0 1.5rem;
+        }
+        
+        .info-box strong {
+            color: #1e40af;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #dc2626;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 3px solid #dc2626 !important;
+            max-width: 300px;
+            margin: 10px auto;
+            display: block;
+        }
+        
+        .question-number {
+            background: #dc2626;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 EHBO Toets</h1>
+        <p>Eerste Hulp Bij Ongelukken - Basis Medische Kennis</p>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een toegangscode aan bij je leidinggevende</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #991b1b;">
+                💡 Deze code krijg je na goedkeuring van je sollicitatie
+            </p>
+        </div>
+
+        <div class="info-box">
+            <strong>📋 Over deze toets:</strong>
+            <p>Deze EHBO toets test je basiskennis van eerste hulp. Je moet minimaal 70% halen om te slagen. De toets bevat 20 vragen over verschillende EHBO onderwerpen.</p>
+            <ul>
+                <li>Tijd: Geen tijdslimiet</li>
+                <li>Vragen: 20 (mix van meerkeuzevragen en open vragen)</li>
+                <li>Slagingspercentage: 70%</li>
+            </ul>
+        </div>
+
+        <form id="toetsForm" onsubmit="return false;">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required placeholder="Jan de Vries">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required placeholder="gebruiker#1234">
+            </div>
+
+            <h2>❓ Toets Vragen</h2>
+
+            <!-- Vraag 1 -->
+            <div class="form-group">
+                <label><span class="question-number">1</span>Wat betekent EHBO?*</label>
+                <input type="text" id="vraag1" name="vraag1" required placeholder="Voluit schrijven...">
+            </div>
+
+            <!-- Vraag 2 -->
+            <div class="form-group">
+                <label><span class="question-number">2</span>Wat is de juiste volgorde van de ABC-methodiek?*</label>
+                <select id="vraag2" name="vraag2" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Airway - Breathing - Circulation</option>
+                    <option value="b">Alertness - Blood - Cardio</option>
+                    <option value="c">Action - Body - Compression</option>
+                    <option value="d">Alert - Broken bones - Check pulse</option>
+                </select>
+            </div>
+
+            <!-- Vraag 3 -->
+            <div class="form-group">
+                <label><span class="question-number">3</span>Een slachtoffer is bewusteloos maar ademt wel. In welke houding leg je hem/haar?*</label>
+                <select id="vraag3" name="vraag3" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Stabiele zijligging</option>
+                    <option value="b">Plat op de rug</option>
+                    <option value="c">Rechtop zittend</option>
+                    <option value="d">Op de buik</option>
+                </select>
+            </div>
+
+            <!-- Vraag 4 -->
+            <div class="form-group">
+                <label><span class="question-number">4</span>Wat doe je als eerste bij een brandwond?*</label>
+                <select id="vraag4" name="vraag4" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Wond koelen met koud stromend water (10-20 min)</option>
+                    <option value="b">IJs op de wond leggen</option>
+                    <option value="c">Zalf smeren op de wond</option>
+                    <option value="d">Direct verbinden</option>
+                </select>
+            </div>
+
+            <!-- Vraag 5 -->
+            <div class="form-group">
+                <label><span class="question-number">5</span>Hoeveel borstcompressies geef je per minuut bij reanimatie?*</label>
+                <select id="vraag5" name="vraag5" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">30-60</option>
+                    <option value="b">60-90</option>
+                    <option value="c">100-120</option>
+                    <option value="d">120-150</option>
+                </select>
+            </div>
+
+            <!-- Vraag 6 -->
+            <div class="form-group">
+                <label><span class="question-number">6</span>Wat is de verhouding tussen borstcompressies en beademingen bij reanimatie?*</label>
+                <select id="vraag6" name="vraag6" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">15 : 2</option>
+                    <option value="b">30 : 2</option>
+                    <option value="c">30 : 5</option>
+                    <option value="d">60 : 2</option>
+                </select>
+            </div>
+
+            <!-- Vraag 7 -->
+            <div class="form-group">
+                <label><span class="question-number">7</span>Bij welke situatie mag je NIET een slachtoffer verplaatsen?*</label>
+                <select id="vraag7" name="vraag7" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Bij vermoeden van nek- of rugletsel (tenzij levensgevaar)</option>
+                    <option value="b">Bij een gebroken been</option>
+                    <option value="c">Bij bewusteloosheid</option>
+                    <option value="d">Bij bloedverlies</option>
+                </select>
+            </div>
+
+            <!-- Vraag 8 -->
+            <div class="form-group">
+                <label><span class="question-number">8</span>Hoe stel je een ernstige bloeding?*</label>
+                <textarea id="vraag8" name="vraag8" required placeholder="Beschrijf de stappen..."></textarea>
+            </div>
+
+            <!-- Vraag 9 -->
+            <div class="form-group">
+                <label><span class="question-number">9</span>Wat is een shock en wat zijn de symptomen?*</label>
+                <textarea id="vraag9" name="vraag9" required placeholder="Leg uit wat shock is en noem enkele symptomen..."></textarea>
+            </div>
+
+            <!-- Vraag 10 -->
+            <div class="form-group">
+                <label><span class="question-number">10</span>Hoe herken je een beroerte (CVA)?*</label>
+                <select id="vraag10" name="vraag10" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">FAST methode (Face - Arms - Speech - Time)</option>
+                    <option value="b">ABC methode</option>
+                    <option value="c">RICE methode</option>
+                    <option value="d">SAMPLE methode</option>
+                </select>
+            </div>
+
+            <!-- Vraag 11 -->
+            <div class="form-group">
+                <label><span class="question-number">11</span>Wat doe je bij vermoeden van een gebroken been?*</label>
+                <textarea id="vraag11" name="vraag11" required placeholder="Beschrijf je handelswijze..."></textarea>
+            </div>
+
+            <!-- Vraag 12 -->
+            <div class="form-group">
+                <label><span class="question-number">12</span>Iemand heeft iets ingeslikt en kan niet meer ademen. Wat doe je?*</label>
+                <select id="vraag12" name="vraag12" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Heimlich manoeuvre (buikstoten)</option>
+                    <option value="b">Klappen op de rug</option>
+                    <option value="c">Direct reanimeren</option>
+                    <option value="d">Water laten drinken</option>
+                </select>
+            </div>
+
+            <!-- Vraag 13 -->
+            <div class="form-group">
+                <label><span class="question-number">13</span>Wat is de normale lichaamstemperatuur?*</label>
+                <select id="vraag13" name="vraag13" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">35-36°C</option>
+                    <option value="b">36-37°C</option>
+                    <option value="c">37-38°C</option>
+                    <option value="d">38-39°C</option>
+                </select>
+            </div>
+
+            <!-- Vraag 14 -->
+            <div class="form-group">
+                <label><span class="question-number">14</span>Wat is onderkoeling en hoe behandel je deze?*</label>
+                <textarea id="vraag14" name="vraag14" required placeholder="Beschrijf wat onderkoeling is en hoe je het behandelt..."></textarea>
+            </div>
+
+            <!-- Vraag 15 -->
+            <div class="form-group">
+                <label><span class="question-number">15</span>Iemand heeft een epileptische aanval. Wat doe je?*</label>
+                <textarea id="vraag15" name="vraag15" required placeholder="Beschrijf je handelswijze..."></textarea>
+            </div>
+
+            <!-- Vraag 16 -->
+            <div class="form-group">
+                <label><span class="question-number">16</span>Wat is het verschil tussen een hartaanval en een hartstilstand?*</label>
+                <textarea id="vraag16" name="vraag16" required placeholder="Leg het verschil uit..."></textarea>
+            </div>
+
+            <!-- Vraag 17 -->
+            <div class="form-group">
+                <label><span class="question-number">17</span>Wanneer gebruik je de RICE methode en wat betekent het?*</label>
+                <textarea id="vraag17" name="vraag17" required placeholder="Leg uit wanneer je RICE toepast en wat het betekent..."></textarea>
+            </div>
+
+            <!-- Vraag 18 -->
+            <div class="form-group">
+                <label><span class="question-number">18</span>Hoe controleer je of iemand nog ademt?*</label>
+                <textarea id="vraag18" name="vraag18" required placeholder="Beschrijf hoe je de ademhaling controleert..."></textarea>
+            </div>
+
+            <!-- Vraag 19 -->
+            <div class="form-group">
+                <label><span class="question-number">19</span>Wat is het alarmnummer in Nederland voor spoedeisende hulp?*</label>
+                <input type="text" id="vraag19" name="vraag19" required placeholder="Vul het nummer in...">
+            </div>
+
+            <!-- Vraag 20 -->
+            <div class="form-group">
+                <label><span class="question-number">20</span>Beschrijf de juiste volgorde van handelen bij een ongeval (van aankomst tot ambulance aankomt)*</label>
+                <textarea id="vraag20" name="vraag20" required placeholder="Geef een stapsgewijze beschrijving..." style="min-height: 120px;"></textarea>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                📨 Toets Indienen
+            </button>
+
+            <div class="success-box" id="successMessage">
+                <strong>✅ Toets Verzonden!</strong>
+                <p>Je toets is succesvol ingediend. Je ontvangt binnen 24-48 uur de resultaten via Discord.</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../discord-webhook-v2.js"></script>
+    <script>
+        // Access code verification
+        const accessCodeInput = document.getElementById('accessCode');
+        const form = document.getElementById('toetsForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Disable form initially
+        const formElements = form.querySelectorAll('input, textarea, select, button');
+        formElements.forEach(el => el.disabled = true);
+
+        // Check if code is already verified
+        if (sessionStorage.getItem('ambulance_ehbo_code_verified') === 'true') {
+            formElements.forEach(el => el.disabled = false);
+            accessCodeInput.disabled = true;
+            accessCodeInput.value = '✓ GEVERIFIEERD';
+            accessCodeInput.style.borderColor = '#10b981';
+            accessCodeInput.style.color = '#10b981';
+        }
+
+        accessCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            if (value.length > 3 && value.indexOf('-') === -1) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            }
+            if (value.length > 7 && value.lastIndexOf('-') === 3) {
+                value = value.slice(0, 7) + '-' + value.slice(7);
+            }
+            
+            e.target.value = value;
+
+            // Verify code
+            fetch('/.netlify/functions/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'verify',
+                    code: value,
+                    type: 'ambulance-ehbo'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    e.target.style.borderColor = '#10b981';
+                    e.target.style.color = '#10b981';
+                    e.target.value = '✓ GEVERIFIEERD';
+                    e.target.disabled = true;
+                    sessionStorage.setItem('ambulance_ehbo_code_verified', 'true');
+                    sessionStorage.setItem('ambulance_ehbo_access_code', value);
+                    
+                    // Enable form
+                    formElements.forEach(el => el.disabled = false);
+                }
+            })
+            .catch(err => console.error('Code verificatie mislukt:', err));
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (sessionStorage.getItem('ambulance_ehbo_code_verified') !== 'true') {
+                alert('Voer eerst een geldige toegangscode in!');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 Verzenden...';
+
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            const accessCode = sessionStorage.getItem('ambulance_ehbo_access_code') || 'UNKNOWN';
+
+            try {
+                const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(data, 'ambulance-ehbo', accessCode);
+
+                if (result.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    form.reset();
+                    sessionStorage.removeItem('ambulance_ehbo_code_verified');
+                    sessionStorage.removeItem('ambulance_ehbo_access_code');
+                    
+                    setTimeout(() => {
+                        window.location.href = '../../dashboard.html';
+                    }, 3000);
+                } else {
+                    throw new Error(result.message || 'Verzenden mislukt');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 Toets Indienen';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Sollicitatie - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fef3c7;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #dc2626;
+            border-bottom: 2px solid #fef3c7;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #991b1b;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-box {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #fef3c7, #fef08a);
+            border-left: 4px solid #eab308;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .info-box ul {
+            margin: 0.5rem 0 0 1.5rem;
+        }
+        
+        .info-box strong {
+            color: #854d0e;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #dc2626;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 3px solid #dc2626 !important;
+            max-width: 300px;
+            margin: 10px auto;
+            display: block;
+        }
+        
+        .access-code-input:focus {
+            border-color: #991b1b !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚑 Ambulance Sollicitatie</h1>
+        <p>Lage Landen RP - Ambulancedienst</p>
+        <a href="../../dashboard.html" class="back-link" style="color: white;">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een sollicitatiecode aan bij management</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #991b1b;">
+                💡 Neem contact op met Ambulance Management voor een code
+            </p>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Welkom bij de Ambulancedienst sollicitatie!</strong>
+            <p>We zoeken gemotiveerde en betrokken spelers die zich willen inzetten voor levensreddend werk binnen de RP. Als ambulancemedewerker red je levens en help je burgers in nood.</p>
+        </div>
+
+        <form id="sollicitatieForm" onsubmit="return false;">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required placeholder="Jan de Vries">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required placeholder="gebruiker#1234">
+            </div>
+
+            <div class="form-group">
+                <label for="leeftijd">Leeftijd (IC)*</label>
+                <input type="number" id="leeftijd" name="leeftijd" required min="18" max="99" placeholder="25">
+            </div>
+
+            <div class="form-group">
+                <label for="oocleeftijd">Leeftijd (OOC/Real Life)*</label>
+                <input type="number" id="oocleeftijd" name="oocleeftijd" required min="13" max="99" placeholder="20">
+            </div>
+
+            <h2>💼 Motivatie & Ervaring</h2>
+
+            <div class="form-group">
+                <label for="motivatie">Waarom wil je bij de ambulance werken?*</label>
+                <textarea id="motivatie" name="motivatie" required placeholder="Beschrijf je motivatie om ambulancemedewerker te worden..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="emsrvaring">Heb je ervaring met ambulance/EMS in andere RP servers?*</label>
+                <select id="emsrvaring" name="emsrvaring" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja_veel">Ja, veel ervaring</option>
+                    <option value="ja_beetje">Ja, een beetje</option>
+                    <option value="nee">Nee, geen ervaring</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="emsdetails">Licht je EMS ervaring toe (of schrijf "Geen" als je geen ervaring hebt)*</label>
+                <textarea id="emsdetails" name="emsdetails" required placeholder="Bijv. welke servers, welke functies, hoelang..."></textarea>
+            </div>
+
+            <h2>🚑 Basis Medische Kennis</h2>
+
+            <div class="form-group">
+                <label for="vraag1">Wat is de eerste actie die je onderneemt bij een verkeersongeval met gewonden?*</label>
+                <textarea id="vraag1" name="vraag1" required placeholder="Beschrijf stap voor stap wat je doet..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="vraag2">Een persoon is bewusteloos en ademt niet. Wat doe je?*</label>
+                <textarea id="vraag2" name="vraag2" required placeholder="Beschrijf je handelswijze..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="vraag3">Wat is de ABC methodiek in de eerste hulp?*</label>
+                <textarea id="vraag3" name="vraag3" required placeholder="Leg uit wat ABC betekent en hoe je dit toepast..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="vraag4">Een persoon heeft een schotwond in de borst. Wat is je eerste prioriteit?*</label>
+                <textarea id="vraag4" name="vraag4" required placeholder="Beschrijf je aanpak..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="vraag5">Wat is het verschil tussen een trauma (rode) ambulance en een reguliere ambulance?*</label>
+                <textarea id="vraag5" name="vraag5" required placeholder="Leg het verschil uit..."></textarea>
+            </div>
+
+            <h2>📞 Communicatie & Scenario's</h2>
+
+            <div class="form-group">
+                <label for="scenario1">Je krijgt een melding: "Man neergestoken op straat, veel bloedverlies". Wat is je aanpak van aankomst tot overdracht?*</label>
+                <textarea id="scenario1" name="scenario1" required placeholder="Beschrijf stap voor stap je handelswijze..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario2">De politie heeft een gevaarlijke situatie nog niet veilig gesteld, maar het slachtoffer heeft dringend hulp nodig. Wat doe je?*</label>
+                <textarea id="scenario2" name="scenario2" required placeholder="Beschrijf hoe je hiermee omgaat..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario3">Een patiënt weigert behandeling maar is ernstig gewond. Hoe handel je dit af?*</label>
+                <textarea id="scenario3" name="scenario3" required placeholder="Beschrijf je aanpak..."></textarea>
+            </div>
+
+            <h2>⏰ Beschikbaarheid</h2>
+
+            <div class="form-group">
+                <label for="beschikbaarheid">Wanneer ben je beschikbaar om dienst te draaien? (Dagen/Tijden)*</label>
+                <textarea id="beschikbaarheid" name="beschikbaarheid" required placeholder="Bijv. Ma-Vr 18:00-22:00, Weekend hele dag, etc."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="uren">Hoeveel uur per week kun je inzetten voor de ambulancedienst?*</label>
+                <select id="uren" name="uren" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="1-5">1-5 uur</option>
+                    <option value="5-10">5-10 uur</option>
+                    <option value="10-15">10-15 uur</option>
+                    <option value="15+">15+ uur</option>
+                </select>
+            </div>
+
+            <h2>📝 Akkoordverklaring</h2>
+
+            <div class="info-box">
+                <strong>⚠️ Belangrijke voorwaarden:</strong>
+                <ul>
+                    <li>Ik begrijp dat dit een RP functie is en professionaliteit vereist</li>
+                    <li>Ik zal trainingen volgen en toetsen maken</li>
+                    <li>Ik zal respectvol omgaan met collega's en patiënten</li>
+                    <li>Ik ben bereid om door te leren en nieuwe protocollen te volgen</li>
+                    <li>Bij onprofessioneel gedrag kan mijn positie worden ingetrokken</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                📨 Sollicitatie Indienen
+            </button>
+
+            <div class="success-box" id="successMessage">
+                <strong>✅ Sollicitatie Verzonden!</strong>
+                <p>Je sollicitatie is succesvol ingediend. Je ontvangt binnen 48-72 uur een reactie via Discord.</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../discord-webhook-v2.js"></script>
+    <script>
+        // Access code verification
+        const accessCodeInput = document.getElementById('accessCode');
+        const form = document.getElementById('sollicitatieForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Disable form initially
+        const formElements = form.querySelectorAll('input, textarea, select, button');
+        formElements.forEach(el => el.disabled = true);
+
+        // Check if code is already verified
+        if (sessionStorage.getItem('ambulance_code_verified') === 'true') {
+            formElements.forEach(el => el.disabled = false);
+            accessCodeInput.disabled = true;
+            accessCodeInput.value = '✓ GEVERIFIEERD';
+            accessCodeInput.style.borderColor = '#10b981';
+            accessCodeInput.style.color = '#10b981';
+        }
+
+        accessCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            if (value.length > 3 && value.indexOf('-') === -1) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            }
+            if (value.length > 7 && value.lastIndexOf('-') === 3) {
+                value = value.slice(0, 7) + '-' + value.slice(7);
+            }
+            
+            e.target.value = value;
+
+            // Verify code
+            fetch('/.netlify/functions/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'verify',
+                    code: value,
+                    type: 'ambulance'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    e.target.style.borderColor = '#10b981';
+                    e.target.style.color = '#10b981';
+                    e.target.value = '✓ GEVERIFIEERD';
+                    e.target.disabled = true;
+                    sessionStorage.setItem('ambulance_code_verified', 'true');
+                    sessionStorage.setItem('ambulance_access_code', value);
+                    
+                    // Enable form
+                    formElements.forEach(el => el.disabled = false);
+                }
+            })
+            .catch(err => console.error('Code verificatie mislukt:', err));
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (sessionStorage.getItem('ambulance_code_verified') !== 'true') {
+                alert('Voer eerst een geldige toegangscode in!');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 Verzenden...';
+
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            const accessCode = sessionStorage.getItem('ambulance_access_code') || 'UNKNOWN';
+
+            try {
+                const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(data, 'ambulance', accessCode);
+
+                if (result.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    form.reset();
+                    sessionStorage.removeItem('ambulance_code_verified');
+                    sessionStorage.removeItem('ambulance_access_code');
+                    
+                    setTimeout(() => {
+                        window.location.href = '../../dashboard.html';
+                    }, 3000);
+                } else {
+                    throw new Error(result.message || 'Verzenden mislukt');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 Sollicitatie Indienen';
+            }
+        });
+    </script>
+</body>
+</html>

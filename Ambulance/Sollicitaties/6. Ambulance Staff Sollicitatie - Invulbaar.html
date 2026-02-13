@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Staff Sollicitatie - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c2d12, #dc2626);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #7c2d12;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #7c2d12;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #7c2d12, #dc2626);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 45, 18, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-box {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #fef3c7, #fef08a);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .info-box ul {
+            margin: 0.5rem 0 0 1.5rem;
+        }
+        
+        .info-box strong {
+            color: #92400e;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .warning-box strong {
+            color: #991b1b;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 3px solid #f59e0b !important;
+            max-width: 300px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .staff-badge {
+            background: linear-gradient(135deg, #f59e0b, #dc2626);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👔 Ambulance Staff Sollicitatie</h1>
+        <p>Leidinggevende Functie - Management Positie</p>
+        <div class="staff-badge">⭐ UITSLUITEND OP UITNODIGING</div>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Speciale Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Deze code wordt alleen uitgegeven aan uitgenodigde kandidaten</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #92400e;">
+                👑 Neem contact op met Hoofd Ambulancedienst
+            </p>
+        </div>
+
+        <div class="warning-box">
+            <strong>👔 Management Positie</strong>
+            <p>Deze sollicitatie is voor een leidinggevende functie binnen de ambulancedienst. Je krijgt de verantwoordelijkheid over personeel, training, kwaliteitscontrole en de algehele werking van de dienst.</p>
+        </div>
+
+        <div class="info-box">
+            <strong>📋 Vereisten voor deze functie:</strong>
+            <ul>
+                <li>Alle ambulance certificeringen (EHBO, AED, Trauma, BHV)</li>
+                <li>Minimaal 2 maanden ervaring als ambulancemedewerker</li>
+                <li>Uitstekende communicatie en leiderschapsvaardigheden</li>
+                <li>Beschikbaarheid voor extra uren en spoedgevallen</li>
+                <li>Bereid om trainingen te geven en personeel te beoordelen</li>
+            </ul>
+        </div>
+
+        <form id="sollicitatieForm" onsubmit="return false;">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required placeholder="Jan de Vries">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required placeholder="gebruiker#1234">
+            </div>
+
+            <div class="form-group">
+                <label for="leeftijd">Leeftijd (OOC)*</label>
+                <input type="number" id="leeftijd" name="leeftijd" required min="16" max="99" placeholder="20">
+            </div>
+
+            <div class="form-group">
+                <label for="huidigerang">Huidige rang binnen ambulancedienst*</label>
+                <input type="text" id="huidigerang" name="huidigerang" required placeholder="Bijv. Ambulanceverpleegkundige">
+            </div>
+
+            <div class="form-group">
+                <label for="ervaring">Hoelang werk je al bij de ambulancedienst?*</label>
+                <select id="ervaring" name="ervaring" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="2-4_weken">2-4 weken</option>
+                    <option value="1-2_maanden">1-2 maanden</option>
+                    <option value="2-4_maanden">2-4 maanden</option>
+                    <option value="4+_maanden">4+ maanden</option>
+                </select>
+            </div>
+
+            <h2>💼 Motivatie & Visie</h2>
+
+            <div class="form-group">
+                <label for="motivatie">Waarom wil je een leidinggevende functie binnen de ambulancedienst?*</label>
+                <textarea id="motivatie" name="motivatie" required placeholder="Beschrijf je motivatie uitgebreid..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="visie">Wat is jouw visie voor de ambulancedienst? Wat wil je verbeteren?*</label>
+                <textarea id="visie" name="visie" required placeholder="Deel je ideeën en visie..." style="min-height: 120px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="sterke_punten">Wat zijn je 3 grootste sterke punten als leider?*</label>
+                <textarea id="sterke_punten" name="sterke_punten" required placeholder="Noem 3 sterke punten en leg uit waarom..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="zwakke_punten">Wat zijn je ontwikkelpunten als leider?*</label>
+                <textarea id="zwakke_punten" name="zwakke_punten" required placeholder="Wees eerlijk - welke punten wil je ontwikkelen..."></textarea>
+            </div>
+
+            <h2>👥 Leiderschapservaring</h2>
+
+            <div class="form-group">
+                <label for="leiderschapservaring">Heb je eerder leidinggevende ervaring gehad (RP of IRL)?*</label>
+                <select id="leiderschapservaring" name="leiderschapservaring" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja_rp_irl">Ja, zowel RP als IRL</option>
+                    <option value="ja_rp">Ja, binnen RP</option>
+                    <option value="ja_irl">Ja, in real life</option>
+                    <option value="nee">Nee, geen ervaring</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="leiderschapsdetails">Licht je leiderschapservaring toe*</label>
+                <textarea id="leiderschapsdetails" name="leiderschapsdetails" required placeholder="Beschrijf je ervaringen, wat was je rol, hoeveel personen leidde je, etc..."></textarea>
+            </div>
+
+            <h2>📚 Kennis & Vaardigheden</h2>
+
+            <div class="form-group">
+                <label for="certificaten">Welke ambulance certificaten heb je? (vink aan wat je hebt)*</label>
+                <textarea id="certificaten" name="certificaten" required placeholder="Bijv. EHBO, AED & Reanimatie, Traumazorg, BHV & Tourniquet..." style="min-height: 80px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="training_ervaring">Heb je ervaring met het geven van trainingen of het opleiden van nieuwe medewerkers?*</label>
+                <select id="training_ervaring" name="training_ervaring" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja_veel">Ja, veel ervaring</option>
+                    <option value="ja_beetje">Ja, een beetje</option>
+                    <option value="nee_wel_wil">Nee, maar wel graag willen leren</option>
+                    <option value="nee">Nee</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="protocol_kennis">Hoe goed ben je op de hoogte van de ambulance protocollen en procedures? (1-10)*</label>
+                <select id="protocol_kennis" name="protocol_kennis" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="10">10 - Uitstekend, ken alle protocollen</option>
+                    <option value="9">9 - Zeer goed</option>
+                    <option value="8">8 - Goed</option>
+                    <option value="7">7 - Redelijk goed</option>
+                    <option value="6">6 - Voldoende</option>
+                    <option value="5">5 - Matig</option>
+                    <option value="1-4">1-4 - Moet nog veel leren</option>
+                </select>
+            </div>
+
+            <h2>🎯 Management Scenario's</h2>
+
+            <div class="form-group">
+                <label for="scenario1">SCENARIO: Een ambulancemedewerker maakt herhaaldelijk fouten tijdens RP en patiënten klagen. Hoe pak je dit aan?*</label>
+                <textarea id="scenario1" name="scenario1" required placeholder="Beschrijf je aanpak stap voor stap..." style="min-height: 120px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario2">SCENARIO: Twee teamleden hebben een conflict en kunnen niet meer samenwerken. Hoe los je dit op?*</label>
+                <textarea id="scenario2" name="scenario2" required placeholder="Beschrijf je conflictoplossende aanpak..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario3">SCENARIO: Je krijgt kritiek van het management dat de ambulancedienst te langzaam reageert op meldingen. Hoe verbeter je dit?*</label>
+                <textarea id="scenario3" name="scenario3" required placeholder="Beschrijf je verbeterplan..." style="min-height: 120px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario4">SCENARIO: Een nieuwe medewerker is zeer gemotiveerd maar maakt veel fouten. Hoe begeleid je deze persoon?*</label>
+                <textarea id="scenario4" name="scenario4" required placeholder="Beschrijf je begeleidingsaanpak..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="scenario5">SCENARIO: Je moet iemand ontslaan omdat ze zich niet aan de regels houden. Hoe voer je dit gesprek?*</label>
+                <textarea id="scenario5" name="scenario5" required placeholder="Beschrijf hoe je dit professioneel aanpakt..."></textarea>
+            </div>
+
+            <h2>⏰ Beschikbaarheid & Commitment</h2>
+
+            <div class="form-group">
+                <label for="beschikbaarheid">Hoeveel uur per week kun je inzetten als staff lid?*</label>
+                <select id="beschikbaarheid" name="beschikbaarheid" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="5-10">5-10 uur</option>
+                    <option value="10-15">10-15 uur</option>
+                    <option value="15-20">15-20 uur</option>
+                    <option value="20+">20+ uur</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="spoedgevallen">Ben je beschikbaar voor spoedgevallen buiten je normale uren?*</label>
+                <select id="spoedgevallen" name="spoedgevallen" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja_altijd">Ja, altijd bereikbaar</option>
+                    <option value="ja_meestal">Ja, meestal wel</option>
+                    <option value="soms">Alleen in bijzondere gevallen</option>
+                    <option value="nee">Nee, alleen tijdens geplande uren</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="lange_termijn">Ben je van plan om voor langere termijn bij de ambulancedienst te blijven?*</label>
+                <select id="lange_termijn" name="lange_termijn" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="ja_6+">Ja, 6+ maanden minimaal</option>
+                    <option value="ja_3-6">Ja, 3-6 maanden</option>
+                    <option value="onzeker">Onzeker</option>
+                    <option value="korter">Korter dan 3 maanden</option>
+                </select>
+            </div>
+
+            <h2>💡 Innovatie & Ideeën</h2>
+
+            <div class="form-group">
+                <label for="ideeen">Welke nieuwe ideeën of verbeteringen wil je doorvoeren als staff lid?*</label>
+                <textarea id="ideeen" name="ideeen" required placeholder="Deel je innovatieve ideeën..." style="min-height: 120px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="training_plan">Welke trainingen zou je willen organiseren voor het ambulancepersoneel?*</label>
+                <textarea id="training_plan" name="training_plan" required placeholder="Beschrijf je trainingsplan..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="samenwerking">Hoe zie je de samenwerking tussen ambulance en andere diensten (politie, brandweer)?*</label>
+                <textarea id="samenwerking" name="samenwerking" required placeholder="Beschrijf je visie op samenwerking..."></textarea>
+            </div>
+
+            <h2>📝 Afsluiting</h2>
+
+            <div class="form-group">
+                <label for="toevoegen">Is er nog iets dat je wilt toevoegen aan je sollicitatie?*</label>
+                <textarea id="toevoegen" name="toevoegen" required placeholder="Andere relevante informatie, bijzondere omstandigheden, etc. Of typ 'N.v.t.'"></textarea>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Belangrijke voorwaarden:</strong>
+                <ul>
+                    <li>Staff functies brengen extra verantwoordelijkheden met zich mee</li>
+                    <li>Je bent een voorbeeld voor anderen en moet professioneel blijven</li>
+                    <li>Je moet beschikbaar zijn voor overleg en spoedgevallen</li>
+                    <li>Bij wangedrag of inactiviteit kan je positie worden ingetrokken</li>
+                    <li>Er kunnen aanvullende interviews en assessments volgen</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                📨 Sollicitatie Indienen
+            </button>
+
+            <div class="success-box" id="successMessage">
+                <strong>✅ Sollicitatie Verzonden!</strong>
+                <p>Je staff sollicitatie is succesvol ingediend. Het management zal je sollicitatie zorgvuldig beoordelen. Je ontvangt binnen 5-7 dagen een reactie via Discord.</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../discord-webhook-v2.js"></script>
+    <script>
+        // Access code verification
+        const accessCodeInput = document.getElementById('accessCode');
+        const form = document.getElementById('sollicitatieForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Disable form initially
+        const formElements = form.querySelectorAll('input, textarea, select, button');
+        formElements.forEach(el => el.disabled = true);
+
+        // Check if code is already verified
+        if (sessionStorage.getItem('ambulance_staff_code_verified') === 'true') {
+            formElements.forEach(el => el.disabled = false);
+            accessCodeInput.disabled = true;
+            accessCodeInput.value = '✓ GEVERIFIEERD';
+            accessCodeInput.style.borderColor = '#10b981';
+            accessCodeInput.style.color = '#10b981';
+        }
+
+        accessCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            if (value.length > 3 && value.indexOf('-') === -1) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            }
+            if (value.length > 7 && value.lastIndexOf('-') === 3) {
+                value = value.slice(0, 7) + '-' + value.slice(7);
+            }
+            
+            e.target.value = value;
+
+            // Verify code
+            fetch('/.netlify/functions/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'verify',
+                    code: value,
+                    type: 'ambulance-staff'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    e.target.style.borderColor = '#10b981';
+                    e.target.style.color = '#10b981';
+                    e.target.value = '✓ GEVERIFIEERD';
+                    e.target.disabled = true;
+                    sessionStorage.setItem('ambulance_staff_code_verified', 'true');
+                    sessionStorage.setItem('ambulance_staff_access_code', value);
+                    
+                    // Enable form
+                    formElements.forEach(el => el.disabled = false);
+                }
+            })
+            .catch(err => console.error('Code verificatie mislukt:', err));
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (sessionStorage.getItem('ambulance_staff_code_verified') !== 'true') {
+                alert('Voer eerst een geldige toegangscode in!');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 Verzenden...';
+
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            const accessCode = sessionStorage.getItem('ambulance_staff_access_code') || 'UNKNOWN';
+
+            try {
+                const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(data, 'ambulance-staff', accessCode);
+
+                if (result.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    form.reset();
+                    sessionStorage.removeItem('ambulance_staff_code_verified');
+                    sessionStorage.removeItem('ambulance_staff_access_code');
+                    
+                    setTimeout(() => {
+                        window.location.href = '../../dashboard.html';
+                    }, 4000);
+                } else {
+                    throw new Error(result.message || 'Verzenden mislukt');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 Sollicitatie Indienen';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traumazorg Toets - Nakijkmodel (STAFF ONLY)</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c2d12, #dc2626);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            background: #f9fafb;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #dc2626;
+            border-radius: 8px;
+        }
+        
+        .question-number {
+            color: #7c2d12;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        
+        .answer-correct {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            padding: 1rem;
+            border-left: 4px solid #10b981;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+        
+        .answer-wrong {
+            background: #fee2e2;
+            padding: 0.5rem 1rem;
+            border-left: 3px solid #ef4444;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            opacity: 0.7;
+        }
+        
+        .explanation {
+            background: #fef3c7;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 6px;
+            font-size: 14px;
+            border-left: 3px solid #f59e0b;
+        }
+        
+        .stats-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .stats-box h3 {
+            margin: 0 0 1rem 0;
+            color: #1e40af;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #dc2626;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .correct-icon::before {
+            content: "✅ ";
+        }
+        
+        .wrong-icon::before {
+            content: "❌ ";
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🩸 Traumazorg Toets - Nakijkmodel</h1>
+        <p>UITSLUITEND VOOR STAFF LEDEN</p>
+        <a href="../../staff-nakijkmodellen.html" class="back-link">← Terug naar nakijkmodellen</a>
+    </div>
+
+    <div class="container">
+        <div class="warning-box">
+            <strong>⚠️ VERTROUWELIJK</strong>
+            <p>Dit document bevat alle antwoorden en is alleen toegankelijk voor staff. Deel deze informatie NOOIT met sollicitanten!</p>
+        </div>
+
+        <div class="stats-box">
+            <h3>📊 Toets Statistieken</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">18</div>
+                    <div class="stat-label">Aantal vragen</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">85%</div>
+                    <div class="stat-label">Minimaal vereist</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">16/18</div>
+                    <div class="stat-label">Vragen goed = geslaagd</div>
+                </div>
+            </div>
+            <p style="margin: 1rem 0 0 0; background: #fef3c7; padding: 0.75rem; border-radius: 6px; font-size: 14px;">
+                <strong>⚠️ Hoogste standaard:</strong> Deze toets heeft 85% slagingseis vanwege het kritieke karakter van traumazorg.
+            </p>
+        </div>
+
+        <!-- Vraag 1 -->
+        <div class="question">
+            <div class="question-number">Vraag 1</div>
+            <div class="question-text">Wat is je eerste prioriteit bij een patiënt met een schotwond?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Eigen veiligheid checken, dan bloeding stelpen</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Kogel verwijderen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct naar ziekenhuis rennen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Eerst volledige ABC-check</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Bij geweldssituaties: ALTIJD eerst eigen veiligheid (is schutter weg?), dan direct bloeding stelpen (levensreddend).
+            </div>
+        </div>
+
+        <!-- Vraag 2 -->
+        <div class="question">
+            <div class="question-number">Vraag 2</div>
+            <div class="question-text">Waarom is de uitgangswond van een kogel meestal groter dan de ingangswond?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Kogel roteert bij uitgang</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Kogel neemt weefsel/botfragmenten mee naar buiten</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Uitgangswond is altijd kleiner</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Dit is een mythe, formaat is altijd gelijk</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Uitgangswond vaak groter door weef sel/botfragmenten die mee naar buiten komen. Meer weefselbeschadiging.
+            </div>
+        </div>
+
+        <!-- Vraag 3 -->
+        <div class="question">
+            <div class="question-number">Vraag 3</div>
+            <div class="question-text">Wat doe je als er een voorwerp (mes/glas/pijp) in de wond zit?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct verwijderen</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">NOOIT verwijderen! Stabiliseren en fixeren ter plaatse</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Eruit trekken en gat dichtdrukken</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Half eruit trekken om te kijken</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Penetrerend object: NOOIT verwijderen (massaal bloeden!). Object fixeren/stabiliseren, rond object verbinden, 112.
+            </div>
+        </div>
+
+        <!-- Vraag 4 -->
+        <div class="question">
+            <div class="question-number">Vraag 4</div>
+            <div class="question-text">Hoe herken je een klaplong (pneumothorax)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Persoon hoest bloed op</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Kortademig, pijn bij inademen, eenzijdig verminderde borstbeweging</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Hoge koorts en zweten</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Blauw verkleurde lippen alleen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Pneumothorax: kortademig, stekende pijn, één kant van borst beweegt minder/niet. Bij spanning-pneumothorax: levensgevaar!
+            </div>
+        </div>
+
+        <!-- Vraag 5 -->
+        <div class="question">
+            <div class="question-number">Vraag 5</div>
+            <div class="question-text">Wat is het verschil tussen een gesloten en open botbreuk?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Gesloten = huid intact, Open = bot door huid heen zichtbaar</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Gesloten = geen pijn, Open = veel pijn</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Er is geen verschil</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Gesloten = klein bot, Open = groot bot</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Gesloten fractuur: bot gebroken maar huid intact. Open fractuur: bot door huid (infectierisico, ernstiger).
+            </div>
+        </div>
+
+        <!-- Vraag 6 -->
+        <div class="question">
+            <div class="question-number">Vraag 6</div>
+            <div class="question-text">Hoeveel bloed kan iemand verliezen bij een dijbeenbreuk (femur)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">100-500 ml</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">1-2 liter (intern bloedverlies)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">5-10 ml</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Er is geen bloedverlies bij botbreuken</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Femurfractuur kan 1-2 liter INTERN bloedverlies geven! Risico op shock. Immobiliseren en snel transport.
+            </div>
+        </div>
+
+        <!-- Vraag 7 -->
+        <div class="question">
+            <div class="question-number">Vraag 7</div>
+            <div class="question-text">Hoe immobiliseer je een botbreuk?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Bot recht zetten en dan spalken</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Spalken in positie zoals je het aantreft, gewricht erboven en eronder fixeren</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Strak touw om gewricht</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen het gebroken bot fixeren</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> NOOIT bot recht zetten! Spalken in huidige positie, gewricht boven EN onder fractuur mee fixeren.
+            </div>
+        </div>
+
+        <!-- Vraag 8 -->
+        <div class="question">
+            <div class="question-number">Vraag 8</div>
+            <div class="question-text">Wat zijn de 5 P's die je checkt bij een ledemaat met vermoedelijke fractuur?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Pain (pijn), Pallor (bleek), Pulseless (geen pols), Paresthesia (tintelingen), Paralysis (verlamming)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Pulse, Pressure, Position, Protection, Pain</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Dit is geen medische term</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Past, Present, Previous, Predicted, Prevented</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> 5 P's: Pain, Pallor, Pulseless, Paresthesia, Paralysis. Check bloedtoevoer en zenuwfunctie onder fractuur!
+            </div>
+        </div>
+
+        <!-- Vraag 9 -->
+        <div class="question">
+            <div class="question-number">Vraag 9</div>
+            <div class="question-text">Wanneer vermoed je een nekwervelletsel?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen bij nekpijn</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Val van hoogte, auto-ongeval, slag op hoofd, duik-ongeval, bewusteloos na trauma</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen als persoon verlamd is</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Nooit vermoeden, altijd eerst testen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Bij hoog-energetisch trauma (val, MVA, duiken, hoofdtrauma) ALTIJD vermoeden tot tegendeel bewezen!
+            </div>
+        </div>
+
+        <!-- Vraag 10 -->
+        <div class="question">
+            <div class="question-number">Vraag 10</div>
+            <div class="question-text">Hoe immobiliseer je de nek bij vermoeden van wervelletsel?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Hoofd naar achteren buigen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen hoofdkussen gebruiken</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Nekkraag + wervelplank (spineboard) + hoofd fixeren in neutrale positie</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Persoon rechtop zetten</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Volledige spinale immobilisatie: nekkraag (collar), harde draagplank, hoofd fixeren. GEEN beweging nek!
+            </div>
+        </div>
+
+        <!-- Vraag 11 -->
+        <div class="question">
+            <div class="question-number">Vraag 11</div>
+            <div class="question-text">Wat zijn tekenen van een dwarslaesie (ruggenmergletsel)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen rugpijn</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Verlamming onder letsel, geen gevoel, ademhalingsproblemen (hoog letsel)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Hoge koorts</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen tintelingen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Dwarslaesie: verlamming/gevoelsverlies onder niveau letsel. Hoog (nek): ook ademhaling! Direct 112.
+            </div>
+        </div>
+
+        <!-- Vraag 12 -->
+        <div class="question">
+            <div class="question-number">Vraag 12</div>
+            <div class="question-text">Hoe voer je reanimatie uit bij iemand met nekletsel?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Gewoon hoofd achterover (head-tilt)</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Jaw thrust (kaak naar voren) zonder nek te bewegen</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Niet reanimeren bij nekletsel</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen borstcompressies, geen beademing</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Bij vermoeden nekletsel: JAW THRUST (kaak naar voren trekken) om luchtweg vrij te maken zonder nek te bewegen!
+            </div>
+        </div>
+
+        <!-- Vraag 13 -->
+        <div class="question">
+            <div class="question-number">Vraag 13</div>
+            <div class="question-text">Wat zijn de 4 klassen van hemorragische shock (bloedverlies)?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">I: <15%, II: 15-30%, III: 30-40%, IV: >40% bloedvolume verloren</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Licht, Matig, Ernstig, Dodelijk</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">A, B, C, D classificatie</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Er zijn geen klassen voor shock</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Klasse I (<15%): compensatie. II (15-30%): tachycardie. III (30-40%): hypotensie. IV (>40%): levensgevaar!
+            </div>
+        </div>
+
+        <!-- Vraag 14 -->
+        <div class="question">
+            <div class="question-number">Vraag 14</div>
+            <div class="question-text">Hoeveel bloedverlies is direct levensbedreigend?</div>
+            <div class="answer-wrong"><span class="wrong-icon">500 ml (half liter)</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">1 liter</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">1,5-2 liter (ongeveer 30%+ van totaal volume)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">3-4 liter</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> 30%+ bloedverlies (±1,5-2L) = Klasse III shock, direct levensgevaar. Onmiddellijk ziekenhuis & bloedproducten nodig!
+            </div>
+        </div>
+
+        <!-- Vraag 15 -->
+        <div class="question">
+            <div class="question-number">Vraag 15</div>
+            <div class="question-text">Wat is de shockpositie?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Rechtop zitten</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Plat liggen met benen 20-30 cm omhoog (tenzij hoofdletsel)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Stabiele zijligging</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Hoofd omlaag, benen plat</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Shockpositie: plat liggen, benen omhoog (bloed naar vitale organen). LET OP: niet bij hoofdtrauma of borstletsel!
+            </div>
+        </div>
+
+        <!-- Vraag 16 -->
+        <div class="question">
+            <div class="question-number">Vraag 16</div>
+            <div class="question-text">SCENARIO: Motorongeluk, berijder bewusteloos, gebroken been, helm nog op. Wat is je actieplan?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Helm afhalen, been spalken, wachten op ambulance</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Veiligheid, 112, ABC check (helm op!), spinale immobilisatie, volledige trauma-zorg</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct naar ziekenhuis brengen in auto</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen been stabiliseren</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Veiligheid eerst, 112, ABC (helm laten zitten!), spinale immobilisatie (nekletsel!), trauma-ambulance. NOOIT zelf vervoeren!
+            </div>
+        </div>
+
+        <!-- Vraag 17 -->
+        <div class="question">
+            <div class="question-number">Vraag 17</div>
+            <div class="question-text">SCENARIO: Schietpartij, slachtoffer met 3 schotwonden (borst, buik, been). Welke eerst behandelen?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Been (meest toegankelijk)</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alle drie tegelijk</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Borst eerst (ademhaling), dan buik, been. Directe druk, 112, snel transport</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Wachten op ambulance zonder te behandelen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Prioritering: ABC! Borst (ademhaling!) eerst, buik tweede (organen), been derde. Direct druk, gauze, 112, trauma center!
+            </div>
+        </div>
+
+        <!-- Vraag 18 -->
+        <div class="question">
+            <div class="question-number">Vraag 18</div>
+            <div class="question-text">Wanneer vraag je specifiek een trauma-ambulance aan i.p.v. reguliere ambulance?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Ernstig trauma: MVA, schotwonden, val van hoogte, multitrauma, grote bloeding</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Bij elk ongeval</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen bij bewusteloze patiënten</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Dit bestaat niet, alle ambulances zijn gelijk</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Trauma-ambulance bij ernstig letsel: MVA, GSW, val >3m, multitrauma, penetrerend trauma. Meer uitrusting & trauma-arts!
+            </div>
+        </div>
+
+        <div class="stats-box" style="margin-top: 3rem;">
+            <h3>🎯 Beoordelingsrichtlijnen</h3>
+            <ul style="margin: 0;">
+                <li><strong>16-18 punten (85-100%):</strong> ✅ GESLAAGD - Traumazorg certificering toegekend</li>
+                <li><strong>14-15 punten (78-83%):</strong> ⚠️ ONVOLDOENDE - Verplichte herkansing</li>
+                <li><strong>0-13 punten (&lt;78%):</strong> ❌ GEZAKT - Intensieve her-scholing + nieuwe toets over 2 weken</li>
+            </ul>
+            <p style="margin: 1rem 0 0 0; padding: 1rem; background: white; border-radius: 8px;">
+                <strong>🚨 Kritiek!</strong> Traumazorg is hoogste niveau - 85% eis vanwege levensreddend karakter. Bij scenario-vragen: geef volledige prioritering en onderbouwing.
+            </p>
+        </div>
+    </div>
+
+    <script src="../../auth.js"></script>
+</body>
+</html>

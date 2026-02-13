@@ -118,6 +118,12 @@
             border: 2px solid #fbbf24;
         }
 
+        .role-badge.ambulance {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            border: 2px solid #fbbf24;
+        }
+
         .role-badge.user {
             background: linear-gradient(135deg, #64748b, #94a3b8);
             color: white;
@@ -291,6 +297,66 @@
             </div>
         </section>
 
+        <!-- Ambulance Toegang -->
+        <section class="access-section" id="ambulance-section">
+            <h2>🚑 Ambulance Toegang</h2>
+            <div class="access-grid">
+                <div class="access-card" id="ambulance-card-1" style="background: linear-gradient(135deg, #fee2e2 0%, #fef3c7 100%); border-left: 4px solid #dc2626;">
+                    <h3>🚑 Ambulance Sollicitatie</h3>
+                    <p>Officiële sollicitatieformulier voor ambulancedienst</p>
+                    <p style="font-size: 0.85em; margin-top: 0.5rem; color: #991b1b;">
+                        🔐 Toegangscode vereist
+                    </p>
+                    <a href="Ambulance/Sollicitaties/1. Ambulance Sollicitatie - Invulbaar.html" class="btn" style="background: #dc2626;">Solliciteer →</a>
+                </div>
+
+                <div class="access-card" id="ambulance-card-2" style="background: linear-gradient(135deg, #fef3c7 0%, #fee2e2 100%); border-left: 4px solid #dc2626;">
+                    <h3>🩹 EHBO Toets</h3>
+                    <p>Basis Eerste Hulp kennis (20 vragen, 70% vereist)</p>
+                    <p style="font-size: 0.85em; margin-top: 0.5rem; color: #991b1b;">
+                        🔐 Toegangscode vereist
+                    </p>
+                    <a href="Ambulance/Sollicitaties/2. EHBO Toets - Invulbaar.html" class="btn" style="background: #dc2626;">Toets Maken →</a>
+                </div>
+
+                <div class="access-card" id="ambulance-card-3" style="background: linear-gradient(135deg, #fee2e2 0%, #fef3c7 100%); border-left: 4px solid #dc2626;">
+                    <h3>⚡ AED & Reanimatie Toets</h3>
+                    <p>AED gebruik & CPR (15 vragen, 80% vereist)</p>
+                    <p style="font-size: 0.85em; margin-top: 0.5rem; color: #991b1b;">
+                        🔐 Toegangscode vereist
+                    </p>
+                    <a href="Ambulance/Sollicitaties/3. AED Reanimatie Toets - Invulbaar.html" class="btn" style="background: #dc2626;">Toets Maken →</a>
+                </div>
+
+                <div class="access-card" id="ambulance-card-4" style="background: linear-gradient(135deg, #fef3c7 0%, #fee2e2 100%); border-left: 4px solid #dc2626;">
+                    <h3>🩸 Traumazorg Toets</h3>
+                    <p>Schotwonden, breuken & nekletsel (18 vragen, 85% vereist)</p>
+                    <p style="font-size: 0.85em; margin-top: 0.5rem; color: #991b1b;">
+                        🔐 Toegangscode vereist | ⚠️ Hoogste niveau
+                    </p>
+                    <a href="Ambulance/Sollicitaties/4. Traumazorg Toets - Invulbaar.html" class="btn" style="background: #dc2626;">Toets Maken →</a>
+                </div>
+
+                <div class="access-card" id="ambulance-card-5" style="background: linear-gradient(135deg, #fee2e2 0%, #fef3c7 100%); border-left: 4px solid #dc2626;">
+                    <h3>🩹 BHV & Tourniquet Toets</h3>
+                    <p>BHV taken & tourniquet gebruik (16 vragen, 80% vereist)</p>
+                    <p style="font-size: 0.85em; margin-top: 0.5rem; color: #991b1b;">
+                        🔐 Toegangscode vereist
+                    </p>
+                    <a href="Ambulance/Sollicitaties/5. BHV Tourniquet Toets - Invulbaar.html" class="btn" style="background: #dc2626;">Toets Maken →</a>
+                </div>
+
+                <div class="access-card" id="ambulance-card-6" style="background: linear-gradient(135deg, #7c2d12 0%, #991b1b 100%); border-left: 4px solid #fbbf24; color: white;">
+                    <h3>👔 Staff Sollicitatie</h3>
+                    <p style="color: #fef3c7;">Voor managementpositie (op uitnodiging)</p>
+                    <p style="font-size: 0.85em; margin-top: 0.5rem; color: #fbbf24;">
+                        🔐 Speciale toegangscode vereist
+                    </p>
+                    <a href="Ambulance/Sollicitaties/6. Ambulance Staff Sollicitatie - Invulbaar.html" class="btn" style="background: #fbbf24; color: #7c2d12;">Staff Sollicitatie →</a>
+                </div>
+            </div>
+        </section>
+
         <!-- Agent Toegang -->
         <section class="access-section" id="agent-section">
             <h2>🚔 Agent Toegang</h2>
@@ -437,26 +503,37 @@
             // Lock sections based on role
             if (role === 'guest' || role === 'user') {
                 lockSection('brandweer-section');
+                lockSection('ambulance-section');
                 lockSection('agent-section');
                 lockSection('dsi-section');
                 lockSection('staff-section');
                 lockSection('admin-section');
             } else if (role === 'agent') {
                 lockSection('brandweer-section');
+                lockSection('ambulance-section');
                 lockSection('dsi-section');
                 lockSection('staff-section');
                 lockSection('admin-section');
             } else if (role === 'brandweer') {
                 lockSection('agent-section');
+                lockSection('ambulance-section');
+                lockSection('dsi-section');
+                lockSection('staff-section');
+                lockSection('admin-section');
+            } else if (role === 'ambulance') {
+                lockSection('agent-section');
+                lockSection('brandweer-section');
                 lockSection('dsi-section');
                 lockSection('staff-section');
                 lockSection('admin-section');
             } else if (role === 'dsi') {
                 lockSection('brandweer-section');
+                lockSection('ambulance-section');
                 lockSection('staff-section');
                 lockSection('admin-section');
             } else if (role === 'staff') {
                 lockSection('brandweer-section');
+                lockSection('ambulance-section');
                 lockSection('dsi-section');
                 lockSection('admin-section');
             }

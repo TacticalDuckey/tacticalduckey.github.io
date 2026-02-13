@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EHBO Toets - Nakijkmodel (STAFF ONLY)</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c2d12, #dc2626);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            background: #f9fafb;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #dc2626;
+            border-radius: 8px;
+        }
+        
+        .question-number {
+            color: #7c2d12;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        
+        .answer-correct {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            padding: 1rem;
+            border-left: 4px solid #10b981;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+        
+        .answer-wrong {
+            background: #fee2e2;
+            padding: 0.5rem 1rem;
+            border-left: 3px solid #ef4444;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            opacity: 0.7;
+        }
+        
+        .explanation {
+            background: #fef3c7;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 6px;
+            font-size: 14px;
+            border-left: 3px solid #f59e0b;
+        }
+        
+        .stats-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .stats-box h3 {
+            margin: 0 0 1rem 0;
+            color: #1e40af;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #dc2626;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .correct-icon::before {
+            content: "✅ ";
+        }
+        
+        .wrong-icon::before {
+            content: "❌ ";
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 EHBO Toets - Nakijkmodel</h1>
+        <p>UITSLUITEND VOOR STAFF LEDEN</p>
+        <a href="../../staff-nakijkmodellen.html" class="back-link">← Terug naar nakijkmodellen</a>
+    </div>
+
+    <div class="container">
+        <div class="warning-box">
+            <strong>⚠️ VERTROUWELIJK</strong>
+            <p>Dit document bevat alle antwoorden en is alleen toegankelijk voor staff. Deel deze informatie NOOIT met sollicitanten!</p>
+        </div>
+
+        <div class="stats-box">
+            <h3>📊 Toets Statistieken</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">20</div>
+                    <div class="stat-label">Aantal vragen</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">70%</div>
+                    <div class="stat-label">Minimaal vereist</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">14/20</div>
+                    <div class="stat-label">Vragen goed = geslaagd</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vraag 1 -->
+        <div class="question">
+            <div class="question-number">Vraag 1</div>
+            <div class="question-text">Wat betekent de ABC-methode in EHBO?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Airway (luchtweg), Breathing (ademhaling), Circulation (bloedsomloop)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Alarm, Bellen, Checken</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alertheid, Bewustzijn, Controle</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Actie, Behandeling, Controle</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> ABC is de basisvolgorde voor elke EHBO-check: eerst de luchtweg vrij maken, dan ademhaling controleren, vervolgens de circulatie/bloedsomloop checken.
+            </div>
+        </div>
+
+        <!-- Vraag 2 -->
+        <div class="question">
+            <div class="question-number">Vraag 2</div>
+            <div class="question-text">In welke positie leg je een bewusteloze maar ademende persoon?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Op de rug</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Stabiele zijligging</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Op de buik</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Zittende positie</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Stabiele zijligging voorkomt dat de tong de luchtweg blokkeert en dat braaksel wordt ingeslikt.
+            </div>
+        </div>
+
+        <!-- Vraag 3 -->
+        <div class="question">
+            <div class="question-number">Vraag 3</div>
+            <div class="question-text">Wat is de juiste verhouding tussen borstcompressies en beademingen bij reanimatie (1 hulpverlener)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">15:2</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">30:2</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">20:2</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">30:1</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> 30 borstcompressies gevolgd door 2 beademingen is de standaard bij reanimatie door 1 persoon.
+            </div>
+        </div>
+
+        <!-- Vraag 4 -->
+        <div class="question">
+            <div class="question-number">Vraag 4</div>
+            <div class="question-text">Hoe behandel je een brandwond van het tweede graad (met blaren)?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Koelen met lauw water (15-20 min), blaren intact laten, steriel afdekken</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">IJs erop leggen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Blaren doorprikken en zalf aanbrengen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Niet koelen, direct verband om</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Koelen vermindert pijn en schade. Lauw water (niet ijskoud!), blaren niet doorprikken (infectierisico), steriel afdekken.
+            </div>
+        </div>
+
+        <!-- Vraag 5 -->
+        <div class="question">
+            <div class="question-number">Vraag 5</div>
+            <div class="question-text">Wat is de FAST-methode om een beroerte te herkennen?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Fever, Alert, Signs, Treatment</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Face (gezicht), Arms (armen), Speech (spraak), Time (tijd)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">First Aid Support Team</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Failure, Airway, Shock, Tremor</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> FAST: Face (hangende mondhoek?), Arms (zwakke arm?), Speech (onduidelijke spraak?), Time (bel 112!).
+            </div>
+        </div>
+
+        <!-- Vraag 6 -->
+        <div class="question">
+            <div class="question-number">Vraag 6</div>
+            <div class="question-text">Wat moet je doen bij een open botbreuk?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Bot terugduwen en spalken</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Niet aanraken, steriel afdekken, immobiliseren, 112 bellen</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Wond schoonmaken met waterstofperoxide</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Strak verband aanleggen om bot vast te zetten</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Open botbreuken NOOIT aanraken of terugduwen (infectierisico). Steriel afdekken en direct professionele hulp.
+            </div>
+        </div>
+
+        <!-- Vraag 7 -->
+        <div class="question">
+            <div class="question-number">Vraag 7</div>
+            <div class="question-text">Hoe help je iemand die stikt (volledige luchtwegobstructie)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Water laten drinken</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Op de rug slaan terwijl persoon rechtop staat</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">5 klappen tussen schouderbladen, daarna 5 buikstoten (Heimlich)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct reanimatie starten</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Bij verslikking: 5 rugklappen (voorover gebogen), dan 5 buikstoten. Herhalen tot object eruit komt.
+            </div>
+        </div>
+
+        <!-- Vraag 8 -->
+        <div class="question">
+            <div class="question-number">Vraag 8</div>
+            <div class="question-text">Wat is de normale lichaamstemperatuur?</div>
+            <div class="answer-wrong"><span class="wrong-icon">35-36°C</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">36,5-37,5°C</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">37,5-38,5°C</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">38-39°C</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Normaal: 36,5-37,5°C. Onder 35°C = hypothermie, boven 38°C = koorts.
+            </div>
+        </div>
+
+        <!-- Vraag 9 -->
+        <div class="question">
+            <div class="question-number">Vraag 9</div>
+            <div class="question-text">Hoe behandel je onderkoeling (hypothermie)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct in warm bad doen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alcohol geven om op te warmen</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Geleidelijk opwarmen, natte kleding uit, dekens, warme drank (als bewust)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Hard masseren om circulatie te verbeteren</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> GELEIDELIJK opwarmen. Te snel opwarmen kan gevaarlijk zijn. Natte kleren uit, dekens, warme niet-alcoholische drank.
+            </div>
+        </div>
+
+        <!-- Vraag 10 -->
+        <div class="question">
+            <div class="question-number">Vraag 10</div>
+            <div class="question-text">Wat moet je doen bij een epileptische aanval?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Persoon vasthouden zodat ze niet bewegen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Iets tussen de tanden plaatsen</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Omgeving veilig maken, tijd bijhouden, stabiele zijligging na aanval</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Water in gezicht gooien</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> NIET vasthouden of iets in mond stoppen! Bescherm hoofd, timer aan, na aanval stabiele zijligging. Bij >5min: 112.
+            </div>
+        </div>
+
+        <!-- Vraag 11 -->
+        <div class="question">
+            <div class="question-number">Vraag 11</div>
+            <div class="question-text">Wat is het verschil tussen een hartaanval en een hartstilstand?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Hartaanval = bloedtoevoer geblokkeerd, hartstilstand = hart stopt met pompen</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Er is geen verschil</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Hartaanval is ernstiger dan hartstilstand</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Hartstilstand komt altijd na een hartaanval</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Hartaanval (myocardinfarct): bloedvaatverstopping, persoon nog bij bewustzijn. Hartstilstand: hart stopt, bewusteloos, reanimatie nodig.
+            </div>
+        </div>
+
+        <!-- Vraag 12 -->
+        <div class="question">
+            <div class="question-number">Vraag 12</div>
+            <div class="question-text">Hoe behandel je een verstuiking (RICE-methode)?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Run, Ice, Call, Emergency</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Rest (rust), Ice (koelen), Compression (drukverband), Elevation (omhoog)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Rub (wrijven), Inspect, Compress, Examine</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Remove, Immobilize, Clean, Examine</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> RICE: Rest (niet belasten), Ice (koelen 15-20min), Compression (drukverband), Elevation (omhoog leggen).
+            </div>
+        </div>
+
+        <!-- Vraag 13 -->
+        <div class="question">
+            <div class="question-number">Vraag 13</div>
+            <div class="question-text">Hoe controleer je of iemand ademt?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen kijken naar de borstkas</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen luisteren bij mond/neus</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Zien (borstkas), Horen (ademhaling), Voelen (lucht bij wang) - 10 seconden</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Spiegel voor mond houden</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> ZHV: Zien (borst beweegt), Horen (ademgeluiden), Voelen (lucht bij wang). Maximaal 10 seconden checken.
+            </div>
+        </div>
+
+        <!-- Vraag 14 -->
+        <div class="question">
+            <div class="question-number">Vraag 14</div>
+            <div class="question-text">Wat moet je doen bij ernstig bloedverlies?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Verband eromheen en zelf naar ziekenhuis laten gaan</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Directe druk op wond, 112 bellen, hoog leggen, niet verwijderen als doordrenkt</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Tourniquet direct aanleggen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Wond schoonmaken met alcohol</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Directe druk op wond (10-15min), 112, ledemaat omhoog. Verband niet verwijderen als doordrenkt (nieuwe laag eroverheen).
+            </div>
+        </div>
+
+        <!-- Vraag 15 -->
+        <div class="question">
+            <div class="question-number">Vraag 15</div>
+            <div class="question-text">Welk alarmnummer bel je in Nederland voor medische noodsituaties?</div>
+            <div class="answer-wrong"><span class="wrong-icon">911</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">112</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">999</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">0900-8844</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> 112 is het Europese alarmnummer voor ambulance, brandweer en politie. 0900-8844 is huisartsenpost (niet spoed).
+            </div>
+        </div>
+
+        <!-- Vraag 16 -->
+        <div class="question">
+            <div class="question-number">Vraag 16</div>
+            <div class="question-text">Hoe behandel je een neusbloeding?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Hoofd naar achteren, prop tissue in neus</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Hoofd voorover, neusvleugels 10 min dichtknijpen, koele doek in nek</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Plat gaan liggen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Hard snuiten om stolsels te verwijderen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Hoofd VOOROVER (niet achterover - bloed loopt dan naar keel), neusvleugels 10 min knijpen, koele doek in nek.
+            </div>
+        </div>
+
+        <!-- Vraag 17 -->
+        <div class="question">
+            <div class="question-number">Vraag 17</div>
+            <div class="question-text">Wat zijn tekenen van een shock?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Bleke/koude huid, snelle zwakke pols, verwardheid, ondiepe ademhaling</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Rode gezicht, hoge bloeddruk, zweten</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Epileptische aanval</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Hoge koorts en rillingen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Shock = onvoldoende bloed naar organen. Tekenen: bleek, koud, zweten, snelle zwakke pols, verward, snel ademen. 112!
+            </div>
+        </div>
+
+        <!-- Vraag 18 -->
+        <div class="question">
+            <div class="question-number">Vraag 18</div>
+            <div class="question-text">Wat moet je doen als iemand flauwvalt?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct reanimatie starten</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Water in gezicht gooien</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Plat leggen, benen omhoog (shockligging), check ademhaling, frisse lucht</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Rechtop zetten en water geven</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Plat leggen, benen omhoog (bloed naar hersenen), frisse lucht, kleding losser maken. Check ademhaling. Bij herstel: langzaam laten opstaan.
+            </div>
+        </div>
+
+        <!-- Vraag 19 -->
+        <div class="question">
+            <div class="question-number">Vraag 19</div>
+            <div class="question-text">Hoe lang moet je een chemische brandwond spoelen met water?</div>
+            <div class="answer-wrong"><span class="wrong-icon">5 minuten</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">10 minuten</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Minimaal 20 minuten (of tot ambulance arriveert)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">1 minuut</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Chemische brandwonden: minimaal 20 minuten spoelen met veel water. Verwijder kleding (zonder chemicaliën te verspreiden).
+            </div>
+        </div>
+
+        <!-- Vraag 20 -->
+        <div class="question">
+            <div class="question-number">Vraag 20</div>
+            <div class="question-text">Wat doe je als je bij een ongeval aankomt met meerdere slachtoffers?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct beginnen bij eerste slachtoffer</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Check eigen veiligheid, 112 bellen, triage (ernstigste eerst), ABC bij allen</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Wachten op professionals</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen helpen wie om hulp vraagt</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Altijd EIGEN VEILIGHEID EERST! Dan 112, daarna triage (wie heeft meest urgente hulp nodig). ABC check bij iedereen.
+            </div>
+        </div>
+
+        <div class="stats-box" style="margin-top: 3rem;">
+            <h3>🎯 Beoordelingsrichtlijnen</h3>
+            <ul style="margin: 0;">
+                <li><strong>14-20 punten (70-100%):</strong> ✅ GESLAAGD - Basis EHBO kennis voldoende</li>
+                <li><strong>11-13 punten (55-65%):</strong> ⚠️ ONVOLDOENDE - Herkansing mogelijk</li>
+                <li><strong>0-10 punten (&lt;55%):</strong> ❌ GEZAKT - Extra studie vereist, nieuwe toets over 1 week</li>
+            </ul>
+            <p style="margin: 1rem 0 0 0; padding: 1rem; background: white; border-radius: 8px;">
+                <strong>💡 Tip:</strong> Bij twijfelgevallen kan je een mondeling nagesprek inplannen om kennis te verifiëren.
+            </p>
+        </div>
+    </div>
+
+    <script src="../../auth.js"></script>
+</body>
+</html>

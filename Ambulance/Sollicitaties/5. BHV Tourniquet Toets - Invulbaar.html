@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHV & Tourniquet Toets - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #dc2626, #f59e0b);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #10b981;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #dc2626;
+            border-bottom: 2px solid #f59e0b;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #991b1b;
+        }
+        
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #dc2626, #f59e0b);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-box {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .info-box ul {
+            margin: 0.5rem 0 0 1.5rem;
+        }
+        
+        .info-box strong {
+            color: #92400e;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #dc2626;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 3px solid #dc2626 !important;
+            max-width: 300px;
+            margin: 10px auto;
+            display: block;
+        }
+        
+        .question-number {
+            background: #dc2626;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🩹 BHV & Tourniquet Toets</h1>
+        <p>Bedrijfshulpverlening & Bloedstelpingstechnieken</p>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Vraag een toegangscode aan bij je leidinggevende</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #991b1b;">
+                💡 Speciale certificering voor critical care
+            </p>
+        </div>
+
+        <div class="info-box">
+            <strong>🎯 Over deze toets:</strong>
+            <p>Deze toets combineert BHV (Bedrijfshulpverlening) kennis met geavanceerde bloedstelpingstechnieken waaronder het gebruik van een tourniquet. Deze vaardigheden zijn cruciaal bij massaal bloedverlies.</p>
+            <ul>
+                <li>Tijd: Geen tijdslimiet</li>
+                <li>Vragen: 16 (praktijk en theorie)</li>
+                <li>Slagingspercentage: 80%</li>
+            </ul>
+        </div>
+
+        <form id="toetsForm" onsubmit="return false;">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required placeholder="Jan de Vries">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required placeholder="gebruiker#1234">
+            </div>
+
+            <h2>🏢 Bedrijfshulpverlening (BHV)</h2>
+
+            <!-- Vraag 1 -->
+            <div class="form-group">
+                <label><span class="question-number">1</span>Wat zijn de 6 taken van een BHV'er?*</label>
+                <textarea id="vraag1" name="vraag1" required placeholder="Noem alle 6 de taken..." style="min-height: 120px;"></textarea>
+            </div>
+
+            <!-- Vraag 2 -->
+            <div class="form-group">
+                <label><span class="question-number">2</span>Wat betekent de D-ABC-DE methodiek in de BHV?*</label>
+                <textarea id="vraag2" name="vraag2" required placeholder="Leg uit waar elke letter voor staat..."></textarea>
+            </div>
+
+            <!-- Vraag 3 -->
+            <div class="form-group">
+                <label><span class="question-number">3</span>Wat is de eerste actie bij het aantreffen van een calamiteit als BHV'er?*</label>
+                <select id="vraag3" name="vraag3" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Direct helpen verlenen</option>
+                    <option value="b">Veiligheid controleren (Danger - eigen veiligheid eerst)</option>
+                    <option value="c">112 bellen</option>
+                    <option value="d">Getuigen zoeken</option>
+                </select>
+            </div>
+
+            <!-- Vraag 4 -->
+            <div class="form-group">
+                <label><span class="question-number">4</span>Wanneer evacueer je als BHV'er bij een incident?*</label>
+                <textarea id="vraag4" name="vraag4" required placeholder="Noem situaties waarin evacuatie noodzakelijk is..."></textarea>
+            </div>
+
+            <!-- Vraag 5 -->
+            <div class="form-group">
+                <label><span class="question-number">5</span>Wat is het verschil tussen een BHV'er en een EHBO'er?*</label>
+                <textarea id="vraag5" name="vraag5" required placeholder="Leg de verschillen in taken en verantwoordelijkheden uit..."></textarea>
+            </div>
+
+            <h2>🩸 Tourniquet & Bloedstelpingstechnieken</h2>
+
+            <!-- Vraag 6 -->
+            <div class="form-group">
+                <label><span class="question-number">6</span>Wat is een tourniquet en waarvoor gebruik je het?*</label>
+                <textarea id="vraag6" name="vraag6" required placeholder="Leg uit wat het is en wanneer je het gebruikt..."></textarea>
+            </div>
+
+            <!-- Vraag 7 -->
+            <div class="form-group">
+                <label><span class="question-number">7</span>Wanneer is het gebruik van een tourniquet GEÏNDICEERD (noodzakelijk)?*</label>
+                <select id="vraag7" name="vraag7" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Bij elke wond met bloedverlies</option>
+                    <option value="b">Bij levensbedreigende bloeding uit ledemaat die niet te stelpen is met directe druk</option>
+                    <option value="c">Bij kleine snijwonden</option>
+                    <option value="d">Bij hoofdwonden</option>
+                </select>
+            </div>
+
+            <!-- Vraag 8 -->
+            <div class="form-group">
+                <label><span class="question-number">8</span>Beschrijf stap voor stap hoe je een tourniquet aanlegt*</label>
+                <textarea id="vraag8" name="vraag8" required placeholder="Geef gedetailleerde uitleg vanaf het moment dat je beslist een tourniquet te gebruiken..." style="min-height: 140px;"></textarea>
+            </div>
+
+            <!-- Vraag 9 -->
+            <div class="form-group">
+                <label><span class="question-number">9</span>Waar plaats je een tourniquet op het been of arm?*</label>
+                <select id="vraag9" name="vraag9" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Direct op of naast de wond</option>
+                    <option value="b">5-7 cm boven de wond, tussen wond en hart</option>
+                    <option value="c">Onder de wond</option>
+                    <option value="d">Maakt niet uit</option>
+                </select>
+            </div>
+
+            <!-- Vraag 10 -->
+            <div class="form-group">
+                <label><span class="question-number">10</span>Wat is het maximale tijd dat een tourniquet mag blijven zitten voordat weefselschade optreedt?*</label>
+                <select id="vraag10" name="vraag10" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">15-30 minuten</option>
+                    <option value="b">1-2 uur (veilig) / max 4-6 uur</option>
+                    <option value="c">6-12 uur</option>
+                    <option value="d">Onbeperkt</option>
+                </select>
+            </div>
+
+            <!-- Vraag 11 -->
+            <div class="form-group">
+                <label><span class="question-number">11</span>Wat schrijf je op als je een tourniquet hebt aangelegd?*</label>
+                <select id="vraag11" name="vraag11" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Niets, is niet nodig</option>
+                    <option value="b">Tijd van aanleggen (TK = Tourniquet + tijdstip) op voorhoofd/tourniquet</option>
+                    <option value="c">Alleen je naam</option>
+                    <option value="d">Bloedgroep van patiënt</option>
+                </select>
+            </div>
+
+            <!-- Vraag 12 -->
+            <div class="form-group">
+                <label><span class="question-number">12</span>Mag je een tourniquet verwijderen nadat je het hebt aangelegd?*</label>
+                <select id="vraag12" name="vraag12" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Ja, als de bloeding gestopt is</option>
+                    <option value="b">Nee, alleen door medisch personeel in ziekenhuis</option>
+                    <option value="c">Ja, na 30 minuten</option>
+                    <option value="d">Ja, als de patiënt erom vraagt</option>
+                </select>
+            </div>
+
+            <!-- Vraag 13 -->
+            <div class="form-group">
+                <label><span class="question-number">13</span>Wat is het verschil tussen arteriële en veneuze bloeding?*</label>
+                <textarea id="vraag13" name="vraag13" required placeholder="Leg het verschil uit en hoe je ze herkent..."></textarea>
+            </div>
+
+            <h2>🚨 Praktijk Scenario's</h2>
+
+            <!-- Vraag 14 -->
+            <div class="form-group">
+                <label><span class="question-number">14</span>SCENARIO: Een persoon heeft zijn been flink gesneden aan een cirkelzaag. Er is massale bloeding, bloed spuit eruit. Directe druk stopt de bloeding niet. Beschrijf je volledige handelswijze*</label>
+                <textarea id="vraag14" name="vraag14" required placeholder="Geef stap voor stap beschrijving..." style="min-height: 140px;"></textarea>
+            </div>
+
+            <!-- Vraag 15 -->
+            <div class="form-group">
+                <label><span class="question-number">15</span>SCENARIO: Bij een schietpartij heeft iemand een schotwond in de bovenbeen met spuitend bloedverlies. Je hebt een tourniquet aangelegd. De ambulance is er over 15 minuten. Wat doe je verder?*</label>
+                <textarea id="vraag15" name="vraag15" required placeholder="Beschrijf je verdere acties en monitoring..."></textarea>
+            </div>
+
+            <!-- Vraag 16 -->
+            <div class="form-group">
+                <label><span class="question-number">16</span>Wat is de volgorde van bloedstelpingstechnieken van minst invasief naar meest invasief?*</label>
+                <textarea id="vraag16" name="vraag16" required placeholder="Beschrijf de volgorde (bijv. eerst X, dan Y, dan Z...)"></textarea>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                📨 Toets Indienen
+            </button>
+
+            <div class="success-box" id="successMessage">
+                <strong>✅ Toets Verzonden!</strong>
+                <p>Je toets is succesvol ingediend. Je ontvangt binnen 24-48 uur de resultaten via Discord.</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../discord-webhook-v2.js"></script>
+    <script>
+        // Access code verification
+        const accessCodeInput = document.getElementById('accessCode');
+        const form = document.getElementById('toetsForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Disable form initially
+        const formElements = form.querySelectorAll('input, textarea, select, button');
+        formElements.forEach(el => el.disabled = true);
+
+        // Check if code is already verified
+        if (sessionStorage.getItem('ambulance_bhv_code_verified') === 'true') {
+            formElements.forEach(el => el.disabled = false);
+            accessCodeInput.disabled = true;
+            accessCodeInput.value = '✓ GEVERIFIEERD';
+            accessCodeInput.style.borderColor = '#10b981';
+            accessCodeInput.style.color = '#10b981';
+        }
+
+        accessCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            if (value.length > 3 && value.indexOf('-') === -1) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            }
+            if (value.length > 7 && value.lastIndexOf('-') === 3) {
+                value = value.slice(0, 7) + '-' + value.slice(7);
+            }
+            
+            e.target.value = value;
+
+            // Verify code
+            fetch('/.netlify/functions/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'verify',
+                    code: value,
+                    type: 'ambulance-bhv'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    e.target.style.borderColor = '#10b981';
+                    e.target.style.color = '#10b981';
+                    e.target.value = '✓ GEVERIFIEERD';
+                    e.target.disabled = true;
+                    sessionStorage.setItem('ambulance_bhv_code_verified', 'true');
+                    sessionStorage.setItem('ambulance_bhv_access_code', value);
+                    
+                    // Enable form
+                    formElements.forEach(el => el.disabled = false);
+                }
+            })
+            .catch(err => console.error('Code verificatie mislukt:', err));
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (sessionStorage.getItem('ambulance_bhv_code_verified') !== 'true') {
+                alert('Voer eerst een geldige toegangscode in!');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 Verzenden...';
+
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            const accessCode = sessionStorage.getItem('ambulance_bhv_access_code') || 'UNKNOWN';
+
+            try {
+                const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(data, 'ambulance-bhv', accessCode);
+
+                if (result.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    form.reset();
+                    sessionStorage.removeItem('ambulance_bhv_code_verified');
+                    sessionStorage.removeItem('ambulance_bhv_access_code');
+                    
+                    setTimeout(() => {
+                        window.location.href = '../../dashboard.html';
+                    }, 3000);
+                } else {
+                    throw new Error(result.message || 'Verzenden mislukt');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 Toets Indienen';
+            }
+        });
+    </script>
+</body>
+</html>

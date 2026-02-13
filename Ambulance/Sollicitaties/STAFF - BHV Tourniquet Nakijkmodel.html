@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHV Tourniquet Toets - Nakijkmodel (STAFF ONLY)</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c2d12, #dc2626);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            background: #f9fafb;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #dc2626;
+            border-radius: 8px;
+        }
+        
+        .question-number {
+            color: #7c2d12;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        
+        .answer-correct {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            padding: 1rem;
+            border-left: 4px solid #10b981;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+        
+        .answer-wrong {
+            background: #fee2e2;
+            padding: 0.5rem 1rem;
+            border-left: 3px solid #ef4444;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            opacity: 0.7;
+        }
+        
+        .explanation {
+            background: #fef3c7;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 6px;
+            font-size: 14px;
+            border-left: 3px solid #f59e0b;
+        }
+        
+        .stats-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .stats-box h3 {
+            margin: 0 0 1rem 0;
+            color: #1e40af;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #dc2626;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .correct-icon::before {
+            content: "✅ ";
+        }
+        
+        .wrong-icon::before {
+            content: "❌ ";
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🩹 BHV & Tourniquet Toets - Nakijkmodel</h1>
+        <p>UITSLUITEND VOOR STAFF LEDEN</p>
+        <a href="../../staff-nakijkmodellen.html" class="back-link">← Terug naar nakijkmodellen</a>
+    </div>
+
+    <div class="container">
+        <div class="warning-box">
+            <strong>⚠️ VERTROUWELIJK</strong>
+            <p>Dit document bevat alle antwoorden en is alleen toegankelijk voor staff. Deel deze informatie NOOIT met sollicitanten!</p>
+        </div>
+
+        <div class="stats-box">
+            <h3>📊 Toets Statistieken</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">16</div>
+                    <div class="stat-label">Aantal vragen</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">80%</div>
+                    <div class="stat-label">Minimaal vereist</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">13/16</div>
+                    <div class="stat-label">Vragen goed = geslaagd</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vraag 1 -->
+        <div class="question">
+            <div class="question-number">Vraag 1</div>
+            <div class="question-text">Wat zijn de 6 taken van een BHV'er?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Preventie, Preparatie, Alarmering, Evacuatie, Ontruiming, Eerste hulp</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen eerste hulp verlenen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Brandbestrijding en beveiliging</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Dit zijn er 10, niet 6</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> BHV = breed takenpakket: Preventie (voorkomen), Preparatie (voorbereiden), Alarmering, Evacuatie, Ontruiming, EHBO.
+            </div>
+        </div>
+
+        <!-- Vraag 2 -->
+        <div class="question">
+            <div class="question-number">Vraag 2</div>
+            <div class="question-text">Wat betekent de D-ABC-DE methode?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Dit bestaat niet, alleen ABC</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Danger (gevaar), Airway, Breathing, Circulation, Disability, Exposure</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Diagnose, ABC, Behandeling, Evacuatie</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct-ABC-Direct-Evacueren</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> D-ABC-DE: Danger eerst (veiligheid!), dan ABC, Disability (neurologisch), Exposure (blootstellen/onderzoeken).
+            </div>
+        </div>
+
+        <!-- Vraag 3 -->
+        <div class="question">
+            <div class="question-number">Vraag 3</div>
+            <div class="question-text">Waarom staat "Danger" (gevaar) vooraan in D-ABC-DE?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Eigen veiligheid en veiligheid omgeving eerst, anders word je zelf slachtoffer</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Om te checken of patiënt gevaarlijk is</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Dit is een fout, ABC komt eerst</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Om gevaar voor patiënt in te schatten</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> ALTIJD eerst checken: is het veilig? Brand? Instorting? Schutter? Anders creëer je meer slachtoffers (jezelf)!
+            </div>
+        </div>
+
+        <!-- Vraag 4 -->
+        <div class="question">
+            <div class="question-number">Vraag 4</div>
+            <div class="question-text">Wanneer moet een BHV'er een ruimte evacueren?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen bij brand</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Nooit, dat doet de brandweer</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Brand, gaslekkage, dreigende instorting, gewapende overval, of andere acute gevaren</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen als politie het beveelt</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Evacuatie bij alle acute gevaren: brand, gas, instorting, chemisch, geweld, etc. BHV coördineert tot hulpdiensten er zijn.
+            </div>
+        </div>
+
+        <!-- Vraag 5 -->
+        <div class="question">
+            <div class="question-number">Vraag 5</div>
+            <div class="question-text">Wat is het verschil tussen BHV en EHBO?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Er is geen verschil</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">BHV = breder (preventie, evacuatie, brandbestrijding + EHBO), EHBO = alleen medisch</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">BHV is minder dan EHBO</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">BHV is alleen voor bedrijven</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> EHBO = medische hulp. BHV = breder pakket (inclusief EHBO + brandbestrijding + evacuatie + preventie).
+            </div>
+        </div>
+
+        <!-- Vraag 6 -->
+        <div class="question">
+            <div class="question-number">Vraag 6</div>
+            <div class="question-text">Wat is een tourniquet?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Een soort pijnstiller</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Een strakke band om ledemaat om levensbedreigende bloeding te stoppen</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Een verband voor open wonden</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Een soort spalk</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Tourniquet (afbindband) = strakke band rond arm/been om bloedtoevoer af te sluiten bij massaal bloedverlies.
+            </div>
+        </div>
+
+        <!-- Vraag 7 -->
+        <div class="question">
+            <div class="question-number">Vraag 7</div>
+            <div class="question-text">Wanneer gebruik je een tourniquet?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Bij elke arm- of beenwond</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Bij elk bloedverlies</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Alleen bij levensbedreigend bloedverlies ledemaat dat NIET stopt met directe druk</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Nooit, te gevaarlijk</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Tourniquet = LAATSTE redmiddel! Alleen bij massaal bloedverlies arm/been dat niet stopt met directe druk. Ledemaat-risico!
+            </div>
+        </div>
+
+        <!-- Vraag 8 -->
+        <div class="question">
+            <div class="question-number">Vraag 8</div>
+            <div class="question-text">Hoe leg je een tourniquet aan?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct op de wond</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Op een gewricht</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">5-7 cm boven wond (dichtbij), niet op gewricht, strak aandraaien tot bloeding stopt</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Zo hoog mogelijk op ledemaat</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Plaatsing: 5-7 cm BOVEN wond (tussen wond en hart), NIET op gewricht, aandraaien tot bloeding volledig stopt.
+            </div>
+        </div>
+
+        <!-- Vraag 9 -->
+        <div class="question">
+            <div class="question-number">Vraag 9</div>
+            <div class="question-text">Hoe lang kan een tourniquet veilig blijven zitten?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">1-2 uur relatief veilig, max 4-6 uur (risico op blijvende schade)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Maximum 30 minuten</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Onbeperkt, geen tijdslimiet</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Maximaal 10 minuten</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> 1-2 uur = relatief veilig voor ledemaat. Boven 6 uur = hoog risico op blijvende schade/amputatie. Snel transport!
+            </div>
+        </div>
+
+        <!-- Vraag 10 -->
+        <div class="question">
+            <div class="question-number">Vraag 10</div>
+            <div class="question-text">Wat schrijf je op bij een aangebrachte tourniquet?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Naam van slachtoffer</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Je eigen naam</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">"TK" (Tourniquet) + Tijdstip aangebracht (op voorhoofd slachtoffer schrijven!)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Niets, alleen 112 bellen</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> TK + TIJDSTIP op voorhoofd met marker! Ziekenhuis MOET weten wanneer tourniquet aangebracht (timing cruciaal!).
+            </div>
+        </div>
+
+        <!-- Vraag 11 -->
+        <div class="question">
+            <div class="question-number">Vraag 11</div>
+            <div class="question-text">Mag je een tourniquet verwijderen als ambulance er is?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Ja, als bloeding gestopt is</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Ja, altijd verwijderen voor transport</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">NOOIT zelf verwijderen - alleen ziekenhuis/trauma-chirurg mag dit!</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Ja, na 1 uur automatisch</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> NOOIT tourniquet verwijderen! Risico op fatale shock bij loslaten. Alleen ziekenhuis onder gecontroleerde omstandigheden!
+            </div>
+        </div>
+
+        <!-- Vraag 12 -->
+        <div class="question">
+            <div class="question-number">Vraag 12</div>
+            <div class="question-text">Hoe herken je arterieel bloedverlies vs veneus?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Arterieel = helderrood, spuit/pulseert. Veneus = donkerrood, sijpelt/stroomt</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Er is geen verschil</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Arterieel is donkerder</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen te zien met apparatuur</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Arterie (slagader): helderrood, spuit/pulseert (hoge druk, GEVAARLIJK!). Veneus: donker, sijpelt (lagere druk).
+            </div>
+        </div>
+
+        <!-- Vraag 13 -->
+        <div class="question">
+            <div class="question-number">Vraag 13</div>
+            <div class="question-text">In welke volgorde probeer je bloeding te stoppen? (Bloedingsladder)</div>
+            <div class="answer-wrong"><span class="wrong-icon">Direct tourniquet aanleggen</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">1. Directe druk, 2. Drukverband, 3. Drukpunt, 4. Tourniquet (laatste redmiddel)</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen directe druk gebruiken</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Eerst drukpunt, dan directe druk</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Escalatieladder: directe druk → drukverband → arterieel drukpunt → tourniquet. Elke stap één niveau ernstiger!
+            </div>
+        </div>
+
+        <!-- Vraag 14 -->
+        <div class="question">
+            <div class="question-number">Vraag 14</div>
+            <div class="question-text">SCENARIO: Cirkelzaag snijdt diep in onderarm, massaal bloedverlies, directe druk helpt niet. Wat doe je?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Blijven drukken en wachten</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Tourniquet boven elleboog, TK+tijd markeren, 112 (trauma), directe druk behouden</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Arm afbinden bij pols</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">IJs erop en dichtnaaien</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Massaal bloedverlies dat niet stopt = tourniquet indicatie! Boven elleboog (niet op gewricht), TK+tijd markeren, 112 trauma!
+            </div>
+        </div>
+
+        <!-- Vraag 15 -->
+        <div class="question">
+            <div class="question-number">Vraag 15</div>
+            <div class="question-text">SCENARIO: Schotwond bovenbeen, tourniquet aangelegd 20 minuten geleden, ambulance nog niet ter plaatse. Wat doe je?</div>
+            <div class="answer-wrong"><span class="wrong-icon">Tourniquet losser maken</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Tourniquet verwijderen</span></div>
+            <div class="answer-correct">
+                <span class="correct-icon">Tourniquet laten zitten, patiënt monitoren (shock-tekens), TK+tijd zichtbaar houden</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Nieuwe tourniquet ernaast</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> Tourniquet blijft zitten! Monitor patiënt (shock), keep warm, TK+tijd zichtbaar. NOOIT losser maken of verwijderen!
+            </div>
+        </div>
+
+        <!-- Vraag 16 -->
+        <div class="question">
+            <div class="question-number">Vraag 16</div>
+            <div class="question-text">Wat zijn contra-indicaties (wanneer NIET gebruiken) voor een tourniquet?</div>
+            <div class="answer-correct">
+                <span class="correct-icon">Romp/nek wonden, beknellingstrauma, al te lang massaal bloedverlies (shock), als directe druk werkt</span>
+            </div>
+            <div class="answer-wrong"><span class="wrong-icon">Er zijn geen contra-indicaties</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Alleen bij kinderen</span></div>
+            <div class="answer-wrong"><span class="wrong-icon">Bij alle botbreuken</span></div>
+            <div class="explanation">
+                <strong>💡 Toelichting:</strong> NIET gebruiken: romp/nekwonden (kan niet), beknelling (crush syndrome), als directe druk werkt. Alleen ledematen + massaal!
+            </div>
+        </div>
+
+        <div class="stats-box" style="margin-top: 3rem;">
+            <h3>🎯 Beoordelingsrichtlijnen</h3>
+            <ul style="margin: 0;">
+                <li><strong>13-16 punten (80-100%):</strong> ✅ GESLAAGD - BHV & Tourniquet certificering toegekend</li>
+                <li><strong>11-12 punten (69-75%):</strong> ⚠️ ONVOLDOENDE - Herkansing binnen 1 week</li>
+                <li><strong>0-10 punten (&lt;69%):</strong> ❌ GEZAKT - Her-scholing vereist, nieuwe toets over 2 weken</li>
+            </ul>
+            <p style="margin: 1rem 0 0 0; padding: 1rem; background: white; border-radius: 8px;">
+                <strong>⚠️ Let op:</strong> Tourniquet-gebruik is kritiek - verkeerd gebruik = ledemaatverlies. Bij twijfel: praktijkdemonstatie met trainingstourniquet.
+            </p>
+        </div>
+    </div>
+
+    <script src="../../auth.js"></script>
+</body>
+</html>

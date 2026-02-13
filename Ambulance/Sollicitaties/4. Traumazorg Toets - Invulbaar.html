@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traumazorg Toets - Lage Landen RP</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #991b1b, #dc2626);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #fbbf24;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #991b1b;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #7f1d1d;
+        }
+        
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #991b1b;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, #991b1b, #dc2626);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(153, 27, 27, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-box {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #991b1b;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+        
+        .info-box ul {
+            margin: 0.5rem 0 0 1.5rem;
+        }
+        
+        .info-box strong {
+            color: #7f1d1d;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .access-code-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #991b1b;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .access-code-input {
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 3px solid #991b1b !important;
+            max-width: 300px;
+            margin: 10px auto;
+            display: block;
+        }
+        
+        .question-number {
+            background: #991b1b;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .warning-badge {
+            background: #dc2626;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🩺 Traumazorg Toets</h1>
+        <p>Ernstig Letsel & Trauma Behandeling</p>
+        <a href="../../dashboard.html" class="back-link">← Terug naar dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="access-code-box">
+            <h3 style="margin: 0 0 10px 0;">🔐 Toegangscode Vereist</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Gevorderde toets - Vraag code aan bij management</p>
+            <input type="text" class="access-code-input" id="accessCode" placeholder="XXX-XXX-XXX" maxlength="11">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #991b1b;">
+                ⚠️ Alleen voor getrainde ambulancemedewerkers
+            </p>
+        </div>
+
+        <div class="info-box">
+            <strong>🚨 Over deze toets:</strong>
+            <p>Deze gevorderde toets behandelt ernstig trauma zoals schotwonden, botbreuken, nekletsel en levensbedreigende verwondingen. Deze kennis is cruciaal voor het redden van levens in crisissituaties.</p>
+            <ul>
+                <li>Niveau: Gevorderd</li>
+                <li>Vragen: 18 (praktijk scenario's en medische kennis)</li>
+                <li>Slagingspercentage: 85%</li>
+                <li>Vereist: EHBO en AED certificaat</li>
+            </ul>
+        </div>
+
+        <div class="warning-badge">
+            ⚠️ BELANGRIJK: Alle antwoorden worden getoetst door gecertificeerde instructeurs
+        </div>
+
+        <form id="toetsForm" onsubmit="return false;">
+            <h2>📋 Persoonlijke Gegevens</h2>
+            
+            <div class="form-group">
+                <label for="naam">Voor- en Achternaam (IC)*</label>
+                <input type="text" id="naam" name="naam" required placeholder="Jan de Vries">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">Discord Gebruikersnaam*</label>
+                <input type="text" id="discord" name="discord" required placeholder="gebruiker#1234">
+            </div>
+
+            <h2>🔫 Schotwonden & Penetrerend Trauma</h2>
+
+            <!-- Vraag 1 -->
+            <div class="form-group">
+                <label><span class="question-number">1</span>Een persoon heeft een schotwond in de borst en ademt moeizaam. Wat is je eerste prioriteit?*</label>
+                <textarea id="vraag1" name="vraag1" required placeholder="Beschrijf je directe handelswijze en prioriteiten..."></textarea>
+            </div>
+
+            <!-- Vraag 2 -->
+            <div class="form-group">
+                <label><span class="question-number">2</span>Wat is het verschil tussen een entry wound (inschot) en exit wound (uitschot) bij een schotwond?*</label>
+                <textarea id="vraag2" name="vraag2" required placeholder="Leg het verschil uit en vertel hoe je ze herkent..."></textarea>
+            </div>
+
+            <!-- Vraag 3 -->
+            <div class="form-group">
+                <label><span class="question-number">3</span>Een slachtoffer heeft een penetrerende wond met een voorwerp (mes, glas) dat nog in de wond zit. Wat doe je?*</label>
+                <select id="vraag3" name="vraag3" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Het voorwerp eruit trekken en wond verbinden</option>
+                    <option value="b">Het voorwerp laten zitten en stabiliseren rond de wond</option>
+                    <option value="c">Het voorwerp half eruit trekken</option>
+                    <option value="d">Direct opereren</option>
+                </select>
+            </div>
+
+            <!-- Vraag 4 -->
+            <div class="form-group">
+                <label><span class="question-number">4</span>Wat is een spanningspneumothorax en hoe herken je dit bij een schotwond in de borst?*</label>
+                <textarea id="vraag4" name="vraag4" required placeholder="Leg uit wat het is en noem de symptomen..."></textarea>
+            </div>
+
+            <h2>🦴 Fracturen & Botbreuken</h2>
+
+            <!-- Vraag 5 -->
+            <div class="form-group">
+                <label><span class="question-number">5</span>Wat is het verschil tussen een gesloten en open fractuur?*</label>
+                <textarea id="vraag5" name="vraag5" required placeholder="Leg het verschil uit en welke is ernstiger..."></textarea>
+            </div>
+
+            <!-- Vraag 6 -->
+            <div class="form-group">
+                <label><span class="question-number">6</span>Een persoon heeft een gebroken dijbeen (femur). Waarom is dit levensbedreigende situatie?*</label>
+                <select id="vraag6" name="vraag6" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Wegens extreme pijn</option>
+                    <option value="b">Risico op shock door massaal intern bloedverlies (1-2 liter)</option>
+                    <option value="c">Het been kan niet meer genezen</option>
+                    <option value="d">Infectiegevaar</option>
+                </select>
+            </div>
+
+            <!-- Vraag 7 -->
+            <div class="form-group">
+                <label><span class="question-number">7</span>Beschrijf hoe je een gebroken ledemaat immobiliseert (spalken)*</label>
+                <textarea id="vraag7" name="vraag7" required placeholder="Geef stap voor stap uitleg..."></textarea>
+            </div>
+
+            <!-- Vraag 8 -->
+            <div class="form-group">
+                <label><span class="question-number">8</span>Wat zijn de 5 P's die je controleert bij een fractuur?*</label>
+                <textarea id="vraag8" name="vraag8" required placeholder="Noem alle 5 de P's..."></textarea>
+            </div>
+
+            <h2>🧠 Nek- & Rugletsel (Spinaal Trauma)</h2>
+
+            <!-- Vraag 9 -->
+            <div class="form-group">
+                <label><span class="question-number">9</span>Bij welke situaties moet je ALTIJD rekening houden met mogelijk nek- of rugletsel?*</label>
+                <textarea id="vraag9" name="vraag9" required placeholder="Noem minimaal 5 situaties..."></textarea>
+            </div>
+
+            <!-- Vraag 10 -->
+            <div class="form-group">
+                <label><span class="question-number">10</span>Hoe immobiliseer je een slachtoffer met vermoeden van nekletsel?*</label>
+                <select id="vraag10" name="vraag10" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Met nekkraag en wervelplank, inline stabilisatie</option>
+                    <option value="b">Direct in stabiele zijligging</option>
+                    <option value="c">Rechtop laten zitten</option>
+                    <option value="d">Plat op de rug zonder hulpmiddelen</option>
+                </select>
+            </div>
+
+            <!-- Vraag 11 -->
+            <div class="form-group">
+                <label><span class="question-number">11</span>Wat zijn tekenen van een ruggenmergletsel?*</label>
+                <textarea id="vraag11" name="vraag11" required placeholder="Noem de symptomen..."></textarea>
+            </div>
+
+            <!-- Vraag 12 -->
+            <div class="form-group">
+                <label><span class="question-number">12</span>Een bewusteloos slachtoffer van een auto-ongeluk moet gereanimeerd worden, maar je vermoedt nekletsel. Wat doe je?*</label>
+                <select id="vraag12" name="vraag12" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Niet reanimeren i.v.m. nekletsel</option>
+                    <option value="b">Reanimeren met jaw thrust ipv head tilt/chin lift</option>
+                    <option value="c">Normale reanimatie, leven gaat voor</option>
+                    <option value="d">Alleen borstcompressies</option>
+                </select>
+            </div>
+
+            <h2>🩸 Bloedverlies & Shock</h2>
+
+            <!-- Vraag 13 -->
+            <div class="form-group">
+                <label><span class="question-number">13</span>Wat zijn de 4 klassen (stadia) van hemorragische shock en hun kenmerken?*</label>
+                <textarea id="vraag13" name="vraag13" required placeholder="Beschrijf alle 4 de klassen..." style="min-height: 140px;"></textarea>
+            </div>
+
+            <!-- Vraag 14 -->
+            <div class="form-group">
+                <label><span class="question-number">14</span>Bij hoeveel bloedverlies spreek je van levensbedreigende situatie bij een volwassene?*</label>
+                <select id="vraag14" name="vraag14" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">250-500 ml (half glas)</option>
+                    <option value="b">500-1000 ml (1 liter)</option>
+                    <option value="c">1500-2000 ml (1.5-2 liter) of meer dan 30% bloedvolume</option>
+                    <option value="d">3000 ml of meer</option>
+                </select>
+            </div>
+
+            <!-- Vraag 15 -->
+            <div class="form-group">
+                <label><span class="question-number">15</span>Wat is de beste positie voor een patiënt in shock (met voldoende ademhaling)?*</label>
+                <select id="vraag15" name="vraag15" required>
+                    <option value="">-- Maak een keuze --</option>
+                    <option value="a">Stabiele zijligging</option>
+                    <option value="b">Rechtop zitten</option>
+                    <option value="c">Schokhouding (plat op rug, benen omhoog 30cm)</option>
+                    <option value="d">Buikligging</option>
+                </select>
+            </div>
+
+            <h2>🚨 Praktijk Scenario's</h2>
+
+            <!-- Vraag 16 -->
+            <div class="form-group">
+                <label><span class="question-number">16</span>SCENARIO: Verkeersongeval, bestuurder bewusteloos in auto, airbag afgegaan, auto rookt. Beschrijf je volledige aanpak van aankomst tot overdracht aan ziekenhuis*</label>
+                <textarea id="vraag16" name="vraag16" required placeholder="Geef gedetailleerde stapsgewijze beschrijving..." style="min-height: 160px;"></textarea>
+            </div>
+
+            <!-- Vraag 17 -->
+            <div class="form-group">
+                <label><span class="question-number">17</span>SCENARIO: Schietpartij, slachtoffer heeft meerdere schotwonden (borst en been), veel bloedverlies, gebied is veilig verklaard. Wat is je prioriteitsvolgorde?*</label>
+                <textarea id="vraag17" name="vraag17" required placeholder="Beschrijf prioriteiten en handelswijze..." style="min-height: 140px;"></textarea>
+            </div>
+
+            <!-- Vraag 18 -->
+            <div class="form-group">
+                <label><span class="question-number">18</span>Wat is het verschil tussen een trauma ambulance (rode trauma) en een reguliere ambulance? Wanneer wordt een trauma ambulance ingezet?*</label>
+                <textarea id="vraag18" name="vraag18" required placeholder="Leg het verschil uit en noem criteria voor trauma inzet..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-button" id="submitBtn">
+                📨 Toets Indienen
+            </button>
+
+            <div class="success-box" id="successMessage">
+                <strong>✅ Toets Verzonden!</strong>
+                <p>Je toets is succesvol ingediend. Deze toets wordt beoordeeld door een gecertificeerde instructeur. Je ontvangt binnen 48-72 uur de resultaten via Discord.</p>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../discord-webhook-v2.js"></script>
+    <script>
+        // Access code verification
+        const accessCodeInput = document.getElementById('accessCode');
+        const form = document.getElementById('toetsForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Disable form initially
+        const formElements = form.querySelectorAll('input, textarea, select, button');
+        formElements.forEach(el => el.disabled = true);
+
+        // Check if code is already verified
+        if (sessionStorage.getItem('ambulance_trauma_code_verified') === 'true') {
+            formElements.forEach(el => el.disabled = false);
+            accessCodeInput.disabled = true;
+            accessCodeInput.value = '✓ GEVERIFIEERD';
+            accessCodeInput.style.borderColor = '#10b981';
+            accessCodeInput.style.color = '#10b981';
+        }
+
+        accessCodeInput.addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            if (value.length > 3 && value.indexOf('-') === -1) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            }
+            if (value.length > 7 && value.lastIndexOf('-') ===3) {
+                value = value.slice(0, 7) + '-' + value.slice(7);
+            }
+            
+            e.target.value = value;
+
+            // Verify code
+            fetch('/.netlify/functions/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'verify',
+                    code: value,
+                    type: 'ambulance-trauma'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    e.target.style.borderColor = '#10b981';
+                    e.target.style.color = '#10b981';
+                    e.target.value = '✓ GEVERIFIEERD';
+                    e.target.disabled = true;
+                    sessionStorage.setItem('ambulance_trauma_code_verified', 'true');
+                    sessionStorage.setItem('ambulance_trauma_access_code', value);
+                    
+                    // Enable form
+                    formElements.forEach(el => el.disabled = false);
+                }
+            })
+            .catch(err => console.error('Code verificatie mislukt:', err));
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (sessionStorage.getItem('ambulance_trauma_code_verified') !== 'true') {
+                alert('Voer eerst een geldige toegangscode in!');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 Verzenden...';
+
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            const accessCode = sessionStorage.getItem('ambulance_trauma_access_code') || 'UNKNOWN';
+
+            try {
+                const result = await discordSubmitter.submitToDiscordWithoutCodeCheck(data, 'ambulance-trauma', accessCode);
+
+                if (result.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    form.reset();
+                    sessionStorage.removeItem('ambulance_trauma_code_verified');
+                    sessionStorage.removeItem('ambulance_trauma_access_code');
+                    
+                    setTimeout(() => {
+                        window.location.href = '../../dashboard.html';
+                    }, 3000);
+                } else {
+                    throw new Error(result.message || 'Verzenden mislukt');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('Er is iets misgegaan bij het verzenden. Probeer het opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📨 Toets Indienen';
+            }
+        });
+    </script>
+</body>
+</html>
