@@ -353,6 +353,12 @@ client.on('interactionCreate', async (interaction) => {
     const vc = member.voice?.channel;
     if (!vc) return interaction.reply({ content: '❌ Ga eerst in een spraakkanaal.', flags: 64 });
 
+    // Blokkeer als de hoofd bot actief in een spraakkanaal zit
+    const mainVoice = guild.voiceStates.cache.get(MAIN_BOT_ID);
+    if (mainVoice?.channelId) {
+      return interaction.reply({ content: `❌ De hoofd bot is momenteel actief in <#${mainVoice.channelId}>. De Guardian Bot speelt geen muziek af terwijl de hoofd bot al in een call zit.`, flags: 64 });
+    }
+
     await interaction.deferReply();
     try {
       playRadio(vc, station.url, station.label, guild.id);
@@ -371,6 +377,12 @@ client.on('interactionCreate', async (interaction) => {
   if (commandName === 'play') {
     const vc = member.voice?.channel;
     if (!vc) return interaction.reply({ content: '❌ Ga eerst in een spraakkanaal.', flags: 64 });
+
+    // Blokkeer als de hoofd bot actief in een spraakkanaal zit
+    const mainVoice = guild.voiceStates.cache.get(MAIN_BOT_ID);
+    if (mainVoice?.channelId) {
+      return interaction.reply({ content: `❌ De hoofd bot is momenteel actief in <#${mainVoice.channelId}>. De Guardian Bot speelt geen muziek af terwijl de hoofd bot al in een call zit.`, flags: 64 });
+    }
 
     // Stop lopende radio
     const r = radioMap.get(guild.id);
