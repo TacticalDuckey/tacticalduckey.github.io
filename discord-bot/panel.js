@@ -782,7 +782,7 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
   <div class="section">
     <div class="section-header"><h3>🤖 Status</h3></div>
     <div class="section-body">
-      <div class="stats-grid">
+      <div class="cards">
         <div class="card"><div class="label">Guardian</div><div class="value" id="g-status">—</div></div>
         <div class="card"><div class="label">Main Bot</div><div class="value" id="g-mainbot">—</div></div>
         <div class="card"><div class="label">Herstarts</div><div class="value" id="g-restarts">—</div></div>
