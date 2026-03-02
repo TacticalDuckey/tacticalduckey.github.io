@@ -2053,17 +2053,23 @@ function snowflakeToDate(id) {
 }
 
 // ─── Start ────────────────────────────────────────────────────────────────────
+let _listenAttempts = 0;
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.error(`\n❌ Poort ${PORT} is al in gebruik. Is het panel al gestart?`);
-    console.error(`   Sluit het andere panel-venster en probeer opnieuw.\n`);
-    process.exit(1);
+    _listenAttempts++;
+    if (_listenAttempts <= 5) {
+      console.log(`⏳ Poort ${PORT} nog bezet (poging ${_listenAttempts}/5) — wacht 3 seconden...`);
+      setTimeout(() => server.listen({ port: PORT, host: '0.0.0.0', exclusive: false }, onListening), 3000);
+    } else {
+      console.error(`\n❌ Poort ${PORT} blijft bezet na 5 pogingen. Sluit het andere panel-venster.\n`);
+      process.exit(1);
+    }
   } else {
     throw err;
   }
 });
 
-server.listen(PORT, '0.0.0.0', () => {
+function onListening() {
   addLog('panel', '✅ Control Panel gestart op http://localhost:' + PORT);
   addLog('panel', '✅ Tailscale remote access actief (alleen 100.x.x.x + localhost)');
   addLog('panel', '✅ Log buffer actief (max ' + LOG_BUFFER_MAX + ' regels)');
@@ -2074,7 +2080,9 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`║   Tailscale: http://<tailscale-ip>:${PORT}    ║`);
   console.log(`║   Wachtwoord: ${PANEL_PASSWORD.padEnd(26)} ║`);
   console.log('╚══════════════════════════════════════════╝\n');
-});
+}
+
+server.listen({ port: PORT, host: '0.0.0.0', exclusive: false }, onListening);
 
 // Auto-start bot als hij nog niet draait
 startBot();
