@@ -485,6 +485,7 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
     <a onclick="showTab('logs')"><span class="icon">📋</span> Live Logs</a>
     <a onclick="showTab('security')"><span class="icon">🛡️</span> Beveiliging</a>
     <a onclick="showTab('modlog')"><span class="icon">📜</span> Mod Log</a>
+    <a onclick="showTab('guardian')"><span class="icon">🛡️</span> Guardian</a>
   </nav>
   <div class="bot-status" id="sidebar-status">
     <span class="dot" id="status-dot"></span>
@@ -776,6 +777,43 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
   </div>
 </div>
 
+<!-- Guardian tab -->
+<div class="tab" id="tab-guardian">
+  <div class="section">
+    <div class="section-header"><h3>🤖 Status</h3></div>
+    <div class="section-body">
+      <div class="stats-grid">
+        <div class="card"><div class="label">Guardian</div><div class="value" id="g-status">—</div></div>
+        <div class="card"><div class="label">Main Bot</div><div class="value" id="g-mainbot">—</div></div>
+        <div class="card"><div class="label">Herstarts</div><div class="value" id="g-restarts">—</div></div>
+        <div class="card"><div class="label">Opgeslagen queue</div><div class="value" id="g-queue-status">—</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><h3>⚙️ Bediening</h3></div>
+    <div class="section-body">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="guardianAction('start')">▶️ Starten</button>
+        <button class="btn btn-danger" onclick="guardianAction('stop')">⏹️ Stoppen</button>
+        <button class="btn btn-warning" onclick="guardianAction('restart')">🔄 Herstart</button>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><h3>🎵 Opgeslagen Queue</h3></div>
+    <div class="section-body">
+      <div id="g-queue-box" style="color:#8b949e;font-size:13px">Geen opgeslagen queue.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><h3>📋 Recente Events</h3></div>
+    <div class="section-body">
+      <div id="g-events-box" style="font-size:12px;font-family:monospace;max-height:420px;overflow-y:auto">Laden...</div>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div id="toast"></div>
 
@@ -789,6 +827,7 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
   <a onclick="showTab('logs')"><span class="bn-icon">📋</span>Logs</a>
   <a onclick="showTab('security')"><span class="bn-icon">🛡️</span>Beveiliging</a>
   <a onclick="showTab('modlog')"><span class="bn-icon">📜</span>Mod Log</a>
+  <a onclick="showTab('guardian')"><span class="bn-icon">🛡️</span>Guardian</a>
 </nav>
 
 <!-- Confirm modal -->
@@ -806,8 +845,8 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
 <script>
 let blData = [];
 let currentModalAction = null;
-const TABS = ['dashboard','blacklist','partners','tickets','bot','logs','security','modlog'];
-const tabTitles = { dashboard:'Dashboard', blacklist:'Blacklist', partners:'Partners', tickets:'Tickets', bot:'Bot Beheer', logs:'Live Logs', security:'🛡️ Beveiliging', modlog:'📜 Mod Log' };
+const TABS = ['dashboard','blacklist','partners','tickets','bot','logs','security','modlog','guardian'];
+const tabTitles = { dashboard:'Dashboard', blacklist:'Blacklist', partners:'Partners', tickets:'Tickets', bot:'Bot Beheer', logs:'Live Logs', security:'🛡️ Beveiliging', modlog:'📜 Mod Log', guardian:'🛡️ Guardian Bot' };
 
 // ─── Sidebar (mobile) ────────────────────────────────────────────────────────
 function toggleSidebar() {
@@ -838,6 +877,7 @@ function showTab(name) {
   if (name === 'logs')      loadLogsNow();
   if (name === 'security')  loadSecSections();
   if (name === 'modlog')     loadModLog();
+  if (name === 'guardian')   loadGuardian();
   if (name === 'dashboard' || name === 'bot') loadStats();
 }
 
@@ -1376,6 +1416,113 @@ async function loadModLog() {
   }
 }
 
+// ─── Guardian tab ─────────────────────────────────────────────────────────────
+let guardianRefreshTimer = null;
+async function loadGuardian() {
+  clearInterval(guardianRefreshTimer);
+  guardianRefreshTimer = setInterval(loadGuardian, 15000);
+  try {
+    const r = await fetch('/api/guardian/events');
+    if (!r.ok) throw new Error(r.statusText);
+    const d = await r.json();
+
+    // Status cards
+    const gStatusEl = document.getElementById('g-status');
+    if (gStatusEl) gStatusEl.innerHTML = d.guardianRunning
+      ? '<span class="badge badge-green">Online</span>'
+      : '<span class="badge badge-red">Offline</span>';
+
+    const mainBotEl = document.getElementById('g-mainbot');
+    if (mainBotEl) {
+      const updAt = d.mainStats && d.mainStats.updatedAt ? new Date(d.mainStats.updatedAt) : null;
+      const ageSec = updAt ? Math.floor((Date.now() - updAt.getTime()) / 1000) : null;
+      if (ageSec === null) {
+        mainBotEl.innerHTML = '<span class="badge badge-red">Onbekend</span>';
+      } else if (ageSec < 30) {
+        mainBotEl.innerHTML = '<span class="badge badge-green">Online</span> <small style="color:#8b949e">' + ageSec + 's geleden</small>';
+      } else {
+        mainBotEl.innerHTML = '<span class="badge badge-red">Traag</span> <small style="color:#8b949e">' + ageSec + 's geleden</small>';
+      }
+    }
+
+    const restartsEl = document.getElementById('g-restarts');
+    if (restartsEl) restartsEl.textContent = d.restartCount != null ? d.restartCount : '0';
+
+    const queueStatusEl = document.getElementById('g-queue-status');
+    if (queueStatusEl) {
+      if (!d.queue) {
+        queueStatusEl.innerHTML = '<span style="color:#8b949e">Geen</span>';
+      } else {
+        const qAge = Math.floor((Date.now() - new Date(d.queue.savedAt).getTime()) / 60000);
+        const trackCount = d.queue.tracks ? d.queue.tracks.length : 0;
+        queueStatusEl.innerHTML = '<span class="badge badge-green">' + trackCount + ' tracks</span> <small style="color:#8b949e">' + qAge + 'm geleden</small>';
+      }
+    }
+
+    // Queue tracks
+    const qBox = document.getElementById('g-queue-box');
+    if (qBox) {
+      if (!d.queue || !d.queue.tracks || !d.queue.tracks.length) {
+        qBox.textContent = 'Geen opgeslagen queue.';
+      } else {
+        const qAge = Math.floor((Date.now() - new Date(d.queue.savedAt).getTime()) / 60000);
+        qBox.innerHTML = '<div style="margin-bottom:8px;color:#8b949e">Opgeslagen ' + qAge + ' minuten geleden &middot; ' + d.queue.tracks.length + ' track(s)</div>' +
+          d.queue.tracks.map(function(t, i) {
+            return '<div style="padding:5px 0;border-bottom:1px solid #21262d;color:#e6edf3">' +
+              '<strong style="color:#58a6ff">' + (i+1) + '.</strong> ' + escHtml(t.title) +
+              (t.duration ? '<span style="color:#8b949e"> &middot; ' + escHtml(t.duration) + '</span>' : '') +
+              (t.author  ? '<span style="color:#6e7681"> &middot; ' + escHtml(t.author)   + '</span>' : '') +
+              '</div>';
+          }).join('');
+      }
+    }
+
+    // Events log
+    const evBox = document.getElementById('g-events-box');
+    if (evBox) {
+      if (!d.events || !d.events.length) {
+        evBox.textContent = 'Geen events gevonden.';
+      } else {
+        const typeColors = {
+          'guardian_start':'#2ed573','guardian_stop':'#f85149',
+          'guardian_restart':'#ffa502','guardian_gave_up':'#f85149',
+          'queue_saved':'#58a6ff','queue_restored':'#58a6ff',
+          'watchdog_restart':'#ffa502','music_play':'#a0c4ff'
+        };
+        evBox.innerHTML = d.events.map(function(ev) {
+          const ts = ev.ts ? new Date(ev.ts).toLocaleString('nl-NL') : '?';
+          const col = typeColors[ev.type] || '#8b949e';
+          const dataStr = ev.data ? (typeof ev.data === 'string' ? ev.data : JSON.stringify(ev.data)) : '';
+          return '<div style="padding:4px 0;border-bottom:1px solid #161b22">' +
+            '<span style="color:#6e7681">' + ts + '</span>' +
+            '<span style="color:' + col + ';margin:0 8px">[' + (ev.type || '?') + ']</span>' +
+            '<span style="color:#c9d1d9">' + escHtml(dataStr) + '</span>' +
+            '</div>';
+        }).join('');
+      }
+    }
+  } catch(e) {
+    const evBox = document.getElementById('g-events-box');
+    if (evBox) evBox.textContent = 'Fout bij laden: ' + e.message;
+  }
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function guardianAction(action) {
+  try {
+    const r = await fetch('/api/guardian/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    const j = await r.json();
+    toast((r.ok ? '✅ ' : '❌ ') + (j.message || j.error || action + ' verstuurd'), !r.ok);
+    setTimeout(loadGuardian, 1500);
+  } catch(e) {
+    toast('❌ Fout: ' + e.message, true);
+  }
+}
+
 function filterModLog() {
   const q = (document.getElementById('modlog-search')?.value || '').toLowerCase();
   const filtered = q
@@ -1860,6 +2007,25 @@ const server = http.createServer(async (req, res) => {
   // GET /api/security/events
   if (url === '/api/security/events' && method === 'GET') {
     return send(200, loadSecEvents().slice(0, 100));
+  }
+
+  // GET /api/guardian/events
+  if (url === '/api/guardian/events' && method === 'GET') {
+    try {
+      const ep = path.join(__dirname, 'guardian', 'guardian-events.json');
+      const events = fs.existsSync(ep) ? JSON.parse(fs.readFileSync(ep, 'utf-8')) : [];
+      const qp = path.join(__dirname, 'guardian', 'guardian-queue.json');
+      const queue = fs.existsSync(qp) ? JSON.parse(fs.readFileSync(qp, 'utf-8')) : null;
+      const sp = path.join(__dirname, 'bot-stats.json');
+      const mainStats = fs.existsSync(sp) ? JSON.parse(fs.readFileSync(sp, 'utf-8')) : {};
+      return send(200, {
+        events: events.slice(-50).reverse(),
+        queue,
+        mainStats,
+        guardianRunning: guardianStatus() === 'running',
+        restartCount: guardianRestartCount
+      });
+    } catch(e) { return send(500, { error: String(e) }); }
   }
 
   // POST /api/security/lockdown
