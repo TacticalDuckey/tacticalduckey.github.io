@@ -2053,6 +2053,16 @@ function snowflakeToDate(id) {
 }
 
 // ─── Start ────────────────────────────────────────────────────────────────────
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n❌ Poort ${PORT} is al in gebruik. Is het panel al gestart?`);
+    console.error(`   Sluit het andere panel-venster en probeer opnieuw.\n`);
+    process.exit(1);
+  } else {
+    throw err;
+  }
+});
+
 server.listen(PORT, '0.0.0.0', () => {
   addLog('panel', '✅ Control Panel gestart op http://localhost:' + PORT);
   addLog('panel', '✅ Tailscale remote access actief (alleen 100.x.x.x + localhost)');
