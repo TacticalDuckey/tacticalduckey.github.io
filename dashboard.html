@@ -561,7 +561,27 @@
 
         // ========== BEVEILIGING ADMIN ==========
         const PANEL_URL = 'http://localhost:3000';
+        const IS_HTTPS  = window.location.protocol === 'https:';
         let _secCfg = null;
+
+        // Als de pagina via HTTPS geladen is (Netlify), kunnen fetch→http calls niet.
+        // Toon dan een duidelijke banner i.p.v. "Panel niet bereikbaar".
+        function showHttpsNotice() {
+            const notice = `
+                <div style="background:linear-gradient(135deg,#1a2742,#0d1b2a);border:1px solid #5865F2;border-radius:10px;padding:1.5rem;color:white;grid-column:1/-1;">
+                    <h3 style="margin:0 0 0.75rem;">⚡ Beheerpaneel</h3>
+                    <p style="color:#aaa;margin-bottom:1rem;">Je bekijkt de dashboard via <strong>Netlify HTTPS</strong>. Browsers blokkeren beveiligde pagina's die verbinding maken met lokale HTTP-servers.</p>
+                    <p style="color:#ccc;margin-bottom:1.25rem;">Open het lokale beheerpaneel rechtstreeks voor alle bot-functies:</p>
+                    <a href="http://localhost:3000" target="_blank" style="display:inline-block;background:#5865F2;color:white;padding:0.6rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:bold;font-size:1rem;">🖥️ Open Beheerpaneel → localhost:3000</a>
+                    <p style="margin-top:1rem;font-size:0.8em;color:#555;">Beveiligingsinstellingen, guardian controls en live logs zijn beschikbaar via het paneel.</p>
+                </div>`;
+            const secCard = document.getElementById('admin-card-security');
+            if (secCard) secCard.outerHTML = notice;
+            const guardCard = document.getElementById('admin-card-guardian');
+            if (guardCard) guardCard.style.display = 'none';
+            const logsSection = document.getElementById('admin-section-logs');
+            if (logsSection) logsSection.style.display = 'none';
+        }
 
         function initDashboard() {
             const user = auth.user;
@@ -623,17 +643,23 @@
             }
             // admin heeft overal toegang
             if (role === 'admin') {
-                loadSecStatus();
-                loadGuardianStatus();
-                document.getElementById('admin-section-logs').style.display = '';
-                initWebSocket();
-                setInterval(loadGuardianStatus, 30_000); // refresh elke 30s
+                if (IS_HTTPS) {
+                    showHttpsNotice();
+                } else {
+                    loadSecStatus();
+                    loadGuardianStatus();
+                    document.getElementById('admin-section-logs').style.display = '';
+                    initWebSocket();
+                    setInterval(loadGuardianStatus, 30_000);
+                }
             }
             if (role === 'staff') {
-                loadGuardianStatus();
-                document.getElementById('admin-section-logs').style.display = '';
-                initWebSocket();
-                setInterval(loadGuardianStatus, 30_000);
+                if (!IS_HTTPS) {
+                    loadGuardianStatus();
+                    document.getElementById('admin-section-logs').style.display = '';
+                    initWebSocket();
+                    setInterval(loadGuardianStatus, 30_000);
+                }
             }
         }
 
