@@ -1517,7 +1517,15 @@ const server = http.createServer(async (req, res) => {
 
   const send = (status, body, type='application/json') => {
     const data = typeof body === 'string' ? body : JSON.stringify(body);
-    const headers = { 'Content-Type': type, 'Content-Length': Buffer.byteLength(data) };
+    const origin = req.headers.origin || '*';
+    const headers = {
+      'Content-Type': type,
+      'Content-Length': Buffer.byteLength(data),
+      'Access-Control-Allow-Origin':      origin,
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Methods':     'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers':     'Content-Type, Authorization',
+    };
     if (type === 'text/html') {
       headers['Cache-Control'] = 'no-store, no-cache, must-revalidate';
       headers['Pragma'] = 'no-cache';
@@ -1525,6 +1533,19 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(status, headers);
     res.end(data);
   };
+
+  // OPTIONS preflight (voor CORS vanuit Netlify browser)
+  if (method === 'OPTIONS') {
+    const origin = req.headers.origin || '*';
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin':      origin,
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Methods':     'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers':     'Content-Type, Authorization',
+      'Content-Length': '0',
+    });
+    return res.end();
+  }
 
   const redirect = (loc) => { res.writeHead(302, { Location: loc }); res.end(); };
 

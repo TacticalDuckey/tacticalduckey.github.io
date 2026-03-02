@@ -656,9 +656,9 @@
         async function loadSecStatus() {
             try {
                 const [cfgRes, qRes, evRes] = await Promise.all([
-                    fetch(`${PANEL_URL}/api/security/config`),
-                    fetch(`${PANEL_URL}/api/security/quarantine`),
-                    fetch(`${PANEL_URL}/api/security/events`),
+                    fetch(`${PANEL_URL}/api/security/config`,     { credentials: 'include' }),
+                    fetch(`${PANEL_URL}/api/security/quarantine`, { credentials: 'include' }),
+                    fetch(`${PANEL_URL}/api/security/events`,     { credentials: 'include' }),
                 ]);
                 if (!cfgRes.ok) throw new Error('panel offline');
                 const cfg = await cfgRes.json();
@@ -757,6 +757,7 @@
             try {
                 const res = await fetch(`${PANEL_URL}/api/security/config`, {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(_secCfg),
                 });
@@ -774,7 +775,7 @@
             const [url, method] = urls[action] || [];
             if (!url) return;
             try {
-                const res = await fetch(url, { method });
+                const res = await fetch(url, { method, credentials: 'include' });
                 if (res.ok) { await loadSecStatus(); }
                 else alert('❌ Actie mislukt: ' + await res.text());
             } catch { alert('❌ Panel niet bereikbaar (start start-panel.bat)'); }
@@ -782,7 +783,7 @@
 
         async function secReleaseUser(userId) {
             try {
-                const res = await fetch(`${PANEL_URL}/api/security/quarantine/${userId}`, { method: 'DELETE' });
+                const res = await fetch(`${PANEL_URL}/api/security/quarantine/${userId}`, { method: 'DELETE', credentials: 'include' });
                 if (res.ok) loadSecStatus();
                 else alert('❌ Vrijlaten mislukt');
             } catch { alert('❌ Panel niet bereikbaar'); }
