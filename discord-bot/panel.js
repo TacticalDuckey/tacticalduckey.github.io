@@ -774,43 +774,42 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
       </div>
     </div>
 
-  </div>
-</div>
+    <div class="tab" id="tab-guardian">
+      <div class="section" style="margin-bottom:16px">
+        <div class="section-header"><h3>🤖 Status</h3></div>
+        <div class="section-body">
+          <div class="cards">
+            <div class="card"><div class="label">Guardian</div><div class="value" id="g-status">—</div></div>
+            <div class="card"><div class="label">Main Bot</div><div class="value" id="g-mainbot">—</div></div>
+            <div class="card"><div class="label">Herstarts</div><div class="value" id="g-restarts">—</div></div>
+            <div class="card"><div class="label">Opgeslagen queue</div><div class="value" id="g-queue-status">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="section" style="margin-bottom:16px">
+        <div class="section-header"><h3>⚙️ Bediening</h3></div>
+        <div class="section-body">
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="guardianAction('start')">▶️ Starten</button>
+            <button class="btn btn-danger" onclick="guardianAction('stop')">⏹️ Stoppen</button>
+            <button class="btn btn-warning" onclick="guardianAction('restart')">🔄 Herstart</button>
+          </div>
+        </div>
+      </div>
+      <div class="section" style="margin-bottom:16px">
+        <div class="section-header"><h3>🎵 Opgeslagen Queue</h3></div>
+        <div class="section-body">
+          <div id="g-queue-box" style="color:#8b949e;font-size:13px">Geen opgeslagen queue.</div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><h3>📋 Recente Events</h3></div>
+        <div class="section-body">
+          <div id="g-events-box" style="font-size:12px;font-family:monospace;max-height:420px;overflow-y:auto">Laden...</div>
+        </div>
+      </div>
+    </div>
 
-<!-- Guardian tab -->
-<div class="tab" id="tab-guardian">
-  <div class="section">
-    <div class="section-header"><h3>🤖 Status</h3></div>
-    <div class="section-body">
-      <div class="cards">
-        <div class="card"><div class="label">Guardian</div><div class="value" id="g-status">—</div></div>
-        <div class="card"><div class="label">Main Bot</div><div class="value" id="g-mainbot">—</div></div>
-        <div class="card"><div class="label">Herstarts</div><div class="value" id="g-restarts">—</div></div>
-        <div class="card"><div class="label">Opgeslagen queue</div><div class="value" id="g-queue-status">—</div></div>
-      </div>
-    </div>
-  </div>
-  <div class="section">
-    <div class="section-header"><h3>⚙️ Bediening</h3></div>
-    <div class="section-body">
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="guardianAction('start')">▶️ Starten</button>
-        <button class="btn btn-danger" onclick="guardianAction('stop')">⏹️ Stoppen</button>
-        <button class="btn btn-warning" onclick="guardianAction('restart')">🔄 Herstart</button>
-      </div>
-    </div>
-  </div>
-  <div class="section">
-    <div class="section-header"><h3>🎵 Opgeslagen Queue</h3></div>
-    <div class="section-body">
-      <div id="g-queue-box" style="color:#8b949e;font-size:13px">Geen opgeslagen queue.</div>
-    </div>
-  </div>
-  <div class="section">
-    <div class="section-header"><h3>📋 Recente Events</h3></div>
-    <div class="section-body">
-      <div id="g-events-box" style="font-size:12px;font-family:monospace;max-height:420px;overflow-y:auto">Laden...</div>
-    </div>
   </div>
 </div>
 
