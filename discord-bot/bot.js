@@ -826,12 +826,7 @@ class YtDlpExtractor extends BaseExtractor {
         thumbnail = parts[4] !== 'NA' ? parts[4] : undefined;
       }
 
-      // Start CDN URL ophalen METEEN op de achtergrond — stream() hoeft dan minder te wachten
-      const cdnPromise = this._fetchStreamUrl(videoUrl).catch(() => null);
-      streamUrlCache.set(videoUrl, cdnPromise);
-      // Auto-opruimen na 5 uur (YouTube CDN URLs zijn ~6 uur geldig)
-      setTimeout(() => streamUrlCache.delete(videoUrl), 5 * 60 * 60 * 1000);
-
+      // Met pipe-aanpak hoeft geen CDN URL pre-fetched te worden
       const track = new Track(this.context.player, {
         title, author, duration, thumbnail,
         url:         videoUrl,
@@ -846,22 +841,30 @@ class YtDlpExtractor extends BaseExtractor {
   }
 
   async stream(track) {
-    const cached = streamUrlCache.get(track.url);
-    if (cached) {
-      // Wacht op de al-lopende achtergrond fetch (die in handle() is gestart)
-      const cdnUrl = await cached;
-      streamUrlCache.delete(track.url);
-      if (cdnUrl) {
-        console.log(`✅ yt-dlp stream klaar: ${track.title}`);
-        return { stream: cdnUrl };
-      }
-    }
+    const { spawn } = require('child_process');
+    const ytDlpBin = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
 
-    // Geen cache (bijv. retry-track) — haal opnieuw op
-    console.log(`🔄 yt-dlp stream (geen cache): ${track.title}`);
-    const cdnUrl = await this._fetchStreamUrl(track.url).catch(() => null);
-    if (!cdnUrl) throw new Error('yt-dlp: geen stream URL gevonden');
-    return { stream: cdnUrl };
+    // Verwijder pre-fetched cache (niet meer nodig met pipe aanpak)
+    streamUrlCache.delete(track.url);
+
+    console.log(`▶️ yt-dlp pipe stream: ${track.title}`);
+
+    // Spawn yt-dlp en pipe audio direct — YouTube CDN URLs werken niet via FFmpeg
+    // omdat YouTube specifieke headers vereist die alleen yt-dlp correct meestuurt
+    const proc = spawn(ytDlpBin, [
+      track.url,
+      '-f', 'bestaudio[ext=webm]/bestaudio/best',
+      '-o', '-',
+      '--no-warnings',
+      '--no-playlist',
+    ], { windowsHide: true });
+
+    proc.stderr.on('data', d => {
+      const msg = d.toString().trim();
+      if (msg) console.warn(`[yt-dlp stderr] ${msg}`);
+    });
+
+    return { stream: proc.stdout };
   }
 
   emitsEvents() { return false; }
