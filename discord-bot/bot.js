@@ -813,40 +813,40 @@ async function streamTrack(guildId, track) {
   // Stop oude ffmpeg
   if (state.ffmpeg) { try { state.ffmpeg.kill('SIGKILL'); } catch {} state.ffmpeg = null; }
 
-  const tmpFile = path_m.join(os_m.tmpdir(), `music_${guildId}_${Date.now()}.webm`);
-  console.log(`▶️ yt-dlp download: ${track.title}`);
+  console.log(`▶️ stream URL ophalen: ${track.title}`);
 
+  // Haal directe stream URL op via yt-dlp --get-url (geen download nodig, < 3s)
+  let streamUrl;
   try {
-    await new Promise((resolve, reject) => {
-      const dl = spawn(ytDlpBin_m, [
-        track.url, '-f', 'bestaudio', '-o', tmpFile,
-        '--no-warnings', '--no-playlist', '--quiet',
-      ], { stdio: 'ignore', windowsHide: true });
-      dl.on('close', code => (code === 0 || fs_m.existsSync(tmpFile)) ? resolve() : reject(new Error(`yt-dlp exit ${code}`)));
-      dl.on('error', reject);
-    });
+    const r = await execFileM(ytDlpBin_m, [
+      track.url,
+      '-f', 'bestaudio[ext=webm]/bestaudio/best',
+      '--get-url', '--no-warnings', '--no-playlist',
+    ], { timeout: 15_000 }).catch(err => ({ stdout: err.stdout || '' }));
+    streamUrl = (r.stdout || '').trim().split('\n')[0];
+    if (!streamUrl || !streamUrl.startsWith('http')) throw new Error('geen geldige URL');
   } catch (e) {
-    console.error(`❌ Download mislukt "${track.title}":`, e.message);
+    console.error(`❌ URL ophalen mislukt "${track.title}":`, e.message);
     setTimeout(() => advanceQueue(guildId), 1000);
     return;
   }
 
-  console.log(`▶️ ffmpeg start: ${track.title}`);
-    // Exact dezelfde aanpak als werkende radio: ffmpeg leest bestand → s16le → pipe → StreamType.Raw
-    const ff = spawn(ffmpegPath, [
-      '-loglevel', 'warning',
-      '-i', tmpFile,
-      '-f', 's16le', '-ar', '48000', '-ac', '2',
-      'pipe:1',
-    ], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
+  console.log(`▶️ ffmpeg start (direct stream): ${track.title}`);
+  // ffmpeg leest rechtstreeks van YouTube CDN — exact zoals radio maar dan YouTube ipv radio-URL
+  const ff = spawn(ffmpegPath, [
+    '-reconnect',          '1',
+    '-reconnect_streamed', '1',
+    '-reconnect_delay_max','5',
+    '-loglevel', 'warning',
+    '-i', streamUrl,
+    '-f', 's16le', '-ar', '48000', '-ac', '2',
+    'pipe:1',
+  ], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
 
-    ff.stderr.on('data', d => console.error(`[ffmpeg] ${d.toString().trim()}`));
-    ff.stdout.once('data', () => console.log(`▶️ ffmpeg audio data stroomt: ${track.title}`));
-    ff.on('close', code => {
-      console.log(`▶️ ffmpeg klaar (code ${code}): ${track.title}`);
-      try { fs_m.unlinkSync(tmpFile); } catch {}
-    });
-    ff.on('error', err => console.error('❌ ffmpeg spawn fout:', err.message));
+  ff.stderr.on('data', d => console.error(`[ffmpeg] ${d.toString().trim()}`));
+  ff.stdout.once('data', () => console.log(`▶️ ffmpeg audio data stroomt: ${track.title}`));
+  ff.on('close', code => console.log(`▶️ ffmpeg klaar (code ${code}): ${track.title}`));
+  ff.on('error', err => console.error('❌ ffmpeg spawn fout:', err.message));
 
     state.ffmpeg    = ff;
     state.startedAt = Date.now();
