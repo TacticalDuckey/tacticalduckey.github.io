@@ -8162,7 +8162,11 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
     try {
       if (alreadyPlaying) {
         // Zoek het nummer maar start het NIET — voeg achteraan toe zodat huidig nummer doorspeelt
-        const searchResult = await player.search(rawQuery, { requestedBy: interaction.user });
+        const mkTimeout = (ms, msg) => new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms));
+        const searchResult = await Promise.race([
+          player.search(rawQuery, { requestedBy: interaction.user }),
+          mkTimeout(30_000, 'Zoeken duurde te lang. Probeer het opnieuw.'),
+        ]);
         if (!searchResult?.tracks?.length)
           return interaction.editReply({ content: `❌ Geen resultaten gevonden voor **${rawQuery}**.` });
 
@@ -8217,10 +8221,14 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
       }
 
       // Wachtrij leeg — start afspelen normaal
-      result = await player.play(vc, rawQuery, {
-        requestedBy: interaction.user,
-        nodeOptions:  nodeOpts,
-      });
+      const mkTimeout2 = (ms, msg) => new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms));
+      result = await Promise.race([
+        player.play(vc, rawQuery, {
+          requestedBy: interaction.user,
+          nodeOptions:  nodeOpts,
+        }),
+        mkTimeout2(30_000, 'Afspelen duurde te lang. Probeer het opnieuw.'),
+      ]);
     } catch (e) {
       console.error('❌ play fout:', e.message);
       return interaction.editReply({ content: `❌ Geen resultaten gevonden voor **${rawQuery}**.\n\`${e.message}\`` });
