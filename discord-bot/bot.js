@@ -864,12 +864,12 @@ class YtDlpExtractor extends BaseExtractor {
 
     console.log(`▶️ bestand gereed: ${track.title}`);
 
-    // Geef lokaal bestandspad als STRING terug — ffmpeg leest het direct van disk
-    // (geen Node.js stream → geen Windows pipe-problemen)
-    // Opruimen na 15 minuten (track duurt nooit langer)
-    setTimeout(() => { try { fs.unlinkSync(tmpFile); } catch {} }, 15 * 60_000);
+    // Geef een fs.createReadStream terug — discord-player piped dit naar ffmpeg stdin
+    // (geen yt-dlp pipe-keten meer, gewoon een bestand van disk lezen = stabiel op Windows)
+    const fileStream = fs.createReadStream(tmpFile);
+    fileStream.on('close', () => { setTimeout(() => { try { fs.unlinkSync(tmpFile); } catch {} }, 5000); });
 
-    return { stream: tmpFile, type: StreamType.Arbitrary };
+    return { stream: fileStream, type: StreamType.Arbitrary };
   }
 
   emitsEvents() { return false; }
