@@ -747,189 +747,221 @@ try {
   Log.setLevel(Log.Level.ERROR); // Alleen echte errors tonen, geen Text/Warning spam
 } catch { /* Geen crashen als import faalt */ }
 
-// Cache: YouTube URL ? CDN stream URL promise (ophalen start meteen in handle(), stream() awaits het)
-const streamUrlCache = new Map(); // trackUrl ? Promise<string>
+// --- Custom Muziek Engine (vervangt discord-player — direct @discordjs/voice, zelfde aanpak als radio) ---
+const path_m        = require('path');
+const fs_m          = require('fs');
+const os_m          = require('os');
+const { execFile }  = require('child_process');
+const { promisify } = require('util');
+const execFileM     = promisify(execFile);
+const ytDlpBin_m    = path_m.join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
 
-// --- yt-dlp Extractor -------------------------------------------------------
-class YtDlpExtractor extends BaseExtractor {
-  static identifier = 'com.custom.ytdlp';
-  priority = 10; // Hoger dan YoutubeiExtractor (2) zodat yt-dlp altijd als eerste wordt gebruikt
-
-  async activate() {}
-
-  async validate(query) {
-    return typeof query === 'string' && query.length > 0;
-  }
-
-  // Haal CDN stream URL op via yt-dlp --get-url (geeft snel een directe link terug)
-  _fetchStreamUrl(videoUrl) {
-    const { execFile } = require('child_process');
-    const { promisify } = require('util');
-    const execFileAsync = promisify(execFile);
-    const ytDlpBin = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
-    return execFileAsync(ytDlpBin, [
-      videoUrl,
-      '-f', 'bestaudio[ext=webm]/bestaudio/best',
-      '--get-url', '--no-warnings', '--no-playlist',
-    ], { timeout: 20_000 }).then(
-      ({ stdout }) => stdout.trim().split('\n')[0],
-      (err) => {
-        // yt-dlp kan exit code 1 geven maar wel een geldige URL in stdout hebben
-        const url = (err.stdout || '').trim().split('\n')[0];
-        if (url && url.startsWith('http')) return url;
-        throw err;
-      }
-    );
-  }
-
-  async handle(query, context) {
-    const isUrl = /^https?:\/\//.test(query);
-    const ytDlpBin = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
-    const { execFile } = require('child_process');
-    const { promisify } = require('util');
-    const execFileAsync = promisify(execFile);
-
+// Zoek een nummer via yt-dlp — geeft track-object terug of null
+async function searchMusic(query) {
+  const isUrl = /^https?:\/\//.test(query.trim());
+  if (isUrl) {
+    const r = await execFileM(ytDlpBin_m, [
+      query, '--dump-json', '--no-warnings', '--no-playlist',
+    ], { timeout: 20_000 }).catch(err => ({ stdout: err.stdout || '' }));
+    const line = (r.stdout || '').trim().split('\n')[0];
+    if (!line) return null;
     try {
-      let videoUrl, title, author, duration, thumbnail;
-
-      if (isUrl) {
-        // Directe URL: snel basisinfo ophalen via --flat-playlist --print
-        const r1 = await execFileAsync(ytDlpBin, [
-          query, '--flat-playlist', '--no-playlist',
-          '--print', '%(id)s|%(title)s|%(duration)s|%(uploader,channel)s|%(thumbnail)s',
-          '--no-warnings',
-        ], { timeout: 15_000 }).catch(e => ({ stdout: e.stdout || '' }));
-        const parts = r1.stdout.trim().split('|');
-        const id = parts[0];
-        if (!id || id === 'NA') return null;
-        videoUrl  = `https://www.youtube.com/watch?v=${id}`;
-        title     = parts[1] || query;
-        const sec = parseInt(parts[2]) || 0;
-        duration  = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
-        author    = parts[3] || 'Onbekend';
-        thumbnail = parts[4] !== 'NA' ? parts[4] : undefined;
-      } else {
-        // Tekstzoekopdracht: ytsearch via yt-dlp --flat-playlist (snel, ~0.1s)
-        const r2 = await execFileAsync(ytDlpBin, [
-          `ytsearch1:${query}`, '--flat-playlist',
-          '--print', '%(id)s|%(title)s|%(duration)s|%(uploader,channel)s|%(thumbnail)s',
-          '--no-warnings',
-        ], { timeout: 15_000 }).catch(e => ({ stdout: e.stdout || '' }));
-        const parts = r2.stdout.trim().split('|');
-        const id = parts[0];
-        if (!id || id === 'NA') return null;
-        videoUrl  = `https://www.youtube.com/watch?v=${id}`;
-        title     = parts[1] || query;
-        const sec = parseInt(parts[2]) || 0;
-        duration  = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
-        author    = parts[3] || 'Onbekend';
-        thumbnail = parts[4] !== 'NA' ? parts[4] : undefined;
-      }
-
-      // Met pipe-aanpak hoeft geen CDN URL pre-fetched te worden
-      const track = new Track(this.context.player, {
-        title, author, duration, thumbnail,
-        url:         videoUrl,
-        requestedBy: context.requestedBy,
-        source:      'arbitrary',
-      });
-      return { playlist: null, tracks: [track] };
-    } catch (e) {
-      console.warn('⚠️ yt-dlp handle fout:', e.message);
-      return null;
-    }
+      const info = JSON.parse(line);
+      const sec  = Math.floor(info.duration || 0);
+      return { title: info.title || query, url: info.webpage_url || query,
+               author: info.uploader || info.channel || 'Onbekend',
+               duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
+               thumbnail: info.thumbnail || null };
+    } catch { return null; }
+  } else {
+    const r = await execFileM(ytDlpBin_m, [
+      `ytsearch1:${query}`, '--flat-playlist',
+      '--print', '%(id)s|%(title)s|%(duration)s|%(uploader,channel)s|%(thumbnail)s',
+      '--no-warnings',
+    ], { timeout: 15_000 }).catch(e => ({ stdout: e.stdout || '' }));
+    const line = (r.stdout || '').trim().split('\n')[0];
+    if (!line) return null;
+    const [id, title, dur, author, thumb] = line.split('|');
+    if (!id || !title) return null;
+    const sec = parseInt(dur) || 0;
+    return { title: title.trim(), url: `https://www.youtube.com/watch?v=${id}`,
+             author: (author || 'Onbekend').trim(),
+             duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
+             thumbnail: thumb?.trim() || null };
   }
+}
 
-  async stream(track) {
-    const { spawn } = require('child_process');
-    const fs   = require('fs');
-    const os   = require('os');
-    const path = require('path');
-    const ytDlpBin  = path.join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
+// musicMap: per-guild muziekstatus
+// { tracks[], currentTrack, connection, audioPlayer, ffmpeg, loop, textChannel, startedAt }
+const musicMap = new Map();
 
-    // 1. Download naar tijdelijk bestand (geen yt-dlp pipe-problemen op Windows)
-    const tmpFile = path.join(os.tmpdir(), `dp_${Date.now()}.webm`);
-    console.log(`▶️ yt-dlp download: ${track.title}`);
+function getMusicState(guildId) { return musicMap.get(guildId) || null; }
+function isMusicPlaying(guildId) {
+  const s = musicMap.get(guildId);
+  return !!(s && [AudioPlayerStatus.Playing, AudioPlayerStatus.Buffering].includes(s.audioPlayer?.state?.status));
+}
+function isMusicPaused(guildId) {
+  const s = musicMap.get(guildId);
+  return !!(s && s.audioPlayer?.state?.status === AudioPlayerStatus.Paused);
+}
 
+// Download via yt-dlp → tmp-bestand → ffmpeg → StreamType.Raw (precies zoals radio)
+async function streamTrack(guildId, track) {
+  const state = musicMap.get(guildId);
+  if (!state) return;
+
+  // Stop oude ffmpeg
+  if (state.ffmpeg) { try { state.ffmpeg.kill('SIGKILL'); } catch {} state.ffmpeg = null; }
+
+  const tmpFile = path_m.join(os_m.tmpdir(), `music_${guildId}_${Date.now()}.webm`);
+  console.log(`▶️ yt-dlp download: ${track.title}`);
+
+  try {
     await new Promise((resolve, reject) => {
-      const dl = spawn(ytDlpBin, [
+      const dl = spawn(ytDlpBin_m, [
         track.url, '-f', 'bestaudio', '-o', tmpFile,
         '--no-warnings', '--no-playlist', '--quiet',
       ], { stdio: 'ignore', windowsHide: true });
-      dl.on('close', code => (code === 0 || fs.existsSync(tmpFile)) ? resolve() : reject(new Error(`yt-dlp exit ${code}`)));
+      dl.on('close', code => (code === 0 || fs_m.existsSync(tmpFile)) ? resolve() : reject(new Error(`yt-dlp exit ${code}`)));
       dl.on('error', reject);
     });
-
-    console.log(`▶️ ffmpeg start: ${track.title}`);
-
-    // 2. Start onze eigen ffmpeg om het bestand te lezen → raw PCM s16le
-    //    Exact dezelfde aanpak als radio (dat werkt wel)
-    //    discord-player krijgt StreamType.Raw → gebruikt prism-media JS opus encoder (geen extra ffmpeg)
-    const ff = spawn(ffmpegPath, [
-      '-loglevel', 'error',
-      '-i', tmpFile,
-      '-f', 's16le',
-      '-ar', '48000',
-      '-ac', '2',
-      'pipe:1',
-    ], { stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true });
-
-    ff.on('close', () => { try { fs.unlinkSync(tmpFile); } catch {} });
-
-    return { stream: ff.stdout, type: StreamType.Raw };
+  } catch (e) {
+    console.error(`❌ Download mislukt "${track.title}":`, e.message);
+    setTimeout(() => advanceQueue(guildId), 1000);
+    return;
   }
 
-  emitsEvents() { return false; }
+  console.log(`▶️ ffmpeg start: ${track.title}`);
+  // Exact dezelfde aanpak als werkende radio: ffmpeg leest bestand → s16le → pipe → StreamType.Raw
+  const ff = spawn(ffmpegPath, [
+    '-loglevel', 'error',
+    '-i', tmpFile,
+    '-f', 's16le', '-ar', '48000', '-ac', '2',
+    'pipe:1',
+  ], { stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true });
+
+  ff.on('close', () => { try { fs_m.unlinkSync(tmpFile); } catch {} });
+  ff.on('error', err => console.error('❌ ffmpeg fout:', err.message));
+
+  state.ffmpeg    = ff;
+  state.startedAt = Date.now();
+
+  const resource = createAudioResource(ff.stdout, { inputType: StreamType.Raw });
+  state.audioPlayer.play(resource);
 }
 
-const player = new Player(client, {
-  useLegacyFFmpeg: false,
-});
-// Extractors laden — alleen YoutubeiExtractor registreren
-(async () => {
-  // yt-dlp EERST laden — YoutubeiExtractor heeft een bekende bug (signature decipher failure)
-  // yt-dlp is robuuster en werkt consistent met alle YouTube nummers
+// Ga naar volgende track in wachtrij
+async function advanceQueue(guildId) {
+  const state = musicMap.get(guildId);
+  if (!state) return;
+
+  if (state.loop === 'track' && state.currentTrack) {
+    await streamTrack(guildId, state.currentTrack).catch(e => console.error('❌ Loop track fout:', e.message));
+    return;
+  }
+  if (state.loop === 'queue' && state.currentTrack) {
+    state.tracks.push({ ...state.currentTrack });
+  }
+
+  const next = state.tracks.shift() || null;
+  state.currentTrack = next;
+
+  if (!next) {
+    console.log('📭 Wachtrij leeg — disconnect na 30s');
+    const old = npMessages.get(guildId);
+    if (old) { clearInterval(old.interval); old.message?.delete().catch(() => {}); npMessages.delete(guildId); }
+    setTimeout(() => { const s = musicMap.get(guildId); if (s && !s.currentTrack) stopMusicEngine(guildId); }, 30_000);
+    return;
+  }
+
+  console.log(`⏭️ Volgende: ${next.title}`);
+  voteSkipMap.delete(guildId);
+  await sendNpMessage(guildId, next).catch(() => {});
+  await streamTrack(guildId, next).catch(e => {
+    console.error('❌ Stream fout:', e.message);
+    setTimeout(() => advanceQueue(guildId), 1000);
+  });
+}
+
+function stopMusicEngine(guildId) {
+  const state = musicMap.get(guildId);
+  if (!state) return;
+  try { state.ffmpeg?.kill('SIGKILL'); } catch {}
+  try { state.audioPlayer?.stop(true); } catch {}
+  try { state.connection?.destroy(); } catch {}
+  const old = npMessages.get(guildId);
+  if (old) { clearInterval(old.interval); old.message?.delete().catch(() => {}); npMessages.delete(guildId); }
+  musicMap.delete(guildId);
+  console.log(`⏹️ Muziek gestopt [${guildId}]`);
+}
+
+function skipCurrentTrack(guildId) {
+  const state = musicMap.get(guildId);
+  if (!state) return false;
+  if (state.ffmpeg) { try { state.ffmpeg.kill('SIGKILL'); } catch {} state.ffmpeg = null; }
+  state.audioPlayer.stop(true); // → Idle event → advanceQueue
+  return true;
+}
+
+async function startMusicEngine(vc, track, textChannel) {
+  const guildId = vc.guild.id;
+  if (musicMap.has(guildId)) stopMusicEngine(guildId);
+
+  const connection  = joinVoiceChannel({
+    channelId: vc.id, guildId: guildId,
+    adapterCreator: vc.guild.voiceAdapterCreator, selfDeaf: true,
+  });
+  const audioPlayer = createAudioPlayer();
+  connection.subscribe(audioPlayer);
+
+  const state = { tracks: [], currentTrack: track, connection, audioPlayer,
+                  ffmpeg: null, loop: 'off', textChannel, startedAt: null };
+  musicMap.set(guildId, state);
+
+  audioPlayer.on(AudioPlayerStatus.Idle, () => {
+    if (!musicMap.get(guildId)) return;
+    advanceQueue(guildId).catch(e => console.error('❌ advanceQueue fout:', e.message));
+  });
+  audioPlayer.on('error', err => {
+    console.error('❌ AudioPlayer fout:', err.message);
+    setTimeout(() => advanceQueue(guildId), 1000);
+  });
+  connection.on(VoiceConnectionStatus.Disconnected, async () => {
+    try {
+      await Promise.race([
+        entersState(connection, VoiceConnectionStatus.Signalling, 5_000),
+        entersState(connection, VoiceConnectionStatus.Connecting, 5_000),
+      ]);
+    } catch { stopMusicEngine(guildId); }
+  });
+
   try {
-    await player.extractors.register(YtDlpExtractor, {});
-    console.log('✅ yt-dlp extractor geladen (primair — meest betrouwbaar)');
-  } catch (e) { console.warn('⚠️ yt-dlp extractor fout:', e.message); }
+    await entersState(connection, VoiceConnectionStatus.Ready, 12_000);
+  } catch {
+    stopMusicEngine(guildId);
+    throw new Error('Kan niet verbinden met voice kanaal (timeout)');
+  }
 
-  // DefaultExtractors als FALLBACK laden (SoundCloud, Spotify, Vimeo, etc.)
-  try {
-    await player.extractors.loadMulti(DefaultExtractors);
-    console.log('✅ Fallback extractors geladen (SoundCloud/Spotify/Vimeo als backup)');
-  } catch (e) { console.warn('⚠️ Fallback extractor laad-fout:', e.message); }
+  voteSkipMap.delete(guildId);
+  await sendNpMessage(guildId, track).catch(() => {});
+  await streamTrack(guildId, track);
+  return state;
+}
 
-  // YoutubeiExtractor als LAATSTE fallback (heeft signature decipher bug maar kan soms helpen)
-  try {
-    const ytCookie = process.env.YT_COOKIE || null;
-    if (ytCookie) console.log('🍪 YouTube cookie gevonden — leeftijdsbeperking bypass actief');
-    await player.extractors.register(YoutubeiExtractor, {
-      streamFromYoutubei: true,
-      clients: ['IOS', 'ANDROID_VR', 'ANDROID'],
-      ...(ytCookie ? { cookie: ytCookie } : {}),
-    });
-    console.log('✅ YoutubeiExtractor geladen als fallback');
-  } catch (e) { console.warn('⚠️ YoutubeiExtractor fout:', e.message); }
+console.log('✅ Muziek engine geladen (direct @discordjs/voice)');
 
-  console.log('✅ Klaar — yt-dlp primair, SoundCloud/Spotify als fallback');
-})();
-
-// Player event logging
 // --- Muziek state -------------------------------------------------------------
-const npMessages       = new Map(); // guildId ? { message, interval }
-const voteSkipMap      = new Map(); // guildId ? Set van userId die gestemd hebben
-const musicQuality     = new Map(); // guildId ? 'laag'|'medium'|'hoog'
-const playCooldown     = new Map(); // userId ? timestamp laatste /play (anti-spam)
-const radioCooldown    = new Map(); // userId ? timestamp laatste /radio of /piraten (anti-spam)
+const npMessages       = new Map(); // guildId → { message, interval }
+const voteSkipMap      = new Map(); // guildId → Set van userId die gestemd hebben
+const musicQuality     = new Map(); // guildId → 'laag'|'medium'|'hoog'
+const playCooldown     = new Map(); // userId → timestamp laatste /play (anti-spam)
+const radioCooldown    = new Map(); // userId → timestamp laatste /radio of /piraten (anti-spam)
 const RADIO_COOLDOWN   = 30_000;    // 30 seconden
 const ticketClaimedBy  = new Map(); // channelId ? { userId, tag } — wie heeft het ticket geclaimed
 const ticketLastActivity = new Map(); // channelId ? Date.now() — laatste berichtmoment
 const ticketCloseWarned  = new Map(); // channelId ? Date.now() — wanneer auto-close waarschuwing verstuurd
 const TICKET_WARN_MS  = 48 * 60 * 60_000; // 48u geen activiteit → waarschuwing
 const TICKET_CLOSE_MS = 24 * 60 * 60_000; // 24u na waarschuwing → auto-sluiten
-const trackStartAt     = new Map(); // guildId ? Date.now() bij playerStart (voor stille-fout detectie)
-const silentFailRetries = new Map(); // guildId ? aantal opeenvolgende stille mislukkingen
 
 // --- Radio Stations (25 max — Discord keuze-limiet) -------------------------
 const RADIO_STATIONS = {
@@ -1040,24 +1072,25 @@ const MUSIC_BLOCKLIST = [
   'brutal footage', 'death video',
 ];
 
-function buildNpEmbed(queue, track) {
-  const progress  = queue.node.getTimestamp();
-  const pct       = progress?.progress ?? 0;
-  const filled    = Math.round(pct / 5);
-  const bar       = '¦'.repeat(filled) + '¦'.repeat(20 - filled);
-  const loop      = queue.repeatMode === 1 ? '🔂 Track' : queue.repeatMode === 2 ? '🔁 Queue' : '➡️ Normaal';
-  const autoplay  = queue.repeatMode === 3 ? '✅' : '❌';
+function buildNpEmbed_m(state, track, guildId) {
+  const elapsed  = state?.startedAt ? Math.floor((Date.now() - state.startedAt) / 1000) : 0;
+  const durParts = (track?.duration || '0:00').split(':').map(Number);
+  const durSec   = durParts.length === 3 ? durParts[0]*3600+durParts[1]*60+durParts[2] : durParts[0]*60+(durParts[1]||0);
+  const pct      = durSec > 0 ? Math.min(elapsed / durSec, 1) : 0;
+  const filled   = Math.round(pct * 20);
+  const bar      = '▓'.repeat(filled) + '░'.repeat(20 - filled);
+  const elpStr   = `${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}`;
+  const loopLabel = state?.loop === 'track' ? '🔂 Track' : state?.loop === 'queue' ? '🔁 Queue' : '➡️ Normaal';
+  const queueSize = state?.tracks?.length || 0;
   const embed = new EmbedBuilder()
     .setTitle('🎵 Nu Speelt')
     .setDescription(track?.url ? `**[${track.title}](${track.url})**` : `**${track?.title || '?'}**`)
     .addFields(
-      { name: '🎤 Artiest',   value: track?.author   || 'Onbekend',                                        inline: true },
-      { name: '⏱️ Duur',      value: track?.duration || '?',                                               inline: true },
-      { name: '📋 Wachtrij',  value: `${queue.tracks.size} nummer${queue.tracks.size !== 1 ? 's' : ''}`,  inline: true },
-      { name: `${bar}`,       value: `\`${progress?.current?.label ?? '0:00'} / ${track?.duration ?? '?'}\``, inline: false },
-      { name: '🔁 Loop',      value: loop,   inline: true },
-      { name: '▶️ Autoplay', value: autoplay, inline: true },
-      { name: '🔊 Volume',   value: `${queue.node.volume}%`, inline: true },
+      { name: '🎤 Artiest',  value: track?.author   || 'Onbekend', inline: true },
+      { name: '⏱️ Duur',     value: track?.duration || '?',        inline: true },
+      { name: '📋 Wachtrij', value: `${queueSize} nummer${queueSize !== 1 ? 's' : ''}`, inline: true },
+      { name: `${bar}`,      value: `\`${elpStr} / ${track?.duration || '?'}\``, inline: false },
+      { name: '🔁 Loop',     value: loopLabel, inline: true },
     )
     .setColor(0x1DB954)
     .setFooter({ text: `Aangevraagd door ${track?.requestedBy?.username || '?'} | Lage Landen RP` })
@@ -1067,117 +1100,22 @@ function buildNpEmbed(queue, track) {
   return embed;
 }
 
-async function sendNpMessage(queue, track) {
-  // Verwijder oud NP bericht
-  const old = npMessages.get(queue.guild.id);
-  if (old) {
-    clearInterval(old.interval);
-    old.message?.delete().catch(() => {});
-    npMessages.delete(queue.guild.id);
-  }
-  const ch = queue.metadata?.channel;
+async function sendNpMessage(guildId, track) {
+  const old = npMessages.get(guildId);
+  if (old) { clearInterval(old.interval); old.message?.delete().catch(() => {}); npMessages.delete(guildId); }
+  const state = musicMap.get(guildId);
+  const ch    = state?.textChannel;
   if (!ch) return;
-  const msg = await ch.send({ embeds: [buildNpEmbed(queue, track)] }).catch(() => null);
+  const msg = await ch.send({ embeds: [buildNpEmbed_m(state, track, guildId)] }).catch(() => null);
   if (!msg) return;
-  // Update de embed elke 15 seconden
   const interval = setInterval(async () => {
-    if (!queue.isPlaying() || !queue.currentTrack) return;
-    await msg.edit({ embeds: [buildNpEmbed(queue, queue.currentTrack)] }).catch(() => {});
+    const s = musicMap.get(guildId);
+    if (!s?.currentTrack) return;
+    await msg.edit({ embeds: [buildNpEmbed_m(s, s.currentTrack, guildId)] }).catch(() => {});
   }, 15_000);
-  npMessages.set(queue.guild.id, { message: msg, interval });
+  npMessages.set(guildId, { message: msg, interval });
 }
 
-player.events.on('playerStart',  (queue, track) => {
-  console.log(`🎵 Nu speelt: ${track.title} [${track.duration}]`);
-  trackStartAt.set(queue.guild.id, Date.now());
-  voteSkipMap.delete(queue.guild.id); // reset votes bij nieuw nummer
-  sendNpMessage(queue, track);
-});
-player.events.on('playerError',  async (queue, err, track) => {
-  const searchTitle = track?.title || 'Onbekend';
-  console.warn(`⚠️ Overgeslagen (niet streambaar): ${searchTitle}`);
-  const ch = queue.metadata?.channel;
-  if (!ch) return;
-  ch.send({ embeds: [
-    new EmbedBuilder()
-      .setTitle('⏭️ Nummer overgeslagen')
-      .setDescription(`**${searchTitle}** kan niet worden afgespeeld.\n> Geblokkeerd of niet beschikbaar via YouTube.`)
-      .setColor(0xFF6B00)
-      .setFooter({ text: 'Probeer een andere versie via /play' })
-  ]}).catch(() => {});
-});
-player.events.on('error',        (queue, err)   => console.error('❌ Queue error:', err.message));
-player.events.on('playerFinish', async (queue, track) => {
-  const elapsed  = Date.now() - (trackStartAt.get(queue.guild.id) || 0);
-  trackStartAt.delete(queue.guild.id);
-
-  // Detecteer stille mislukking: track "klaar" in <8s maar zou langer moeten zijn
-  const durParts = (track?.duration || '0:00').split(':').map(Number);
-  const durSec   = durParts.length === 3
-    ? durParts[0] * 3600 + durParts[1] * 60 + durParts[2]
-    : durParts[0] * 60 + (durParts[1] || 0);
-
-  if (elapsed < 8_000 && durSec > 15) {
-    const retries = (silentFailRetries.get(queue.guild.id) || 0) + 1;
-    silentFailRetries.set(queue.guild.id, retries);
-    console.warn(`⚠️ Stille mislukking gedetecteerd voor "${track?.title}" (${elapsed}ms) — poging ${retries}/2`);
-    const ch = queue.metadata?.channel;
-
-    if (retries <= 1) {
-      // Eerste mislukking: probeer opnieuw via directe yt-dlp zoekopdracht (async, blokkeert event loop niet)
-      try {
-        const info  = await _ytDlp(`ytsearch1:${track.title} ${track.author}`, {
-          dumpSingleJson: true, noWarnings: true, noPlaylist: true,
-        });
-        const entry = info?.entries?.[0] ?? info;
-        if (entry?.webpage_url) {
-          const sec2 = Math.floor(entry.duration || 0);
-          const dur2 = `${Math.floor(sec2 / 60)}:${String(sec2 % 60).padStart(2, '0')}`;
-          const newTrack = new Track(player, {
-            title:       entry.title,
-            author:      entry.uploader || entry.channel || 'Onbekend',
-            url:         entry.webpage_url,
-            thumbnail:   entry.thumbnail || undefined,
-            duration:    dur2,
-            requestedBy: track.requestedBy,
-            source:      'arbitrary',
-          });
-          queue.insertTrack(newTrack, 0);
-          console.log(`🔄 yt-dlp retry track ingevoegd: ${newTrack.title}`);
-          return;
-        }
-      } catch (e) {
-        console.warn('⚠️ yt-dlp retry mislukt:', e.message);
-      }
-    }
-
-    // Na 2 mislukkingen (of als retry zelf faalt): fout tonen en stoppen
-    silentFailRetries.delete(queue.guild.id);
-    if (ch) ch.send({ embeds: [
-      new EmbedBuilder()
-        .setTitle('⏭️ Nummer overgeslagen')
-        .setDescription(`**${track?.title}** kon niet worden afgespeeld.\n> Probeer een andere versie via /play`)
-        .setColor(0xFF6B00)
-        .setFooter({ text: 'Tip: zoek op artiestnaam + songtitel voor beste resultaten' })
-    ]}).catch(() => {});
-    return;
-  }
-
-  // Succesvol afgespeeld — reset retry teller
-  silentFailRetries.delete(queue.guild.id);
-
-  console.log(`✅ Klaar: ${track?.title}`);
-});
-player.events.on('disconnect', (queue) => {
-  console.log('🔇 Bot verliet voice kanaal');
-  const old = npMessages.get(queue.guild.id);
-  if (old) { clearInterval(old.interval); old.message?.delete().catch(() => {}); npMessages.delete(queue.guild.id); }
-});
-player.events.on('emptyQueue', (queue) => {
-  console.log('📭 Wachtrij leeg');
-  const old = npMessages.get(queue.guild.id);
-  if (old) { clearInterval(old.interval); old.message?.delete().catch(() => {}); npMessages.delete(queue.guild.id); }
-});
 
 // ----------------------------------------------------------------------------
 //  HELPER — Ticket transcript loggen
@@ -1938,11 +1876,10 @@ async function startRadio(vc, stationId, customUrl, customLabel) {
     : (RADIO_STATIONS[stationId] || PIRATE_STATIONS[stationId]);
   if (!station) throw new Error('Onbekend radiostation');
 
-  // Stop discord-player queue als die actief is (vrijmaken voice connectie)
-  const existingQueue = player.nodes.get(guildId);
-  if (existingQueue) {
-    try { existingQueue.delete(); } catch {}
-    await new Promise(r => setTimeout(r, 400)); // brief wacht voor VoiceConnection cleanup
+  // Stop muziek engine als die actief is (vrijmaken voice connectie)
+  if (musicMap.has(guildId)) {
+    stopMusicEngine(guildId);
+    await new Promise(r => setTimeout(r, 400));
   }
 
   // Stop bestaande radio
@@ -8157,135 +8094,80 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
 
     await interaction.deferReply();
 
-    const nodeOpts = {
-      metadata:              { channel: interaction.channel },
-      leaveOnEmpty:          true,
-      leaveOnEmptyCooldown:  30_000,
-      leaveOnEnd:            true,
-      leaveOnEndCooldown:    30_000,
-      selfDeaf:              true,
-      bufferingTimeout:      0,
-    };
-
-    let result;
-    const existingQueue = player.nodes.get(interaction.guildId);
-    const alreadyPlaying = existingQueue?.isPlaying();
-
+    let track;
     try {
-      if (alreadyPlaying) {
-        // Zoek het nummer maar start het NIET — voeg achteraan toe zodat huidig nummer doorspeelt
-        const mkTimeout = (ms, msg) => new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms));
-        const searchResult = await Promise.race([
-          player.search(rawQuery, { requestedBy: interaction.user }),
-          mkTimeout(30_000, 'Zoeken duurde te lang. Probeer het opnieuw.'),
-        ]);
-        if (!searchResult?.tracks?.length)
-          return interaction.editReply({ content: `❌ Geen resultaten gevonden voor **${rawQuery}**.` });
-
-        const track = searchResult.tracks[0];
-
-        // Filter ook op track-titel (omzeilt URL-bypass, incl. leet-speak)
-        const titleLower = normalizeLeet(track.title || '');
-        const blockedTitle = MUSIC_BLOCKLIST.find(term => titleLower.includes(term));
-        if (blockedTitle) {
-          return interaction.editReply({ embeds: [
-            new EmbedBuilder()
-              .setTitle('🚫 Wat denk je nou zelf...')
-              .setDescription(`**${track.title}**\n\nDit soort dingen spelen we hier niet. Doe normaal.`)
-              .setColor(0xFF0000)
-              .setFooter({ text: 'Lage Landen RP — gepaste muziek graag 🎵' })
-          ]});
-        }
-
-        // — Max wachtrij grootte —
-        if (existingQueue.tracks.size >= MAX_QUEUE_SIZE)
-          return interaction.editReply({ content: `❌ De wachtrij zit vol (max **${MAX_QUEUE_SIZE}** nummers). Wacht tot er ruimte is.` });
-
-        // — Max per gebruiker —
-        const userTrackCount = existingQueue.tracks.toArray().filter(t => t.requestedBy?.id === interaction.user.id).length;
-        if (userTrackCount >= MAX_PER_USER)
-          return interaction.editReply({ content: `❌ Je hebt al **${MAX_PER_USER}** nummers in de wachtrij. Wacht tot een van jouw nummers afgespeeld is.` });
-
-        // — Max duur per track —
-        const durParts = (track.duration || '0:00').split(':').map(Number);
-        const durSec   = durParts.length === 3
-          ? durParts[0] * 3600 + durParts[1] * 60 + durParts[2]
-          : durParts[0] * 60 + (durParts[1] || 0);
-        if (durSec > MAX_DURATION_S)
-          return interaction.editReply({ content: `❌ **${track.title}** is te lang (${track.duration}). Maximaal 10 minuten per nummer.` });
-
-        existingQueue.addTrack(track);
-        const thumb = track?.thumbnail?.startsWith?.('http') ? track.thumbnail : null;
-        const pos = existingQueue.tracks.size;
-        const embed = new EmbedBuilder()
-          .setTitle('🎵 Toegevoegd aan Wachtrij')
-          .setDescription(track.url ? `**[${track.title}](${track.url})**` : `**${track.title}**`)
-          .addFields(
-            { name: '🎤 Artiest',  value: track.author   || 'Onbekend', inline: true },
-            { name: '⏱️ Duur',     value: track.duration || '?',        inline: true },
-            { name: '📍 Positie',  value: `#${pos}`,                    inline: true },
-          )
-          .setColor(0x1DB954)
-          .setFooter({ text: `Aangevraagd door ${interaction.user.username} | Lage Landen RP` })
-          .setTimestamp();
-        if (thumb) embed.setThumbnail(thumb);
-        return interaction.editReply({ embeds: [embed] });
-      }
-
-      // Wachtrij leeg — start afspelen normaal
-      const mkTimeout2 = (ms, msg) => new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms));
-      result = await Promise.race([
-        player.play(vc, rawQuery, {
-          requestedBy: interaction.user,
-          nodeOptions:  nodeOpts,
-        }),
-        mkTimeout2(30_000, 'Afspelen duurde te lang. Probeer het opnieuw.'),
-      ]);
+      const mkTimeout = (ms) => new Promise((_, rej) => setTimeout(() => rej(new Error('Zoeken duurde te lang. Probeer het opnieuw.')), ms));
+      track = await Promise.race([searchMusic(rawQuery), mkTimeout(30_000)]);
     } catch (e) {
-      console.error('❌ play fout:', e.message);
-      return interaction.editReply({ content: `❌ Geen resultaten gevonden voor **${rawQuery}**.\n\`${e.message}\`` });
+      return interaction.editReply({ content: `❌ Zoeken mislukt: \`${e.message}\`` });
     }
+    if (!track) return interaction.editReply({ content: `❌ Geen resultaten gevonden voor **${rawQuery}**.` });
 
-    // Alleen bereikt als wachtrij leeg was — playerStart stuurt de NP embed
-    const track = result?.track;
-
-    // Filter ook op track-titel na zoeken (URL-bypass, incl. leet-speak)
-    const titleLower = normalizeLeet(track?.title || '');
+    // Filter op track-titel (URL-bypass omzeilen)
+    const titleLower = normalizeLeet(track.title || '');
     const blockedTitle = MUSIC_BLOCKLIST.find(term => titleLower.includes(term));
     if (blockedTitle) {
-      result?.queue?.delete?.();
       return interaction.editReply({ embeds: [
         new EmbedBuilder()
           .setTitle('🚫 Wat denk je nou zelf...')
           .setDescription(`**${track.title}**\n\nDit soort dingen spelen we hier niet. Doe normaal.`)
-          .setColor(0xFF0000)
-          .setFooter({ text: 'Lage Landen RP — gepaste muziek graag 🎵' })
+          .setColor(0xFF0000).setFooter({ text: 'Lage Landen RP — gepaste muziek graag 🎵' })
       ]});
     }
 
-    // — Max duur voor nieuw gestarte track —
-    const durParts2 = (track?.duration || '0:00').split(':').map(Number);
-    const durSec2   = durParts2.length === 3
-      ? durParts2[0] * 3600 + durParts2[1] * 60 + durParts2[2]
-      : durParts2[0] * 60 + (durParts2[1] || 0);
-    if (durSec2 > MAX_DURATION_S) {
-      result?.queue?.delete?.();
-      return interaction.editReply({ content: `❌ **${track?.title}** is te lang (${track?.duration}). Maximaal 10 minuten per nummer.` });
+    // Max duur check
+    const durParts = (track.duration || '0:00').split(':').map(Number);
+    const durSec   = durParts.length === 3 ? durParts[0]*3600+durParts[1]*60+durParts[2] : durParts[0]*60+(durParts[1]||0);
+    if (durSec > MAX_DURATION_S)
+      return interaction.editReply({ content: `❌ **${track.title}** is te lang (${track.duration}). Maximaal 10 minuten per nummer.` });
+
+    track.requestedBy = interaction.user;
+    const existingState = getMusicState(interaction.guildId);
+
+    if (existingState && isMusicPlaying(interaction.guildId)) {
+      // Wachtrij check
+      if (existingState.tracks.length >= MAX_QUEUE_SIZE)
+        return interaction.editReply({ content: `❌ De wachtrij zit vol (max **${MAX_QUEUE_SIZE}** nummers).` });
+      const userCount = existingState.tracks.filter(t => t.requestedBy?.id === interaction.user.id).length;
+      if (userCount >= MAX_PER_USER)
+        return interaction.editReply({ content: `❌ Je hebt al **${MAX_PER_USER}** nummers in de wachtrij.` });
+
+      existingState.tracks.push(track);
+      const pos   = existingState.tracks.length;
+      const thumb = track.thumbnail?.startsWith?.('http') ? track.thumbnail : null;
+      const embed = new EmbedBuilder()
+        .setTitle('🎵 Toegevoegd aan Wachtrij')
+        .setDescription(track.url ? `**[${track.title}](${track.url})**` : `**${track.title}**`)
+        .addFields(
+          { name: '🎤 Artiest',  value: track.author   || 'Onbekend', inline: true },
+          { name: '⏱️ Duur',     value: track.duration || '?',        inline: true },
+          { name: '📍 Positie',  value: `#${pos}`,                    inline: true },
+        )
+        .setColor(0x1DB954)
+        .setFooter({ text: `Aangevraagd door ${interaction.user.username} | Lage Landen RP` })
+        .setTimestamp();
+      if (thumb) embed.setThumbnail(thumb);
+      return interaction.editReply({ embeds: [embed] });
     }
 
-    return interaction.editReply({ content: `🎵 Speelt nu: **${track?.title || rawQuery}**` });
+    // Eerste nummer — start de engine
+    try {
+      await startMusicEngine(vc, track, interaction.channel);
+      return interaction.editReply({ content: `🎵 Speelt nu: **${track.title}**` });
+    } catch (e) {
+      console.error('❌ startMusicEngine fout:', e.message);
+      return interaction.editReply({ content: `❌ Kon niet starten: \`${e.message}\`` });
+    }
   }
 
   // -- /skip ----------------------------------------------------------------
   if (interaction.commandName === 'skip') {
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
-    // Alleen staff mag direct skippen — normale spelers moeten /skippen (vote-skip) gebruiken
+    if (!isMusicPlaying(interaction.guildId)) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
     if (!hasRoleOrHigher(interaction.member, STAFF_ROLE_ID) && !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return interaction.reply({ content: '❌ Alleen staff kan direct skippen. Gebruik **/skippen** om te stemmen voor een skip.', flags: 64 });
     }
-    const current = queue.currentTrack;
-    queue.node.skip();
+    const current = getMusicState(interaction.guildId)?.currentTrack;
+    skipCurrentTrack(interaction.guildId);
     return interaction.reply({
       embeds: [new EmbedBuilder()
         .setTitle('⏭️ Overgeslagen')
@@ -8300,15 +8182,15 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
         !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return interaction.reply({ content: '❌ Alleen staff kan de wachtrij wissen.', flags: 64 });
     }
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
-    const count = queue.tracks.size;
-    queue.tracks.clear();
+    const ms = getMusicState(interaction.guildId);
+    if (!ms) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
+    const count = ms.tracks.length;
+    ms.tracks = [];
     return interaction.reply({
       embeds: [new EmbedBuilder()
         .setTitle('🏴‍☠️ Wachtrij Gewist')
         .setDescription(count > 0
-          ? `**${count}** nummer${count !== 1 ? 's' : ''} verwijderd uit de wachtrij.\nHuidig nummer speelt gewoon door.`
+          ? `**${count}** nummer${count !== 1 ? 's' : ''} verwijderd.\nHuidig nummer speelt gewoon door.`
           : 'De wachtrij was al leeg.\nHuidig nummer speelt gewoon door.')
         .setColor(0xFF6B6B).setTimestamp()]
     });
@@ -8320,39 +8202,37 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
         !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return interaction.reply({ content: '❌ Alleen staff kan stoppen.', flags: 64 });
     }
-    const queue = player.nodes.get(interaction.guildId);
-    const radioStopped = stopRadio(interaction.guildId);
-    if (!queue && !radioStopped)
+    const hasMusicState = musicMap.has(interaction.guildId);
+    const radioStopped  = stopRadio(interaction.guildId);
+    if (!hasMusicState && !radioStopped)
       return interaction.reply({ content: '❌ Er speelt niets (geen muziek en geen radio).', flags: 64 });
-    if (queue) queue.delete();
+    if (hasMusicState) stopMusicEngine(interaction.guildId);
     return interaction.reply({
       embeds: [new EmbedBuilder()
         .setTitle('⏹️ Gestopt')
-        .setDescription(radioStopped
-          ? 'Radio gestopt en voice kanaal verlaten.'
-          : 'Muziek gestopt en voice kanaal verlaten.')
+        .setDescription(radioStopped ? 'Radio gestopt en voice kanaal verlaten.' : 'Muziek gestopt en voice kanaal verlaten.')
         .setColor(0xFF6B6B).setTimestamp()]
     });
   }
 
   // -- /queue ---------------------------------------------------------------
   if (interaction.commandName === 'queue') {
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
-    const current = queue.currentTrack;
-    const tracks  = queue.tracks.toArray().slice(0, 10);
+    const ms = getMusicState(interaction.guildId);
+    if (!ms?.currentTrack) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
+    const current = ms.currentTrack;
+    const tracks  = ms.tracks.slice(0, 10);
     const desc = [
-      `**Nu speelt:** [${current.title}](${current.url}) — \`${current.duration}\``,
+      `**Nu speelt:** [${current.title}](${current.url || ''}) — \`${current.duration}\``,
       '',
-      ...tracks.map((t, i) => `**${i + 1}.** [${t.title}](${t.url}) — \`${t.duration}\``),
-      queue.tracks.size > 10 ? `\n_...en nog ${queue.tracks.size - 10} nummer(s)_` : ''
+      ...tracks.map((t, i) => `**${i + 1}.** [${t.title}](${t.url || ''}) — \`${t.duration}\``),
+      ms.tracks.length > 10 ? `\n_...en nog ${ms.tracks.length - 10} nummer(s)_` : ''
     ].join('\n');
     return interaction.reply({
       embeds: [new EmbedBuilder()
         .setTitle('📋 Wachtrij')
         .setDescription(desc.slice(0, 4000))
         .setColor(0x1DB954)
-        .setFooter({ text: `${queue.tracks.size} nummer(s) in de wachtrij` })
+        .setFooter({ text: `${ms.tracks.length} nummer(s) in de wachtrij` })
         .setTimestamp()],
       flags: 64
     });
@@ -8364,10 +8244,10 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
         !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return interaction.reply({ content: '❌ Alleen staff kan muziek pauzeren.', flags: 64 });
     }
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
-    const paused = queue.node.isPaused();
-    paused ? queue.node.resume() : queue.node.pause();
+    const ms = getMusicState(interaction.guildId);
+    if (!ms?.currentTrack) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
+    const paused = isMusicPaused(interaction.guildId);
+    paused ? ms.audioPlayer.unpause() : ms.audioPlayer.pause();
     return interaction.reply({
       embeds: [new EmbedBuilder()
         .setTitle(paused ? '▶️ Hervat' : '⏸️ Gepauzeerd')
@@ -8378,45 +8258,14 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
 
   // -- /np ------------------------------------------------------------------
   if (interaction.commandName === 'np') {
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
-    const track    = queue.currentTrack;
-    const progress = queue.node.getTimestamp();
-    const bar      = queue.node.createProgressBar({ length: 20, line: '-', indicator: '▶' });
-    const npThumb  = track?.thumbnail?.startsWith?.('http') ? track.thumbnail : null;
-    const npEmbed  = new EmbedBuilder()
-      .setTitle('🎵 Nu Speelt')
-      .setDescription(track?.url ? `**[${track.title}](${track.url})**` : `**${track?.title || '?'}**`)
-      .addFields(
-        { name: '🎤 Artiest',   value: track?.author   || 'Onbekend',                              inline: true },
-        { name: '⏱️ Voortgang', value: `${progress?.current?.label || '?'} / ${track?.duration || '?'}`, inline: true },
-        { name: '🔊 Volume',    value: `${queue.node.volume}%`,                                     inline: true },
-        { name: '📊 Balk',      value: bar || '-'.repeat(20),                                      inline: false },
-      )
-      .setColor(0x1DB954)
-      .setFooter({ text: `Aangevraagd door ${track?.requestedBy?.username || '?'} | Lage Landen RP` })
-      .setTimestamp();
-    if (npThumb) npEmbed.setThumbnail(npThumb);
-    return interaction.reply({ embeds: [npEmbed], flags: 64 });
+    const ms = getMusicState(interaction.guildId);
+    if (!ms?.currentTrack) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
+    return interaction.reply({ embeds: [buildNpEmbed_m(ms, ms.currentTrack, interaction.guildId)], flags: 64 });
   }
 
   // -- /volume --------------------------------------------------------------
   if (interaction.commandName === 'volume') {
-    if (!hasRoleOrHigher(interaction.member, STAFF_ROLE_ID) &&
-        !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-      return interaction.reply({ content: '❌ Alleen staff kan het volume aanpassen.', flags: 64 });
-    }
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
-    const vol = interaction.options.getInteger('waarde');
-    queue.node.setVolume(vol);
-    return interaction.reply({
-      embeds: [new EmbedBuilder()
-        .setTitle('🔊 Volume Aangepast')
-        .setDescription(`Volume ingesteld op **${vol}%**.`)
-        .setColor(0x1DB954).setTimestamp()],
-      flags: 64
-    });
+    return interaction.reply({ content: '⚠️ Volume aanpassen is tijdelijk niet beschikbaar na de muziek-update.', flags: 64 });
   }
 
   // -- /shuffle -------------------------------------------------------------
@@ -8425,13 +8274,16 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
         !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return interaction.reply({ content: '❌ Alleen staff kan de wachtrij schudden.', flags: 64 });
     }
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.tracks.size) return interaction.reply({ content: '❌ Geen nummers in de wachtrij.', flags: 64 });
-    queue.tracks.shuffle();
+    const ms = getMusicState(interaction.guildId);
+    if (!ms?.tracks.length) return interaction.reply({ content: '❌ Geen nummers in de wachtrij.', flags: 64 });
+    for (let i = ms.tracks.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [ms.tracks[i], ms.tracks[j]] = [ms.tracks[j], ms.tracks[i]];
+    }
     return interaction.reply({
       embeds: [new EmbedBuilder()
         .setTitle('🔀 Wachtrij Geschud')
-        .setDescription(`${queue.tracks.size} nummer(s) in willekeurige volgorde gezet.`)
+        .setDescription(`${ms.tracks.length} nummer(s) in willekeurige volgorde gezet.`)
         .setColor(0x1DB954).setTimestamp()]
     });
   }
@@ -8442,13 +8294,10 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
         !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return interaction.reply({ content: '❌ Alleen staff kan de loop instellen.', flags: 64 });
     }
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
+    const ms = getMusicState(interaction.guildId);
+    if (!ms?.currentTrack) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
     const modus = interaction.options.getString('modus');
-    const mode  = modus === 'track' ? QueueRepeatMode.TRACK
-                : modus === 'queue' ? QueueRepeatMode.QUEUE
-                : QueueRepeatMode.OFF;
-    queue.setRepeatMode(mode);
+    ms.loop = modus === 'track' ? 'track' : modus === 'queue' ? 'queue' : 'off';
     const label = modus === 'track' ? '🔂 Huidig nummer wordt herhaald'
                 : modus === 'queue' ? '🔁 Hele wachtrij wordt herhaald'
                 : '▶️ Loop uitgeschakeld';
@@ -8459,24 +8308,12 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
 
   // -- /autoplay -------------------------------------------------------------
   if (interaction.commandName === 'autoplay') {
-    if (!hasRoleOrHigher(interaction.member, STAFF_ROLE_ID) &&
-        !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-      return interaction.reply({ content: '❌ Alleen staff kan autoplay instellen.', flags: 64 });
-    }
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
-    const current = queue.repeatMode === QueueRepeatMode.AUTOPLAY;
-    queue.setRepeatMode(current ? QueueRepeatMode.OFF : QueueRepeatMode.AUTOPLAY);
-    const label = current ? '❌ Autoplay uitgeschakeld' : '✅ Autoplay ingeschakeld — gerelateerde nummers worden automatisch toegevoegd';
-    return interaction.reply({
-      embeds: [new EmbedBuilder().setTitle('▶️ Autoplay').setDescription(label).setColor(0x1DB954).setTimestamp()]
-    });
+    return interaction.reply({ content: '⚠️ Autoplay is tijdelijk niet beschikbaar na de muziek-update.', flags: 64 });
   }
 
   // -- /skippen (vote skip) --------------------------------------------------
   if (interaction.commandName === 'skippen') {
-    const queue = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
+    if (!isMusicPlaying(interaction.guildId)) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
     const vc2 = interaction.member?.voice?.channel;
     if (!vc2) return interaction.reply({ content: '❌ Ga in een voice kanaal zitten!', flags: 64 });
 
@@ -8493,7 +8330,7 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
 
     if (votes.size >= needed) {
       voteSkipMap.delete(interaction.guildId);
-      queue.node.skip();
+      skipCurrentTrack(interaction.guildId);
       return interaction.reply({
         embeds: [new EmbedBuilder()
           .setTitle('⏭️ Skip — Gestemd!')
@@ -8513,8 +8350,7 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
   // -- /lyrics ---------------------------------------------------------------
   if (interaction.commandName === 'lyrics') {
     await interaction.deferReply({ flags: 64 });
-    const queue  = player.nodes.get(interaction.guildId);
-    const zoek   = interaction.options.getString('zoek') || queue?.currentTrack?.title;
+    const zoek   = interaction.options.getString('zoek') || getMusicState(interaction.guildId)?.currentTrack?.title;
     if (!zoek) return interaction.editReply('❌ Geef een zoekterm op of speel eerst een nummer af.');
     try {
       const searches = await geniusClient.songs.search(zoek);
@@ -8537,26 +8373,7 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
 
   // -- /filters --------------------------------------------------------------
   if (interaction.commandName === 'filters') {
-    if (!hasRoleOrHigher(interaction.member, STAFF_ROLE_ID) &&
-        !interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-      return interaction.reply({ content: '❌ Alleen staff kan audio filters gebruiken.', flags: 64 });
-    }
-    const queue  = player.nodes.get(interaction.guildId);
-    if (!queue?.isPlaying()) return interaction.reply({ content: '❌ Er speelt niets.', flags: 64 });
-    await interaction.deferReply();
-    const filter = interaction.options.getString('filter');
-    try {
-      const newFilters = (filter === 'reset') ? false : (FILTER_MAP[filter] ?? []);
-      await queue.filters.ffmpeg.setFilters(newFilters);
-      const label = filter === 'reset' ? '✅ Alle filters verwijderd'
-                  : `✅ Filter **${filter}** actief`;
-      return interaction.editReply({
-        embeds: [new EmbedBuilder().setTitle('🏴‍☠️ Audio Filter').setDescription(label).setColor(0x1DB954).setTimestamp()]
-      });
-    } catch (e) {
-      console.error('[Filters fout]', e);
-      return interaction.editReply({ content: `❌ Filter fout: \`${e.message}\`` });
-    }
+    return interaction.reply({ content: '⚠️ Audio filters zijn tijdelijk niet beschikbaar na de muziek-update.', flags: 64 });
   }
 
   // -- /kwaliteit ------------------------------------------------------------
