@@ -843,26 +843,49 @@ class YtDlpExtractor extends BaseExtractor {
   async stream(track) {
     const { spawn }       = require('child_process');
     const { PassThrough } = require('stream');
+    const os   = require('os');
     const ytDlpBin = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
+    const ffmpegBin = require('ffmpeg-static');
 
-    console.log(`▶️ yt-dlp stream: ${track.title}`);
+    // Download naar een tijdelijk bestand — geen pipe-problemen op Windows
+    const tmpFile = require('path').join(os.tmpdir(), `dp_${Date.now()}.webm`);
+    console.log(`▶️ yt-dlp download: ${track.title}`);
 
-    const ytdlp = spawn(ytDlpBin, [
-      track.url,
-      '-f', 'bestaudio',
-      '-o', '-',
-      '--no-warnings',
-      '--no-playlist',
-      '--quiet',
-    ], { stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true });
+    await new Promise((resolve, reject) => {
+      const dl = spawn(ytDlpBin, [
+        track.url,
+        '-f', 'bestaudio',
+        '-o', tmpFile,
+        '--no-warnings',
+        '--no-playlist',
+        '--quiet',
+      ], { stdio: 'ignore', windowsHide: true });
+      dl.on('close', code => code === 0 || require('fs').existsSync(tmpFile) ? resolve() : reject(new Error(`yt-dlp exit ${code}`)));
+      dl.on('error', reject);
+    });
+
+    console.log(`▶️ ffmpeg stream: ${track.title}`);
+
+    // FFmpeg leest het lokale bestand — geen netwerk, geen pipe timing issues
+    const ffmpeg = spawn(ffmpegBin, [
+      '-i', tmpFile,
+      '-f', 's16le',
+      '-ar', '48000',
+      '-ac', '2',
+      '-loglevel', 'error',
+      'pipe:1',
+    ], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
+
+    ffmpeg.stderr.on('data', d => { const m = d.toString().trim(); if (m) console.warn('[ffmpeg]', m); });
+
+    // Opruimen nadat ffmpeg klaar is
+    ffmpeg.on('close', () => { try { require('fs').unlinkSync(tmpFile); } catch {} });
 
     const out = new PassThrough();
-    ytdlp.stdout.pipe(out);
+    ffmpeg.stdout.pipe(out);
     out.on('error', () => {});
-    ytdlp.on('error', e => console.warn('[yt-dlp]', e.message));
 
-    // Arbitrary = discord-player laat zijn eigen interne FFmpeg de stream verwerken
-    return { stream: out, type: StreamType.Arbitrary };
+    return { stream: out, type: StreamType.Raw };
   }
 
   emitsEvents() { return false; }
