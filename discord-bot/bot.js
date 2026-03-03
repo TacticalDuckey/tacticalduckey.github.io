@@ -869,7 +869,7 @@ class YtDlpExtractor extends BaseExtractor {
     // Opruimen na 15 minuten (track duurt nooit langer)
     setTimeout(() => { try { fs.unlinkSync(tmpFile); } catch {} }, 15 * 60_000);
 
-    return { stream: tmpFile, type: StreamType.WebmOpus };
+    return { stream: tmpFile, type: StreamType.Arbitrary };
   }
 
   emitsEvents() { return false; }
