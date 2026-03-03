@@ -866,10 +866,10 @@ class YtDlpExtractor extends BaseExtractor {
 
     // Geef lokaal bestandspad als STRING terug — ffmpeg leest het direct van disk
     // (geen Node.js stream → geen Windows pipe-problemen)
-    // Opruimen na 10 minuten (track duurt nooit langer)
-    setTimeout(() => { try { fs.unlinkSync(tmpFile); } catch {} }, 10 * 60_000);
+    // Opruimen na 15 minuten (track duurt nooit langer)
+    setTimeout(() => { try { fs.unlinkSync(tmpFile); } catch {} }, 15 * 60_000);
 
-    return { stream: tmpFile };
+    return { stream: tmpFile, type: StreamType.WebmOpus };
   }
 
   emitsEvents() { return false; }
@@ -877,14 +877,6 @@ class YtDlpExtractor extends BaseExtractor {
 
 const player = new Player(client, {
   useLegacyFFmpeg: false,
-  // FFmpeg reconnect-flags: herverbindt automatisch als de YouTube stream even wegvalt
-  ffmpegArgs: {
-    input: [
-      '-reconnect',          '1',
-      '-reconnect_streamed', '1',
-      '-reconnect_delay_max','5',
-    ],
-  },
 });
 // Extractors laden — alleen YoutubeiExtractor registreren
 (async () => {
