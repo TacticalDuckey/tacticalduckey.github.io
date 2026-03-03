@@ -841,50 +841,29 @@ class YtDlpExtractor extends BaseExtractor {
   }
 
   async stream(track) {
-    const { spawn }        = require('child_process');
-    const { PassThrough }  = require('stream');
-    const ytDlpBin  = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
-    const ffmpegBin = require('ffmpeg-static');
+    const { spawn }       = require('child_process');
+    const { PassThrough } = require('stream');
+    const ytDlpBin = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
 
-    console.log(`▶️ yt-dlp→ffmpeg: ${track.title}`);
+    console.log(`▶️ yt-dlp opus stream: ${track.title}`);
 
-    // yt-dlp: download audio naar zijn stdout
+    // YouTube levert bestaudio bijna altijd als webm/opus
+    // StreamType.WebmOpus = @discordjs/voice kan het zonder FFmpeg afspelen
     const ytdlp = spawn(ytDlpBin, [
       track.url,
-      '-f', 'bestaudio',
+      '-f', 'bestaudio[ext=webm]/bestaudio[acodec=opus]/bestaudio',
       '-o', '-',
       '--no-warnings',
       '--no-playlist',
       '--quiet',
     ], { stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true });
 
-    // ffmpeg: lees van stdin, converteer naar raw PCM 48kHz stereo
-    const ffmpeg = spawn(ffmpegBin, [
-      '-i', 'pipe:0',
-      '-f', 's16le',
-      '-ar', '48000',
-      '-ac', '2',
-      '-loglevel', 'error',
-      'pipe:1',
-    ], { stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true });
-
-    // Pipe yt-dlp → ffmpeg stdin
-    ytdlp.stdout.pipe(ffmpeg.stdin);
-
-    // Onderdruk EPIPE (Windows: ffmpeg sluit stdin zodra het klaar is)
-    ffmpeg.stdin.on('error', () => {});
-    ytdlp.on('error', e => console.warn('[yt-dlp]', e.message));
-    ffmpeg.on('error', e => console.warn('[ffmpeg]', e.message));
-
-    // PassThrough als buffer zodat discord-player er mee kan werken
     const out = new PassThrough();
-    ffmpeg.stdout.pipe(out);
-    ffmpeg.stderr.on('data', d => {
-      const m = d.toString().trim();
-      if (m) console.warn('[ffmpeg-yt]', m);
-    });
+    ytdlp.stdout.pipe(out);
+    out.on('error', () => {});
+    ytdlp.on('error', e => console.warn('[yt-dlp]', e.message));
 
-    return { stream: out, type: StreamType.Raw };
+    return { stream: out, type: StreamType.WebmOpus };
   }
 
   emitsEvents() { return false; }
