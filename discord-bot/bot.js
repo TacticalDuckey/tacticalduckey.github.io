@@ -832,22 +832,31 @@ async function streamTrack(guildId, track) {
   }
 
   console.log(`▶️ ffmpeg start: ${track.title}`);
-  // Exact dezelfde aanpak als werkende radio: ffmpeg leest bestand → s16le → pipe → StreamType.Raw
-  const ff = spawn(ffmpegPath, [
-    '-loglevel', 'error',
-    '-i', tmpFile,
-    '-f', 's16le', '-ar', '48000', '-ac', '2',
-    'pipe:1',
-  ], { stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true });
+    // Exact dezelfde aanpak als werkende radio: ffmpeg leest bestand → s16le → pipe → StreamType.Raw
+    const ff = spawn(ffmpegPath, [
+      '-loglevel', 'warning',
+      '-i', tmpFile,
+      '-f', 's16le', '-ar', '48000', '-ac', '2',
+      'pipe:1',
+    ], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
 
-  ff.on('close', () => { try { fs_m.unlinkSync(tmpFile); } catch {} });
-  ff.on('error', err => console.error('❌ ffmpeg fout:', err.message));
+    ff.stderr.on('data', d => console.error(`[ffmpeg] ${d.toString().trim()}`));
+    ff.stdout.once('data', () => console.log(`▶️ ffmpeg audio data stroomt: ${track.title}`));
+    ff.on('close', code => {
+      console.log(`▶️ ffmpeg klaar (code ${code}): ${track.title}`);
+      try { fs_m.unlinkSync(tmpFile); } catch {}
+    });
+    ff.on('error', err => console.error('❌ ffmpeg spawn fout:', err.message));
 
-  state.ffmpeg    = ff;
-  state.startedAt = Date.now();
+    state.ffmpeg    = ff;
+    state.startedAt = Date.now();
 
-  const resource = createAudioResource(ff.stdout, { inputType: StreamType.Raw });
-  state.audioPlayer.play(resource);
+    console.log(`▶️ createAudioResource aanmaken...`);
+    const resource = createAudioResource(ff.stdout, { inputType: StreamType.Raw });
+    console.log(`▶️ audioPlayer.play() aanroepen...`);
+    state.audioPlayer.play(resource);
+    state.audioPlayer.once(AudioPlayerStatus.Playing, () => console.log(`✅ AudioPlayer speelt: ${track.title}`));
+    state.audioPlayer.once(AudioPlayerStatus.Idle,    () => console.log(`📭 AudioPlayer idle na: ${track.title}`));
 }
 
 // Ga naar volgende track in wachtrij
