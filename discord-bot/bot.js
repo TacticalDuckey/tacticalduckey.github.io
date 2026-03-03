@@ -862,14 +862,14 @@ class YtDlpExtractor extends BaseExtractor {
       dl.on('error', reject);
     });
 
-    console.log(`▶️ bestand stream: ${track.title}`);
+    console.log(`▶️ bestand gereed: ${track.title}`);
 
-    // Geef het webm-bestand terug als Arbitrary stream
-    // discord-player's eigen interne FFmpeg converteert het naar opus — geen dubbele transcoding
-    const fileStream = fs.createReadStream(tmpFile);
-    fileStream.on('close', () => { try { fs.unlinkSync(tmpFile); } catch {} });
+    // Geef lokaal bestandspad als STRING terug — ffmpeg leest het direct van disk
+    // (geen Node.js stream → geen Windows pipe-problemen)
+    // Opruimen na 10 minuten (track duurt nooit langer)
+    setTimeout(() => { try { fs.unlinkSync(tmpFile); } catch {} }, 10 * 60_000);
 
-    return { stream: fileStream, type: StreamType.Arbitrary };
+    return { stream: tmpFile };
   }
 
   emitsEvents() { return false; }
