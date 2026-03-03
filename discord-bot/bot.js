@@ -8127,10 +8127,11 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
       ]});
     }
 
-    // Max duur check
+    // Max duur check — staff en hoger zijn vrijgesteld
     const durParts = (track.duration || '0:00').split(':').map(Number);
     const durSec   = durParts.length === 3 ? durParts[0]*3600+durParts[1]*60+durParts[2] : durParts[0]*60+(durParts[1]||0);
-    if (durSec > MAX_DURATION_S)
+    const isStaff  = hasRoleOrHigher(interaction.member, STAFF_ROLE_ID) || interaction.member.permissions.has(PermissionFlagsBits.ManageGuild);
+    if (!isStaff && durSec > MAX_DURATION_S)
       return interaction.editReply({ content: `❌ **${track.title}** is te lang (${track.duration}). Maximaal 10 minuten per nummer.` });
 
     track.requestedBy = interaction.user;
