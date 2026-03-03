@@ -837,6 +837,9 @@ async function streamTrack(guildId, track) {
     '-reconnect',          '1',
     '-reconnect_streamed', '1',
     '-reconnect_delay_max','5',
+    '-re',                             // real-time input (voorkomt doorspoelen)
+    '-thread_queue_size',  '4096',     // grote input queue voorkomt lag
+    '-analyzeduration',    '0',        // geen lange analyze-pause aan het begin
     '-loglevel', 'warning',
     '-i', streamUrl,
     '-f', 's16le', '-ar', '48000', '-ac', '2',
