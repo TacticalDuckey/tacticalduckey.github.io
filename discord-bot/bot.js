@@ -841,38 +841,50 @@ class YtDlpExtractor extends BaseExtractor {
   }
 
   async stream(track) {
-    const { spawn } = require('child_process');
+    const { spawn }        = require('child_process');
+    const { PassThrough }  = require('stream');
+    const ytDlpBin  = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
     const ffmpegBin = require('ffmpeg-static');
 
-    console.log(`▶️ yt-dlp→ffmpeg stream: ${track.title}`);
+    console.log(`▶️ yt-dlp→ffmpeg: ${track.title}`);
 
-    // Haal de CDN URL op via yt-dlp (kort, ~1s)
-    // yt-dlp gebruikt de juiste Android VR client waardoor de URL altijd geldig is
-    const cdnUrl = await this._fetchStreamUrl(track.url);
-    if (!cdnUrl) throw new Error('yt-dlp: geen stream URL gevonden');
+    // yt-dlp: download audio naar zijn stdout
+    const ytdlp = spawn(ytDlpBin, [
+      track.url,
+      '-f', 'bestaudio',
+      '-o', '-',
+      '--no-warnings',
+      '--no-playlist',
+      '--quiet',
+    ], { stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true });
 
-    // FFmpeg haalt de CDN URL op met de juiste YouTube Android User-Agent
-    // Hierdoor accepteert YouTube de verbinding (direct CDN — geen Node pipe-problemen)
+    // ffmpeg: lees van stdin, converteer naar raw PCM 48kHz stereo
     const ffmpeg = spawn(ffmpegBin, [
-      '-reconnect',           '1',
-      '-reconnect_streamed',  '1',
-      '-reconnect_delay_max', '5',
-      '-user_agent', 'com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip',
-      '-i', cdnUrl,
-      '-analyzeduration', '0',
-      '-loglevel', 'error',
+      '-i', 'pipe:0',
       '-f', 's16le',
       '-ar', '48000',
       '-ac', '2',
+      '-loglevel', 'error',
       'pipe:1',
-    ], { windowsHide: true });
+    ], { stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true });
 
+    // Pipe yt-dlp → ffmpeg stdin
+    ytdlp.stdout.pipe(ffmpeg.stdin);
+
+    // Onderdruk EPIPE (Windows: ffmpeg sluit stdin zodra het klaar is)
+    ffmpeg.stdin.on('error', () => {});
+    ytdlp.on('error', e => console.warn('[yt-dlp]', e.message));
+    ffmpeg.on('error', e => console.warn('[ffmpeg]', e.message));
+
+    // PassThrough als buffer zodat discord-player er mee kan werken
+    const out = new PassThrough();
+    ffmpeg.stdout.pipe(out);
     ffmpeg.stderr.on('data', d => {
-      const msg = d.toString().trim();
-      if (msg) console.warn(`[ffmpeg-yt] ${msg}`);
+      const m = d.toString().trim();
+      if (m) console.warn('[ffmpeg-yt]', m);
     });
 
-    return { stream: ffmpeg.stdout, type: StreamType.Raw };
+    return { stream: out, type: StreamType.Raw };
   }
 
   emitsEvents() { return false; }
