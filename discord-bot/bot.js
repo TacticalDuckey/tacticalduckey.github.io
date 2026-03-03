@@ -8159,15 +8159,12 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
 
     const nodeOpts = {
       metadata:              { channel: interaction.channel },
-      volume:                80,
       leaveOnEmpty:          true,
       leaveOnEmptyCooldown:  30_000,
       leaveOnEnd:            true,
       leaveOnEndCooldown:    30_000,
       selfDeaf:              true,
-      // Royale buffering zodat tijdelijke netwerkproblemen geen afkap veroorzaken
-      bufferingTimeout:      musicQuality.get(interaction.guildId) === 'laag'  ? 5_000
-                           : musicQuality.get(interaction.guildId) === 'hoog'  ? 15_000 : 10_000,
+      bufferingTimeout:      0,
     };
 
     let result;
