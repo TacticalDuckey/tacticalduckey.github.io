@@ -97,8 +97,8 @@ const player = new Player(client, {
   ytdlOptions: { quality: 'highestaudio', highWaterMark: 1 << 25 },
 });
 (async () => {
-  await player.extractors.register(YoutubeiExtractor, {}).catch(() => {});
-  await player.extractors.loadMulti(DefaultExtractors).catch(() => {});
+  await player.extractors.register(YoutubeiExtractor, {}).catch(e => console.warn('[GUARDIAN] YoutubeiExtractor fout:', e.message));
+  await player.extractors.loadMulti(DefaultExtractors).catch(e => console.warn('[GUARDIAN] DefaultExtractors fout:', e.message));
 })();
 
 // --- Security log helper ----------------------------------------------------
@@ -390,17 +390,23 @@ client.on('interactionCreate', async (interaction) => {
 
     await interaction.deferReply();
     try {
-      const { track } = await player.play(vc, interaction.options.getString('zoek'), {
-        nodeOptions: {
-          metadata:               { channel: interaction.channel },
-          selfDeaf:               true,
-          volume:                 80,
-          leaveOnEmpty:           true,
-          leaveOnEmptyCooldown:   30_000,
-          leaveOnEnd:             true,
-          leaveOnEndCooldown:     30_000,
-        },
-      });
+      const playTimeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Zoeken duurde te lang. Probeer het opnieuw of controleer of de bot goed is ingesteld.')), 30_000)
+      );
+      const { track } = await Promise.race([
+        player.play(vc, interaction.options.getString('zoek'), {
+          nodeOptions: {
+            metadata:               { channel: interaction.channel },
+            selfDeaf:               true,
+            volume:                 80,
+            leaveOnEmpty:           true,
+            leaveOnEmptyCooldown:   30_000,
+            leaveOnEnd:             true,
+            leaveOnEndCooldown:     30_000,
+          },
+        }),
+        playTimeout,
+      ]);
 
       // Herstel opgeslagen queue na herstart (als <30 min oud)
       let restored = 0;
