@@ -771,7 +771,15 @@ class YtDlpExtractor extends BaseExtractor {
       videoUrl,
       '-f', 'bestaudio[ext=webm]/bestaudio/best',
       '--get-url', '--no-warnings', '--no-playlist',
-    ], { timeout: 20_000 }).then(({ stdout }) => stdout.trim().split('\n')[0]);
+    ], { timeout: 20_000 }).then(
+      ({ stdout }) => stdout.trim().split('\n')[0],
+      (err) => {
+        // yt-dlp kan exit code 1 geven maar wel een geldige URL in stdout hebben
+        const url = (err.stdout || '').trim().split('\n')[0];
+        if (url && url.startsWith('http')) return url;
+        throw err;
+      }
+    );
   }
 
   async handle(query, context) {
@@ -786,12 +794,12 @@ class YtDlpExtractor extends BaseExtractor {
 
       if (isUrl) {
         // Directe URL: snel basisinfo ophalen via --flat-playlist --print
-        const { stdout } = await execFileAsync(ytDlpBin, [
+        const r1 = await execFileAsync(ytDlpBin, [
           query, '--flat-playlist', '--no-playlist',
           '--print', '%(id)s|%(title)s|%(duration)s|%(uploader,channel)s|%(thumbnail)s',
           '--no-warnings',
-        ], { timeout: 15_000 });
-        const parts = stdout.trim().split('|');
+        ], { timeout: 15_000 }).catch(e => ({ stdout: e.stdout || '' }));
+        const parts = r1.stdout.trim().split('|');
         const id = parts[0];
         if (!id || id === 'NA') return null;
         videoUrl  = `https://www.youtube.com/watch?v=${id}`;
@@ -802,12 +810,12 @@ class YtDlpExtractor extends BaseExtractor {
         thumbnail = parts[4] !== 'NA' ? parts[4] : undefined;
       } else {
         // Tekstzoekopdracht: ytsearch via yt-dlp --flat-playlist (snel, ~0.1s)
-        const { stdout } = await execFileAsync(ytDlpBin, [
+        const r2 = await execFileAsync(ytDlpBin, [
           `ytsearch1:${query}`, '--flat-playlist',
           '--print', '%(id)s|%(title)s|%(duration)s|%(uploader,channel)s|%(thumbnail)s',
           '--no-warnings',
-        ], { timeout: 15_000 });
-        const parts = stdout.trim().split('|');
+        ], { timeout: 15_000 }).catch(e => ({ stdout: e.stdout || '' }));
+        const parts = r2.stdout.trim().split('|');
         const id = parts[0];
         if (!id || id === 'NA') return null;
         videoUrl  = `https://www.youtube.com/watch?v=${id}`;
