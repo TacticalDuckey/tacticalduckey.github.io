@@ -842,41 +842,34 @@ class YtDlpExtractor extends BaseExtractor {
 
   async stream(track) {
     const { spawn } = require('child_process');
-    const ytDlpBin  = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
     const ffmpegBin = require('ffmpeg-static');
 
-    console.log(`▶️ yt-dlp→ffmpeg pipe: ${track.title}`);
+    console.log(`▶️ yt-dlp→ffmpeg stream: ${track.title}`);
 
-    // Stap 1: yt-dlp download audio en schrijft naar stdout
-    const ytdlp = spawn(ytDlpBin, [
-      track.url,
-      '-f', 'bestaudio',
-      '-o', '-',
-      '--no-warnings',
-      '--no-playlist',
-      '--quiet',
-    ], { windowsHide: true });
+    // Haal de CDN URL op via yt-dlp (kort, ~1s)
+    // yt-dlp gebruikt de juiste Android VR client waardoor de URL altijd geldig is
+    const cdnUrl = await this._fetchStreamUrl(track.url);
+    if (!cdnUrl) throw new Error('yt-dlp: geen stream URL gevonden');
 
-    // Stap 2: ffmpeg converteert de audio naar raw PCM (48kHz stereo)
-    // Hierdoor hoeft discord-player/voice zelf nooit YouTube aan te spreken
+    // FFmpeg haalt de CDN URL op met de juiste YouTube Android User-Agent
+    // Hierdoor accepteert YouTube de verbinding (direct CDN — geen Node pipe-problemen)
     const ffmpeg = spawn(ffmpegBin, [
-      '-i', 'pipe:0',       // lees van yt-dlp stdout
+      '-reconnect',           '1',
+      '-reconnect_streamed',  '1',
+      '-reconnect_delay_max', '5',
+      '-user_agent', 'com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip',
+      '-i', cdnUrl,
       '-analyzeduration', '0',
       '-loglevel', 'error',
-      '-f', 's16le',        // raw PCM
-      '-ar', '48000',       // 48kHz (Discord vereiste)
-      '-ac', '2',           // stereo
-      'pipe:1',             // schrijf naar stdout
+      '-f', 's16le',
+      '-ar', '48000',
+      '-ac', '2',
+      'pipe:1',
     ], { windowsHide: true });
-
-    // Pipe yt-dlp output naar ffmpeg input
-    ytdlp.stdout.pipe(ffmpeg.stdin);
-    ytdlp.stderr.on('data', () => {}); // stil houden
-    ytdlp.on('error', e => { console.warn('[yt-dlp] error:', e.message); ffmpeg.stdin.destroy(); });
 
     ffmpeg.stderr.on('data', d => {
       const msg = d.toString().trim();
-      if (msg) console.warn(`[ffmpeg-ytdlp] ${msg}`);
+      if (msg) console.warn(`[ffmpeg-yt] ${msg}`);
     });
 
     return { stream: ffmpeg.stdout, type: StreamType.Raw };
