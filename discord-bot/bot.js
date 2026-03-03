@@ -845,31 +845,38 @@ class YtDlpExtractor extends BaseExtractor {
     const fs   = require('fs');
     const os   = require('os');
     const path = require('path');
-    const ytDlpBin = path.join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
+    const ytDlpBin  = path.join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
 
-    // Download naar tijdelijk bestand (geen pipe-problemen op Windows)
+    // 1. Download naar tijdelijk bestand (geen yt-dlp pipe-problemen op Windows)
     const tmpFile = path.join(os.tmpdir(), `dp_${Date.now()}.webm`);
     console.log(`▶️ yt-dlp download: ${track.title}`);
 
     await new Promise((resolve, reject) => {
       const dl = spawn(ytDlpBin, [
-        track.url,
-        '-f', 'bestaudio',
-        '-o', tmpFile,
+        track.url, '-f', 'bestaudio', '-o', tmpFile,
         '--no-warnings', '--no-playlist', '--quiet',
       ], { stdio: 'ignore', windowsHide: true });
       dl.on('close', code => (code === 0 || fs.existsSync(tmpFile)) ? resolve() : reject(new Error(`yt-dlp exit ${code}`)));
       dl.on('error', reject);
     });
 
-    console.log(`▶️ bestand gereed: ${track.title}`);
+    console.log(`▶️ ffmpeg start: ${track.title}`);
 
-    // Geef een fs.createReadStream terug — discord-player piped dit naar ffmpeg stdin
-    // (geen yt-dlp pipe-keten meer, gewoon een bestand van disk lezen = stabiel op Windows)
-    const fileStream = fs.createReadStream(tmpFile);
-    fileStream.on('close', () => { setTimeout(() => { try { fs.unlinkSync(tmpFile); } catch {} }, 5000); });
+    // 2. Start onze eigen ffmpeg om het bestand te lezen → raw PCM s16le
+    //    Exact dezelfde aanpak als radio (dat werkt wel)
+    //    discord-player krijgt StreamType.Raw → gebruikt prism-media JS opus encoder (geen extra ffmpeg)
+    const ff = spawn(ffmpegPath, [
+      '-loglevel', 'error',
+      '-i', tmpFile,
+      '-f', 's16le',
+      '-ar', '48000',
+      '-ac', '2',
+      'pipe:1',
+    ], { stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true });
 
-    return { stream: fileStream, type: StreamType.Arbitrary };
+    ff.on('close', () => { try { fs.unlinkSync(tmpFile); } catch {} });
+
+    return { stream: ff.stdout, type: StreamType.Raw };
   }
 
   emitsEvents() { return false; }
