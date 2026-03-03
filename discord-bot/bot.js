@@ -841,14 +841,14 @@ class YtDlpExtractor extends BaseExtractor {
   }
 
   async stream(track) {
-    const { spawn }       = require('child_process');
-    const { PassThrough } = require('stream');
+    const { spawn } = require('child_process');
+    const fs   = require('fs');
     const os   = require('os');
-    const ytDlpBin = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
-    const ffmpegBin = require('ffmpeg-static');
+    const path = require('path');
+    const ytDlpBin = path.join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
 
-    // Download naar een tijdelijk bestand — geen pipe-problemen op Windows
-    const tmpFile = require('path').join(os.tmpdir(), `dp_${Date.now()}.webm`);
+    // Download naar tijdelijk bestand (geen pipe-problemen op Windows)
+    const tmpFile = path.join(os.tmpdir(), `dp_${Date.now()}.webm`);
     console.log(`▶️ yt-dlp download: ${track.title}`);
 
     await new Promise((resolve, reject) => {
@@ -856,36 +856,20 @@ class YtDlpExtractor extends BaseExtractor {
         track.url,
         '-f', 'bestaudio',
         '-o', tmpFile,
-        '--no-warnings',
-        '--no-playlist',
-        '--quiet',
+        '--no-warnings', '--no-playlist', '--quiet',
       ], { stdio: 'ignore', windowsHide: true });
-      dl.on('close', code => code === 0 || require('fs').existsSync(tmpFile) ? resolve() : reject(new Error(`yt-dlp exit ${code}`)));
+      dl.on('close', code => (code === 0 || fs.existsSync(tmpFile)) ? resolve() : reject(new Error(`yt-dlp exit ${code}`)));
       dl.on('error', reject);
     });
 
-    console.log(`▶️ ffmpeg stream: ${track.title}`);
+    console.log(`▶️ bestand stream: ${track.title}`);
 
-    // FFmpeg leest het lokale bestand — geen netwerk, geen pipe timing issues
-    const ffmpeg = spawn(ffmpegBin, [
-      '-i', tmpFile,
-      '-f', 's16le',
-      '-ar', '48000',
-      '-ac', '2',
-      '-loglevel', 'error',
-      'pipe:1',
-    ], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
+    // Geef het webm-bestand terug als Arbitrary stream
+    // discord-player's eigen interne FFmpeg converteert het naar opus — geen dubbele transcoding
+    const fileStream = fs.createReadStream(tmpFile);
+    fileStream.on('close', () => { try { fs.unlinkSync(tmpFile); } catch {} });
 
-    ffmpeg.stderr.on('data', d => { const m = d.toString().trim(); if (m) console.warn('[ffmpeg]', m); });
-
-    // Opruimen nadat ffmpeg klaar is
-    ffmpeg.on('close', () => { try { require('fs').unlinkSync(tmpFile); } catch {} });
-
-    const out = new PassThrough();
-    ffmpeg.stdout.pipe(out);
-    out.on('error', () => {});
-
-    return { stream: out, type: StreamType.Raw };
+    return { stream: fileStream, type: StreamType.Arbitrary };
   }
 
   emitsEvents() { return false; }
