@@ -842,29 +842,44 @@ class YtDlpExtractor extends BaseExtractor {
 
   async stream(track) {
     const { spawn } = require('child_process');
-    const ytDlpBin = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
+    const ytDlpBin  = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
+    const ffmpegBin = require('ffmpeg-static');
 
-    // Verwijder pre-fetched cache (niet meer nodig met pipe aanpak)
-    streamUrlCache.delete(track.url);
+    console.log(`▶️ yt-dlp→ffmpeg pipe: ${track.title}`);
 
-    console.log(`▶️ yt-dlp pipe stream: ${track.title}`);
-
-    // Spawn yt-dlp en pipe audio direct — YouTube CDN URLs werken niet via FFmpeg
-    // omdat YouTube specifieke headers vereist die alleen yt-dlp correct meestuurt
-    const proc = spawn(ytDlpBin, [
+    // Stap 1: yt-dlp download audio en schrijft naar stdout
+    const ytdlp = spawn(ytDlpBin, [
       track.url,
-      '-f', 'bestaudio[ext=webm]/bestaudio/best',
+      '-f', 'bestaudio',
       '-o', '-',
       '--no-warnings',
       '--no-playlist',
+      '--quiet',
     ], { windowsHide: true });
 
-    proc.stderr.on('data', d => {
+    // Stap 2: ffmpeg converteert de audio naar raw PCM (48kHz stereo)
+    // Hierdoor hoeft discord-player/voice zelf nooit YouTube aan te spreken
+    const ffmpeg = spawn(ffmpegBin, [
+      '-i', 'pipe:0',       // lees van yt-dlp stdout
+      '-analyzeduration', '0',
+      '-loglevel', 'error',
+      '-f', 's16le',        // raw PCM
+      '-ar', '48000',       // 48kHz (Discord vereiste)
+      '-ac', '2',           // stereo
+      'pipe:1',             // schrijf naar stdout
+    ], { windowsHide: true });
+
+    // Pipe yt-dlp output naar ffmpeg input
+    ytdlp.stdout.pipe(ffmpeg.stdin);
+    ytdlp.stderr.on('data', () => {}); // stil houden
+    ytdlp.on('error', e => { console.warn('[yt-dlp] error:', e.message); ffmpeg.stdin.destroy(); });
+
+    ffmpeg.stderr.on('data', d => {
       const msg = d.toString().trim();
-      if (msg) console.warn(`[yt-dlp stderr] ${msg}`);
+      if (msg) console.warn(`[ffmpeg-ytdlp] ${msg}`);
     });
 
-    return { stream: proc.stdout };
+    return { stream: ffmpeg.stdout, type: StreamType.Raw };
   }
 
   emitsEvents() { return false; }
