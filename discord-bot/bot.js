@@ -845,13 +845,11 @@ class YtDlpExtractor extends BaseExtractor {
     const { PassThrough } = require('stream');
     const ytDlpBin = require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
 
-    console.log(`▶️ yt-dlp opus stream: ${track.title}`);
+    console.log(`▶️ yt-dlp stream: ${track.title}`);
 
-    // YouTube levert bestaudio bijna altijd als webm/opus
-    // StreamType.WebmOpus = @discordjs/voice kan het zonder FFmpeg afspelen
     const ytdlp = spawn(ytDlpBin, [
       track.url,
-      '-f', 'bestaudio[ext=webm]/bestaudio[acodec=opus]/bestaudio',
+      '-f', 'bestaudio',
       '-o', '-',
       '--no-warnings',
       '--no-playlist',
@@ -863,7 +861,8 @@ class YtDlpExtractor extends BaseExtractor {
     out.on('error', () => {});
     ytdlp.on('error', e => console.warn('[yt-dlp]', e.message));
 
-    return { stream: out, type: StreamType.WebmOpus };
+    // Arbitrary = discord-player laat zijn eigen interne FFmpeg de stream verwerken
+    return { stream: out, type: StreamType.Arbitrary };
   }
 
   emitsEvents() { return false; }
