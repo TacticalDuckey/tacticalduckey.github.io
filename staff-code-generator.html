@@ -236,16 +236,30 @@
             <div class="form-group">
                 <label for="sollicitatieType">Sollicitatie Type</label>
                 <select id="sollicitatieType">
-                    <option value="politie">Politie Sollicitatie</option>
-                    <option value="brandweer">🚒 Brandweer Sollicitatie</option>
-                    <option value="spoed">⚡ SPOED - Partnership & Server Onderhoud</option>
-                    <option value="wtgm">WTGM Toets</option>
-                    <option value="grootwapen">Groot Wapen Toets</option>
-                    <option value="taser">Taser Toets</option>
-                    <option value="rijbewijs-auto">Rijbewijs Auto</option>
-                    <option value="rijbewijs-motor">Rijbewijs Motor</option>
-                    <option value="rijbewijs-boot">Rijbewijs Boot</option>
-                    <option value="rijbewijs-lucht">Rijbewijs Lucht</option>
+                    <optgroup label="🚔 Politie">
+                        <option value="politie">Politie Sollicitatie</option>
+                        <option value="wtgm">WTGM Toets</option>
+                        <option value="grootwapen">Groot Wapen Toets</option>
+                        <option value="taser">Taser Toets</option>
+                        <option value="rijbewijs-auto">Rijbewijs Auto</option>
+                        <option value="rijbewijs-motor">Rijbewijs Motor</option>
+                        <option value="rijbewijs-boot">Vaarbewijs</option>
+                        <option value="rijbewijs-lucht">Vliegbewijs</option>
+                    </optgroup>
+                    <optgroup label="🚒 Brandweer">
+                        <option value="brandweer">Brandweer Sollicitatie</option>
+                    </optgroup>
+                    <optgroup label="🚑 Ambulance">
+                        <option value="ambulance">Ambulance Sollicitatie</option>
+                        <option value="ambulance-ehbo">EHBO Toets</option>
+                        <option value="ambulance-aed">AED Reanimatie Toets</option>
+                        <option value="ambulance-trauma">Traumazorg Toets</option>
+                        <option value="ambulance-bhv">BHV Tourniquet Toets</option>
+                        <option value="ambulance-staff">Ambulance Staff Sollicitatie</option>
+                    </optgroup>
+                    <optgroup label="⚡ Overig">
+                        <option value="spoed">SPOED - Partnership & Server Onderhoud</option>
+                    </optgroup>
                 </select>
             </div>
 
