@@ -275,54 +275,26 @@
     </div>
 
     <script>
-        // Wait for netlifyIdentity to fully load
-        function checkAuthAndLoad() {
-            let attempts = 0;
-            const maxAttempts = 50; // 5 seconds (increased from 3)
-            
-            const checkInterval = setInterval(() => {
-                attempts++;
-                
-                // Check if netlifyIdentity is available
-                if (window.netlifyIdentity) {
-                    const user = window.netlifyIdentity.currentUser();
-                    
-                    if (user) {
-                        // User found!
-                        clearInterval(checkInterval);
-                        console.log('✅ User authenticated:', user.email);
-                        
-                        // Check roles
-                        const roles = user.app_metadata?.roles || [];
-                        console.log('User roles:', roles);
-                        
-                        const hasAccess = roles.includes('admin') || roles.includes('staff');
-                        
-                        if (!hasAccess) {
-                            alert('⛔ Geen Toegang\n\nDeze pagina is alleen voor Staff en Admins.\n\nJouw rol(len): ' + (roles.length > 0 ? roles.join(', ') : 'geen rollen toegewezen'));
-                            window.location.href = '/dashboard.html';
-                            return;
-                        }
-                        
-                        console.log('✅ Access granted - loading codes');
-                        // Access granted!
-                        loadActiveCodes();
-                        return;
-                    }
-                }
-                
-                // Timeout - no user found
-                if (attempts >= maxAttempts) {
-                    clearInterval(checkInterval);
-                    console.error('❌ Auth timeout - no user detected');
+        window.addEventListener('DOMContentLoaded', () => {
+            auth.onReady((user) => {
+                if (!user) {
                     alert('⚠️ Niet ingelogd\n\nJe moet eerst inloggen via het Dashboard.');
                     window.location.href = '/dashboard.html';
+                    return;
                 }
-            }, 100);
-        }
 
-        // Start check when DOM ready
-        window.addEventListener('DOMContentLoaded', checkAuthAndLoad);
+                const roles = user.app_metadata?.roles || [];
+                const hasAccess = roles.includes('admin') || roles.includes('staff');
+
+                if (!hasAccess) {
+                    alert('⛔ Geen Toegang\n\nDeze pagina is alleen voor Staff en Admins.\n\nJouw rol(len): ' + (roles.length > 0 ? roles.join(', ') : 'geen rollen toegewezen'));
+                    window.location.href = '/dashboard.html';
+                    return;
+                }
+
+                loadActiveCodes();
+            });
+        });
 
         // Generate code via Netlify Function
         async function generateCode() {

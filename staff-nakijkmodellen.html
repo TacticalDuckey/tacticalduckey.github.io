@@ -203,63 +203,36 @@
 
     <script src="auth.js"></script>
     <script>
-        // Direct met Netlify Identity werken
-        function initPage() {
-            const loadingEl = document.getElementById('loading-indicator');
-            const contentEl = document.getElementById('protected-content');
-            const authReqEl = document.getElementById('auth-required');
-            
-            if (!window.netlifyIdentity) {
-                console.log('Netlify Identity not loaded yet');
-                return false;
-            }
-            
-            const user = window.netlifyIdentity.currentUser();
-            console.log('Current user:', user);
-            
-            if (loadingEl) loadingEl.style.display = 'none';
-            
-            if (user) {
-                const roles = user.app_metadata?.roles || [];
-                console.log('User roles:', roles);
-                
-                if (roles.includes('admin') || roles.includes('staff')) {
-                    console.log('Access granted!');
-                    contentEl.style.display = 'block';
-                } else {
-                    console.log('Access denied - no admin/staff role');
-                    const roleDisplay = roles.length > 0 ? roles.join(', ') : 'geen rollen';
-                    authReqEl.innerHTML = `
-                        <h2>🚫 Toegang Geweigerd</h2>
-                        <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
-                        <p>Je huidige rollen: ${roleDisplay}</p>
-                        <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
-                    `;
-                    authReqEl.style.display = 'block';
+        // Wacht op Netlify Identity via auth.onReady()
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onReady((user) => {
+                const loadingEl  = document.getElementById('loading-indicator');
+                const contentEl  = document.getElementById('protected-content');
+                const authReqEl  = document.getElementById('auth-required');
+                if (loadingEl) loadingEl.style.display = 'none';
+
+                if (!user) {
+                    window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
+                    return;
                 }
-            } else {
-                console.log('Not logged in, redirecting...');
-                window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
-            }
-            
-            return true;
-        }
-        
-        // Wacht op Netlify Identity
-        let attempts = 0;
-        const checkInterval = setInterval(() => {
-            attempts++;
-            console.log('Init attempt', attempts);
-            
-            if (initPage()) {
-                clearInterval(checkInterval);
-            } else if (attempts >= 30) {
-                clearInterval(checkInterval);
-                console.log('Timeout waiting for Netlify Identity');
-                document.getElementById('loading-indicator').style.display = 'none';
-                window.location.href = '/login.html?redirect=/staff-nakijkmodellen.html';
-            }
-        }, 200);
+
+                const roles = user.app_metadata?.roles || [];
+                if (roles.includes('admin') || roles.includes('staff')) {
+                    if (contentEl) contentEl.style.display = 'block';
+                } else {
+                    const roleDisplay = roles.length > 0 ? roles.join(', ') : 'geen rollen';
+                    if (authReqEl) {
+                        authReqEl.innerHTML = `
+                            <h2>🚫 Toegang Geweigerd</h2>
+                            <p>Je hebt niet de juiste rechten om deze pagina te bekijken.</p>
+                            <p>Je huidige rollen: ${roleDisplay}</p>
+                            <p style="margin-top: 1rem;"><a href="dashboard.html" class="btn">Terug naar Dashboard</a></p>
+                        `;
+                        authReqEl.style.display = 'block';
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html>

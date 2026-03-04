@@ -305,23 +305,13 @@
     </div>
 
     <script>
-        function initPage() {
-            if (!window.netlifyIdentity) return false;
-            
-            const user = window.netlifyIdentity.currentUser();
-            document.getElementById('protected-content').style.display = user ? 'block' : 'none';
-            document.getElementById('auth-required').style.display = user ? 'none' : 'block';
-            
-            if (!user) {
-                setTimeout(() => window.location.href = '/login.html', 2000);
-            }
-            return true;
-        }
-        
-        let attempts = 0;
-        const check = setInterval(() => {
-            if (initPage() || ++attempts > 30) clearInterval(check);
-        }, 200);
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onReady((user) => {
+                document.getElementById('protected-content').style.display = user ? 'block' : 'none';
+                document.getElementById('auth-required').style.display = user ? 'none' : 'block';
+                if (!user) window.location.href = '/login.html';
+            });
+        });
     </script>
 </body>
 </html>
