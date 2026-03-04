@@ -64,9 +64,18 @@ class NetlifyAuth {
         });
 
         netlifyIdentity.on('logout', () => {
+            if (this._loggingOut) return; // voorkom dubbele logout events
+            this._loggingOut = true;
             this.user = null;
             this.updateUI();
-            window.location.href = '/index.html';
+
+            // Alleen redirecten als je NIET al op index bent
+            const path = window.location.pathname;
+            if (!path.endsWith('/index.html') && path !== '/' && path !== '') {
+                window.location.href = '/index.html';
+            } else {
+                this._loggingOut = false; // reset voor eventueel opnieuw inloggen
+            }
         });
 
         netlifyIdentity.on('error', err => console.error('Identity Error:', err));
