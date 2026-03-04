@@ -4,6 +4,8 @@
 class NetlifyAuth {
     constructor() {
         this.user = null;
+        this._initialized = false;
+        this._initCallbacks = [];
         this.init();
     }
 
@@ -16,28 +18,49 @@ class NetlifyAuth {
         }
     }
 
+    // Voer callback uit zodra identity geïnitialiseerd is (of direct als al klaar)
+    onReady(callback) {
+        if (this._initialized) {
+            callback(this.user);
+        } else {
+            this._initCallbacks.push(callback);
+        }
+    }
+
+    _runInitCallbacks() {
+        this._initCallbacks.forEach(cb => cb(this.user));
+        this._initCallbacks = [];
+    }
+
     setupIdentity() {
         const netlifyIdentity = window.netlifyIdentity;
-
-        // Check of gebruiker al is ingelogd
-        this.user = netlifyIdentity.currentUser();
-        this.updateUI();
 
         // Event listeners
         netlifyIdentity.on('init', user => {
             this.user = user;
+            this._initialized = true;
             this.updateUI();
+            this._runInitCallbacks();
+
+            // Als gebruiker al ingelogd is en op login pagina zit, redirect weg
+            const path = window.location.pathname;
+            if (user && (path.endsWith('/login.html') || path === '/login')) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect') || '/dashboard.html';
+                window.location.href = redirect;
+            }
         });
 
         netlifyIdentity.on('login', user => {
             this.user = user;
+            this._initialized = true;
             this.updateUI();
             netlifyIdentity.close();
-            
-            // Redirect naar dashboard na login
-            if (window.location.pathname === '/login.html') {
-                window.location.href = '/dashboard.html';
-            }
+
+            // Redirect naar de oorspronkelijke pagina of dashboard na login
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get('redirect') || '/dashboard.html';
+            window.location.href = redirect;
         });
 
         netlifyIdentity.on('logout', () => {
@@ -111,19 +134,19 @@ class NetlifyAuth {
     }
 
     requireAuth(requiredRoles = []) {
-        if (!this.user) {
-            // Niet ingelogd - redirect naar login
-            window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
-            return false;
-        }
+        // Wacht tot identity geïnitialiseerd is zodat we niet te vroeg redirecten
+        this.onReady((user) => {
+            if (!user) {
+                // Niet ingelogd - redirect naar login met terugkeer URL
+                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                return;
+            }
 
-        if (requiredRoles.length > 0 && !this.hasRole(requiredRoles)) {
-            // Geen juiste rol - toon error
-            this.showAccessDenied();
-            return false;
-        }
-
-        return true;
+            if (requiredRoles.length > 0 && !this.hasRole(requiredRoles)) {
+                // Geen juiste rol - toon error
+                this.showAccessDenied();
+            }
+        });
     }
 
     showAccessDenied() {

@@ -133,6 +133,35 @@
             color: var(--text-dark);
             font-size: 0.9rem;
         }
+
+        .verify-warning {
+            background: rgba(234, 179, 8, 0.12);
+            border-left: 4px solid #d97706;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .verify-warning h3 {
+            color: #b45309;
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .verify-warning p {
+            margin: 0;
+            color: #78350f;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .verify-warning strong {
+            color: #92400e;
+        }
     </style>
 </head>
 <body>
@@ -171,6 +200,15 @@
 
             <a href="index.html" class="back-link">← Terug naar home</a>
 
+            <div class="verify-warning">
+                <h3>⚠️ E-mailverificatie verplicht</h3>
+                <p>
+                    Na het aanmaken van een account ontvang je een <strong>verificatiemail</strong>.
+                    Je moet deze bevestigen voordat je kunt inloggen.<br><br>
+                    <strong>📩 Geen mail ontvangen?</strong> Check je <strong>spammap</strong> of ongewenste e-mail — de mail komt regelmatig daar terecht.
+                </p>
+            </div>
+
             <div class="info-box">
                 <h3>ℹ️ Toegangsniveaus:</h3>
                 <ul>
@@ -184,17 +222,8 @@
 
     <script src="auth.js"></script>
     <script>
-        // Check of gebruiker al is ingelogd
-        if (window.netlifyIdentity) {
-            netlifyIdentity.on('init', user => {
-                if (user) {
-                    // Redirect naar dashboard of oorspronkelijke pagina
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const redirect = urlParams.get('redirect') || '/dashboard.html';
-                    window.location.href = redirect;
-                }
-            });
-        }
+        // Redirect wordt afgehandeld door auth.js (netlifyIdentity 'init' event)
+        // Als gebruiker al ingelogd is, stuurt auth.js hen automatisch door
     </script>
 </body>
 </html>
