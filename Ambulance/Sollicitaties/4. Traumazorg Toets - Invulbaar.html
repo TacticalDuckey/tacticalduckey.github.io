@@ -464,6 +464,12 @@
             formData.forEach((value, key) => {
                 data[key] = value;
             });
+            // Zet select-waarden (a/b/c/d) om naar volledige antwoordtekst
+            form.querySelectorAll('select').forEach(select => {
+                if (select.name && select.selectedIndex > 0) {
+                    data[select.name] = select.options[select.selectedIndex].text;
+                }
+            });
             
             const accessCode = sessionStorage.getItem('ambulance_trauma_access_code') || 'UNKNOWN';
 
