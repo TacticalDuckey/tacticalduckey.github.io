@@ -430,5 +430,16 @@
     </div>
 
     <script src="../../auth.js"></script>
-</body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onReady((user) => {
+                if (!user) { window.location.href = '/login.html'; return; }
+                const role = auth.getUserRole();
+                if (!['staff', 'admin'].includes(role)) {
+                    alert('Deze pagina is alleen toegankelijk voor Staff en Admins.');
+                    window.location.href = '/dashboard.html';
+                }
+            });
+        });
+    </script>
 </html>

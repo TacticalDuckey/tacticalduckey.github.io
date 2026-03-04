@@ -419,5 +419,22 @@
             }
         });
     </script>
+
+    <script src="../../auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onReady((user) => {
+                if (!user) {
+                    window.location.href = '/login.html?redirect=/Ambulance/Sollicitaties/1. Ambulance Sollicitatie - Invulbaar.html';
+                    return;
+                }
+                const role = auth.getUserRole();
+                if (!['ambulance', 'staff', 'admin'].includes(role)) {
+                    alert('Je hebt geen toegang tot de Ambulance sollicitaties.');
+                    window.location.href = '/dashboard.html';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

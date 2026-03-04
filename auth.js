@@ -112,6 +112,7 @@ class NetlifyAuth {
         if (roles.includes('dsi')) return 'dsi';
         if (roles.includes('staff')) return 'staff';
         if (roles.includes('brandweer')) return 'brandweer';
+        if (roles.includes('ambulance')) return 'ambulance';
         if (roles.includes('agent')) return 'agent';
         
         return 'user';
@@ -123,6 +124,7 @@ class NetlifyAuth {
             'dsi': '🔒 DSI Operator',
             'staff': '⭐ Staff',
             'brandweer': '🚒 Brandweer',
+            'ambulance': '🚑 Ambulance',
             'agent': '🚔 Agent',
             'user': '👤 Gebruiker',
             'guest': '🔒 Niet ingelogd'

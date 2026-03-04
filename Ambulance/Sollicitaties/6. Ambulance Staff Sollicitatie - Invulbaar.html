@@ -530,5 +530,20 @@
             }
         });
     </script>
-</body>
-</html>
+
+    <script src="../../auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onReady((user) => {
+                if (!user) {
+                    window.location.href = '/login.html?redirect=/Ambulance/Sollicitaties/6. Ambulance Staff Sollicitatie - Invulbaar.html';
+                    return;
+                }
+                const role = auth.getUserRole();
+                if (!['staff', 'admin'].includes(role)) {
+                    alert('De Staff Sollicitatie is alleen toegankelijk voor Staff en hoger.');
+                    window.location.href = '/dashboard.html';
+                }
+            });
+        });
+    </script>
