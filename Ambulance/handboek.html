@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Handboek - Lage Landen RP</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        body { background: #f0fdf4; font-family: Arial, sans-serif; }
+
+        .handboek-header {
+            background: linear-gradient(135deg, #065f46, #059669, #10b981);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid #34d399;
+        }
+
+        .handboek-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .handboek-header p  { font-size: 1.1rem; opacity: 0.9; }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+        .back-link:hover { text-decoration: underline; opacity: 1; }
+
+        .toc {
+            background: white;
+            border-left: 4px solid #10b981;
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .toc h3 { color: #065f46; margin-bottom: 1rem; }
+        .toc ol { margin: 0; padding-left: 1.5rem; line-height: 2; }
+        .toc a  { color: #059669; text-decoration: none; font-weight: 500; }
+        .toc a:hover { text-decoration: underline; }
+
+        .handboek-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            scroll-margin-top: 1rem;
+        }
+
+        .section h2 {
+            color: #065f46;
+            border-bottom: 3px solid #10b981;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        .section h3 {
+            color: #047857;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .section p  { line-height: 1.7; margin-bottom: 1rem; color: #374151; }
+        .section ul, .section ol { line-height: 1.8; margin: 0.75rem 0; padding-left: 1.5rem; color: #374151; }
+        .section li { margin-bottom: 0.4rem; }
+
+        .rank-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+
+        .rank-card {
+            background: linear-gradient(135deg, #065f46, #047857);
+            color: white;
+            padding: 1.25rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .rank-card:hover { transform: translateY(-3px); }
+        .rank-card .rank-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .rank-card h4 { font-size: 1rem; margin: 0 0 0.3rem; }
+        .rank-card p  { font-size: 0.8rem; opacity: 0.85; margin: 0; }
+
+        .protocol-box {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .protocol-box h4 { color: #065f46; margin: 0 0 0.5rem; }
+        .protocol-box ol { margin: 0; padding-left: 1.5rem; }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .warning-box strong { color: #92400e; display: block; margin-bottom: 0.5rem; }
+
+        .danger-box {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .danger-box strong { color: #991b1b; display: block; margin-bottom: 0.5rem; }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .info-box strong { color: #1e40af; display: block; margin-bottom: 0.5rem; }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .equipment-card {
+            background: #f0fdf4;
+            border: 2px solid #a7f3d0;
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+        .equipment-card h4 { color: #065f46; margin: 0 0 0.5rem; font-size: 1rem; }
+        .equipment-card ul { margin: 0; padding-left: 1.25rem; font-size: 0.9rem; }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+        .step-list li {
+            counter-increment: step;
+            padding: 0.85rem 1rem 0.85rem 3.5rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 0.6rem;
+            position: relative;
+        }
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #059669;
+            color: white;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .code-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .code-item {
+            background: #f0fdf4;
+            border: 1px solid #a7f3d0;
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            font-size: 0.9rem;
+        }
+        .code-item .code { font-weight: bold; color: #065f46; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <header class="handboek-header">
+        <a href="../handboeken.html" class="back-link">← Terug naar handboeken</a>
+        <div style="font-size:4rem;">🚑</div>
+        <h1>Ambulance Handboek</h1>
+        <p>Protocollen, procedures en richtlijnen voor de Ambulancedienst van Lage Landen RP</p>
+    </header>
+
+    <div class="handboek-container">
+
+        <!-- INHOUDSOPGAVE -->
+        <div class="toc">
+            <h3>📋 Inhoudsopgave</h3>
+            <ol>
+                <li><a href="#introductie">Introductie & Missie</a></li>
+                <li><a href="#rangen">Rangen & Functies</a></li>
+                <li><a href="#gedrag">Gedragsregels & Professioneel Handelen</a></li>
+                <li><a href="#meldkamer">Meldkamer & Communicatie</a></li>
+                <li><a href="#protocollen">Medische Protocollen</a></li>
+                <li><a href="#uitrusting">Voertuigen & Uitrusting</a></li>
+                <li><a href="#samenwerking">Samenwerking met Andere Diensten</a></li>
+                <li><a href="#disciplinair">Disciplinaire Regels</a></li>
+            </ol>
+        </div>
+
+        <!-- 1. INTRODUCTIE -->
+        <div class="section" id="introductie">
+            <h2>1. 🏥 Introductie & Missie</h2>
+            <p>Welkom bij de Ambulancedienst van Lage Landen RP. Als ambulancemedewerker ben je verantwoordelijk voor het verlenen van eerste medische hulp aan burgers in nood. Jij bent vaak het eerste aanspreekpunt bij medische spoedgevallen.</p>
+            <p>De ambulancedienst staat voor <strong>professionaliteit, snelheid en zorgvuldigheid</strong>. Elk leven telt — ook in een roleplay omgeving. Behandel elke situatie serieus en realistisch.</p>
+
+            <div class="info-box">
+                <strong>🎯 Missie van de Ambulancedienst</strong>
+                Hulpverlening bieden aan gewonde en zieke burgers op een professionele, medisch onderbouwde manier. Wij streven naar realistische en meeslepende RP-scenarios waarbij de kwaliteit van zorg centraal staat.
+            </div>
+
+            <h3>Kernwaarden</h3>
+            <ul>
+                <li>⚕️ <strong>Zorg</strong> — Elke patiënt verdient de beste behandeling</li>
+                <li>⚡ <strong>Snelheid</strong> — Elke seconde telt bij een medisch incident</li>
+                <li>🤝 <strong>Samenwerking</strong> — Goede communicatie met collega's en andere diensten</li>
+                <li>🎭 <strong>Roleplay</strong> — Realistisch handelen verhoogt de kwaliteit voor iedereen</li>
+                <li>📚 <strong>Kennis</strong> — Blijf leren en je protocollen kennen</li>
+            </ul>
+        </div>
+
+        <!-- 2. RANGEN -->
+        <div class="section" id="rangen">
+            <h2>2. 🏅 Rangen & Functies</h2>
+            <p>Binnen de ambulancedienst werk je jezelf op via een duidelijk rangenstelsel. Elke rang brengt meer verantwoordelijkheden en bevoegdheden met zich mee.</p>
+
+            <div class="rank-grid">
+                <div class="rank-card">
+                    <div class="rank-icon">🩹</div>
+                    <h4>Stagiair</h4>
+                    <p>Nieuw lid in opleiding. Rijdt mee met een ervaren ambulancier.</p>
+                </div>
+                <div class="rank-card">
+                    <div class="rank-icon">🚑</div>
+                    <h4>Ambulancier</h4>
+                    <p>Basis ambulancemedewerker. Zelfstandig op melding.</p>
+                </div>
+                <div class="rank-card">
+                    <div class="rank-icon">⚕️</div>
+                    <h4>Senior Ambulancier</h4>
+                    <p>Ervaren medewerker. Begeleidt stagiairs.</p>
+                </div>
+                <div class="rank-card">
+                    <div class="rank-icon">👨‍⚕️</div>
+                    <h4>Ambulance Verpleegkundige</h4>
+                    <p>Uitgebreide medische bevoegdheden. Complexe situaties.</p>
+                </div>
+                <div class="rank-card">
+                    <div class="rank-icon">🩺</div>
+                    <h4>Traumaverpleegkundige</h4>
+                    <p>Gespecialiseerd in trauma. Helikopter inzetbaar.</p>
+                </div>
+                <div class="rank-card">
+                    <div class="rank-icon">⭐</div>
+                    <h4>Ambulance Officier</h4>
+                    <p>Leidinggevende. Coördineert grote incidenten.</p>
+                </div>
+                <div class="rank-card">
+                    <div class="rank-icon">👑</div>
+                    <h4>Hoofd Ambulancezorg</h4>
+                    <p>Leiding over de gehele dienst. Eindverantwoordelijk.</p>
+                </div>
+            </div>
+
+            <h3>Promotiecriteria</h3>
+            <ul>
+                <li>Stagiair → Ambulancier: Opleiding afgerond + 5 diensten meegelopen</li>
+                <li>Ambulancier → Senior: Minimaal 20 zelfstandige meldingen + positieve beoordeling</li>
+                <li>Senior → Verpleegkundige: Aanvullende opleiding + aanbeveling leidinggevende</li>
+                <li>Verpleegkundige → Trauma: Traumatoets behaald met minimaal 70%</li>
+                <li>Hogere rangen: Op uitnodiging van het management</li>
+            </ul>
+        </div>
+
+        <!-- 3. GEDRAG -->
+        <div class="section" id="gedrag">
+            <h2>3. 📋 Gedragsregels & Professioneel Handelen</h2>
+
+            <h3>Algemene regels</h3>
+            <ul>
+                <li>Spreek patiënten altijd respectvol en professioneel aan</li>
+                <li>Gebruik medische terminologie passend bij jouw rang</li>
+                <li>Blijf altijd in karakter (IC) tijdens een dienst</li>
+                <li>Gebruik de ambulance uitsluitend voor officiële taken</li>
+                <li>Laat nooit een patiënt bewust zonder hulp achter</li>
+                <li>Rapporteer elke melding na afloop in het logboek</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ Verboden gedrag</strong>
+                <ul>
+                    <li>Misbruik van het ambulancevoertuig of -uitrusting</li>
+                    <li>Voertuig gebruiken voor niet-medische doeleinden</li>
+                    <li>Patiënten weigeren te behandelen zonder gegronde reden</li>
+                    <li>Informatie over patiënten delen buiten de dienst om (medisch beroepsgeheim)</li>
+                    <li>Rijden zonder sirene bij echte spoedsituaties</li>
+                </ul>
+            </div>
+
+            <h3>Uniform & uitstraling</h3>
+            <ul>
+                <li>Draag te allen tijde het officiële ambulancetenue in dienst</li>
+                <li>Het tenue mag niet aangepast worden zonder toestemming</li>
+                <li>Buiten dienst representeer je de dienst — gedraag je correct</li>
+            </ul>
+        </div>
+
+        <!-- 4. MELDKAMER -->
+        <div class="section" id="meldkamer">
+            <h2>4. 📻 Meldkamer & Communicatie</h2>
+
+            <h3>Radio-etiquette</h3>
+            <ul>
+                <li>Meld je aan bij aanvang van dienst: <em>"Ambulance [eenheid] online, beschikbaar"</em></li>
+                <li>Bevestig altijd bij het aannemen van een melding: <em>"Ambulance [X] gaat naar [locatie]"</em></li>
+                <li>Geef statusupdates onderweg en ter plaatse</li>
+                <li>Meld je af bij einde dienst: <em>"Ambulance [eenheid] offline"</em></li>
+                <li>Gebruik geen onnodige communicatie op de medische frequentie</li>
+            </ul>
+
+            <h3>Statuscodes</h3>
+            <div class="code-grid">
+                <div class="code-item"><span class="code">Code 1</span><br>Beschikbaar / Vrij</div>
+                <div class="code-item"><span class="code">Code 2</span><br>Bezet / Op melding</div>
+                <div class="code-item"><span class="code">Code 3</span><br>Spoed onderweg (sirene)</div>
+                <div class="code-item"><span class="code">Code 4</span><br>Ter plaatse bij incident</div>
+                <div class="code-item"><span class="code">Code 5</span><br>Ziekenhuis transport</div>
+                <div class="code-item"><span class="code">Code 6</span><br>Buiten dienst / Tankstop</div>
+                <div class="code-item"><span class="code">10-1</span><br>Slecht te verstaan</div>
+                <div class="code-item"><span class="code">10-4</span><br>Begrepen / Bevestigd</div>
+                <div class="code-item"><span class="code">10-9</span><br>Herhaal bericht</div>
+            </div>
+        </div>
+
+        <!-- 5. PROTOCOLLEN -->
+        <div class="section" id="protocollen">
+            <h2>5. 🩺 Medische Protocollen</h2>
+            <p>Onderstaande protocollen zijn de standaard handelingen bij veel voorkomende situaties. Volg ze altijd in de juiste volgorde.</p>
+
+            <div class="protocol-box">
+                <h4>🫀 Protocol A — Reanimatie (CPR)</h4>
+                <ol>
+                    <li>Controleer de veiligheid van de omgeving</li>
+                    <li>Controleer bewustzijn: roep en schud zachtjes</li>
+                    <li>Roep om hulp — laat collega 112 bellen / AED halen</li>
+                    <li>Kantel hoofd achterover, til kin op (vrije luchtweg)</li>
+                    <li>Controleer ademhaling maximaal 10 seconden</li>
+                    <li>Start borstcompressies: 30x met 5-6 cm diep, 100-120/min</li>
+                    <li>Geef 2 beademingen na elke 30 compressies</li>
+                    <li>Zet AED aan zodra beschikbaar en volg instructies</li>
+                    <li>Ga door tot zelfstandige ademhaling terugkeert of ambulancedienst overneemt</li>
+                </ol>
+            </div>
+
+            <div class="protocol-box">
+                <h4>🩸 Protocol B — Ernstige Bloeding</h4>
+                <ol>
+                    <li>Zorg voor eigen veiligheid (handschoenen)</li>
+                    <li>Leg directe druk op de wond met schon verband of doek</li>
+                    <li>Houd druk constant — minimaal 10 minuten</li>
+                    <li>Verhoog het aangedane lichaamsdeel indien mogelijk</li>
+                    <li>Bij niet-stuitende bloeding aan ledemaat: overweeg tourniquet</li>
+                    <li>Dek patiënt warm in (shock preventie)</li>
+                    <li>Transporteer snel naar ziekenhuis bij ernstig bloedverlies</li>
+                </ol>
+            </div>
+
+            <div class="protocol-box">
+                <h4>🔥 Protocol C — Brandwonden</h4>
+                <ol>
+                    <li>Verwijder patiënt van de hittebron (indien veilig)</li>
+                    <li>Koel met lauw stromend water gedurende 10-20 minuten</li>
+                    <li>Verwijder geen kleding die vastzit aan de wond</li>
+                    <li>Dek wond af met steriel, vochtig verband</li>
+                    <li>Geen ijs, boter of tandpasta gebruiken</li>
+                    <li>Bij brandwonden groter dan handpalm of gezicht/handen: ziekenhuis</li>
+                </ol>
+            </div>
+
+            <div class="protocol-box">
+                <h4>🦴 Protocol D — Botbreuk / Fractuur</h4>
+                <ol>
+                    <li>Laat de patiënt zo min mogelijk bewegen</li>
+                    <li>Controleer bloedsomloop rondom de breuk (kleur, gevoel, beweging)</li>
+                    <li>Spalken in de stand waarin je het aantreft — niet rechtzetten</li>
+                    <li>Zorg dat spalk verder reikt dan aanliggende gewrichten</li>
+                    <li>Controleer na spalken opnieuw de bloedsomloop</li>
+                    <li>Transporteer naar ziekenhuis voor röntgenfoto</li>
+                </ol>
+            </div>
+
+            <div class="protocol-box">
+                <h4>🧠 Protocol E — Bewusteloosheid / Hersenschudding</h4>
+                <ol>
+                    <li>Controleer veiligheid</li>
+                    <li>Spreek luid aan en kneep in de schouder</li>
+                    <li>Bij geen reactie: controleer ademhaling</li>
+                    <li>Stabiele zijligging indien ademt maar niet reageert</li>
+                    <li>Houd hoofd en nek stabiel bij vermoeden nekletsel</li>
+                    <li>Monitor vitale functies doorlopend</li>
+                    <li>Start reanimatie als ademhaling uitvalt</li>
+                </ol>
+            </div>
+
+            <div class="danger-box">
+                <strong>🚨 Kritische situaties — Altijd ophopsen naar ziekenhuis</strong>
+                <ul>
+                    <li>Hartaanval (pijn op de borst, uitstralend naar arm/kaak)</li>
+                    <li>Beroerte (FAST: Gezicht scheef, Arm zwak, Spraak onduidelijk, Tijd bellen)</li>
+                    <li>Ernstig brandwondenslachtoffer</li>
+                    <li>Zwangere vrouw met complicaties</li>
+                    <li>Vergiftiging / overdosis</li>
+                    <li>Polytrauma (meerdere ernstige verwondingen)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 6. UITRUSTING -->
+        <div class="section" id="uitrusting">
+            <h2>6. 🚑 Voertuigen & Uitrusting</h2>
+
+            <h3>Voertuigen</h3>
+            <div class="equipment-grid">
+                <div class="equipment-card">
+                    <h4>🚑 Ambulance (Type A)</h4>
+                    <ul>
+                        <li>Standaard spoedeisende hulp</li>
+                        <li>2 medewerkers: chauffeur + verpleegkundige</li>
+                        <li>Volledig uitgerust met medische apparatuur</li>
+                        <li>Max snelheid met sirene: realistische rijstijl</li>
+                    </ul>
+                </div>
+                <div class="equipment-card">
+                    <h4>🚒 Rapid Response Unit</h4>
+                    <ul>
+                        <li>Snelle eerste respons</li>
+                        <li>1 medewerker (senior+)</li>
+                        <li>Kleinere uitrusting, hoge mobiliteit</li>
+                        <li>Wacht op ambulance voor transport</li>
+                    </ul>
+                </div>
+                <div class="equipment-card">
+                    <h4>🚁 Traumahelikopter</h4>
+                    <ul>
+                        <li>Alleen voor traumaverpleegkundige+</li>
+                        <li>Inzetbaar bij onbereikbare locaties</li>
+                        <li>Zware traumasituaties</li>
+                        <li>Altijd minimaal 2 personen aan boord</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Standaard uitrusting per ambulance</h3>
+            <div class="equipment-grid">
+                <div class="equipment-card">
+                    <h4>🩺 Diagnostiek</h4>
+                    <ul>
+                        <li>Bloeddrukmeter</li>
+                        <li>Saturatiemeter (SpO2)</li>
+                        <li>ECG-monitor</li>
+                        <li>Thermometer</li>
+                        <li>Bloedglucosemeter</li>
+                    </ul>
+                </div>
+                <div class="equipment-card">
+                    <h4>💊 Medicatie</h4>
+                    <ul>
+                        <li>Adrenaline (bij reanimatie)</li>
+                        <li>Nitrospray (bij pijn op borst)</li>
+                        <li>Glucose (bij diabetische koma)</li>
+                        <li>Salbutamol (bij astma-aanval)</li>
+                        <li>Pijnstillers</li>
+                    </ul>
+                </div>
+                <div class="equipment-card">
+                    <h4>🛡️ Beschermingsmiddelen</h4>
+                    <ul>
+                        <li>Latex handschoenen</li>
+                        <li>Mondkapjes (FFP2)</li>
+                        <li>Veiligheidsbril</li>
+                        <li>Beschermschort</li>
+                    </ul>
+                </div>
+                <div class="equipment-card">
+                    <h4>🩹 Wondverzorging</h4>
+                    <ul>
+                        <li>Steriele verbanden (diverse maten)</li>
+                        <li>Tourniquet (CAT)</li>
+                        <li>Wondhechtstrips</li>
+                        <li>Desinfectiemiddel</li>
+                        <li>Brandwondendekens</li>
+                    </ul>
+                </div>
+                <div class="equipment-card">
+                    <h4>🫁 Luchtwegbeheer</h4>
+                    <ul>
+                        <li>Zuurstofcilinder + masker</li>
+                        <li>Beademingsballon (BVM)</li>
+                        <li>Suction apparaat</li>
+                        <li>Oropharyngeale tube</li>
+                    </ul>
+                </div>
+                <div class="equipment-card">
+                    <h4>🛏️ Mobiliteit & Transport</h4>
+                    <ul>
+                        <li>Brancard (elektrisch)</li>
+                        <li>Spineboard met hoofdblokken</li>
+                        <li>Nekkraag (diverse maten)</li>
+                        <li>Scoop brancard</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. SAMENWERKING -->
+        <div class="section" id="samenwerking">
+            <h2>7. 🤝 Samenwerking met Andere Diensten</h2>
+
+            <h3>Met de Politie</h3>
+            <ul>
+                <li>Wacht bij geweldsincidenten altijd tot politie de scene veilig heeft gesteld</li>
+                <li>Communiceer duidelijk over de medische situatie van verdachten/slachtoffers</li>
+                <li>Stel geen medische behandelingen uit vanwege politie-onderzoek — patiënt heeft voorrang</li>
+                <li>Geef geen medische informatie aan politie zonder toestemming patiënt (tenzij wettelijk verplicht)</li>
+            </ul>
+
+            <h3>Met de Brandweer</h3>
+            <ul>
+                <li>Bij brand of chemisch incident: wacht op vrijgave scene door brandweer</li>
+                <li>Coördineer triage-locatie in overleg met brandweercommandant</li>
+                <li>Brandweer bevrijdt ingeklemde slachtoffers — jij behandelt daarna</li>
+                <li>Communiceer continu over staat van slachtoffer tijdens bevrijding</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>ℹ️ Commandostructuur bij grote incidenten</strong>
+                Bij een GRIP-incident (meerdere diensten tegelijkertijd) is er een Commandopost Plaats Incident (CoPI). De Ambulance Officier van Dienst (OvD-G) neemt deel aan het CoPI en vertegenwoordigt de geneeskundige zorg.
+            </div>
+        </div>
+
+        <!-- 8. DISCIPLINAIR -->
+        <div class="section" id="disciplinair">
+            <h2>8. ⚖️ Disciplinaire Regels</h2>
+
+            <h3>Strafmaatregelen</h3>
+            <ul>
+                <li><strong>Mondelinge waarschuwing</strong> — Kleine overtredingen of eerste incident</li>
+                <li><strong>Schriftelijke waarschuwing</strong> — Herhaaldelijk wangedrag of serieuze overtreding</li>
+                <li><strong>Tijdelijke schorsing</strong> — Ernstig wangedrag of meerdere waarschuwingen</li>
+                <li><strong>Degradatie in rang</strong> — Bij nalatigheid of misbruik van bevoegdheden</li>
+                <li><strong>Ontslag</strong> — Herhaaldelijk ernstig wangedrag of grove schending regels</li>
+            </ul>
+
+            <div class="danger-box">
+                <strong>🚨 Reden voor direct ontslag</strong>
+                <ul>
+                    <li>Bewust onbehandeld laten van een patiënt</li>
+                    <li>Misbruik van voertuig of uitrusting voor criminele doeleinden</li>
+                    <li>Belediging of agressie richting collega's of patiënten OOC</li>
+                    <li>Stelen van medicatie of uitrusting</li>
+                    <li>Deelnemen aan criminaliteit terwijl je in dienst bent</li>
+                </ul>
+            </div>
+
+            <h3>Klachtenprocedure</h3>
+            <p>Heb je een klacht over een collega of situatie? Meld dit bij je directe leidinggevende of een Ambulance Officier. Klachten worden vertrouwelijk behandeld en altijd onderzocht.</p>
+        </div>
+
+    </div>
+
+    <footer style="background: #065f46; color: white; text-align: center; padding: 1.5rem; margin-top: 2rem;">
+        <p>🚑 Lage Landen RP — Ambulancedienst Handboek &copy; 2026</p>
+        <p style="opacity: 0.7; font-size: 0.875rem;">Laatste update: Maart 2026</p>
+    </footer>
+
+    <script src="../auth.js"></script>
+    <script>
+        auth.onReady((user) => {
+            if (!user) {
+                window.location.href = '/login.html?redirect=/Ambulance/handboek.html';
+            }
+        });
+    </script>
+</body>
+</html>
