@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Rijbewijs Auto - De Lage Landen</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="../../discord-webhook-v2.js"></script>
     <style>
         body {
@@ -325,6 +326,14 @@
             window.print();
         }
     </script>
-    
+
+    <script src="../../auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onReady((user) => {
+                if (!user) window.location.href = '/login.html?redirect=/Politie/Sollicitaties/5. Rijbewijs Auto - Invulbaar.html';
+            });
+        });
+    </script>
 </body>
 </html>

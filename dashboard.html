@@ -357,6 +357,33 @@
             </div>
         </section>
 
+        <!-- Algemene Sollicitaties -->
+        <section class="access-section" id="algemeen-section">
+            <h2>📋 Algemene Sollicitaties & Toetsen</h2>
+            <div class="access-grid">
+                <div class="access-card" id="algemeen-card-1">
+                    <h3>🚗 Rijbewijs Auto</h3>
+                    <p>Theorie- en praktijktoets voor het autorijbewijs</p>
+                    <a href="Politie/Sollicitaties/5. Rijbewijs Auto - Invulbaar.html" class="btn">Bekijk →</a>
+                </div>
+                <div class="access-card" id="algemeen-card-2">
+                    <h3>🏍️ Rijbewijs Motor</h3>
+                    <p>Theorie- en praktijktoets voor het motorrijbewijs</p>
+                    <a href="Politie/Sollicitaties/6. Rijbewijs Motor - Invulbaar.html" class="btn">Bekijk →</a>
+                </div>
+                <div class="access-card" id="algemeen-card-3">
+                    <h3>⛵ Vaarbewijs</h3>
+                    <p>Theorie- en praktijktoets voor het vaarbewijs</p>
+                    <a href="Politie/Sollicitaties/7. Rijbewijs Boot - Invulbaar.html" class="btn">Bekijk →</a>
+                </div>
+                <div class="access-card" id="algemeen-card-4">
+                    <h3>✈️ Vliegbewijs</h3>
+                    <p>Theorie- en praktijktoets voor het vliegbewijs</p>
+                    <a href="Politie/Sollicitaties/8. Rijbewijs Lucht - Invulbaar.html" class="btn">Bekijk →</a>
+                </div>
+            </div>
+        </section>
+
         <!-- Agent Toegang -->
         <section class="access-section" id="agent-section">
             <h2>🚔 Agent Toegang</h2>
@@ -380,26 +407,6 @@
                     <h3>Taser Toets</h3>
                     <p>Toets voor tasergebruik</p>
                     <a href="Politie/Sollicitaties/4. Taser Toets - Invulbaar.html" class="btn">Bekijk →</a>
-                </div>
-                <div class="access-card" id="agent-card-5">
-                    <h3>Rijbewijs Auto</h3>
-                    <p>Theorie- en praktijktoets</p>
-                    <a href="Politie/Sollicitaties/5. Rijbewijs Auto - Invulbaar.html" class="btn">Bekijk →</a>
-                </div>
-                <div class="access-card" id="agent-card-6">
-                    <h3>Rijbewijs Motor</h3>
-                    <p>Theorie- en praktijktoets</p>
-                    <a href="Politie/Sollicitaties/6. Rijbewijs Motor - Invulbaar.html" class="btn">Bekijk →</a>
-                </div>
-                <div class="access-card" id="agent-card-7">
-                    <h3>Rijbewijs Boot</h3>
-                    <p>Theorie- en praktijktoets</p>
-                    <a href="Politie/Sollicitaties/7. Rijbewijs Boot - Invulbaar.html" class="btn">Bekijk →</a>
-                </div>
-                <div class="access-card" id="agent-card-8">
-                    <h3>Rijbewijs Lucht</h3>
-                    <p>Theorie- en praktijktoets</p>
-                    <a href="Politie/Sollicitaties/8. Rijbewijs Lucht - Invulbaar.html" class="btn">Bekijk →</a>
                 </div>
             </div>
         </section>
@@ -599,6 +606,7 @@
 
             // Lock sections based on role
             if (role === 'guest' || role === 'user') {
+                lockSection('algemeen-section');
                 lockSection('brandweer-section');
                 lockSection('ambulance-section');
                 lockSection('agent-section');
