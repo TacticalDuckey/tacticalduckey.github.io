@@ -973,25 +973,17 @@ class DiscordSubmitter {
             inline: false
         });
 
-        // Voeg eerste 5 antwoorden toe als preview
-        for (let i = 1; i <= Math.min(5, maxVragen); i++) {
+        // Voeg alle antwoorden toe
+        for (let i = 1; i <= maxVragen; i++) {
             const vraag = getField(`vraag${i}`);
             if (vraag) {
-                const preview = vraag.length > 150 ? vraag.substring(0, 147) + '...' : vraag;
+                const preview = vraag.length > 1024 ? vraag.substring(0, 1021) + '...' : vraag;
                 embed.fields.push({
                     name: `❓ Vraag ${i}`,
                     value: preview,
                     inline: false
                 });
             }
-        }
-
-        if (aantalVragen > 5) {
-            embed.fields.push({
-                name: '📝 Opmerking',
-                value: `*Nog ${aantalVragen - 5} antwoorden niet getoond. Bekijk volledig formulier voor alle antwoorden.*`,
-                inline: false
-            });
         }
     }
 
