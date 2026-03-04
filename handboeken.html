@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handboeken - Lage Landen RP</title>
+    <title>Handboeken & Wetgeving - Lage Landen RP</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="auth.js"></script>
@@ -16,42 +16,101 @@
         }
         .back-link {
             display: inline-block;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             color: white;
             text-decoration: none;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            opacity: 0.9;
         }
-        .back-link:hover {
-            text-decoration: underline;
+        .back-link:hover { text-decoration: underline; opacity: 1; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-blue);
+            color: var(--primary-blue);
         }
-        .handboek-list {
-            list-style: none;
+
+        .handboek-grid {
             display: grid;
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
         }
-        .handboek-item {
+
+        .handboek-card {
             background: white;
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 12px;
             box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-left: 4px solid #7c3aed;
         }
-        .handboek-item:hover {
-            transform: translateX(10px);
+        .handboek-card:not(.disabled):hover {
+            transform: translateY(-3px);
             box-shadow: var(--card-hover-shadow);
         }
-        .handboek-item h3 {
-            color: var(--primary-blue);
-            margin-bottom: 0.5rem;
+        .handboek-card.brandweer { border-left-color: #dc2626; }
+        .handboek-card.ambulance { border-left-color: #10b981; }
+        .handboek-card.wetgeving { border-left-color: #1d4ed8; }
+        .handboek-card.dsi      { border-left-color: #dc2626; }
+        .handboek-card.disabled { opacity: 0.65; }
+
+        .handboek-card h3 { font-size: 1.05rem; margin: 0; color: #1e293b; }
+        .handboek-card p  { font-size: 0.9rem; color: #64748b; margin: 0; flex: 1; }
+
+        .role-badge {
+            font-size: 0.75rem;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            display: inline-block;
+            width: fit-content;
+            font-weight: 600;
         }
-        .handboek-item a {
-            color: var(--secondary-blue);
+        .badge-coming {
+            font-size: 0.75rem;
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            display: inline-block;
+            width: fit-content;
+            font-weight: 600;
+        }
+
+        .handboek-card a.btn {
+            display: inline-block;
+            margin-top: 0.25rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: 500;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: filter 0.2s;
+            width: fit-content;
         }
-        .handboek-item a:hover {
-            text-decoration: underline;
+        .handboek-card.brandweer a.btn { background: #dc2626; }
+        .handboek-card.ambulance a.btn { background: #059669; }
+        .handboek-card.wetgeving a.btn { background: #1d4ed8; }
+        .handboek-card.dsi      a.btn  { background: #dc2626; }
+        .handboek-card a.btn:hover { filter: brightness(1.1); }
+        .handboek-card a.btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+            margin-left: 0.5rem;
         }
+        .handboek-card a.btn-secondary:hover { filter: brightness(0.95); }
     </style>
 </head>
 <body>
@@ -62,34 +121,75 @@
     </header>
 
     <main class="container">
-        <ul class="handboek-list">
-            <li class="handboek-item" id="dsi-handboek" style="display: none;">
-                <h3>DSI Handboek</h3>
-                <p>Volledig handboek voor de Dienst Speciale Interventies</p>
-                <p style="color: #ff0000; font-weight: bold;">⚠ Alleen toegankelijk voor DSI personeel en administrators</p>
-                <a href="Handboek/DSI-Handboek.html">→ Bekijk handboek</a>
-            </li>
 
-            <li class="handboek-item">
-                <h3>Opleidingshandboek</h3>
+        <!-- ALGEMEEN -->
+        <div class="section-header">📋 Algemene Handboeken</div>
+        <div class="handboek-grid">
+            <div class="handboek-card">
+                <h3>📖 Opleidingshandboek</h3>
                 <p>Handboek voor alle opleidingen binnen Lage Landen RP</p>
-                <a href="Handboek/Opleidingshandboek.html">→ Bekijk handboek (HTML)</a> | 
-                <a href="Handboek/Opleidingshandboek.md">→ Bekijk handboek (MD)</a>
-            </li>
+                <div>
+                    <a href="Handboek/Opleidingshandboek.html" class="btn">Bekijk →</a>
+                    <a href="Handboek/Opleidingshandboek.md" class="btn btn-secondary">MD</a>
+                </div>
+            </div>
+            <div class="handboek-card">
+                <h3>🔫 Wapenhandboek</h3>
+                <p>Alle informatie over wapens en wapengebruik binnen de server</p>
+                <div>
+                    <a href="Handboek/Wapenhandboek.html" class="btn">Bekijk →</a>
+                    <a href="Handboek/Wapenhandboek.md" class="btn btn-secondary">MD</a>
+                </div>
+            </div>
+        </div>
 
-            <li class="handboek-item">
-                <h3>Wapenhandboek</h3>
-                <p>Alle informatie over wapens en wapengebruik</p>
-                <a href="Handboek/Wapenhandboek.html">→ Bekijk handboek (HTML)</a> | 
-                <a href="Handboek/Wapenhandboek.md">→ Bekijk handboek (MD)</a>
-            </li>
+        <!-- POLITIE / DSI -->
+        <div class="section-header" style="border-color: #1e40af; color: #1e40af;">🚔 Politie & DSI</div>
+        <div class="handboek-grid">
+            <div class="handboek-card dsi" id="dsi-handboek" style="display:none;">
+                <h3>🔴 DSI Handboek</h3>
+                <p>Volledig handboek voor de Dienst Speciale Interventies</p>
+                <span class="role-badge">⚠ Alleen DSI & Admins</span>
+                <a href="Handboek/DSI-Handboek.html" class="btn">Bekijk →</a>
+            </div>
+            <div class="handboek-card dsi disabled" id="dsi-locked" style="display:none;">
+                <h3>🔴 DSI Handboek</h3>
+                <p>Volledig handboek voor de Dienst Speciale Interventies</p>
+                <span class="role-badge">🔒 Geen toegang</span>
+                <p style="font-size:0.8rem; color:#dc2626; margin-top:0.25rem;">Alleen toegankelijk voor DSI-personeel en administrators.</p>
+            </div>
+        </div>
 
-            <li class="handboek-item">
-                <h3>Wetboek RP</h3>
-                <p>Het volledige wetboek van Lage Landen RP</p>
-                <a href="Handboek/Wetboek-RP.html">→ Bekijk wetboek</a>
-            </li>
-        </ul>
+        <!-- BRANDWEER -->
+        <div class="section-header" style="border-color: #dc2626; color: #dc2626;">🚒 Brandweer</div>
+        <div class="handboek-grid">
+            <div class="handboek-card brandweer">
+                <h3>🔥 Brandweer Handboek</h3>
+                <p>Volledig handboek met rangen, functies, materialen en procedures voor de brandweer</p>
+                <a href="Brandweer/handboek.html" class="btn">Bekijk →</a>
+            </div>
+        </div>
+
+        <!-- AMBULANCE -->
+        <div class="section-header" style="border-color: #10b981; color: #059669;">🚑 Ambulance</div>
+        <div class="handboek-grid">
+            <div class="handboek-card ambulance disabled">
+                <h3>🏥 Ambulance Handboek</h3>
+                <p>Handboek met protocollen, procedures en medische richtlijnen voor de ambulancedienst</p>
+                <span class="badge-coming">🚧 Komt binnenkort</span>
+            </div>
+        </div>
+
+        <!-- WETGEVING -->
+        <div class="section-header" style="border-color: #1d4ed8; color: #1d4ed8;">⚖️ Wetgeving</div>
+        <div class="handboek-grid">
+            <div class="handboek-card wetgeving">
+                <h3>📜 Wetboek RP</h3>
+                <p>Het volledige wetboek van Lage Landen RP met alle wetten en regels</p>
+                <a href="Handboek/Wetboek-RP.html" class="btn">Bekijk wetboek →</a>
+            </div>
+        </div>
+
     </main>
 
     <footer>
@@ -99,14 +199,11 @@
     </footer>
 
     <script>
-        // Show DSI handboek only for DSI/admin users
-        window.addEventListener('load', async function() {
-            // Wait for auth to initialize
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            // Check if user has DSI or admin role
-            if (auth && auth.user && auth.hasRole(['dsi', 'admin'])) {
-                document.getElementById('dsi-handboek').style.display = 'block';
+        auth.onReady((user) => {
+            if (auth.hasRole(['dsi', 'admin'])) {
+                document.getElementById('dsi-handboek').style.display = 'flex';
+            } else {
+                document.getElementById('dsi-locked').style.display = 'flex';
             }
         });
     </script>
