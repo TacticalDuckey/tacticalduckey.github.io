@@ -138,10 +138,7 @@
             netlifyIdentity.on('login', user => {
                 updateAuthButtons(user);
             });
-            
-            netlifyIdentity.on('logout', () => {
-                updateAuthButtons(null);
-            });
+            // logout wordt al afgehandeld door auth.js
         }
         
         function updateAuthButtons(user) {

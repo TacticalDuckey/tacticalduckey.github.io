@@ -68,14 +68,8 @@ class NetlifyAuth {
             this._loggingOut = true;
             this.user = null;
             this.updateUI();
-
-            // Alleen redirecten als je NIET al op index bent
-            const path = window.location.pathname;
-            if (!path.endsWith('/index.html') && path !== '/' && path !== '') {
-                window.location.href = '/index.html';
-            } else {
-                this._loggingOut = false; // reset voor eventueel opnieuw inloggen
-            }
+            // replace() zodat de pagina niet in de history-stack blijft (geen back-loop)
+            window.location.replace('/index.html');
         });
 
         netlifyIdentity.on('error', err => console.error('Identity Error:', err));
