@@ -540,8 +540,8 @@
                     return;
                 }
                 const role = auth.getUserRole();
-                if (!['staff', 'admin'].includes(role)) {
-                    alert('De Staff Sollicitatie is alleen toegankelijk voor Staff en hoger.');
+                if (!['ambulance', 'staff', 'admin'].includes(role)) {
+                    alert('De Staff Sollicitatie is alleen toegankelijk voor Ambulance personeel, Staff en hoger.');
                     window.location.href = '/dashboard.html';
                 }
             });
