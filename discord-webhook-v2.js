@@ -85,7 +85,7 @@ class DiscordSubmitter {
         }
 
         // 2. Select correct webhook URL based on form type
-        let webhookUrl = '/.netlify/functions/submit-sollicitatie';
+        let webhookUrl = this.webhookUrl;
         if (formType === 'spoed') {
             webhookUrl = '/.netlify/functions/submit-spoed-sollicitatie';
         }
