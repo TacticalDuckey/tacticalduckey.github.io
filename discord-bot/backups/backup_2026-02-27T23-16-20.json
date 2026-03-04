@@ -1,0 +1,3007 @@
+{
+  "id": "backup_2026-02-27T23-16-20",
+  "createdAt": 1772234180557,
+  "createdBy": "tacticalduckey",
+  "guildId": "1457746990678016002",
+  "guildName": "[DLLRP] De LageLanden Roleplay",
+  "memberCount": 65,
+  "server": {
+    "name": "[DLLRP] De LageLanden Roleplay",
+    "description": null,
+    "iconURL": "https://cdn.discordapp.com/icons/1457746990678016002/48b7ca70e7c4f3ff1109566d9917ab88.webp?size=4096",
+    "bannerURL": "https://cdn.discordapp.com/banners/1457746990678016002/a849e6aab6008e63196a662b362fae9d.webp?size=4096",
+    "verificationLevel": 1,
+    "explicitContentFilter": 2,
+    "afkTimeout": 300,
+    "afkChannelId": null,
+    "systemChannelId": "1457746991554760828",
+    "rulesChannelId": "1457834195962302599",
+    "preferredLocale": "nl"
+  },
+  "roles": [
+    {
+      "id": "1457747096601100441",
+      "name": "Eigenaar",
+      "color": 30859,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "8864258447638527",
+      "position": 35,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458223437158809892",
+      "name": "Mede-eigenaar",
+      "color": 22912,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "8864262743130111",
+      "position": 34,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1459295348211318824",
+      "name": "Proef Management",
+      "color": 15277667,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "1721826619162615",
+      "position": 33,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1459295116434084113",
+      "name": "Teamleider Ambulance",
+      "color": 16770304,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "1721826619162615",
+      "position": 32,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1476525781571342397",
+      "name": "Hidden Management",
+      "color": 15158332,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 31,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458542457825525951",
+      "name": "Super admin",
+      "color": 65455,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "5151608773720897",
+      "position": 30,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458542238312304761",
+      "name": "Admin",
+      "color": 1752220,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "4588538526972737",
+      "position": 29,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458508415537123492",
+      "name": "Moderator",
+      "color": 1146986,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "4579467010784065",
+      "position": 28,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1471272633957093397",
+      "name": "Support",
+      "color": 10615430,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 27,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458531506208374879",
+      "name": "Staff Team",
+      "color": 15158332,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 26,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1459264457674068107",
+      "name": "Development team",
+      "color": 15277667,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 25,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1461455884277514375",
+      "name": "Forms developer",
+      "color": 15277667,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 24,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1475979729596317923",
+      "name": "Discord Blacklist",
+      "color": 789521,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 23,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458228104186036381",
+      "name": "Bots",
+      "color": 8336,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "7609154479844600",
+      "position": 22,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1470180749561827349",
+      "name": "VIP",
+      "color": 16765280,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 20,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458227903731863603",
+      "name": "Lid",
+      "color": 15105570,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 19,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458531284388282501",
+      "name": "proef periode",
+      "color": 16777215,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 18,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458540475878478006",
+      "name": "Politie",
+      "color": 3447003,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 17,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458540538432323768",
+      "name": "Brandweer",
+      "color": 16711680,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 16,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458540654245445745",
+      "name": "KMar",
+      "color": 13311,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 15,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458540755264995409",
+      "name": "RWS",
+      "color": 11373056,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 14,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458540806016077835",
+      "name": "Ambulance",
+      "color": 15844367,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 13,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458541135323725999",
+      "name": "Defensie",
+      "color": 5141576,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 12,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458541721976574003",
+      "name": "Prorail",
+      "color": 16733268,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 11,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458542904011128976",
+      "name": "Hoofd leidinggevende",
+      "color": 16777215,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 10,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1458533476323037237",
+      "name": "Ticket Support",
+      "color": 0,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "2222085186637377",
+      "position": 4,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1459310468433969272",
+      "name": "Discord developer",
+      "color": 5631,
+      "hoist": false,
+      "mentionable": false,
+      "permissions": "8864254153195519",
+      "position": 3,
+      "icon": null,
+      "unicodeEmoji": null
+    },
+    {
+      "id": "1477074802534776946",
+      "name": "🔒 Quarantaine",
+      "color": 8421504,
+      "hoist": true,
+      "mentionable": false,
+      "permissions": "0",
+      "position": 1,
+      "icon": null,
+      "unicodeEmoji": null
+    }
+  ],
+  "categories": [
+    {
+      "id": "1457746991554760826",
+      "name": "Welkom!",
+      "position": 0,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1457834830677934224",
+      "name": "Belangerijk",
+      "position": 1,
+      "permissionOverwrites": [
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        }
+      ]
+    },
+    {
+      "id": "1457837038140264458",
+      "name": "Algemeen",
+      "position": 2,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1458204852139069491",
+      "name": "Game",
+      "position": 3,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1476422127770140888",
+      "name": "🤝 Partnerschap",
+      "position": 4,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1476422130949296300",
+      "name": "🎫 Tickets",
+      "position": 5,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1458205597538455876",
+      "name": "Support",
+      "position": 6,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "66560",
+          "deny": "1050624"
+        }
+      ]
+    },
+    {
+      "id": "1457746991554760827",
+      "name": "Spraakkanalen",
+      "position": 7,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1458214129180479518",
+      "name": "Development",
+      "position": 8,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459264457674068107",
+          "type": 0,
+          "allow": "68608",
+          "deny": "8192"
+        }
+      ]
+    },
+    {
+      "id": "1458207097945592015",
+      "name": "Staff",
+      "position": 9,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458216234658169106",
+      "name": "Management+",
+      "position": 10,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458533477879382079",
+      "name": "Support Tickets",
+      "position": 11,
+      "permissionOverwrites": [
+        {
+          "id": "1458228104186036381",
+          "type": 0,
+          "allow": "11264",
+          "deny": "0"
+        }
+      ]
+    },
+    {
+      "id": "1458217361680240771",
+      "name": "report Tickets",
+      "position": 12,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1458217404982231260",
+      "name": "Sollicitaties",
+      "position": 13,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1458217583982547148",
+      "name": "Logs",
+      "position": 14,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "66624",
+          "deny": "10240"
+        }
+      ]
+    },
+    {
+      "id": "1461502316422103163",
+      "name": "Sollicitatie antwoorden",
+      "position": 15,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1049600"
+        },
+        {
+          "id": "1459295348211318824",
+          "type": 0,
+          "allow": "1049600",
+          "deny": "0"
+        }
+      ]
+    }
+  ],
+  "channels": [
+    {
+      "id": "1458509306629587066",
+      "name": "❬📃❭Wachtkamer",
+      "type": 2,
+      "position": 0,
+      "parentId": "1458205597538455876",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 30,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "66560",
+          "deny": "1050624"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "1049600",
+          "deny": "2097152"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457834195962302602",
+      "name": "moderator-only",
+      "type": 0,
+      "position": 0,
+      "parentId": null,
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457746991554760828",
+      "name": "❬👋🏼❭welkom",
+      "type": 0,
+      "position": 0,
+      "parentId": "1457746991554760826",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "1024",
+          "deny": "2048"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458213119544529128",
+      "name": "❬📃❭support",
+      "type": 2,
+      "position": 1,
+      "parentId": "1458205597538455876",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 2,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "66560",
+          "deny": "1050624"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458213635724677213",
+      "name": "❬📃❭support 2",
+      "type": 2,
+      "position": 2,
+      "parentId": "1458205597538455876",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 2,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "66560",
+          "deny": "1050624"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457834921497460959",
+      "name": "❬❗❭mededelingen",
+      "type": 5,
+      "position": 0,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457746991554760829",
+      "name": "❬🔊❭algemeen 1",
+      "type": 2,
+      "position": 0,
+      "parentId": "1457746991554760827",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 0,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "4398046511104"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457834195962302599",
+      "name": "❬📝❭regels",
+      "type": 0,
+      "position": 1,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "2048"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457836158498246928",
+      "name": "❬🎉❭giveaways",
+      "type": 5,
+      "position": 2,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458206161407840446",
+      "name": "❬🔊❭algemeen 2",
+      "type": 2,
+      "position": 1,
+      "parentId": "1457746991554760827",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 50,
+      "permissionOverwrites": [
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457836485595365428",
+      "name": "❬🚧❭sneak-peeks",
+      "type": 5,
+      "position": 3,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458206269142859908",
+      "name": "❬🔊❭prive 1",
+      "type": 2,
+      "position": 2,
+      "parentId": "1457746991554760827",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 2,
+      "permissionOverwrites": [
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457836638322561268",
+      "name": "❬🦺❭updates",
+      "type": 5,
+      "position": 4,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458206541772619947",
+      "name": "❬🔊❭prive 2",
+      "type": 2,
+      "position": 3,
+      "parentId": "1457746991554760827",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 2,
+      "permissionOverwrites": [
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458206582834860209",
+      "name": "❬🔊❭prive 3",
+      "type": 2,
+      "position": 4,
+      "parentId": "1457746991554760827",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 3,
+      "permissionOverwrites": [
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458576173922517002",
+      "name": "❬🏋️‍♂️❭trainingen",
+      "type": 5,
+      "position": 5,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457835743622987931",
+      "name": "❬📮❭advertenties",
+      "type": 0,
+      "position": 6,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458206669443039408",
+      "name": "❬🔊❭prive 4",
+      "type": 2,
+      "position": 5,
+      "parentId": "1457746991554760827",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 4,
+      "permissionOverwrites": [
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458861994299101184",
+      "name": "❬🛠️❭dev call",
+      "type": 2,
+      "position": 0,
+      "parentId": "1458214129180479518",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 0,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459264457674068107",
+          "type": 0,
+          "allow": "68608",
+          "deny": "8192"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1457835992743547033",
+      "name": "❬🤝❭partners",
+      "type": 0,
+      "position": 7,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1458228104186036381",
+          "type": 0,
+          "allow": "10240",
+          "deny": "0"
+        },
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1471272633957093397",
+          "type": 0,
+          "allow": "0",
+          "deny": "2048"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        }
+      ]
+    },
+    {
+      "id": "1457835410905497622",
+      "name": "❬🙋‍♂️❭faq",
+      "type": 5,
+      "position": 8,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "33856",
+          "deny": "68719486976"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458212198714179772",
+      "name": "❬🔰❭staff-voice",
+      "type": 2,
+      "position": 0,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 0,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1461463956278214761",
+      "name": "❬📝❭dienst-sollicitaties",
+      "type": 15,
+      "position": 9,
+      "parentId": "1457834830677934224",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "66624",
+          "deny": "2815095512016896"
+        }
+      ]
+    },
+    {
+      "id": "1458212408895209727",
+      "name": "❬🔰❭staff-prive 1",
+      "type": 2,
+      "position": 1,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 2,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458212510338383970",
+      "name": "❬🔰❭staff-prive 2",
+      "type": 2,
+      "position": 2,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 2,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1476430524003389652",
+      "name": "❬✉️❭chat",
+      "type": 0,
+      "position": 0,
+      "parentId": "1457837038140264458",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458204273581228158",
+      "name": "❬📸❭media",
+      "type": 0,
+      "position": 1,
+      "parentId": "1457837038140264458",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458217238090743828",
+      "name": "❬👑❭call",
+      "type": 2,
+      "position": 0,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": 64000,
+      "userLimit": 0,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458204343634497656",
+      "name": "❬🤖❭commands",
+      "type": 0,
+      "position": 2,
+      "parentId": "1457837038140264458",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458204759973429574",
+      "name": "❬⚒️❭dev-hoek",
+      "type": 0,
+      "position": 3,
+      "parentId": "1457837038140264458",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458204916660043808",
+      "name": "❬💡❭suggesties",
+      "type": 15,
+      "position": 0,
+      "parentId": "1458204852139069491",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1458204953201082400",
+      "name": "❬📮❭bugs",
+      "type": 15,
+      "position": 1,
+      "parentId": "1458204852139069491",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": []
+    },
+    {
+      "id": "1476422491881603341",
+      "name": "🤝actieve-partners",
+      "type": 0,
+      "position": 0,
+      "parentId": "1476422127770140888",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1471546418572296273",
+          "type": 1,
+          "allow": "18432",
+          "deny": "0"
+        },
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "1024",
+          "deny": "2048"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "10240",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1476422494134210682",
+      "name": "📁partner-aanvragen",
+      "type": 0,
+      "position": 1,
+      "parentId": "1476422127770140888",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1471546418572296273",
+          "type": 1,
+          "allow": "19456",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "11264",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1476426106201444353",
+      "name": "📋partner-aanvraag",
+      "type": 0,
+      "position": 2,
+      "parentId": "1476422127770140888",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "1024",
+          "deny": "2048"
+        },
+        {
+          "id": "1471546418572296273",
+          "type": 1,
+          "allow": "18432",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "10240",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1476422132769620149",
+      "name": "❪tickets❫",
+      "type": 0,
+      "position": 0,
+      "parentId": "1476422130949296300",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "1024",
+          "deny": "2048"
+        },
+        {
+          "id": "1471546418572296273",
+          "type": 1,
+          "allow": "18432",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "10240",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1476427824897331323",
+      "name": "📊reactietijd",
+      "type": 0,
+      "position": 1,
+      "parentId": "1476422130949296300",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "1024",
+          "deny": "2048"
+        },
+        {
+          "id": "1471546418572296273",
+          "type": 1,
+          "allow": "18432",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "10240",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458214920641577085",
+      "name": "❬🛠️❭dev-aankondigingen",
+      "type": 0,
+      "position": 0,
+      "parentId": "1458214129180479518",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459264457674068107",
+          "type": 0,
+          "allow": "66560",
+          "deny": "10240"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458214979755835412",
+      "name": "❬🛠️❭dev-regels",
+      "type": 0,
+      "position": 1,
+      "parentId": "1458214129180479518",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1459264457674068107",
+          "type": 0,
+          "allow": "66560",
+          "deny": "10240"
+        },
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458215115395436683",
+      "name": "❬🛠️❭dev-chat",
+      "type": 0,
+      "position": 2,
+      "parentId": "1458214129180479518",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459264457674068107",
+          "type": 0,
+          "allow": "68608",
+          "deny": "8192"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458215346279415849",
+      "name": "❬🛠️❭dev-taken",
+      "type": 15,
+      "position": 3,
+      "parentId": "1458214129180479518",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1459264457674068107",
+          "type": 0,
+          "allow": "68608",
+          "deny": "8192"
+        },
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458215393704280154",
+      "name": "❬🛠️❭dev-suggesties",
+      "type": 15,
+      "position": 4,
+      "parentId": "1458214129180479518",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459264457674068107",
+          "type": 0,
+          "allow": "68608",
+          "deny": "8192"
+        }
+      ]
+    },
+    {
+      "id": "1458211573570212086",
+      "name": "❬🔰❭staff-aankondigingen",
+      "type": 0,
+      "position": 0,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "2048"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458575191608262902",
+      "name": "❬🔰❭staff-informatie",
+      "type": 0,
+      "position": 1,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458211934381015274",
+      "name": "❬🔰❭staff-regels",
+      "type": 0,
+      "position": 2,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "2048"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458211974692343975",
+      "name": "❬🔰❭staff-chat",
+      "type": 0,
+      "position": 3,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458212014051692544",
+      "name": "❬🔰❭staff-commands",
+      "type": 0,
+      "position": 4,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458575309623263272",
+      "name": "❬🔰❭staff-forms",
+      "type": 15,
+      "position": 5,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458576352218447913",
+      "name": "❬🔰❭staff-training-logs",
+      "type": 0,
+      "position": 6,
+      "parentId": "1458207097945592015",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "1024",
+          "deny": "0"
+        },
+        {
+          "id": "1458227903731863603",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1470200923849752586",
+      "name": "sollicitaties",
+      "type": 0,
+      "position": 0,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459295348211318824",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459310468433969272",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1253766468672163892",
+          "type": 1,
+          "allow": "3072",
+          "deny": "0"
+        }
+      ]
+    },
+    {
+      "id": "1476657042860150824",
+      "name": "sollicitaties-discussie",
+      "type": 0,
+      "position": 1,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459295348211318824",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1459310468433969272",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1253766468672163892",
+          "type": 1,
+          "allow": "3072",
+          "deny": "0"
+        }
+      ]
+    },
+    {
+      "id": "1458216763107053713",
+      "name": "❬👑❭aankondigen",
+      "type": 0,
+      "position": 2,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458216812603904050",
+      "name": "❬👑❭chat",
+      "type": 0,
+      "position": 3,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458216874604101733",
+      "name": "❬👑❭media",
+      "type": 0,
+      "position": 4,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458216925304721460",
+      "name": "❬👑❭commands",
+      "type": 0,
+      "position": 5,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458217101738381342",
+      "name": "❬👑❭suggesties",
+      "type": 15,
+      "position": 6,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458543783695220869",
+      "name": "❬👑❭belangrijke-dingen",
+      "type": 15,
+      "position": 7,
+      "parentId": "1458216234658169106",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1474770915102294050",
+      "name": "tickets-official_noud",
+      "type": 0,
+      "position": 0,
+      "parentId": "1458533477879382079",
+      "topic": "1198624775514374157 (ORT)",
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1458533476323037237",
+          "type": 0,
+          "allow": "35840",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "790338464385073203",
+          "type": 1,
+          "allow": "35840",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1198624775514374157",
+          "type": 1,
+          "allow": "35840",
+          "deny": "0"
+        }
+      ]
+    },
+    {
+      "id": "1476344231105658953",
+      "name": "tickets-beer008018",
+      "type": 0,
+      "position": 1,
+      "parentId": "1458533477879382079",
+      "topic": "1421464171345743914 (ORT)",
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1458533476323037237",
+          "type": 0,
+          "allow": "35840",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1421464171345743914",
+          "type": 1,
+          "allow": "35840",
+          "deny": "0"
+        },
+        {
+          "id": "790338464385073203",
+          "type": 1,
+          "allow": "35840",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1472994861379748005",
+      "name": "chat-logs",
+      "type": 0,
+      "position": 0,
+      "parentId": "1458217583982547148",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "66624",
+          "deny": "10240"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458534873995280649",
+      "name": "voice-logs",
+      "type": 0,
+      "position": 1,
+      "parentId": "1458217583982547148",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "66624",
+          "deny": "10240"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1472994956678402150",
+      "name": "join-leave-dc",
+      "type": 0,
+      "position": 2,
+      "parentId": "1458217583982547148",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "66624",
+          "deny": "10240"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1472995053504036965",
+      "name": "mod-logs",
+      "type": 0,
+      "position": 3,
+      "parentId": "1458217583982547148",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "66624",
+          "deny": "10240"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458534945025822892",
+      "name": "ingame-join-logs",
+      "type": 0,
+      "position": 4,
+      "parentId": "1458217583982547148",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "66624",
+          "deny": "10240"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1458536429742460987",
+      "name": "ticket-logs",
+      "type": 0,
+      "position": 5,
+      "parentId": "1458217583982547148",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "66624",
+          "deny": "10240"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1461424414003302501",
+      "name": "join-leave-logger",
+      "type": 0,
+      "position": 6,
+      "parentId": "1458217583982547148",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1458531506208374879",
+          "type": 0,
+          "allow": "66624",
+          "deny": "10240"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1461502390040657920",
+      "name": "website-informatie",
+      "type": 0,
+      "position": 0,
+      "parentId": "1461502316422103163",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1049600"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1459295348211318824",
+          "type": 0,
+          "allow": "1049600",
+          "deny": "2048"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1462276461737152574",
+      "name": "website-ranking",
+      "type": 0,
+      "position": 1,
+      "parentId": "1461502316422103163",
+      "topic": null,
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1049600"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1459295348211318824",
+          "type": 0,
+          "allow": "1049600",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1471529070712848588",
+      "name": "discord-blacklist-niet-in-typen",
+      "type": 0,
+      "position": 2,
+      "parentId": "1461502316422103163",
+      "topic": "ALLEEN LEON MAG HIER TYPEN DIT KANAAL REGISTREERD ELK BERICHT.",
+      "nsfw": false,
+      "rateLimitPerUser": 0,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "881245365683232798",
+          "type": 1,
+          "allow": "3072",
+          "deny": "0"
+        },
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1049600"
+        },
+        {
+          "id": "1471546418572296273",
+          "type": 1,
+          "allow": "11264",
+          "deny": "0"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "0",
+          "deny": "3072"
+        },
+        {
+          "id": "1459295348211318824",
+          "type": 0,
+          "allow": "1049600",
+          "deny": "0"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "0",
+          "deny": "1024"
+        }
+      ]
+    },
+    {
+      "id": "1477078464690524231",
+      "name": "🔒︱quarantaine",
+      "type": 0,
+      "position": 1,
+      "parentId": null,
+      "topic": "Quarantaine kanaal — Gequarantaineerde leden kunnen hier typen. Staff kan meelezen.",
+      "nsfw": false,
+      "rateLimitPerUser": 30,
+      "bitrate": null,
+      "userLimit": null,
+      "permissionOverwrites": [
+        {
+          "id": "1457746990678016002",
+          "type": 0,
+          "allow": "0",
+          "deny": "1024"
+        },
+        {
+          "id": "1477074802534776946",
+          "type": 0,
+          "allow": "3072",
+          "deny": "49152"
+        },
+        {
+          "id": "544089159774765091",
+          "type": 1,
+          "allow": "3072",
+          "deny": "49152"
+        }
+      ]
+    }
+  ],
+  "emojis": [],
+  "bans": [
+    {
+      "userId": "737579560257978419",
+      "username": "voornaamen1",
+      "reason": null
+    },
+    {
+      "userId": "1254244668359708753",
+      "username": "floran0821",
+      "reason": "Verdacht account of spamaccount"
+    },
+    {
+      "userId": "1442179948562616413",
+      "username": "luuk_070x",
+      "reason": "wil nuken"
+    },
+    {
+      "userId": "1467173155452747826",
+      "username": "briandavis1730_56719",
+      "reason": null
+    }
+  ],
+  "stats": {
+    "roles": 28,
+    "categories": 16,
+    "channels": 70,
+    "emojis": 0,
+    "bans": 4
+  }
+}

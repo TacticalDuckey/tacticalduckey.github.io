@@ -458,31 +458,17 @@ TOTAAL: [ /100] punten
     <script>
         // Check staff authenticatie
         document.addEventListener('DOMContentLoaded', () => {
-            const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && typeof auth !== 'undefined') {
-                    clearInterval(checkAuth);
-                    
-                    if (!auth.user) {
-                        alert('Je moet ingelogd zijn om dit te bekijken');
-                        window.location.href = '/login.html';
-                        return;
-                    }
-
-                    const userRole = getUserRole();
-                    if (userRole !== 'admin' && userRole !== 'staff') {
-                        alert('Deze pagina is alleen toegankelijk voor STAFF');
-                        window.location.href = '/dashboard.html';
-                        return;
-                    }
-                }
-            }, 100);
-
-            setTimeout(() => {
-                clearInterval(checkAuth);
-                if (typeof auth === 'undefined' || !auth.user) {
+            auth.onReady((user) => {
+                if (!user) {
                     window.location.href = '/login.html';
+                    return;
                 }
-            }, 3000);
+                const userRole = auth.getUserRole();
+                if (userRole !== 'admin' && userRole !== 'staff') {
+                    alert('Deze pagina is alleen toegankelijk voor STAFF');
+                    window.location.href = '/dashboard.html';
+                }
+            });
         });
     </script>
 </body>

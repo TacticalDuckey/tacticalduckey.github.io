@@ -57,10 +57,14 @@ class NetlifyAuth {
             this.updateUI();
             netlifyIdentity.close();
 
-            // Redirect naar de oorspronkelijke pagina of dashboard na login
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirect = urlParams.get('redirect') || '/dashboard.html';
-            window.location.href = redirect;
+            // Alleen redirecten als je OP de loginpagina staat
+            // Voorkomt redirect-loop als widget sessie herlaadt op index/andere pagina
+            const path = window.location.pathname;
+            if (path.endsWith('/login.html') || path === '/login') {
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect') || '/dashboard.html';
+                window.location.href = redirect;
+            }
         });
 
         netlifyIdentity.on('logout', () => {

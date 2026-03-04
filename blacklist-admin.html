@@ -461,41 +461,19 @@
     <script>
         // Check if user is authenticated and has admin role
         document.addEventListener('DOMContentLoaded', () => {
-            const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && window.auth) {
-                    clearInterval(checkAuth);
-                    
-                    // Check authentication
-                    const user = auth.user;
-                    
-                    if (!user) {
-                        // Not logged in - redirect to login
-                        window.location.href = '/login.html?redirect=/blacklist-admin.html';
-                        return;
-                    }
-                    
-                    // Check if user has admin role
-                    const role = auth.getUserRole();
-                    
-                    if (role !== 'admin') {
-                        // Not an admin - show access denied
-                        auth.showAccessDenied();
-                        return;
-                    }
-                    
-                    // User is authenticated and is admin - show content
-                    document.getElementById('adminContent').style.display = 'block';
-                    document.getElementById('username').textContent = user.user_metadata?.full_name || user.email;
-                }
-            }, 100);
-            
-            // Timeout after 3 seconds if auth doesn't load
-            setTimeout(() => {
-                clearInterval(checkAuth);
-                if (!auth || !auth.user) {
+            auth.onReady((user) => {
+                if (!user) {
                     window.location.href = '/login.html?redirect=/blacklist-admin.html';
+                    return;
                 }
-            }, 3000);
+                const role = auth.getUserRole();
+                if (role !== 'admin') {
+                    auth.showAccessDenied();
+                    return;
+                }
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('username').textContent = user.user_metadata?.full_name || user.email;
+            });
         });
     </script>
 </body>

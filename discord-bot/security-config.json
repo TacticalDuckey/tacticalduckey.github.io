@@ -1,0 +1,99 @@
+{
+  "antiRaid": {
+    "enabled": true,
+    "joinThreshold": 8,
+    "joinWindowSec": 10,
+    "action": "quarantine",
+    "autoLockdown": false,
+    "quarantineRoleId": "1477074802534776946"
+  },
+  "accountAge": {
+    "enabled": true,
+    "minDays": 7,
+    "action": "kick"
+  },
+  "antiSpam": {
+    "enabled": true,
+    "msgThreshold": 7,
+    "windowSec": 5,
+    "mentionThreshold": 5,
+    "action": "timeout",
+    "timeoutSec": 300
+  },
+  "antiInvite": {
+    "enabled": true,
+    "deleteMsg": true,
+    "warnUser": true
+  },
+  "altDetection": {
+    "enabled": true,
+    "maxDays": 7,
+    "noAvatarFlag": true
+  },
+  "webhookProtection": {
+    "enabled": true
+  },
+  "antiProfanity": {
+    "enabled": true
+  },
+  "botTrap": {
+    "enabled": true,
+    "channelId": "1477091119220130015",
+    "action": "quarantine",
+    "lastActivity": 1772559319209,
+    "msgsSinceWarn": 0,
+    "warningMsgId": "1478445690119131277"
+  },
+  "phishing": {
+    "enabled": true,
+    "action": "ban"
+  },
+  "tokenScan": {
+    "enabled": true
+  },
+  "nukeProt": {
+    "enabled": true,
+    "threshold": 5,
+    "windowSec": 10,
+    "action": "ban"
+  },
+  "verification": {
+    "enabled": true,
+    "channelId": "1477235321111449601",
+    "unverifiedRoleId": "1477092004507943095",
+    "memberRoleId": "1458227903731863603"
+  },
+  "usernameFilter": {
+    "enabled": true,
+    "dehoisting": true,
+    "blockedWords": []
+  },
+  "banEvasion": {
+    "enabled": true
+  },
+  "coordJoin": {
+    "enabled": true,
+    "windowMinutes": 30,
+    "threshold": 5
+  },
+  "impersonation": {
+    "enabled": true
+  },
+  "voiceSecurity": {
+    "enabled": true,
+    "threshold": 5,
+    "windowSec": 30
+  },
+  "autoBackup": {
+    "enabled": true,
+    "channelId": ""
+  },
+  "captchaVerif": {
+    "enabled": true
+  },
+  "securityLogChannelId": "1477093949263970375",
+  "lockdownActive": false,
+  "lockdownChannelStates": {},
+  "lockdownMessages": {},
+  "quarantineChannelId": "1477078464690524231"
+}

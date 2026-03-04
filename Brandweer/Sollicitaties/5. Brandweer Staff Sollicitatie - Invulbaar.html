@@ -354,30 +354,11 @@
 
         // Check authenticatie
         document.addEventListener('DOMContentLoaded', () => {
-            const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && typeof auth !== 'undefined') {
-                    clearInterval(checkAuth);
-                    
-                    if (!auth.user) {
-                        window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/5. Brandweer Staff Sollicitatie - Invulbaar.html';
-                        return;
-                    }
-                }
-            }, 100);
-
-            setTimeout(() => {
-                clearInterval(checkAuth);
-                if (typeof auth === 'undefined' || !auth.user) {
+            auth.onReady((user) => {
+                if (!user) {
                     window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/5. Brandweer Staff Sollicitatie - Invulbaar.html';
-            // Check toegangscode
-            const accessCode = document.getElementById('accessCode').value.trim();
-            if (!accessCode || accessCode.length < 11) {
-                alert('🔐 TOEGANGSCODE VEREIST\n\nStaff sollicitaties zijn alleen toegankelijk met een code.\n\nNeem contact op met de brandweerleiding als je bent uitgenodigd om te solliciteren.');
-                return;
-            }
-            
                 }
-            }, 3000);
+            });
         });
 
         // Form submission

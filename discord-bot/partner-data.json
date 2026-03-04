@@ -1,0 +1,54 @@
+{
+  "partners": {
+    "staff_1391316019741724674_1772467777358": {
+      "userId": "staff_1391316019741724674_1772467777358",
+      "serverName": "Discord Blacklist Oficial!",
+      "messageId": "1478061718105100460",
+      "approvedAt": 1772467777358,
+      "approvedBy": "1391316019741724674",
+      "staffPlaced": true
+    }
+  },
+  "channels": {
+    "categoryId": "1476415313812918305",
+    "infoChannelId": "1476426106201444353",
+    "activePartnersChannelId": "1476422491881603341",
+    "reviewChannelId": "1476422494134210682",
+    "activePartnersMessageId": "1476422496936005696",
+    "partnerCategoryId": "1476422127770140888",
+    "ticketCategoryId": "1476422130949296300",
+    "ticketPanelChannelId": "1476422132769620149",
+    "reactietijdChannelId": "1476427824897331323",
+    "reactietijdMessageId": "1476427828038991873",
+    "ticketSupportCategoryId": "1478121624162140344",
+    "ticketReportCategoryId": "1478121625760174171",
+    "ticketSollicitatieCategoryId": "1478121626716344484",
+    "ticketPartnerCategoryId": "1478121627962310868"
+  },
+  "ticketStats": {
+    "totalOpened": 1,
+    "totalClosed": 2,
+    "byType": {
+      "support": {
+        "opened": 0,
+        "closed": 1
+      },
+      "report": {
+        "opened": 0,
+        "closed": 0
+      },
+      "sollicitatie": {
+        "opened": 1,
+        "closed": 1
+      },
+      "partner": {
+        "opened": 0,
+        "closed": 0
+      }
+    }
+  },
+  "xpLevelRoles": {
+    "enabled": false,
+    "rewards": []
+  }
+}

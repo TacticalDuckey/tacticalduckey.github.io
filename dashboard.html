@@ -541,22 +541,15 @@
 
     <script src="auth.js"></script>
     <script>
-        // Check authenticatie en rol
+        // Check authenticatie en rol via auth.onReady() - wacht netjes op identity init
         document.addEventListener('DOMContentLoaded', () => {
-            // Wacht tot Netlify Identity is geladen
-            const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && auth.user) {
-                    clearInterval(checkAuth);
+            auth.onReady((user) => {
+                if (!user) {
+                    window.location.href = '/login.html?redirect=/dashboard.html';
+                } else {
                     initDashboard();
                 }
-            }, 100);
-
-            setTimeout(() => {
-                clearInterval(checkAuth);
-                if (!auth.user) {
-                    window.location.href = '/login.html?redirect=/dashboard.html';
-                }
-            }, 3000);
+            });
         });
 
         // ========== BEVEILIGING ADMIN ==========

@@ -1,0 +1,55 @@
+{
+  "689909939669303569": [
+    {
+      "id": 1772309169833,
+      "type": "automod-profanity",
+      "username": "danira2000",
+      "reason": "Ongepaste taal: hoe",
+      "by": "AutoMod",
+      "byId": "1471546418572296273",
+      "at": 1772309169833
+    }
+  ],
+  "1303455187066683512": [
+    {
+      "id": 1772326401155,
+      "type": "warn",
+      "username": "imranlmrr",
+      "reason": "server advertentie",
+      "by": "klaplongkanon",
+      "byId": "1187314156081254460",
+      "at": 1772326401155
+    }
+  ],
+  "1460191742174433385": [
+    {
+      "id": 1772486708337,
+      "type": "automod-spam",
+      "username": "zayrix_04",
+      "reason": "Caps flood: bericht is 100% hoofdletters",
+      "by": "AutoMod",
+      "byId": "1471546418572296273",
+      "at": 1772486708337
+    }
+  ],
+  "1040205345676611606": [
+    {
+      "id": 1772617236929,
+      "type": "automod-profanity",
+      "username": "elisavibes",
+      "reason": "Ongepaste taal: ass",
+      "by": "AutoMod",
+      "byId": "1471546418572296273",
+      "at": 1772617236929
+    },
+    {
+      "id": 1772617517193,
+      "type": "automod-profanity",
+      "username": "elisavibes",
+      "reason": "Ongepaste taal: ass",
+      "by": "AutoMod",
+      "byId": "1471546418572296273",
+      "at": 1772617517193
+    }
+  ]
+}

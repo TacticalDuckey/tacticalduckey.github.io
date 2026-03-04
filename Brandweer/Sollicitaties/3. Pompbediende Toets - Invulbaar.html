@@ -438,23 +438,11 @@
 
         // Check authenticatie
         document.addEventListener('DOMContentLoaded', () => {
-            const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && typeof auth !== 'undefined') {
-                    clearInterval(checkAuth);
-                    
-                    if (!auth.user) {
-                        window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/3. Pompbediende Toets - Invulbaar.html';
-                        return;
-                    }
-                }
-            }, 100);
-
-            setTimeout(() => {
-                clearInterval(checkAuth);
-                if (typeof auth === 'undefined' || !auth.user) {
+            auth.onReady((user) => {
+                if (!user) {
                     window.location.href = '/login.html?redirect=/Brandweer/Sollicitaties/3. Pompbediende Toets - Invulbaar.html';
                 }
-            }, 3000);
+            });
         });
 
         // Form submission

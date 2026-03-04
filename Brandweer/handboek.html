@@ -1786,30 +1786,17 @@
     <script>
         // Check authenticatie en brandweer rol
         document.addEventListener('DOMContentLoaded', () => {
-            const checkAuth = setInterval(() => {
-                if (window.netlifyIdentity && typeof auth !== 'undefined') {
-                    clearInterval(checkAuth);
-                    
-                    if (!auth.user) {
-                        window.location.href = '/login.html?redirect=/Brandweer/handboek.html';
-                        return;
-                    }
-
-                    const role = auth.getUserRole();
-                    // Alleen brandweer, staff en admin hebben toegang
-                    if (!['brandweer', 'staff', 'admin'].includes(role)) {
-                        alert('Je hebt geen toegang tot het Brandweer Handboek. Alleen brandweerpersoneel heeft toegang.');
-                        window.location.href = '/dashboard.html';
-                    }
-                }
-            }, 100);
-
-            setTimeout(() => {
-                clearInterval(checkAuth);
-                if (typeof auth === 'undefined' || !auth.user) {
+            auth.onReady((user) => {
+                if (!user) {
                     window.location.href = '/login.html?redirect=/Brandweer/handboek.html';
+                    return;
                 }
-            }, 3000);
+                const role = auth.getUserRole();
+                if (!['brandweer', 'staff', 'admin'].includes(role)) {
+                    alert('Je hebt geen toegang tot het Brandweer Handboek. Alleen brandweerpersoneel heeft toegang.');
+                    window.location.href = '/dashboard.html';
+                }
+            });
         });
     </script>
 </body>

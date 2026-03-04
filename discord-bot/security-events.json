@@ -1,0 +1,761 @@
+[
+  {
+    "id": 1772651737823,
+    "type": "verified",
+    "data": {
+      "userId": "990262349048999946",
+      "username": "rikkerd.2010"
+    },
+    "at": 1772651737823
+  },
+  {
+    "id": 1772649725761,
+    "type": "unquarantine",
+    "data": {
+      "userId": "689909939669303569",
+      "username": "danira2000"
+    },
+    "at": 1772649725761
+  },
+  {
+    "id": 1772648636299,
+    "type": "quarantine",
+    "data": {
+      "userId": "689909939669303569",
+      "username": "danira2000",
+      "reason": "🚨 Bot Trap — bericht in honeypot kanaal"
+    },
+    "at": 1772648636299
+  },
+  {
+    "id": 1772648618404,
+    "type": "bottrap",
+    "data": {
+      "userId": "689909939669303569",
+      "username": "danira2000",
+      "action": "quarantine",
+      "content": "Hallo"
+    },
+    "at": 1772648618404
+  },
+  {
+    "id": 1772639923372,
+    "type": "verified",
+    "data": {
+      "userId": "1437814113136021730",
+      "username": "cassiecas_cool"
+    },
+    "at": 1772639923372
+  },
+  {
+    "id": 1772636032466,
+    "type": "verified",
+    "data": {
+      "userId": "1332009924020011142",
+      "username": "milanvos1239"
+    },
+    "at": 1772636032466
+  },
+  {
+    "id": 1772617517192,
+    "type": "profanity",
+    "data": {
+      "userId": "1040205345676611606",
+      "username": "elisavibes",
+      "words": "ass",
+      "warnCount": 2
+    },
+    "at": 1772617517192
+  },
+  {
+    "id": 1772617236928,
+    "type": "profanity",
+    "data": {
+      "userId": "1040205345676611606",
+      "username": "elisavibes",
+      "words": "ass",
+      "warnCount": 1
+    },
+    "at": 1772617236928
+  },
+  {
+    "id": 1772609825043,
+    "type": "unquarantine",
+    "data": {
+      "userId": "1354442242441482266",
+      "username": "itsmecasper123"
+    },
+    "at": 1772609825043
+  },
+  {
+    "id": 1772594859517,
+    "type": "quarantine",
+    "data": {
+      "userId": "1354442242441482266",
+      "username": "itsmecasper123",
+      "reason": "🚨 Bot Trap — bericht in honeypot kanaal"
+    },
+    "at": 1772594859517
+  },
+  {
+    "id": 1772594842653,
+    "type": "invite_blocked",
+    "data": {
+      "userId": "1354442242441482266",
+      "username": "itsmecasper123",
+      "content": "BAHAHAH look the girl discord.gg/meet-girls"
+    },
+    "at": 1772594842653
+  },
+  {
+    "id": 1772594842452,
+    "type": "bottrap",
+    "data": {
+      "userId": "1354442242441482266",
+      "username": "itsmecasper123",
+      "action": "quarantine",
+      "content": "BAHAHAH look the girl discord.gg/meet-girls"
+    },
+    "at": 1772594842452
+  },
+  {
+    "id": 1772566084464,
+    "type": "verified",
+    "data": {
+      "userId": "1251430172054519869",
+      "username": "jaspertroffa"
+    },
+    "at": 1772566084464
+  },
+  {
+    "id": 1772488770006,
+    "type": "account_age_gate",
+    "data": {
+      "userId": "1478145770929786880",
+      "username": "Lage Landen BOT 2#6209",
+      "ageDays": "0.0",
+      "action": "kick"
+    },
+    "at": 1772488770006
+  },
+  {
+    "id": 1772486708336,
+    "type": "spam_detected",
+    "data": {
+      "userId": "1460191742174433385",
+      "username": "zayrix_04",
+      "reason": "Caps flood: bericht is 100% hoofdletters"
+    },
+    "at": 1772486708336
+  },
+  {
+    "id": 1772397716940,
+    "type": "unquarantine",
+    "data": {
+      "userId": "1421464171345743914",
+      "username": "beer008018"
+    },
+    "at": 1772397716940
+  },
+  {
+    "id": 1772395859675,
+    "type": "quarantine",
+    "data": {
+      "userId": "1421464171345743914",
+      "username": "beer008018",
+      "reason": "🚨 Bot Trap — bericht in honeypot kanaal"
+    },
+    "at": 1772395859675
+  },
+  {
+    "id": 1772395838771,
+    "type": "bottrap",
+    "data": {
+      "userId": "1421464171345743914",
+      "username": "beer008018",
+      "action": "quarantine",
+      "content": "Yoo"
+    },
+    "at": 1772395838771
+  },
+  {
+    "id": 1772387314868,
+    "type": "invite_blocked",
+    "data": {
+      "userId": "1394062242332283062",
+      "username": "opa864",
+      "content": "🌟 Welkom bij Today roleplay 🌟\nSpeel mee in de hoofdstad van misdaad en intrige!\n\nBen jij klaar voor de ultieme Nederlandse roleplay-ervaring? Stap in de wereld van  Today Roleplay, waar elke straath"
+    },
+    "at": 1772387314868
+  },
+  {
+    "id": 1772359339587,
+    "type": "unquarantine",
+    "data": {
+      "userId": "1143822009961296004",
+      "username": "pnkyay"
+    },
+    "at": 1772359339587
+  },
+  {
+    "id": 1772359170770,
+    "type": "quarantine",
+    "data": {
+      "userId": "1143822009961296004",
+      "username": "pnkyay",
+      "reason": "🚨 Bot Trap — bericht in honeypot kanaal"
+    },
+    "at": 1772359170770
+  },
+  {
+    "id": 1772359150193,
+    "type": "bottrap",
+    "data": {
+      "userId": "1143822009961296004",
+      "username": "pnkyay",
+      "action": "quarantine",
+      "content": "wat"
+    },
+    "at": 1772359150193
+  },
+  {
+    "id": 1772309169832,
+    "type": "profanity",
+    "data": {
+      "userId": "689909939669303569",
+      "username": "danira2000",
+      "words": "hoe",
+      "warnCount": 1
+    },
+    "at": 1772309169832
+  },
+  {
+    "id": 1772290580634,
+    "type": "verified",
+    "data": {
+      "userId": "1455150265090179119",
+      "username": "finn0990"
+    },
+    "at": 1772290580634
+  },
+  {
+    "id": 1772287153112,
+    "type": "verified",
+    "data": {
+      "userId": "1170845970284679258",
+      "username": ".niek_."
+    },
+    "at": 1772287153112
+  },
+  {
+    "id": 1772287131469,
+    "type": "dehoisting",
+    "data": {
+      "userId": "1170845970284679258",
+      "username": ".niek_.",
+      "original": ".niek_."
+    },
+    "at": 1772287131469
+  },
+  {
+    "id": 1772275695612,
+    "type": "quarantine",
+    "data": {
+      "userId": "1381227201302888458",
+      "username": "tiesje22",
+      "reason": "?? Bot Trap — bericht in honeypot kanaal"
+    },
+    "at": 1772275695612
+  },
+  {
+    "id": 1772275676530,
+    "type": "bottrap",
+    "data": {
+      "userId": "1381227201302888458",
+      "username": "tiesje22",
+      "action": "quarantine",
+      "content": "Hoi"
+    },
+    "at": 1772275676530
+  },
+  {
+    "id": 1772275664147,
+    "type": "verified",
+    "data": {
+      "userId": "1381227201302888458",
+      "username": "tiesje22"
+    },
+    "at": 1772275664147
+  },
+  {
+    "id": 1772271204802,
+    "type": "verified",
+    "data": {
+      "userId": "295948417862205441",
+      "username": "tacticalduckey"
+    },
+    "at": 1772271204802
+  },
+  {
+    "id": 1772271165892,
+    "type": "config_changed",
+    "data": {
+      "instelling": "captcha_toggle",
+      "waarde": "true",
+      "by": "tacticalduckey"
+    },
+    "at": 1772271165892
+  },
+  {
+    "id": 1772271151541,
+    "type": "verified",
+    "data": {
+      "userId": "295948417862205441",
+      "username": "tacticalduckey"
+    },
+    "at": 1772271151541
+  },
+  {
+    "id": 1772270764493,
+    "type": "verified",
+    "data": {
+      "userId": "295948417862205441",
+      "username": "tacticalduckey"
+    },
+    "at": 1772270764493
+  },
+  {
+    "id": 1772267795215,
+    "type": "verified",
+    "data": {
+      "userId": "1460191742174433385",
+      "username": "drieske09"
+    },
+    "at": 1772267795215
+  },
+  {
+    "id": 1772264988887,
+    "type": "verified",
+    "data": {
+      "userId": "1457404506437455882",
+      "username": "korpsmariniersfan12340_39840"
+    },
+    "at": 1772264988887
+  },
+  {
+    "id": 1772264947245,
+    "type": "verified",
+    "data": {
+      "userId": "1368941836785291275",
+      "username": "a0100487"
+    },
+    "at": 1772264947245
+  },
+  {
+    "id": 1772264933448,
+    "type": "verified",
+    "data": {
+      "userId": "1391316019741724674",
+      "username": "mmtbubb01"
+    },
+    "at": 1772264933448
+  },
+  {
+    "id": 1772264900539,
+    "type": "verified",
+    "data": {
+      "userId": "933798670229463121",
+      "username": "raisin6553"
+    },
+    "at": 1772264900539
+  },
+  {
+    "id": 1772260562908,
+    "type": "verified",
+    "data": {
+      "userId": "1373011035740569742",
+      "username": "fortn8920"
+    },
+    "at": 1772260562908
+  },
+  {
+    "id": 1772241467576,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "tyfus",
+      "warnCount": 18
+    },
+    "at": 1772241467576
+  },
+  {
+    "id": 1772240717577,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "fuck",
+      "warnCount": 17
+    },
+    "at": 1772240717577
+  },
+  {
+    "id": 1772240714369,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "shit",
+      "warnCount": 16
+    },
+    "at": 1772240714369
+  },
+  {
+    "id": 1772240709431,
+    "type": "spam_detected",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "Caps flood: bericht is 100% hoofdletters"
+    },
+    "at": 1772240709431
+  },
+  {
+    "id": 1772240306340,
+    "type": "spam_detected",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "Caps flood: bericht is 100% hoofdletters"
+    },
+    "at": 1772240306340
+  },
+  {
+    "id": 1772240153475,
+    "type": "spam_detected",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "Caps flood: bericht is 100% hoofdletters"
+    },
+    "at": 1772240153475
+  },
+  {
+    "id": 1772240115204,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "pot",
+      "warnCount": 12
+    },
+    "at": 1772240115204
+  },
+  {
+    "id": 1772239880300,
+    "type": "spam_detected",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "Caps flood: bericht is 100% hoofdletters"
+    },
+    "at": 1772239880300
+  },
+  {
+    "id": 1772239877321,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "poep",
+      "warnCount": 10
+    },
+    "at": 1772239877321
+  },
+  {
+    "id": 1772239783949,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "pest",
+      "warnCount": 9
+    },
+    "at": 1772239783949
+  },
+  {
+    "id": 1772239781493,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "tyfus",
+      "warnCount": 8
+    },
+    "at": 1772239781493
+  },
+  {
+    "id": 1772239780062,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "tering",
+      "warnCount": 7
+    },
+    "at": 1772239780062
+  },
+  {
+    "id": 1772239448673,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "kanker",
+      "warnCount": 6
+    },
+    "at": 1772239448673
+  },
+  {
+    "id": 1772239446292,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "kanker, debiel",
+      "warnCount": 5
+    },
+    "at": 1772239446292
+  },
+  {
+    "id": 1772239434636,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "kanker",
+      "warnCount": 4
+    },
+    "at": 1772239434636
+  },
+  {
+    "id": 1772239265266,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "kanker",
+      "warnCount": 3
+    },
+    "at": 1772239265266
+  },
+  {
+    "id": 1772239263132,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "kanker",
+      "warnCount": 2
+    },
+    "at": 1772239263132
+  },
+  {
+    "id": 1772239204765,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "kanker",
+      "warnCount": 1
+    },
+    "at": 1772239204765
+  },
+  {
+    "id": 1772238775078,
+    "type": "profanity",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "words": "kanker",
+      "channel": "1476430524003389652"
+    },
+    "at": 1772238775078
+  },
+  {
+    "id": 1772238191654,
+    "type": "config_changed",
+    "data": {
+      "instelling": "log_channel",
+      "waarde": "1477093949263970375",
+      "by": "tacticalduckey"
+    },
+    "at": 1772238191654
+  },
+  {
+    "id": 1772237778115,
+    "type": "verified",
+    "data": {
+      "userId": "295948417862205441",
+      "username": "tacticalduckey"
+    },
+    "at": 1772237778115
+  },
+  {
+    "id": 1772236909058,
+    "type": "verified",
+    "data": {
+      "userId": "295948417862205441",
+      "username": "tacticalduckey"
+    },
+    "at": 1772236909058
+  },
+  {
+    "id": 1772236661499,
+    "type": "verified",
+    "data": {
+      "userId": "295948417862205441",
+      "username": "tacticalduckey"
+    },
+    "at": 1772236661499
+  },
+  {
+    "id": 1772235832219,
+    "type": "unquarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat"
+    },
+    "at": 1772235832219
+  },
+  {
+    "id": 1772235781078,
+    "type": "quarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "🪤 Bot Trap — bericht in honeypot kanaal"
+    },
+    "at": 1772235781078
+  },
+  {
+    "id": 1772235762634,
+    "type": "bottrap",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "action": "quarantine",
+      "content": "ja"
+    },
+    "at": 1772235762634
+  },
+  {
+    "id": 1772234465186,
+    "type": "unquarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat"
+    },
+    "at": 1772234465186
+  },
+  {
+    "id": 1772234358533,
+    "type": "quarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "En nu ?"
+    },
+    "at": 1772234358533
+  },
+  {
+    "id": 1772234280233,
+    "type": "unquarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat"
+    },
+    "at": 1772234280233
+  },
+  {
+    "id": 1772233748835,
+    "type": "quarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "Maar stink echt heel erg gadveramme"
+    },
+    "at": 1772233748835
+  },
+  {
+    "id": 1772233402166,
+    "type": "unquarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat"
+    },
+    "at": 1772233402166
+  },
+  {
+    "id": 1772233367541,
+    "type": "quarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "Handmatig door tacticalduckey"
+    },
+    "at": 1772233367541
+  },
+  {
+    "id": 1772233233916,
+    "type": "unlockdown",
+    "data": {
+      "reason": "Handmatig door tacticalduckey"
+    },
+    "at": 1772233233916
+  },
+  {
+    "id": 1772233191420,
+    "type": "lockdown",
+    "data": {
+      "reason": "test"
+    },
+    "at": 1772233191420
+  },
+  {
+    "id": 1772232550599,
+    "type": "unquarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat"
+    },
+    "at": 1772232550599
+  },
+  {
+    "id": 1772232486431,
+    "type": "quarantine",
+    "data": {
+      "userId": "544089159774765091",
+      "username": "noetnat",
+      "reason": "Liet echt een dikke scheet"
+    },
+    "at": 1772232486431
+  },
+  {
+    "id": 1772232424563,
+    "type": "unlockdown",
+    "data": {
+      "reason": "Handmatig door tacticalduckey"
+    },
+    "at": 1772232424563
+  },
+  {
+    "id": 1772232380239,
+    "type": "lockdown",
+    "data": {
+      "reason": "test"
+    },
+    "at": 1772232380239
+  }
+]
