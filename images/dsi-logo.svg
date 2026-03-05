@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Outer circle -->
+  <circle cx="50" cy="50" r="48" fill="#1a1a2e"/>
+  <circle cx="50" cy="50" r="48" fill="none" stroke="#6b7280" stroke-width="3"/>
+  <!-- Inner circle ring -->
+  <circle cx="50" cy="50" r="38" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+  <!-- Curved text PRAEPARATUS ESTO -->
+  <path id="topArc" d="M 12,50 A 38,38 0 0,1 88,50" fill="none"/>
+  <text font-size="7.5" fill="#9ca3af" font-family="Arial, sans-serif" font-weight="bold" letter-spacing="1.5">
+    <textPath href="#topArc" startOffset="5%">PRAEPARATUS ESTO</textPath>
+  </text>
+  <!-- Curved text DSI -->
+  <path id="bottomArc" d="M 20,62 A 32,32 0 0,0 80,62" fill="none"/>
+  <text font-size="9" fill="#9ca3af" font-family="Arial, sans-serif" font-weight="bold" letter-spacing="3">
+    <textPath href="#bottomArc" startOffset="28%">DSI</textPath>
+  </text>
+  <!-- Book base -->
+  <rect x="32" y="62" width="36" height="6" rx="2" fill="#6b7280"/>
+  <rect x="35" y="58" width="30" height="6" rx="1.5" fill="#9ca3af"/>
+  <!-- Flame -->
+  <path d="M50 57 C47 50, 40 45, 43 35 C45 29, 48 26, 50 22 C52 26, 54 30, 52 36 C56 31, 57 26, 56 22 C62 29, 63 39, 59 46 C57 50, 54 54, 52 57 Z" fill="#6b7280"/>
+  <path d="M50 55 C48 49, 43 45, 45 38 C47 33, 49 30, 50 27 C51 30, 52 33, 51 38 C54 34, 55 30, 54 27 C58 33, 59 40, 56 46 C54 49, 52 53, 51 55 Z" fill="#9ca3af"/>
+  <!-- Orb -->
+  <circle cx="50" cy="59" r="3" fill="#6b7280"/>
+  <circle cx="50" cy="59" r="1.8" fill="#9ca3af"/>
+</svg>
