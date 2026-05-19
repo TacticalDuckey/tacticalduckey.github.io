@@ -5897,6 +5897,23 @@ client.on('messageCreate', async (message) => {
 });
 
 // ----------------------------------------------------------------------------
+//  WEBSITE PARTNERSHIP AANVRAGEN — voeg review knoppen toe aan webhook berichten
+// ----------------------------------------------------------------------------
+client.on('messageCreate', async (message) => {
+  if (!message.webhookId) return;
+  if (message.author?.username !== 'Lage Landen RP - Partnerships') return;
+  if (!message.embeds?.length) return;
+
+  try {
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId(`web_pgoedkeuren_${message.id}`).setLabel('✅ Goedkeuren').setStyle(ButtonStyle.Success),
+      new ButtonBuilder().setCustomId(`web_pafwijzen_${message.id}`).setLabel('❌ Afwijzen').setStyle(ButtonStyle.Danger),
+    );
+    await message.reply({ content: '👆 **Nieuwe partnership aanvraag via website** — beoordeel hieronder:', components: [row] });
+  } catch (e) { console.error('❌ Partnership review knop fout:', e); }
+});
+
+// ----------------------------------------------------------------------------
 //  INTERACTIONS
 // ----------------------------------------------------------------------------
 client.on('interactionCreate', async (interaction) => {
@@ -7966,6 +7983,98 @@ client.on('interactionCreate', async (interaction) => {
         ], components: [doneRow] });
       }
     }
+    return;
+  }
+
+  // --------------------------------------------------------------------------
+  //  WEBSITE PARTNERSHIP — Goedkeuren (geen Discord ticket vereist)
+  // --------------------------------------------------------------------------
+  if (interaction.isButton() && interaction.customId.startsWith('web_pgoedkeuren_')) {
+    if (!hasRoleOrHigher(interaction.member, STAFF_ROLE_ID))
+      return interaction.reply({ content: '❌ Geen toegang.', flags: 64 });
+
+    const origMsgId = interaction.customId.replace('web_pgoedkeuren_', '');
+    const origMsg   = await interaction.channel.messages.fetch(origMsgId).catch(() => null);
+    const embed     = origMsg?.embeds?.[0];
+
+    const berichtField  = embed?.fields?.find(f => f.name.includes('Partnership Bericht'));
+    const inviteField   = embed?.fields?.find(f => f.name.includes('Invite Link'));
+    const servernaamField = embed?.fields?.find(f => f.name.includes('Server Naam'));
+
+    const bericht     = berichtField?.value   || '*(geen bericht opgegeven)*';
+    const inviteLink  = inviteField?.value    || '';
+    const servernaam  = servernaamField?.value || 'Onbekend';
+
+    await interaction.deferUpdate();
+
+    const partnerCh = await client.channels.fetch(PARTNER_CHANNEL_ID).catch(() => null);
+    if (!partnerCh) return;
+
+    const partnerTekst = [
+      '🤝 **Nieuw Partnerschap**',
+      '─────────────────────────────',
+      '',
+      bericht,
+      inviteLink && !bericht.includes(inviteLink) ? `\n-------> ${inviteLink}` : '',
+    ].filter(Boolean).join('\n');
+
+    await partnerCh.send({ content: partnerTekst });
+
+    const disabled = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId('_a').setLabel(`✅ Goedgekeurd door ${interaction.user.username}`).setStyle(ButtonStyle.Success).setDisabled(true),
+      new ButtonBuilder().setCustomId('_b').setLabel('❌ Afwijzen').setStyle(ButtonStyle.Danger).setDisabled(true),
+    );
+    await interaction.editReply({ components: [disabled] });
+
+    await interaction.message.reply({ embeds: [
+      new EmbedBuilder()
+        .setTitle('✅ Goedgekeurd')
+        .setDescription(`Goedgekeurd door **${interaction.user.tag}**.\nBericht van **${servernaam}** geplaatst in <#${PARTNER_CHANNEL_ID}>.`)
+        .setColor(0x57F287).setTimestamp()
+    ]});
+    return;
+  }
+
+  // --------------------------------------------------------------------------
+  //  WEBSITE PARTNERSHIP — Afwijzen
+  // --------------------------------------------------------------------------
+  if (interaction.isButton() && interaction.customId.startsWith('web_pafwijzen_')) {
+    if (!hasRoleOrHigher(interaction.member, STAFF_ROLE_ID))
+      return interaction.reply({ content: '❌ Geen toegang.', flags: 64 });
+
+    const origMsgId = interaction.customId.replace('web_pafwijzen_', '');
+    const modal = new ModalBuilder()
+      .setCustomId(`web_pafwijzen_modal_${origMsgId}`)
+      .setTitle('❌ Partnership Afwijzen');
+    modal.addComponents(new ActionRowBuilder().addComponents(
+      new TextInputBuilder()
+        .setCustomId('reden')
+        .setLabel('Reden voor afwijzing')
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder('Geef een duidelijke reden...')
+        .setRequired(true)
+        .setMaxLength(500)
+    ));
+    await interaction.showModal(modal);
+    return;
+  }
+
+  if (interaction.isModalSubmit() && interaction.customId.startsWith('web_pafwijzen_modal_')) {
+    const reden = interaction.fields.getTextInputValue('reden');
+    await interaction.deferUpdate();
+
+    const disabled = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId('_a').setLabel('✅ Goedkeuren').setStyle(ButtonStyle.Success).setDisabled(true),
+      new ButtonBuilder().setCustomId('_b').setLabel(`❌ Afgewezen door ${interaction.user.username}`).setStyle(ButtonStyle.Danger).setDisabled(true),
+    );
+    await interaction.editReply({ components: [disabled] });
+
+    await interaction.message.reply({ embeds: [
+      new EmbedBuilder()
+        .setTitle('❌ Afgewezen')
+        .setDescription(`Afgewezen door **${interaction.user.tag}**.\n**Reden:** ${reden}`)
+        .setColor(0xFF6B6B).setTimestamp()
+    ]});
     return;
   }
 

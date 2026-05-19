@@ -1,6 +1,24 @@
 ﻿// Netlify Function - Partnership Aanvraag Handler
 // Stuurt partnership aanvragen naar Discord via PARTNERSHIP_WEBHOOK_URL
 
+// In-memory rate limiter: max 3 aanvragen per IP per 24 uur
+// (reset bij function cold start, maar voldoende als eerste verdedigingslinie)
+const ipRateLimit = new Map();
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 uur
+
+function checkRateLimit(ip) {
+    const now = Date.now();
+    const entry = ipRateLimit.get(ip);
+    if (!entry || now - entry.firstRequest > RATE_LIMIT_WINDOW_MS) {
+        ipRateLimit.set(ip, { count: 1, firstRequest: now });
+        return false; // niet gelimiteerd
+    }
+    if (entry.count >= RATE_LIMIT_MAX) return true; // geblokkeerd
+    entry.count++;
+    return false;
+}
+
 exports.handler = async (event, context) => {
     const allowedOrigins = [
         'https://lagelanden.netlify.app',
@@ -36,8 +54,23 @@ exports.handler = async (event, context) => {
         return { statusCode: 403, headers, body: JSON.stringify({ error: 'Forbidden - Invalid origin' }) };
     }
 
+    // IP rate limiting
+    const clientIp = event.headers['x-forwarded-for']?.split(',')[0]?.trim()
+        || event.headers['x-nf-client-connection-ip']
+        || 'unknown';
+    if (checkRateLimit(clientIp)) {
+        return { statusCode: 429, headers, body: JSON.stringify({ error: 'Te veel aanvragen. Probeer het later opnieuw.' }) };
+    }
+
     try {
         const payload = JSON.parse(event.body);
+
+        // Honeypot check: verborgen veld 'website' moet leeg zijn (bots vullen dit in)
+        if (payload._hp && payload._hp !== '') {
+            // Stille afwijzing — bots niet laten weten dat ze geblokkeerd zijn
+            return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+        }
+        delete payload._hp;
 
         const WEBHOOK_URL = process.env.PARTNERSHIP_WEBHOOK_URL;
 

@@ -462,6 +462,11 @@
             </div>
 
             <form id="partnershipForm" style="margin-top: 1.5rem;">
+                <!-- Honeypot: verborgen veld, mag NIET ingevuld worden door echte gebruikers -->
+                <div style="display:none;" aria-hidden="true">
+                    <label for="p_website">Website</label>
+                    <input type="text" id="p_website" name="_hp" tabindex="-1" autocomplete="off">
+                </div>
                 <div style="display: grid; gap: 1.2rem;">
 
                     <div>
@@ -622,6 +627,7 @@
                 const contact = sanitize(document.getElementById('p_contact').value.trim());
                 const motivatie = sanitize(document.getElementById('p_motivatie').value.trim());
                 const berichtRaw = document.getElementById('p_bericht').value.trim();
+                const honeypot = document.getElementById('p_website').value;
                 // Bericht: max 1024 tekens voor embed field (Discord limiet)
                 const bericht = berichtRaw.length > 1024 ? berichtRaw.substring(0, 1021) + '...' : berichtRaw;
 
@@ -642,6 +648,7 @@
                 };
 
                 const payload = {
+                    _hp: honeypot,
                     username: 'Lage Landen RP - Partnerships',
                     avatar_url: 'https://lagelanden.netlify.app/images/logo.png',
                     embeds: [embed]
