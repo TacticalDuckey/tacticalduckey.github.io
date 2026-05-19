@@ -3730,6 +3730,9 @@ async function registerSlashCommands() {
 //  READY
 // ----------------------------------------------------------------------------
 // --- Bot Trap helpers (module-niveau zodat messageDelete er ook bij kan) -------------
+// Flag: wordt true terwijl de bot zelf het waarschuwingsbericht verwijdert (voorkomt false-positive logs)
+let botTrapSelfDeleting = false;
+
 const WARN_EMBED = () => new EmbedBuilder()
   .setTitle('⛔ NIET TYPEN IN DIT KANAAL')
   .setDescription(
@@ -3750,7 +3753,12 @@ async function repostBotTrapWarning(ch) {
   // Verwijder oude waarschuwing als die er nog is
   if (secCfg.botTrap.warningMsgId) {
     const old = await ch.messages.fetch(secCfg.botTrap.warningMsgId).catch(() => null);
-    if (old) await old.delete().catch(() => {});
+    if (old) {
+      botTrapSelfDeleting = true;
+      await old.delete().catch(() => {});
+      // Reset na korte delay zodat het messageDelete event al verwerkt is
+      setTimeout(() => { botTrapSelfDeleting = false; }, 2000);
+    }
   }
   // Verwijder ook eventuele pins van de oude waarschuwing
   const pins = await ch.messages.fetchPinned().catch(() => null);
@@ -4762,19 +4770,22 @@ client.on('messageDelete', async (message) => {
     message.id === secCfg.botTrap.warningMsgId &&
     message.channel?.id === secCfg.botTrap.channelId
   ) {
+    // Als de bot zelf bezig was met reposten: negeer het event
+    if (botTrapSelfDeleting) return;
+
     // Controleer via audit log wie het verwijderd heeft
-    await new Promise(r => setTimeout(r, 800)); // korte wacht voor audit log
+    await new Promise(r => setTimeout(r, 1500)); // wacht op audit log
     const auditLogs = await message.guild?.fetchAuditLogs({ type: 72 /* MESSAGE_DELETE */, limit: 3 }).catch(() => null);
     const entry = auditLogs?.entries.find(e =>
       e.target?.id === message.author?.id &&
       e.extra?.channel?.id === message.channel.id &&
-      Date.now() - e.createdTimestamp < 5000
+      Date.now() - e.createdTimestamp < 6000
     );
     const deleterId = entry?.executor?.id ?? null;
 
-    // Als de bot zelf of de eigenaar het verwijderde ? niet opnieuw aanmaken
+    // Als de bot zelf of de eigenaar het verwijderde: niet opnieuw aanmaken
     if (deleterId === client.user.id || deleterId === OWNER_ID) {
-      // eigen verwijdering (bijv. repost routine), niets doen
+      // eigen verwijdering, niets doen
     } else {
       // Iemand anders verwijderde de waarschuwing ? opnieuw aanmaken
       const trapCh = message.guild?.channels.cache.get(secCfg.botTrap.channelId);
