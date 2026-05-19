@@ -2058,6 +2058,24 @@ async function setupPartnerCategory(guild) {
   }
 
   // ?? partner-info — aanvraagknop
+  const partnerInfoEmbed = new EmbedBuilder()
+    .setTitle('🤝 Partnerschap — Lage Landen RP')
+    .setDescription(
+      '**Welkom bij het partnerschap systeem van Lage Landen RP!**\n\n' +
+      'Lees de partnerschapseisen **goed door** voordat je een aanvraag indient.\n\n' +
+      `📋 **[Bekijk de partnerschapseisen & vul direct het aanvraagformulier in](${PARTNER_WEBSITE})**\n\n` +
+      '> 💡 **Snelste manier:** Vul het aanvraagformulier direct in via de website — geen extra stappen nodig!\n' +
+      '> 🤝 Of klik op de knop hieronder om een privé partner ticket aan te maken in Discord.\n' +
+      '> Een stafflid beoordeelt je aanvraag zo snel mogelijk.'
+    )
+    .setColor(0x5865F2)
+    .setFooter({ text: 'Lage Landen RP — Partner Systeem' })
+    .setTimestamp();
+
+  const partnerInfoRow = new ActionRowBuilder().addComponents(
+    new ButtonBuilder().setCustomId('partner_ticket').setLabel('🤝 Partner Ticket Aanmaken').setStyle(ButtonStyle.Primary),
+  );
+
   if (!await exists(db.channels.infoChannelId)) {
     const ch = await guild.channels.create({
       name: '🤝partner-info',
@@ -2070,26 +2088,24 @@ async function setupPartnerCategory(guild) {
       ]
     });
     db.channels.infoChannelId = ch.id;
-
-    const embed = new EmbedBuilder()
-      .setTitle('🤝 Partnerschap — Lage Landen RP')
-      .setDescription(
-        '**Welkom bij het partnerschap systeem van Lage Landen RP!**\n\n' +
-        'Lees de partnerschapseisen **goed door** voordat je een aanvraag indient.\n\n' +
-        `🔗 **[Klik hier om de partnerschapseisen te bekijken](${PARTNER_WEBSITE})**\n\n` +
-        '> Wil je een partnerschap aanvragen? Klik op de knop hieronder.\n' +
-        '> Er wordt een privé ticket aangemaakt waarin je je partnerbericht kunt indienen.\n' +
-        '> Een stafflid beoordeelt je aanvraag zo snel mogelijk.'
-      )
-      .setColor(0x5865F2)
-      .setFooter({ text: 'Lage Landen RP — Partner Systeem' })
-      .setTimestamp();
-
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('partner_ticket').setLabel('🤝 Partner Ticket Aanmaken').setStyle(ButtonStyle.Primary),
-    );
-    await ch.send({ embeds: [embed], components: [row] });
+    await ch.send({ embeds: [partnerInfoEmbed], components: [partnerInfoRow] });
     console.log('✅ partner-info aangemaakt + embed verstuurd');
+  } else {
+    // Kanaal bestaat al — update het bestaande bericht
+    try {
+      const ch = await client.channels.fetch(db.channels.infoChannelId);
+      const messages = await ch.messages.fetch({ limit: 10 });
+      const botMsg = messages.find(m => m.author.id === client.user.id && m.embeds.length > 0);
+      if (botMsg) {
+        await botMsg.edit({ embeds: [partnerInfoEmbed], components: [partnerInfoRow] });
+        console.log('✅ partner-info embed bijgewerkt');
+      } else {
+        await ch.send({ embeds: [partnerInfoEmbed], components: [partnerInfoRow] });
+        console.log('✅ partner-info nieuw bericht verstuurd');
+      }
+    } catch (e) {
+      console.error('⚠️ Kon partner-info embed niet updaten:', e.message);
+    }
   }
 
   // ?? actieve-partners — live overzicht
