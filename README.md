@@ -1,4 +1,4 @@
-# 🚔 Lage Landen RP - Sollicitatie Systeem
+﻿# 🚔 Lage Landen RP - Sollicitatie Systeem
 
 ## ⚠️ BELANGRIJKE SETUP (VOOR ADMIN)
 
@@ -36,7 +36,7 @@ Dit systeem biedt een volledig geïntegreerde sollicitatie- en toetsomgeving voo
 ## 🔑 Voor Staff: Codes Genereren
 
 ### Toegang tot Code Generator
-1. Log in op [https://lagelandenrp.netlify.app](https://lagelandenrp.netlify.app)
+1. Log in op [https://lagelanden.netlify.app](https://lagelanden.netlify.app)
 2. Klik op **Dashboard**
 3. In de STAFF sectie, klik op **🔑 Sollicitatiecode Generator**
 
@@ -173,7 +173,7 @@ const formTypes = {
 
 ### Automatische Deploy
 - **Repository**: https://github.com/TacticalDuckey/tacticalduckey.github.io
-- **Live Site**: https://lagelandenrp.netlify.app
+- **Live Site**: https://lagelanden.netlify.app
 - **Deploy Trigger**: Push naar `master` branch
 
 ### Git Commands

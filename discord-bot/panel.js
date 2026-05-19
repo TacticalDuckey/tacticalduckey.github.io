@@ -84,6 +84,7 @@ const STRIKES_PATH      = path.join(__dirname, 'strikes.json');
 const MODLOG_PATH       = path.join(__dirname, 'modlog.json');
 const BOT_SCRIPT        = path.join(__dirname, 'bot.js');
 const GUARDIAN_SCRIPT   = path.join(__dirname, 'guardian', 'bot.js');
+const DSI_SCRIPT        = path.join(__dirname, '..', 'dsi-bot', 'bot.js');
 
 // ─── Sessies (simpele in-memory store) ───────────────────────────────────────
 const sessions = new Map();
@@ -106,6 +107,12 @@ let guardianProc         = null;
 let guardianManualStop   = false;
 let guardianRestartCount = 0;
 let guardianRestartTimer = null;
+
+// ─── DSI Bot process ─────────────────────────────────────────────────────────
+let dsiProc         = null;
+let dsiManualStop   = false;
+let dsiRestartCount = 0;
+let dsiRestartTimer = null;
 
 function botStatus() {
   if (!botProc || botProc.exitCode !== null || botProc.killed) return 'stopped';
@@ -216,6 +223,60 @@ function stopGuardian() {
   guardianRestartCount = 0;
   if (guardianRestartTimer) { clearTimeout(guardianRestartTimer); guardianRestartTimer = null; }
   guardianProc.kill('SIGTERM');
+  return 'stopped';
+}
+
+// ─── DSI Bot start/stop ───────────────────────────────────────────────────────
+function dsiStatus() {
+  if (!dsiProc || dsiProc.exitCode !== null || dsiProc.killed) return 'stopped';
+  return 'running';
+}
+
+function startDsi() {
+  if (dsiStatus() === 'running') return 'already_running';
+  if (!fs.existsSync(DSI_SCRIPT)) {
+    addLog('panel', '❌ DSI script niet gevonden: ' + DSI_SCRIPT);
+    return 'not_found';
+  }
+  dsiManualStop = false;
+  dsiProc = cp.spawn(process.execPath, [DSI_SCRIPT], {
+    cwd: path.join(__dirname, '..', 'dsi-bot'),
+    env: process.env,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  dsiProc.stdout.on('data', d => {
+    String(d).split('\n').map(l => l.trim()).filter(Boolean).forEach(line => {
+      addLog('dsi', line);
+      process.stdout.write('[DSI] ' + line + '\n');
+    });
+  });
+  dsiProc.stderr.on('data', d => {
+    String(d).split('\n').map(l => l.trim()).filter(Boolean).forEach(line => {
+      addLog('dsi', line);
+      process.stderr.write('[DSI] ' + line + '\n');
+    });
+  });
+  const stableTimer = setTimeout(() => { dsiRestartCount = 0; }, 30000);
+  dsiProc.on('exit', (code) => {
+    clearTimeout(stableTimer);
+    console.log('[DSI] Gestopt (exit ' + code + ')');
+    if (dsiManualStop) return;
+    dsiRestartCount++;
+    const delay = Math.min(5000 * dsiRestartCount, 30000);
+    console.log('[DSI] ⚠️ Auto-restart over ' + (delay / 1000) + 's... (poging ' + dsiRestartCount + ')');
+    dsiRestartTimer = setTimeout(() => { startDsi(); }, delay);
+  });
+  addLog('panel', '✅ DSI Bot gestart (PID: ' + (dsiProc.pid || '?') + ')');
+  return 'started';
+}
+
+function stopDsi() {
+  if (!dsiProc || dsiStatus() !== 'running') return 'not_running';
+  addLog('panel', '⚠️ DSI Bot handmatig gestopt');
+  dsiManualStop = true;
+  dsiRestartCount = 0;
+  if (dsiRestartTimer) { clearTimeout(dsiRestartTimer); dsiRestartTimer = null; }
+  dsiProc.kill('SIGTERM');
   return 'stopped';
 }
 
@@ -486,6 +547,7 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
     <a onclick="showTab('security')"><span class="icon">🛡️</span> Beveiliging</a>
     <a onclick="showTab('modlog')"><span class="icon">📜</span> Mod Log</a>
     <a onclick="showTab('guardian')"><span class="icon">🛡️</span> Guardian</a>
+    <a onclick="showTab('dsi')"><span class="icon">🔫</span> DSI Bot</a>
   </nav>
   <div class="bot-status" id="sidebar-status">
     <span class="dot" id="status-dot"></span>
@@ -810,6 +872,37 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
       </div>
     </div>
 
+    <!-- DSI Bot tab -->
+    <div class="tab" id="tab-dsi">
+      <div class="section" style="margin-bottom:16px">
+        <div class="section-header"><h3>🔫 Status</h3></div>
+        <div class="section-body">
+          <div class="cards">
+            <div class="card"><div class="label">DSI Bot</div><div class="value" id="dsi-status">—</div></div>
+            <div class="card"><div class="label">Auto-restart</div><div class="value" id="dsi-autorestart">—</div></div>
+            <div class="card"><div class="label">Herstarts</div><div class="value" id="dsi-restarts">—</div></div>
+            <div class="card"><div class="label">Script</div><div class="value" style="font-size:11px;color:#8b949e">dsi-bot/bot.js</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="section" style="margin-bottom:16px">
+        <div class="section-header"><h3>⚙️ Bediening</h3></div>
+        <div class="section-body">
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="dsiAction('start')">▶️ Starten</button>
+            <button class="btn btn-danger" onclick="dsiAction('stop')">⏹️ Stoppen</button>
+            <button class="btn btn-warning" onclick="dsiAction('restart')">🔄 Herstart</button>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><h3>📋 Live Logs (DSI)</h3></div>
+        <div class="section-body">
+          <div id="dsi-log-box" style="font-size:12px;font-family:monospace;max-height:480px;overflow-y:auto;color:#c9d1d9">Laden...</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -827,6 +920,7 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
   <a onclick="showTab('security')"><span class="bn-icon">🛡️</span>Beveiliging</a>
   <a onclick="showTab('modlog')"><span class="bn-icon">📜</span>Mod Log</a>
   <a onclick="showTab('guardian')"><span class="bn-icon">🛡️</span>Guardian</a>
+  <a onclick="showTab('dsi')"><span class="bn-icon">🔫</span>DSI</a>
 </nav>
 
 <!-- Confirm modal -->
@@ -844,8 +938,8 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:#5
 <script>
 let blData = [];
 let currentModalAction = null;
-const TABS = ['dashboard','blacklist','partners','tickets','bot','logs','security','modlog','guardian'];
-const tabTitles = { dashboard:'Dashboard', blacklist:'Blacklist', partners:'Partners', tickets:'Tickets', bot:'Bot Beheer', logs:'Live Logs', security:'🛡️ Beveiliging', modlog:'📜 Mod Log', guardian:'🛡️ Guardian Bot' };
+const TABS = ['dashboard','blacklist','partners','tickets','bot','logs','security','modlog','guardian','dsi'];
+const tabTitles = { dashboard:'Dashboard', blacklist:'Blacklist', partners:'Partners', tickets:'Tickets', bot:'Bot Beheer', logs:'Live Logs', security:'🛡️ Beveiliging', modlog:'📜 Mod Log', guardian:'🛡️ Guardian Bot', dsi:'🔫 DSI Bot' };
 
 // ─── Sidebar (mobile) ────────────────────────────────────────────────────────
 function toggleSidebar() {
@@ -877,6 +971,7 @@ function showTab(name) {
   if (name === 'security')  loadSecSections();
   if (name === 'modlog')     loadModLog();
   if (name === 'guardian')   loadGuardian();
+  if (name === 'dsi')        loadDsi();
   if (name === 'dashboard' || name === 'bot') loadStats();
 }
 
@@ -1522,6 +1617,61 @@ async function guardianAction(action) {
   }
 }
 
+// ─── DSI Bot ──────────────────────────────────────────────────────────────────
+let dsiRefreshTimer = null;
+
+async function loadDsi() {
+  clearInterval(dsiRefreshTimer);
+  dsiRefreshTimer = setInterval(loadDsi, 10000);
+  try {
+    const r = await fetch('/api/dsi/status');
+    if (!r.ok) throw new Error(r.statusText);
+    const d = await r.json();
+
+    const statusEl = document.getElementById('dsi-status');
+    if (statusEl) statusEl.innerHTML = d.running
+      ? '<span class="badge badge-green">Online</span>'
+      : '<span class="badge badge-red">Offline</span>';
+
+    const arEl = document.getElementById('dsi-autorestart');
+    if (arEl) arEl.innerHTML = d.autoRestart
+      ? '<span class="badge badge-green">Aan</span>'
+      : '<span class="badge badge-red">Uit</span>';
+
+    const rcEl = document.getElementById('dsi-restarts');
+    if (rcEl) rcEl.textContent = d.restartCount ?? 0;
+
+    const logBox = document.getElementById('dsi-log-box');
+    if (logBox) {
+      if (!d.logs || !d.logs.length) {
+        logBox.textContent = 'Geen DSI logs beschikbaar.';
+      } else {
+        const colorMap = { ok: '#3fb950', error: '#f85149', warn: '#e3b341', info: '#8b949e' };
+        logBox.innerHTML = d.logs.slice().reverse().map(function(e) {
+          const ts = new Date(e.ts).toLocaleTimeString('nl-NL');
+          const col = colorMap[e.level] || '#c9d1d9';
+          return '<div style="padding:2px 0;border-bottom:1px solid #21262d"><span style="color:#484f58">' + ts + '</span> <span style="color:' + col + '">' + escHtml(e.message) + '</span></div>';
+        }).join('');
+        logBox.scrollTop = 0;
+      }
+    }
+  } catch(e) {
+    const logBox = document.getElementById('dsi-log-box');
+    if (logBox) logBox.textContent = 'Fout bij laden: ' + e.message;
+  }
+}
+
+async function dsiAction(action) {
+  try {
+    const r = await fetch('/api/dsi/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    const j = await r.json();
+    toast((r.ok ? '✅ ' : '❌ ') + (j.message || j.error || action + ' verstuurd'), !r.ok);
+    setTimeout(loadDsi, 1500);
+  } catch(e) {
+    toast('❌ Fout: ' + e.message, true);
+  }
+}
+
 function filterModLog() {
   const q = (document.getElementById('modlog-search')?.value || '').toLowerCase();
   const filtered = q
@@ -1747,6 +1897,9 @@ const server = http.createServer(async (req, res) => {
     stats.autoRestart        = !manualStop;
     stats.guardianRunning    = guardianStatus() === 'running';
     stats.guardianRestart    = guardianRestartCount;
+    stats.dsiRunning         = dsiStatus() === 'running';
+    stats.dsiRestart         = dsiRestartCount;
+    stats.dsiAutoRestart     = !dsiManualStop;
     return send(200, stats);
   }
 
@@ -1870,6 +2023,19 @@ const server = http.createServer(async (req, res) => {
     if (action === 'restart') {
       stopGuardian();
       setTimeout(startGuardian, 1500);
+      return send(200, { ok: true });
+    }
+    return send(404, { error: 'Onbekende actie' });
+  }
+
+  // POST /api/dsi/start|stop|restart
+  if (url.startsWith('/api/dsi/') && method === 'POST') {
+    const action = url.slice(9);
+    if (action === 'start')   { startDsi(); return send(200, { ok: true }); }
+    if (action === 'stop')    { stopDsi();  return send(200, { ok: true }); }
+    if (action === 'restart') {
+      stopDsi();
+      setTimeout(startDsi, 1500);
       return send(200, { ok: true });
     }
     return send(404, { error: 'Onbekende actie' });
@@ -2006,6 +2172,17 @@ const server = http.createServer(async (req, res) => {
   // GET /api/security/events
   if (url === '/api/security/events' && method === 'GET') {
     return send(200, loadSecEvents().slice(0, 100));
+  }
+
+  // GET /api/dsi/status
+  if (url === '/api/dsi/status' && method === 'GET') {
+    const recentLogs = logBuffer.filter(e => e.src === 'dsi').slice(-100);
+    return send(200, {
+      running:      dsiStatus() === 'running',
+      restartCount: dsiRestartCount,
+      autoRestart:  !dsiManualStop,
+      logs:         recentLogs,
+    });
   }
 
   // GET /api/guardian/events
@@ -2254,6 +2431,9 @@ startBot();
 
 // Auto-start guardian bot
 startGuardian();
+
+// Auto-start DSI bot
+startDsi();
 
 // ─── WebSocket server (live logs) ────────────────────────────────────────────
 const wss = new WebSocketServer({ server });

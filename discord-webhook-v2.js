@@ -1,4 +1,4 @@
-// Discord Webhook Integration voor Lage Landen RP Sollicitaties v2.0
+﻿// Discord Webhook Integration voor Lage Landen RP Sollicitaties v2.0
 // Features: Code Verification, 24h Cooldown, Enhanced Security
 // Security: Uses Netlify Function to hide Discord webhook URL
 
@@ -104,7 +104,7 @@ class DiscordSubmitter {
         
         const payload = {
             username: "Lage Landen RP - Sollicitaties",
-            avatar_url: "https://lagelandenrp.netlify.app/images/logo.png",
+            avatar_url: "https://lagelanden.netlify.app/images/logo.png",
             embeds: [embed]
         };
 

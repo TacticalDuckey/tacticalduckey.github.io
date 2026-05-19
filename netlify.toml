@@ -1,6 +1,7 @@
-[build]
+﻿[build]
   publish = "."
   command = ""
+  functions = "netlify/functions"
 
 # Netlify Identity configuratie
 [context.production]
@@ -73,7 +74,7 @@
   for = "/.netlify/functions/*"
   [headers.values]
     # CORS alleen voor eigen domain (wordt overschreven door function code)
-    Access-Control-Allow-Origin = "https://lagelandenrp.netlify.app"
+    Access-Control-Allow-Origin = "https://lagelanden.netlify.app"
     Access-Control-Allow-Methods = "POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type"
     Access-Control-Max-Age = "86400"

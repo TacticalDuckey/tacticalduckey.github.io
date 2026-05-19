@@ -1,11 +1,11 @@
-// Netlify Function - Server-side Discord Webhook Handler
+﻿// Netlify Function - Server-side Discord Webhook Handler
 // Verbergt de Discord webhook URL voor publiek
 // Secure CORS policy - alleen eigen domain
 
 exports.handler = async (event, context) => {
     // Whitelist van toegestane origins
     const allowedOrigins = [
-        'https://lagelandenrp.netlify.app',
+        'https://lagelanden.netlify.app',
         'https://tacticalduckey.github.io',
         'http://localhost:8888', // Voor lokaal testen
         'http://localhost:3000'

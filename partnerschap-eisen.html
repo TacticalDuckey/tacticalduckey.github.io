@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -451,6 +451,88 @@
             </ul>
         </div>
 
+        <!-- Partnership Aanvraag Formulier -->
+        <div class="info-section" id="aanvraag-sectie" style="border-left-color: #10b981;">
+            <h2 style="color: #047857;">📩 Partnership Aanvragen</h2>
+            <p>Vul het formulier hieronder in om direct een partnership aan te vragen. Ons team beoordeelt je aanvraag binnen <strong>24-48 uur</strong> en neemt contact met je op via Discord.</p>
+
+            <div id="partner-cooldown-box" style="display:none; background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                <strong>⏳ Je hebt recent al een aanvraag ingediend.</strong><br>
+                <span id="partner-cooldown-msg">Wacht 24 uur voordat je opnieuw een aanvraag indient.</span>
+            </div>
+
+            <form id="partnershipForm" style="margin-top: 1.5rem;">
+                <div style="display: grid; gap: 1.2rem;">
+
+                    <div>
+                        <label for="p_servernaam" style="display:block; font-weight:600; margin-bottom:.4rem; color:#047857;">🏷️ Server Naam *</label>
+                        <input type="text" id="p_servernaam" name="servernaam" required maxlength="100"
+                               placeholder="Naam van jouw Discord server"
+                               style="width:100%; padding:.75rem; border:2px solid #d1d5db; border-radius:8px; font-size:14px; box-sizing:border-box;">
+                    </div>
+
+                    <div>
+                        <label for="p_invite" style="display:block; font-weight:600; margin-bottom:.4rem; color:#047857;">🔗 Discord Invite Link *</label>
+                        <input type="url" id="p_invite" name="invite" required maxlength="200"
+                               placeholder="https://discord.gg/..."
+                               style="width:100%; padding:.75rem; border:2px solid #d1d5db; border-radius:8px; font-size:14px; box-sizing:border-box;">
+                    </div>
+
+                    <div>
+                        <label for="p_leden" style="display:block; font-weight:600; margin-bottom:.4rem; color:#047857;">👥 Aantal Leden *</label>
+                        <input type="number" id="p_leden" name="leden" required min="1" max="99999"
+                               placeholder="bijv. 120"
+                               style="width:100%; padding:.75rem; border:2px solid #d1d5db; border-radius:8px; font-size:14px; box-sizing:border-box;">
+                    </div>
+
+                    <div>
+                        <label for="p_thema" style="display:block; font-weight:600; margin-bottom:.4rem; color:#047857;">🎮 Server Type / Thema *</label>
+                        <select id="p_thema" name="thema" required
+                                style="width:100%; padding:.75rem; border:2px solid #d1d5db; border-radius:8px; font-size:14px; box-sizing:border-box;">
+                            <option value="">-- Selecteer een type --</option>
+                            <option value="Roblox RP">Roblox Roleplay</option>
+                            <option value="FiveM RP">FiveM Roleplay</option>
+                            <option value="Gaming Community">Gaming Community</option>
+                            <option value="RP Algemeen">Roleplay (Overig)</option>
+                            <option value="Anders">Anders</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="p_contact" style="display:block; font-weight:600; margin-bottom:.4rem; color:#047857;">💬 Jouw Discord Gebruikersnaam *</label>
+                        <input type="text" id="p_contact" name="contact" required maxlength="100"
+                               placeholder="gebruiker of gebruiker#0000"
+                               style="width:100%; padding:.75rem; border:2px solid #d1d5db; border-radius:8px; font-size:14px; box-sizing:border-box;">
+                    </div>
+
+                    <div>
+                        <label for="p_motivatie" style="display:block; font-weight:600; margin-bottom:.4rem; color:#047857;">✍️ Waarom wil je samenwerken? *</label>
+                        <textarea id="p_motivatie" name="motivatie" required minlength="20" maxlength="1000"
+                                  placeholder="Vertel kort over jouw server en wat jullie samenwerking zou inhouden..."
+                                  style="width:100%; padding:.75rem; border:2px solid #d1d5db; border-radius:8px; font-size:14px; box-sizing:border-box; min-height:100px; resize:vertical;"></textarea>
+                    </div>
+                </div>
+
+                <div style="background:#f0fdf4; border-left:4px solid #10b981; padding:1rem; border-radius:6px; margin: 1.5rem 0; font-size:14px;">
+                    ✅ Zorg dat je server minstens <strong>35 actieve leden</strong> heeft en voldoet aan de Discord ToS voordat je een aanvraag indient.
+                </div>
+
+                <button type="submit" id="partnerSubmitBtn"
+                        style="background: linear-gradient(135deg, #047857, #10b981); color:white; padding:1rem 2rem; border:none; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; width:100%; transition: all .2s;">
+                    📨 Aanvraag Indienen
+                </button>
+
+                <div id="partner-success" style="display:none; background:#d1fae5; border-left:4px solid #10b981; padding:1rem; border-radius:6px; margin-top:1rem;">
+                    <strong>✅ Aanvraag verzonden!</strong><br>
+                    Ons team beoordeelt je aanvraag en neemt binnen 24-48 uur contact met je op via Discord.
+                </div>
+                <div id="partner-error" style="display:none; background:#fee2e2; border-left:4px solid #dc2626; padding:1rem; border-radius:6px; margin-top:1rem;">
+                    <strong>❌ Er ging iets mis.</strong><br>
+                    <span id="partner-error-msg"></span>
+                </div>
+            </form>
+        </div>
+
         <!-- Contact -->
         <div class="contact-section">
             <h2>📞 Contact & Vragen</h2>
@@ -466,6 +548,118 @@
             <p class="footer-note">Partnership richtlijnen kunnen zonder voorafgaande kennisgeving worden gewijzigd</p>
         </div>
     </footer>
+
+    <!-- Partnership Aanvraag Script -->
+    <script>
+        (function() {
+            const COOLDOWN_KEY = 'partnership_aanvraag_ts';
+            const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 uur
+
+            function checkCooldown() {
+                const last = localStorage.getItem(COOLDOWN_KEY);
+                if (!last) return false;
+                return (Date.now() - parseInt(last, 10)) < COOLDOWN_MS;
+            }
+
+            function setCooldown() {
+                localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+            }
+
+            function sanitize(str) {
+                return String(str).replace(/[<>"'&]/g, c => ({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;','&':'&amp;'}[c]));
+            }
+
+            const form = document.getElementById('partnershipForm');
+            const submitBtn = document.getElementById('partnerSubmitBtn');
+            const cooldownBox = document.getElementById('partner-cooldown-box');
+            const cooldownMsg = document.getElementById('partner-cooldown-msg');
+            const successBox = document.getElementById('partner-success');
+            const errorBox = document.getElementById('partner-error');
+            const errorMsg = document.getElementById('partner-error-msg');
+
+            // Toon cooldown-melding als van toepassing
+            if (checkCooldown()) {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+                cooldownBox.style.display = 'block';
+                const last = parseInt(localStorage.getItem(COOLDOWN_KEY), 10);
+                const remaining = COOLDOWN_MS - (Date.now() - last);
+                const hours = Math.floor(remaining / 3600000);
+                const minutes = Math.floor((remaining % 3600000) / 60000);
+                cooldownMsg.textContent = `Wacht nog ongeveer ${hours}u ${minutes}m voordat je opnieuw een aanvraag indient.`;
+            }
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                successBox.style.display = 'none';
+                errorBox.style.display = 'none';
+
+                if (checkCooldown()) return;
+
+                // Valideer invite link
+                const inviteVal = document.getElementById('p_invite').value.trim();
+                if (!inviteVal.startsWith('https://discord.gg/') && !inviteVal.startsWith('https://discord.com/invite/')) {
+                    errorMsg.textContent = 'Vul een geldige Discord invite link in (bijv. https://discord.gg/...).';
+                    errorBox.style.display = 'block';
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = '⏳ Verzenden...';
+
+                const servernaam = sanitize(document.getElementById('p_servernaam').value.trim());
+                const leden = parseInt(document.getElementById('p_leden').value, 10);
+                const thema = sanitize(document.getElementById('p_thema').value);
+                const contact = sanitize(document.getElementById('p_contact').value.trim());
+                const motivatie = sanitize(document.getElementById('p_motivatie').value.trim());
+
+                const embed = {
+                    title: '🤝 Nieuwe Partnership Aanvraag',
+                    color: 0x10b981,
+                    timestamp: new Date().toISOString(),
+                    footer: { text: 'Lage Landen RP - Partnership Systeem' },
+                    fields: [
+                        { name: '🏷️ Server Naam', value: servernaam, inline: true },
+                        { name: '👥 Aantal Leden', value: String(leden), inline: true },
+                        { name: '🎮 Type / Thema', value: thema, inline: true },
+                        { name: '🔗 Invite Link', value: inviteVal, inline: false },
+                        { name: '💬 Contactpersoon', value: contact, inline: true },
+                        { name: '✍️ Motivatie', value: motivatie, inline: false }
+                    ]
+                };
+
+                const payload = {
+                    username: 'Lage Landen RP - Partnerships',
+                    avatar_url: 'https://lagelanden.netlify.app/images/logo.png',
+                    embeds: [embed]
+                };
+
+                try {
+                    const res = await fetch('/.netlify/functions/submit-partnership', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        setCooldown();
+                        form.reset();
+                        successBox.style.display = 'block';
+                        cooldownBox.style.display = 'none';
+                        document.getElementById('aanvraag-sectie').scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        throw new Error(data.error || 'Onbekende fout');
+                    }
+                } catch (err) {
+                    errorMsg.textContent = err.message + ' — Probeer het later opnieuw of neem contact op via Discord.';
+                    errorBox.style.display = 'block';
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '📨 Aanvraag Indienen';
+                }
+            });
+        })();
+    </script>
 
     <!-- Blacklist Dynamic Loading Script -->
     <script>

@@ -31,7 +31,8 @@
     "noAvatarFlag": true
   },
   "webhookProtection": {
-    "enabled": true
+    "enabled": true,
+    "allowedWebhookIds": ["1471546418572296273", "JOUW_WEBHOOK_ID_HIER"]
   },
   "antiProfanity": {
     "enabled": true
@@ -40,9 +41,9 @@
     "enabled": true,
     "channelId": "1477091119220130015",
     "action": "quarantine",
-    "lastActivity": 1772559319209,
-    "msgsSinceWarn": 0,
-    "warningMsgId": "1478445690119131277"
+    "lastActivity": 1774341311903,
+    "msgsSinceWarn": 10,
+    "warningMsgId": "1481238876948271106"
   },
   "phishing": {
     "enabled": true,

@@ -1,11 +1,11 @@
-# Netlify Environment Variables Setup
+﻿# Netlify Environment Variables Setup
 
 Voor de SPOED sollicitatie moet je de volgende environment variable instellen in Netlify:
 
 ## Stappen:
 
 1. Ga naar je Netlify dashboard
-2. Selecteer je site (lagelandenrp.netlify.app)
+2. Selecteer je site (lagelanden.netlify.app)
 3. Ga naar **Site configuration** → **Environment variables**
 4. Klik op **Add a variable**
 5. Voeg de volgende toe:

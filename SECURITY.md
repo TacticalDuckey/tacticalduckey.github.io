@@ -1,4 +1,4 @@
-# 🛡️ Security Implementation - Lage Landen RP
+﻿# 🛡️ Security Implementation - Lage Landen RP
 
 ## Overzicht Beveiligingsmaatregelen
 
@@ -85,7 +85,7 @@ upgrade-insecure-requests
 **Whitelist**:
 ```javascript
 const allowedOrigins = [
-    'https://lagelandenrp.netlify.app',
+    'https://lagelanden.netlify.app',
     'https://tacticalduckey.github.io',
     'http://localhost:8888',  // Dev only
     'http://localhost:3000'   // Dev only

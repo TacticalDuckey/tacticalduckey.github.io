@@ -5,10 +5,40 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { execFileSync, execSync } = require('child_process');
+
+// --- yt-dlp bootstrap -------------------------------------------------------
+// yt-dlp is niet vooraf geïnstalleerd op Cybrancee. Download het automatisch
+// bij de eerste start en sla het op in /home/container/yt-dlp.
+(function bootstrapYtDlp() {
+  const bin = path.join(__dirname, 'yt-dlp');
+  if (fs.existsSync(bin)) {
+    try {
+      const ver = execFileSync(bin, ['--version'], { encoding: 'utf-8' }).trim();
+      console.log(`✅ yt-dlp aanwezig: ${ver}`);
+      return;
+    } catch {}
+  }
+  console.log('⬇️ yt-dlp downloaden van GitHub...');
+  try {
+    execSync(
+      `curl -L --silent --show-error --fail ` +
+      `"https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp" ` +
+      `-o "${bin}"`,
+      { stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+    fs.chmodSync(bin, 0o755);
+    const ver = execFileSync(bin, ['--version'], { encoding: 'utf-8' }).trim();
+    console.log(`✅ yt-dlp geïnstalleerd: ${ver}`);
+  } catch (e) {
+    console.warn('⚠️ yt-dlp download mislukt — muziek werkt mogelijk niet:', e.message?.split('\n')[0]);
+  }
+})();
+// ---------------------------------------------------------------------------
 
 // --- .env laden -------------------------------------------------------------
 try {
-  const envPath = path.join(__dirname, '..', '.env');
+  const envPath = path.join(__dirname, '.env');
   if (fs.existsSync(envPath)) {
     fs.readFileSync(envPath, 'utf-8').split('\n').forEach(line => {
       const t = line.trim();
@@ -30,10 +60,6 @@ const {
 const { Player, QueueRepeatMode, BaseExtractor, Track } = require('discord-player');
 const { DefaultExtractors } = require('@discord-player/extractor');
 const { YoutubeiExtractor } = require('discord-player-youtubei');
-const ytDlpWrap = require('yt-dlp-exec');
-const _ytDlp   = ytDlpWrap.create
-  ? ytDlpWrap.create(require('path').join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe'))
-  : ytDlpWrap;
 const Genius = require('genius-lyrics');
 const geniusClient = new Genius.Client(); // geen API key nodig voor publieke lyrics
 
@@ -55,7 +81,7 @@ const WARN_ROLE_2          = '1457747096601100441';
 const BLACKLIST_CHANNEL_ID = process.env.DISCORD_CHANNEL_ID || '1471529070712848588';
 const GUARDIAN_BOT_ID      = process.env.GUARDIAN_BOT_ID || '1478145770929786880'; // Guardian backup bot
 const PARTNER_CHANNEL_ID   = '1457835992743547033';
-const PARTNER_WEBSITE      = 'https://lagelandenrp.netlify.app/partnerschap-eisen.html';
+const PARTNER_WEBSITE      = 'https://lagelanden.netlify.app/partnerschap-eisen.html';
 const TICKET_LOG_CHANNEL   = '1458536429742460987';
 const CHAT_LOG_CHANNEL     = '1472994861379748005';
 const VOICE_LOG_CHANNEL    = '1458534873995280649';
@@ -110,6 +136,14 @@ const coordJoinTracker = []; // [{ userId, createdAt, joinedAt }]
 
 // Voice action tracker (disconnects/moves door één persoon)
 const voiceActionTracker = new Map(); // executorId ? [timestamp, ...]
+
+// Berichten die door een security handler verwijderd/geblokkeerd zijn.
+// Andere handlers (XP, chat-log) slaan deze berichten over om dubbele verwerking te voorkomen.
+const blockedMessageIds = new Set();
+function markBlocked(msgId) {
+  blockedMessageIds.add(msgId);
+  setTimeout(() => blockedMessageIds.delete(msgId), 10_000);
+}
 
 // Captcha store voor verificatie
 const captchaStore = new Map(); // userId ? { answer, expiry }
@@ -457,6 +491,14 @@ let inactiefDB = loadInactief(); // userId ? { lastMessage, username, gemeld: [{
 const pendingPartner = new Map();
 // channelId -> true  partner tickets die al een begroeting hebben gekregen
 const partnerTicketGreeted = new Set();
+// channelId -> true  sollicitatie tickets waarvoor al een follow-up timer is gestart
+const sollicitatieFollowupSent = new Set();
+// channelId -> true  report tickets waarvoor al om bewijs is gevraagd
+const reportBewijsGevraagd = new Set();
+// channelId -> Date.now()  wanneer partner ticket aangemaakt (voor 48u herinnering)
+const partnerTicketAangemaakt = new Map();
+// channelId -> true  partner ticket 48u herinnering al verstuurd
+const partnerTicketHerinnerd = new Set();
 // userId -> { kanaalId, kleur, doTag, rol, doTijdstip, doLogo, doAuteur }  pending embed
 const pendingEmbed = new Map();
 
@@ -488,12 +530,12 @@ const SLUR_LIST = [
   'autist','autistisch','nerd','softie','zwakkeling','huffter','rotzak','smeerlap',
   'schoft','schurk','klootzak','lul','klootzakken','lummel','lummels','slapjanus',
   'etterbak','etterbal','etter','rotzooitje','zeikerig','zeikerd','zeurkous',
-  'aap','apen','apenkop','beest','varken','varkenslijer','hond','hondenlul',
+  'apenkop','beest','varken','varkenslijer','hond','hondenlul',
   'rat','rattenstreek','lafaard','feige','lafbek','angsthaas',
 
   // -- NL: LGBTQ+ beledigingen --------------------------------------------------
   'flikker','flikkers','nicht','nichten','homo','homofiel','homoseksueel',
-  'neef','mietje','mietjes','flikkerij','lesbo','lesbiaan',
+  'mietje','mietjes','flikkerij','lesbo','lesbiaan',
   'travestiet','transhoer','transslet',
 
   // -- NL: racistisch ----------------------------------------------------------
@@ -687,7 +729,7 @@ const SLUR_LIST = [
   'eat sh1t','eat $hit','ba$tard','@sshole ','a.s.s.h.o.l.e',
   'c.u.n.t','d.i.c.k','f.u.c.k','s.h.i.t','b.i.t.c.h',
   'motha fucka','muthafucka','mutha fucka','muhfucka',
-  'kunt','kunts','fvck off','phuck off','sheit','shiit','shyt',
+  'fvck off','phuck off','sheit','shiit','shyt',
   'ahole','a hole','asswhipe','asswhole','azzhole',
   'biatch','beyotch','bytch','beeyotch',
   'dilhole','dillweed','douchecanoe','douche bag','douchebag','douchebags',
@@ -736,10 +778,17 @@ const client = new Client({
 });
 
 // --- Discord Player (muziek) -------------------------------------------------
-// Zet ffmpeg-static pad zodat @discordjs/voice het zeker vindt op Windows
-const ffmpegPath = require('ffmpeg-static');
+// Gebruik system ffmpeg als beschikbaar (voorkomt SIGSEGV van ffmpeg-static op bepaalde Linux kernels)
+const { execFileSync: _execFileSync } = require('child_process');
+let ffmpegPath;
+try {
+  ffmpegPath = _execFileSync('which', ['ffmpeg'], { encoding: 'utf-8' }).trim();
+  console.log('🔧 ffmpeg pad (systeem):', ffmpegPath);
+} catch {
+  ffmpegPath = require('ffmpeg-static');
+  console.log('🔧 ffmpeg pad (ffmpeg-static):', ffmpegPath);
+}
 process.env.FFMPEG_PATH = ffmpegPath;
-console.log('🔧 ffmpeg pad:', ffmpegPath);
 
 // Onderdruk youtubei.js Text/Info spam (bijv. "Unable to find matching run")
 try {
@@ -751,74 +800,575 @@ try {
 const path_m        = require('path');
 const fs_m          = require('fs');
 const os_m          = require('os');
-const { execFile }  = require('child_process');
-const { promisify } = require('util');
-const execFileM     = promisify(execFile);
-const ytDlpBin_m    = path_m.join(__dirname, '..', 'node_modules', 'yt-dlp-exec', 'bin', 'yt-dlp.exe');
+
+// Innertube (youtubei.js) voor YouTube zoeken — vervangt yt-dlp zoekfunctie
+// Muziek streaming via YouTube Innertube TV API met OAuth2 — werkt op datacenter IPs (geen PO-token vereist)
+const { Innertube } = require('youtubei.js');
+// YouTube TV client credentials (publiek bekende TV app, zelfde als yt-dlp OAuth2)
+const _YT_CLIENT_ID     = '861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com';
+const _YT_CLIENT_SECRET = 'SboVhoG9s0rNafixCSGGKXAT';
+let _ytTokenCache = process.env.YT_ACCESS_TOKEN
+  ? { token: process.env.YT_ACCESS_TOKEN, expiry: process.env.YT_TOKEN_EXPIRY ? new Date(process.env.YT_TOKEN_EXPIRY).getTime() : 0 }
+  : null;
+
+async function getYtAccessToken() {
+  // Token geldig als nog meer dan 2 minuten houdbaar
+  if (_ytTokenCache && _ytTokenCache.expiry > Date.now() + 120_000) return _ytTokenCache.token;
+  if (!process.env.YT_REFRESH_TOKEN) return _ytTokenCache?.token || null;
+  try {
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: [
+        `client_id=${encodeURIComponent(_YT_CLIENT_ID)}`,
+        `client_secret=${encodeURIComponent(_YT_CLIENT_SECRET)}`,
+        `refresh_token=${encodeURIComponent(process.env.YT_REFRESH_TOKEN)}`,
+        'grant_type=refresh_token',
+      ].join('&'),
+    });
+    const data = await res.json();
+    if (!data.access_token) throw new Error(data.error_description || data.error || 'Geen access token');
+    _ytTokenCache = { token: data.access_token, expiry: Date.now() + (data.expires_in || 3600) * 1000 };
+    console.log('🔄 YouTube OAuth2 token vernieuwd');
+    return _ytTokenCache.token;
+  } catch (e) {
+    console.error('⚠️ OAuth2 token refresh mislukt:', e.message);
+    return _ytTokenCache?.token || null;
+  }
+}
+
+// Haal directe YouTube audio URL op via Innertube TV API + OAuth2 Bearer token
+async function getYtStreamUrl(videoId) {
+  const token = await getYtAccessToken();
+
+  // === Stap 0: cobalt.tools / Piped / Invidious API ===
+  // Externe services die op eigen (niet-geblokkeerde) IP-adressen draaien.
+  // cobalt.tools is een open-source video/audio extractor met publieke API.
+  {
+    // --- cobalt (community instances eerst, daarna officieel met API key) ---
+    // De officiële api.cobalt.tools vereist een gratis API key (JWT).
+    // Haal er een op via https://cobalt.tools → klik het sleutelicoontje → "API key".
+    // Voeg toe aan .env: COBALT_API_KEY=jouw_key_hier
+    // Community instances hebben soms geen auth vereiste.
+    const cobaltInstances = [
+      { base: 'https://cobalt.api.timelessnesses.me', key: null },
+      { base: 'https://cobalt.canine.tools', key: null },
+      { base: 'https://api.cobalt.tools', key: process.env.COBALT_API_KEY || null },
+    ];
+    for (const { base: cobaltBase, key: cobaltKey } of cobaltInstances) {
+      if (cobaltBase === 'https://api.cobalt.tools' && !cobaltKey) {
+        console.warn('[cobalt] api.cobalt.tools overgeslagen — geen COBALT_API_KEY in .env');
+        continue;
+      }
+      try {
+        const cobaltHeaders = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        };
+        if (cobaltKey) cobaltHeaders['Authorization'] = `Api-Key ${cobaltKey}`;
+        const cobaltRes = await fetch(`${cobaltBase}/`, {
+          method: 'POST',
+          signal: AbortSignal.timeout(12000),
+          headers: cobaltHeaders,
+          body: JSON.stringify({
+            url: `https://www.youtube.com/watch?v=${videoId}`,
+            downloadMode: 'audio',
+            audioFormat: 'ogg',
+            audioBitrate: '128',
+          }),
+        });
+        const cobaltText = await cobaltRes.text();
+        let cobaltData;
+        try { cobaltData = JSON.parse(cobaltText); } catch { cobaltData = {}; }
+        if (cobaltRes.ok && cobaltData.url) {
+          console.log(`✅ YouTube audio URL via cobalt (${cobaltBase})`);
+          return cobaltData.url;
+        }
+        console.warn(`[cobalt] ${cobaltBase}: HTTP ${cobaltRes.status} — ${cobaltText.slice(0, 120)}`);
+      } catch (e) {
+        console.warn(`[cobalt] ${cobaltBase}: ${e.message?.slice(0, 80)}`);
+      }
+    }
+
+    // --- Piped API ---
+    const pipedInstances = [
+      'https://pipedapi.kavin.rocks',
+      'https://pipedapi.tokhmi.xyz',
+      'https://piped-api.garudalinux.org',
+      'https://api.piped.yt',
+      'https://pipedapi.in.projectsegfau.lt',
+      'https://pipedapi.adminforge.de',
+      'https://piped-api.ceville.info',
+    ];
+    for (const base of pipedInstances) {
+      try {
+        const res = await fetch(`${base}/streams/${videoId}`, {
+          signal: AbortSignal.timeout(7000),
+          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' },
+        });
+        if (!res.ok) { console.warn(`[Piped] ${base}: HTTP ${res.status}`); continue; }
+        const data = await res.json();
+        if (data.error) { console.warn(`[Piped] ${base}: ${data.error}`); continue; }
+        const audio = (data.audioStreams || [])
+          .filter(s => s.url && s.mimeType?.startsWith('audio/'))
+          .sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0))[0];
+        if (audio?.url) {
+          console.log(`✅ YouTube audio URL via Piped (${base})`);
+          return audio.url;
+        }
+        console.warn(`[Piped] ${base}: geen audioStreams in antwoord`);
+      } catch (e) {
+        console.warn(`[Piped] ${base}: ${e.message?.slice(0, 80)}`);
+      }
+    }
+
+    // --- Invidious API ---
+    const invidInstances = [
+      'https://inv.nadeko.net',
+      'https://yewtu.be',
+      'https://invidious.nerdvpn.de',
+      'https://invidious.privacyredirect.com',
+      'https://iv.melmac.space',
+      'https://invidious.fdn.fr',
+    ];
+    for (const base of invidInstances) {
+      try {
+        const res = await fetch(`${base}/api/v1/videos/${videoId}?fields=adaptiveFormats`, {
+          signal: AbortSignal.timeout(7000),
+          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' },
+        });
+        if (!res.ok) { console.warn(`[Invidious] ${base}: HTTP ${res.status}`); continue; }
+        const data = await res.json();
+        const audio = (data.adaptiveFormats || [])
+          .filter(f => f.url && f.type?.startsWith('audio/'))
+          .sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0))[0];
+        if (audio?.url) {
+          console.log(`✅ YouTube audio URL via Invidious (${base})`);
+          return audio.url;
+        }
+        console.warn(`[Invidious] ${base}: geen adaptiveFormats in antwoord`);
+      } catch (e) {
+        console.warn(`[Invidious] ${base}: ${e.message?.slice(0, 80)}`);
+      }
+    }
+  }
+
+  // === Stap 1: yt-dlp subprocess ===
+  {
+    const ytDlpBins = [path.join(__dirname, 'yt-dlp'), 'yt-dlp', '/usr/bin/yt-dlp', '/usr/local/bin/yt-dlp'];
+    for (const bin of ytDlpBins) {
+      try {
+        // Schrijf cookies bestand (persistent, overschrijven elke keer zodat het actueel blijft)
+        const cookiesPath = path.join(__dirname, 'yt-cookies.txt');
+        let cookiesWritten = false;
+        if (process.env.YT_COOKIE) {
+          try {
+            // Netscape cookies.txt formaat: domein \t subdomains \t pad \t secure \t expiry \t naam \t waarde
+            // SID/HSID/SSID/SAPISID/__Secure-*PSID zijn .google.com cookies — schrijf ze voor BEIDE domeinen
+            // zodat ze zowel bij youtube.com als google.com auth requests worden meegestuurd.
+            const parsed = process.env.YT_COOKIE.split(';').map(c => {
+              const eqIdx = c.indexOf('=');
+              if (eqIdx === -1) return null;
+              const name  = c.slice(0, eqIdx).trim().replace(/\r/g, '');
+              const value = c.slice(eqIdx + 1).trim().replace(/\r/g, '');
+              if (!name || !value) return null;
+              return { name, value };
+            }).filter(Boolean);
+            const lines = [];
+            for (const { name, value } of parsed) {
+              const secure = name.startsWith('__Secure-') ? 'TRUE' : 'FALSE';
+              // Schrijf voor .google.com (waar deze cookies origineel vandaan komen)
+              lines.push(`.google.com\tTRUE\t/\t${secure}\t2147483647\t${name}\t${value}`);
+              // Schrijf ook voor .youtube.com zodat yt-dlp ze bij YouTube verzoeken stuurt
+              lines.push(`.youtube.com\tTRUE\t/\t${secure}\t2147483647\t${name}\t${value}`);
+            }
+            if (lines.length) {
+              fs.writeFileSync(cookiesPath, '# Netscape HTTP Cookie File\n# Generated by bot.js\n' + lines.join('\n') + '\n');
+              cookiesWritten = true;
+              console.log(`[yt-dlp] cookies bestand geschreven: ${parsed.length} cookies (${lines.length} regels) → ${cookiesPath}`);
+            } else {
+              console.warn('[yt-dlp] YT_COOKIE aanwezig maar ongeldige inhoud — geen cookies geschreven');
+            }
+          } catch (ce) {
+            console.warn(`[yt-dlp] cookies write fout: ${ce.message}`);
+          }
+        } else {
+          console.warn('[yt-dlp] YT_COOKIE niet gevonden in .env — yt-dlp draait zonder cookies');
+        }
+
+        // Haal OAuth2 access token op als extra authenticatie naast cookies
+        let oauthHeader = null;
+        try {
+          const token = await getYtAccessToken();
+          if (token) oauthHeader = `Authorization:Bearer ${token}`;
+        } catch {}
+
+        // Probeer met android_testsuite, daarna web, daarna zonder extractor-arg
+        const attempts = [
+          ['--extractor-args', 'youtube:player_client=android_testsuite,web'],
+          ['--extractor-args', 'youtube:player_client=web'],
+          [], // yt-dlp kiest zelf
+        ];
+
+        for (const extraArgs of attempts) {
+          const ytDlpArgs = [
+            '--format', 'bestaudio[ext=webm]/bestaudio/best',
+            '--get-url',
+            '--no-playlist',
+            '--no-check-certificates',
+            ...extraArgs,
+          ];
+          if (cookiesWritten) ytDlpArgs.push('--cookies', cookiesPath);
+          if (oauthHeader) ytDlpArgs.push('--add-header', oauthHeader);
+          ytDlpArgs.push(`https://www.youtube.com/watch?v=${videoId}`);
+
+          const ytUrl = await new Promise((resolve, reject) => {
+            const proc = spawn(bin, ytDlpArgs);
+            let out = '', err = '';
+            proc.stdout.on('data', d => out += d.toString());
+            proc.stderr.on('data', d => err += d.toString());
+            proc.on('close', code => {
+              const line = out.trim().split('\n')[0];
+              if (code === 0 && line?.startsWith('http')) resolve(line);
+              else reject(new Error(err.trim().split('\n').pop() || `exit ${code}`));
+            });
+            proc.on('error', reject);
+          }).catch(e => { console.warn(`[yt-dlp${extraArgs.length ? ' +args' : ''}] ${e.message?.slice(0, 180)}`); return null; });
+
+          if (ytUrl) {
+            console.log(`✅ YouTube audio URL via yt-dlp`);
+            return ytUrl;
+          }
+        }
+        break; // bin gevonden maar beide pogingen mislukten — niet opnieuw proberen met ander pad
+      } catch (e) {
+        if (e.code === 'ENOENT') continue; // dit pad niet gevonden — volgende proberen
+        console.warn(`[yt-dlp] spawn fout: ${e.message}`);
+        break;
+      }
+    }
+  }
+
+  // === Stap 1: youtubei.js getBasicInfo() ===
+  // Probeert de ingebouwde decipher-logica van youtubei.js te gebruiken.
+  // Op datacenter IPs zijn alle clients momenteel geblokkeerd door YouTube.
+  try {
+    const yt = await getInnertube();
+    const ytPlayer = yt.session?.player || null;
+    for (const clientType of ['TV_EMBEDDED', 'WEB']) {
+      try {
+        const info = await yt.getBasicInfo(videoId, clientType);
+        const sd   = info.streaming_data;
+        if (!sd) {
+          const ps = info.playability_status;
+          console.warn(`[YT-API] youtubei.js ${clientType}: geen streaming_data (${ps?.status || '?'}: "${ps?.reason || ps?.toString() || '?'}")`);
+          continue;
+        }
+        const allFmts  = [...(sd.adaptive_formats || []), ...(sd.formats || [])];
+        const audioFmts = allFmts.filter(f =>
+          (f.mime_type || '').startsWith('audio/') &&
+          (f.url || f.signature_cipher || f.cipher)
+        );
+        if (!audioFmts.length) { console.warn(`[YT-API] youtubei.js ${clientType}: geen audio formats`); continue; }
+        audioFmts.sort((a, b) => (b.average_bitrate || b.bitrate || 0) - (a.average_bitrate || a.bitrate || 0));
+        const fmt = audioFmts[0];
+        let url   = fmt.url;
+        if (!url && ytPlayer && (fmt.signature_cipher || fmt.cipher)) url = fmt.decipher(ytPlayer);
+        if (url?.startsWith('http')) {
+          console.log(`✅ YouTube audio URL via youtubei.js ${clientType} (${(fmt.mime_type || '').split(';')[0]})`);
+          return url;
+        }
+        console.warn(`[YT-API] youtubei.js ${clientType}: URL leeg na decipher`);
+      } catch (e2) {
+        console.warn(`[YT-API] youtubei.js ${clientType}: ${e2.message}`);
+      }
+    }
+  } catch (e) {
+    console.warn('[YT-API] youtubei.js aanroep mislukt:', e.message);
+  }
+
+  // === Stap 2: Raw Innertube API ===
+  // ANDROID/IOS: geblokkeerd op datacenter IPs (HTTP 400 FAILED_PRECONDITION)
+  // TVHTML5 + OAuth2: geeft UNPLAYABLE "The page needs to be reloaded" (PO-token vereist)
+  // Beide geprobeerd als laatste kans.
+  let visitorData = null;
+  try {
+    const yt = await getInnertube();
+    visitorData = yt.session?.context?.client?.visitorData || null;
+  } catch {}
+
+  const rawClients = [
+    {
+      name: 'ANDROID',
+      useAuth: false,
+      apiKey: 'AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'com.google.android.youtube/19.09.37 (Linux; U; Android 14) gzip',
+        'X-YouTube-Client-Name': '3',
+        'X-YouTube-Client-Version': '19.09.37',
+      },
+      ctx: { clientName: 'ANDROID', clientVersion: '19.09.37', androidSdkVersion: 34, hl: 'en', gl: 'NL' },
+    },
+    {
+      name: 'IOS',
+      useAuth: false,
+      apiKey: 'AIzaSyB-63vPrdThhKuerbB2N_l7Kvxy3HjsZjs',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'com.google.ios.youtube/19.09.3 (iPhone16,2; U; CPU iOS 17_4_1 like Mac OS X)',
+        'X-YouTube-Client-Name': '5',
+        'X-YouTube-Client-Version': '19.09.3',
+      },
+      ctx: { clientName: 'IOS', clientVersion: '19.09.3', deviceModel: 'iPhone16,2', hl: 'en', gl: 'NL' },
+    },
+    {
+      name: 'TVHTML5',
+      useAuth: true,
+      apiKey: null,
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (SMART-TV; LINUX; Tizen 5.0) AppleWebKit/538.1',
+        'X-YouTube-Client-Name': '67',
+        'X-YouTube-Client-Version': '7.20240101',
+      },
+      ctx: { clientName: 'TVHTML5', clientVersion: '7.20240101', hl: 'en', gl: 'NL' },
+    },
+  ];
+
+  for (const client of rawClients) {
+    if (token && client.useAuth) client.headers['Authorization'] = `Bearer ${token}`;
+    const apiUrl = client.apiKey
+      ? `https://www.youtube.com/youtubei/v1/player?key=${client.apiKey}&prettyPrint=false`
+      : 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false';
+    const ctx = visitorData ? { ...client.ctx, visitorData } : client.ctx;
+    let httpStatus, data;
+    try {
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: client.headers,
+        body: JSON.stringify({ context: { client: ctx }, videoId, contentCheckOk: true, racyCheckOk: true }),
+      });
+      httpStatus = res.status;
+      const text = await res.text();
+      try { data = JSON.parse(text); } catch {
+        console.warn(`[YT-API] ${client.name}: HTTP ${httpStatus} — JSON parse fout`);
+        continue;
+      }
+      if (!res.ok) { console.warn(`[YT-API] ${client.name}: HTTP ${httpStatus} — ${text.slice(0, 200)}`); continue; }
+    } catch (e) {
+      console.warn(`[YT-API] ${client.name} netwerk fout: ${e.message}`);
+      continue;
+    }
+    if (!data.streamingData) {
+      const status = data.playabilityStatus?.status || 'UNKNOWN';
+      const reason = data.playabilityStatus?.reason || (data.playabilityStatus?.messages || [])[0] || '?';
+      console.warn(`[YT-API] ${client.name}: HTTP ${httpStatus} ${status} — "${reason}"`);
+      continue;
+    }
+    const formats     = [...(data.streamingData.adaptiveFormats || []), ...(data.streamingData.formats || [])];
+    const audioFormats = formats.filter(f => f.mimeType?.startsWith('audio/') && f.url && !f.signatureCipher && !f.cipher);
+    if (!audioFormats.length) {
+      const ciphered = formats.filter(f => f.signatureCipher || f.cipher).length;
+      console.warn(`[YT-API] ${client.name}: ${formats.length} formats, ${ciphered} cipher, 0 directe URL`);
+      continue;
+    }
+    audioFormats.sort((a, b) => (b.averageBitrate || b.bitrate || 0) - (a.averageBitrate || a.bitrate || 0));
+    console.log(`✅ YouTube audio URL via raw ${client.name} (${audioFormats[0].mimeType?.split(';')[0]})`);
+    return audioFormats[0].url;
+  }
+
+  throw new Error(`Alle YouTube clients mislukten voor videoId ${videoId}`);
+}
+
+// Haal dynamisch een geldig SoundCloud client_id op uit de JS-bundle van soundcloud.com
+let _scClientId = null;
+async function fetchSoundCloudClientId() {
+  if (_scClientId) return _scClientId;
+  // Gebruik omgevingsvariabele als override
+  if (process.env.SOUNDCLOUD_CLIENT_ID) {
+    _scClientId = process.env.SOUNDCLOUD_CLIENT_ID;
+    return _scClientId;
+  }
+  try {
+    // Stap 1: haal de SoundCloud homepage op
+    const homeRes = await fetch('https://soundcloud.com', {
+      signal: AbortSignal.timeout(10000),
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' },
+    });
+    if (!homeRes.ok) throw new Error(`SoundCloud homepage HTTP ${homeRes.status}`);
+    const homeHtml = await homeRes.text();
+    // Stap 2: zoek JS-bundle URLs (patroon: https://a-v2.sndcdn.com/assets/....js)
+    const scriptMatches = [...homeHtml.matchAll(/https:\/\/a-v2\.sndcdn\.com\/assets\/[^"'\s]+\.js/g)];
+    if (!scriptMatches.length) throw new Error('Geen SoundCloud JS-bundles gevonden');
+    // Stap 3: zoek in de laatste paar JS-bestanden naar client_id
+    const jsCandidates = scriptMatches.slice(-5).reverse();
+    for (const match of jsCandidates) {
+      const jsUrl = match[0];
+      const jsRes = await fetch(jsUrl, {
+        signal: AbortSignal.timeout(10000),
+        headers: { 'User-Agent': 'Mozilla/5.0' },
+      });
+      if (!jsRes.ok) continue;
+      const jsText = await jsRes.text();
+      const idMatch = jsText.match(/client_id\s*[=:]\s*["']([a-zA-Z0-9]{20,32})["']/);
+      if (idMatch) {
+        _scClientId = idMatch[1];
+        console.log(`[SoundCloud] client_id dynamisch opgehaald: ${_scClientId.slice(0, 8)}...`);
+        return _scClientId;
+      }
+    }
+    throw new Error('client_id niet gevonden in JS-bundles');
+  } catch (e) {
+    console.warn(`[SoundCloud] client_id ophalen mislukt: ${e.message} — fallback naar statisch ID`);
+    _scClientId = 'iZIs9mchVcX5lhVRyQNGAO6d2lla';
+    return _scClientId;
+  }
+}
+
+// Zoek een nummer op SoundCloud en geef de directe stream URL terug.
+// Gebruikt de publieke SoundCloud widget API — geen package nodig.
+async function getSoundCloudStreamUrl(title) {
+  try {
+    // Stap 1: zoek het nummer via de SoundCloud widget search
+    const scClientId = await fetchSoundCloudClientId();
+    const searchUrl  = `https://api-v2.soundcloud.com/search/tracks?q=${encodeURIComponent(title)}&client_id=${scClientId}&limit=1`;
+    const searchRes  = await fetch(searchUrl, {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+    });
+    if (searchRes.status === 401) {
+      // client_id verlopen — cache wissen zodat bij volgende aanroep opnieuw wordt opgehaald
+      _scClientId = null;
+      throw new Error(`SoundCloud search HTTP 401 (client_id verlopen — cache gewist)`);
+    }
+    if (!searchRes.ok) throw new Error(`SoundCloud search HTTP ${searchRes.status}`);
+    const searchData = await searchRes.json();
+    const track = searchData?.collection?.[0];
+    if (!track) throw new Error('Geen resultaten op SoundCloud');
+
+    // Stap 2: haal de streamable MP3 URL op
+    const mp3Media = track.media?.transcodings?.find(t => t.format?.protocol === 'progressive' && t.format?.mime_type?.includes('mpeg'));
+    if (!mp3Media?.url) throw new Error('Geen progressive MP3 transcoding gevonden');
+
+    const streamRes = await fetch(`${mp3Media.url}?client_id=${scClientId}`, {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+    });
+    if (!streamRes.ok) throw new Error(`SoundCloud stream URL HTTP ${streamRes.status}`);
+    const streamData = await streamRes.json();
+    if (!streamData?.url) throw new Error('Geen stream URL in SoundCloud antwoord');
+
+    console.log(`✅ SoundCloud fallback: "${track.title}" door ${track.user?.username}`);
+    return streamData.url;
+  } catch (e) {
+    console.warn(`[SoundCloud] ${e.message}`);
+    return null;
+  }
+}
+
+if (process.env.YT_REFRESH_TOKEN) console.log('🔐 YouTube OAuth2 geconfigureerd (token wordt bij gebruik vernieuwd)');
+else if (process.env.YT_ACCESS_TOKEN) console.log('🔑 YouTube access token aanwezig (geen refresh token — verloopt na 1u)');
+else console.warn('⚠️ Geen YouTube OAuth2 tokens in .env — muziek werkt mogelijk niet op datacenter IP');
+let _innertube = null;
+async function getInnertube() {
+  if (!_innertube) {
+    // Geen generate_session_locally — haalt echte YouTube player tokens op (nodig voor URL deciphering)
+    _innertube = await Innertube.create({ cache: new Map() });
+  }
+  return _innertube;
+}
+
+function extractYouTubeId(url) {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([^&?#\s]{11})/);
+  return m ? m[1] : null;
+}
 
 // Zoek een nummer of playlist via yt-dlp — geeft { tracks[], isPlaylist, playlistTitle } terug
 async function searchMusic(query) {
+  const yt = await getInnertube();
   const isUrl = /^https?:\/\//.test(query.trim());
-
-  // Playlist detectie
   const isPlaylist = isUrl && (/[?&]list=/.test(query) || /\/playlist\?/.test(query));
 
   if (isPlaylist) {
-    // Haal alle tracks op uit de playlist (max 100)
-    const r = await execFileM(ytDlpBin_m, [
-      query, '--flat-playlist',
-      '--print', '%(id)s|%(title)s|%(duration)s|%(uploader,channel)s|%(thumbnail)s',
-      '--no-warnings', '--playlist-end', '100',
-    ], { timeout: 30_000 }).catch(e => ({ stdout: e.stdout || '' }));
-    const lines = (r.stdout || '').trim().split('\n').filter(Boolean);
-    if (!lines.length) return null;
-
-    const tracks = lines.map(line => {
-      const [id, title, dur, author, thumb] = line.split('|');
-      if (!id || !title || id === 'NA') return null;
-      const sec = parseInt(dur) || 0;
-      return { title: title.trim(), url: `https://www.youtube.com/watch?v=${id}`,
-               author: (author || 'Onbekend').trim(),
-               duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
-               thumbnail: thumb?.trim() || null };
-    }).filter(Boolean);
-
-    if (!tracks.length) return null;
-    return { tracks, isPlaylist: true, playlistTitle: `Playlist (${tracks.length} nummers)` };
+    const listMatch = query.match(/[?&]list=([^&]+)/);
+    if (!listMatch) return null;
+    try {
+      const playlist = await yt.getPlaylist(listMatch[1]);
+      const items = playlist.items || playlist.videos || [];
+      const tracks = items.slice(0, 100).map(v => {
+        const id = v.id;
+        if (!id) return null;
+        const sec = v.duration?.seconds || 0;
+        return {
+          title: v.title?.text || v.title || 'Onbekend',
+          url: `https://www.youtube.com/watch?v=${id}`,
+          videoId: id,
+          author: v.author?.name || 'Onbekend',
+          duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
+          thumbnail: v.thumbnails?.[0]?.url || null,
+        };
+      }).filter(Boolean);
+      if (!tracks.length) return null;
+      return { tracks, isPlaylist: true, playlistTitle: `Playlist (${tracks.length} nummers)` };
+    } catch (e) { console.error('Playlist ophalen mislukt:', e.message); return null; }
   }
 
   if (isUrl) {
-    const r = await execFileM(ytDlpBin_m, [
-      query, '--dump-json', '--no-warnings', '--no-playlist',
-    ], { timeout: 20_000 }).catch(err => ({ stdout: err.stdout || '' }));
-    const line = (r.stdout || '').trim().split('\n')[0];
-    if (!line) return null;
+    const videoId = extractYouTubeId(query);
+    if (!videoId) return null;
+    // Probeer meerdere clients — metadata (titel) werkt vaak nog wel, ook als streaming geblokkeerd is
+    for (const client of ['WEB', 'TV_EMBEDDED', undefined]) {
+      try {
+        const info = await yt.getBasicInfo(videoId, client);
+        const d = info.basic_info;
+        if (!d?.title) continue; // geen titel → volgende client proberen
+        const sec = d.duration || 0;
+        return { tracks: [{
+          title: d.title,
+          url: `https://www.youtube.com/watch?v=${videoId}`,
+          videoId,
+          author: d.channel?.name || 'Onbekend',
+          duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
+          thumbnail: d.thumbnail?.[0]?.url || null,
+        }], isPlaylist: false };
+      } catch (e) { console.warn(`[searchMusic] getBasicInfo (${client}) mislukt: ${e.message}`); }
+    }
+    // Als metadata niet opgehaald kan worden, probeer via zoekresultaten
     try {
-      const info = JSON.parse(line);
-      const sec  = Math.floor(info.duration || 0);
-      const track = { title: info.title || query, url: info.webpage_url || query,
-               author: info.uploader || info.channel || 'Onbekend',
-               duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
-               thumbnail: info.thumbnail || null };
-      return { tracks: [track], isPlaylist: false };
-    } catch { return null; }
-  } else {
-    const r = await execFileM(ytDlpBin_m, [
-      `ytsearch1:${query}`, '--flat-playlist',
-      '--print', '%(id)s|%(title)s|%(duration)s|%(uploader,channel)s|%(thumbnail)s',
-      '--no-warnings',
-    ], { timeout: 15_000 }).catch(e => ({ stdout: e.stdout || '' }));
-    const line = (r.stdout || '').trim().split('\n')[0];
-    if (!line) return null;
-    const [id, title, dur, author, thumb] = line.split('|');
-    if (!id || !title) return null;
-    const sec = parseInt(dur) || 0;
-    const track = { title: title.trim(), url: `https://www.youtube.com/watch?v=${id}`,
-             author: (author || 'Onbekend').trim(),
-             duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
-             thumbnail: thumb?.trim() || null };
-    return { tracks: [track], isPlaylist: false };
+      const results = await yt.search(`https://www.youtube.com/watch?v=${videoId}`, { type: 'video' });
+      const video = (results.videos || results.results || []).find(v => v.id === videoId || v.id);
+      if (video?.title) {
+        const sec = video.duration?.seconds || 0;
+        return { tracks: [{
+          title: video.title?.text || video.title,
+          url: `https://www.youtube.com/watch?v=${videoId}`,
+          videoId,
+          author: video.author?.name || 'Onbekend',
+          duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
+          thumbnail: video.best_thumbnail?.url || video.thumbnails?.[0]?.url || null,
+        }], isPlaylist: false };
+      }
+    } catch (e) { console.warn(`[searchMusic] titel via zoeken mislukt: ${e.message}`); }
+    console.error(`Video info volledig mislukt voor ${videoId} — geen resultaat`);
+    return null;
   }
+
+  // Tekst zoeken
+  try {
+    const results = await yt.search(query, { type: 'video' });
+    const video = (results.videos || results.results || []).find(v => v.id);
+    if (!video) return null;
+    const sec = video.duration?.seconds || 0;
+    return { tracks: [{
+      title: video.title?.text || video.title || query,
+      url: `https://www.youtube.com/watch?v=${video.id}`,
+      videoId: video.id,
+      author: video.author?.name || 'Onbekend',
+      duration: `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`,
+      thumbnail: video.best_thumbnail?.url || video.thumbnails?.[0]?.url || null,
+    }], isPlaylist: false };
+  } catch (e) { console.error('YouTube zoeken mislukt:', e.message); return null; }
 }
 
 // musicMap: per-guild muziekstatus
@@ -843,35 +1393,68 @@ async function streamTrack(guildId, track) {
   // Stop oude ffmpeg
   if (state.ffmpeg) { try { state.ffmpeg.kill('SIGKILL'); } catch {} state.ffmpeg = null; }
 
-  console.log(`▶️ stream URL ophalen: ${track.title}`);
+  console.log(`▶️ stream URL ophalen via YouTube TV API: ${track.title}`);
 
-  // Haal directe stream URL op via yt-dlp --get-url (geen download nodig, < 3s)
+  // Haal directe audio URL op — eerst YouTube, dan SoundCloud als fallback
   let streamUrl;
   try {
-    const r = await execFileM(ytDlpBin_m, [
-      track.url,
-      '-f', 'bestaudio[ext=webm]/bestaudio/best',
-      '--get-url', '--no-warnings', '--no-playlist',
-    ], { timeout: 15_000 }).catch(err => ({ stdout: err.stdout || '' }));
-    streamUrl = (r.stdout || '').trim().split('\n')[0];
-    if (!streamUrl || !streamUrl.startsWith('http')) throw new Error('geen geldige URL');
+    const videoId = track.videoId || extractYouTubeId(track.url);
+    if (!videoId) throw new Error('Kan video ID niet bepalen');
+    streamUrl = await getYtStreamUrl(videoId);
   } catch (e) {
-    console.error(`❌ URL ophalen mislukt "${track.title}":`, e.message);
-    setTimeout(() => advanceQueue(guildId), 1000);
-    return;
+    console.warn(`⚠️ YouTube mislukt voor "${track.title}": ${e.message}`);
+    // Als de titel een URL is, probeer eerst de echte titel op te halen voor een betere SoundCloud zoekopdracht
+    let scQuery = track.title;
+    if (/^https?:\/\//.test(scQuery) && track.videoId) {
+      try {
+        const yt2 = await getInnertube();
+        const results = await yt2.search(track.videoId, { type: 'video' });
+        const hit = (results.videos || results.results || []).find(v => v.id === track.videoId || v.id);
+        if (hit) {
+          scQuery = hit.title?.text || hit.title || scQuery;
+          track.title = scQuery; // update zodat nowPlaying ook de echte naam toont
+          console.log(`[SoundCloud] echte titel opgehaald: "${scQuery}"`);
+        }
+      } catch (_) {}
+    }
+    console.log(`🔄 Probeer SoundCloud fallback voor: ${scQuery}`);
+    // Strip alles tussen ( ) en [ ] met bekende YouTube-tags — twee pogingen
+    const scQueryClean = scQuery
+      .replace(/\s*\([^)]*(?:official|video|audio|lyrics?|hd|hq|4k|uhd|live|mv|remaster|radio edit|extended|\d{4})[^)]*\)/gi, '')
+      .replace(/\s*\[[^\]]*(?:official|video|audio|lyrics?|hd|hq|4k|uhd|live|mv|remaster|\d{4})[^\]]*\]/gi, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+    // Agressiever: verwijder ALLE inhoud tussen haken
+    const scQueryStripped = scQuery
+      .replace(/\s*\([^)]*\)/g, '')
+      .replace(/\s*\[[^\]]*\]/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+    if (scQueryClean && scQueryClean !== scQuery) {
+      console.log(`[SoundCloud] titel opgeschoond: "${scQueryClean}"`);
+    }
+    streamUrl = await getSoundCloudStreamUrl(scQueryClean || scQuery);
+    // Tweede poging: alle haken weggehaald (bijv. "(Live 1977)")
+    if (!streamUrl && scQueryStripped && scQueryStripped !== (scQueryClean || scQuery)) {
+      console.log(`[SoundCloud] tweede poging (alles gestript): "${scQueryStripped}"`);
+      streamUrl = await getSoundCloudStreamUrl(scQueryStripped);
+    }
+    if (!streamUrl) {
+      console.error(`❌ Stream ophalen mislukt "${track.title}": ook SoundCloud gaf geen resultaat`);
+      setTimeout(() => advanceQueue(guildId), 1000);
+      return;
+    }
   }
 
-  console.log(`▶️ ffmpeg start (direct stream): ${track.title}`);
-  // ffmpeg leest rechtstreeks van YouTube CDN — exact zoals radio maar dan YouTube ipv radio-URL
+  console.log(`▶️ ffmpeg start: ${track.title}`);
+  // ffmpeg leest rechtstreeks van YouTube CDN — zelfde aanpak als radio
   const ff = spawn(ffmpegPath, [
     '-reconnect',          '1',
     '-reconnect_streamed', '1',
     '-reconnect_delay_max','5',
-    '-re',                             // real-time input (voorkomt doorspoelen)
-    '-thread_queue_size',  '4096',     // grote input queue voorkomt lag
-    '-analyzeduration',    '0',        // geen lange analyze-pause aan het begin
     '-loglevel', 'warning',
     '-i', streamUrl,
+    '-vn',
     '-f', 's16le', '-ar', '48000', '-ac', '2',
     'pipe:1',
   ], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
@@ -1727,6 +2310,7 @@ async function createPartnerTicket(interaction) {
 
   await ticket.send({ content: `<@${user.id}> | <@&${STAFF_ROLE_ID}>`, embeds: [embed], components: [row] });
   await interaction.editReply({ content: `✅ Je partner ticket is aangemaakt: <#${ticket.id}>` });
+  partnerTicketAangemaakt.set(ticket.id, Date.now());
 
   // DM naar de partner-aanvrager
   user.send({ embeds: [
@@ -1801,16 +2385,41 @@ async function createTicket(interaction, type) {
   };
   const parentCat = typeCategoryMap[type] || db.channels.ticketCategoryId;
 
+  // Roles that may view sollicitatie tickets (management/leadership only)
+  const SOLLICITATIE_ALLOWED_ROLES = [
+    '1458542238312304761', // Admin
+    '1458542457825525951', // SuperAdmin
+    '1476525781571342397', // Hidden Management
+    '1459295116434084113', // Team Leider Ambu
+    '1459295348211318824', // Proef Management
+    '1458223437158809892', // Mede Eigenaar
+    '1457747096601100441', // Eigenaar
+  ];
+
+  const basePerms = [
+    { id: guild.roles.everyone, deny: [PermissionFlagsBits.ViewChannel] },
+    { id: user.id,        allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory] },
+    { id: client.user.id, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ManageChannels, PermissionFlagsBits.EmbedLinks] },
+  ];
+
+  const permissionOverwrites = type === 'Sollicitatie'
+    ? [
+        ...basePerms,
+        ...SOLLICITATIE_ALLOWED_ROLES.map(roleId => ({
+          id: roleId,
+          allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ReadMessageHistory],
+        })),
+      ]
+    : [
+        ...basePerms,
+        { id: STAFF_ROLE_ID, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ReadMessageHistory] },
+      ];
+
   const ticket = await guild.channels.create({
     name: chanName,
     type: ChannelType.GuildText,
     parent: parentCat,
-    permissionOverwrites: [
-      { id: guild.roles.everyone, deny: [PermissionFlagsBits.ViewChannel] },
-      { id: user.id,         allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory] },
-      { id: STAFF_ROLE_ID,   allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ReadMessageHistory] },
-      { id: client.user.id,  allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ManageChannels, PermissionFlagsBits.EmbedLinks] },
-    ]
+    permissionOverwrites,
   });
 
   const typeInfo = {
@@ -1850,7 +2459,10 @@ async function createTicket(interaction, type) {
     new ButtonBuilder().setCustomId('ticket_sluit').setLabel('🔒 Sluit Ticket').setStyle(ButtonStyle.Secondary),
   );
 
-  await ticket.send({ content: `<@${user.id}> | <@&${STAFF_ROLE_ID}>`, embeds: [embed], components: [row] });
+  const pingContent = type === 'Sollicitatie'
+    ? `<@${user.id}> | <@&1457747096601100441> <@&1458223437158809892> <@&1458542457825525951> <@&1458542238312304761>`
+    : `<@${user.id}> | <@&${STAFF_ROLE_ID}>`;
+  await ticket.send({ content: pingContent, embeds: [embed], components: [row] });
   await interaction.editReply({ content: `✅ Je ticket is aangemaakt: <#${ticket.id}>` });
 
   // DM naar de ticketopener
@@ -1894,10 +2506,11 @@ function stopRadio(guildId) {
 }
 
 function spawnRadioFfmpeg(url) {
-  return spawn(ffmpegPath, [
+  const proc = spawn(ffmpegPath, [
     '-reconnect', '1',
     '-reconnect_streamed', '1',
     '-reconnect_delay_max', '10',
+    '-tls_verify', '0',           // Voorkomt SSL/TLS crash (SIGSEGV) bij HTTPS radio streams
     '-icy', '0',
     '-user_agent', 'Mozilla/5.0 (compatible; ffmpeg)',
     '-analyzeduration', '0',
@@ -1907,7 +2520,11 @@ function spawnRadioFfmpeg(url) {
     '-ar', '48000',
     '-ac', '2',
     'pipe:1',
-  ], { stdio: ['ignore', 'pipe', 'ignore'] });
+  ], { stdio: ['ignore', 'pipe', 'pipe'] });
+  proc.stderr.on('data', d => console.error(`[RADIO ffmpeg] ${d.toString().trim()}`));
+  proc.on('error', err => console.error(`[RADIO ffmpeg] spawn fout: ${err.message}`));
+  proc.on('exit', (code, sig) => console.log(`[RADIO ffmpeg] gestopt (code=${code} sig=${sig})`));
+  return proc;
 }
 
 async function startRadio(vc, stationId, customUrl, customLabel) {
@@ -1957,6 +2574,7 @@ async function startRadio(vc, stationId, customUrl, customLabel) {
   audioPlayer.on(AudioPlayerStatus.Idle, () => {
     if (!radioMap.has(guildId)) return; // Handmatig gestopt
     const st = radioMap.get(guildId);
+    if (st.retrying) return; // Voorkom meerdere gelijktijdige retry-loops
     const retries = (st.retries || 0) + 1;
     if (retries > 10) {
       console.warn(`⚠️ Radio stream (guild ${guildId}) heeft 10x gefaald — opgegeven.`);
@@ -1965,12 +2583,12 @@ async function startRadio(vc, stationId, customUrl, customLabel) {
     }
     console.log(`🔄 Radio stream onderbroken (guild ${guildId}) — herstart over 2s... (poging ${retries}/10)`);
     try { st.ffmpeg?.kill?.('SIGKILL'); } catch {}
-    radioMap.set(guildId, { ...st, retries });
+    radioMap.set(guildId, { ...st, retries, retrying: true });
     setTimeout(() => {
       if (!radioMap.has(guildId)) return;
       const newFfmpeg = spawnRadioFfmpeg(station.url);
       const newResource = createAudioResource(newFfmpeg.stdout, { inputType: StreamType.Raw });
-      radioMap.set(guildId, { ...radioMap.get(guildId), ffmpeg: newFfmpeg });
+      radioMap.set(guildId, { ...radioMap.get(guildId), ffmpeg: newFfmpeg, retrying: false });
       st.audioPlayer.play(newResource);
     }, 2_000);
   });
@@ -2995,8 +3613,10 @@ async function registerSlashCommands() {
           { name: '⚠️ Impersonation detectie aan/uit',       value: 'impersonation_toggle' },
           { name: '🎙️ Voice Security aan/uit',               value: 'voice_toggle'      },
           { name: '💾 Auto Backup aan/uit',                  value: 'autobackup_toggle' },
+          { name: '🟢 Webhook toestaan (ID toevoegen aan allowlist)',  value: 'webhook_allow'     },
+          { name: '🔴 Webhook verbieden (ID verwijderen uit allowlist)', value: 'webhook_remove'    },
         ))
-      .addStringOption(o => o.setName('waarde').setDescription('Nieuwe waarde (bijv: true, false, 10, kanaal-ID)').setRequired(false))
+      .addStringOption(o => o.setName('waarde').setDescription('Nieuwe waarde (bijv: true, false, 10, kanaal-ID, webhook-ID)').setRequired(false))
       .toJSON(),
 
   // -- TEMPBAN
@@ -3162,6 +3782,31 @@ client.on('ready', async () => {
       }
     }
     saveTempbans(tempbansDB);
+
+    // -- Startup scan: geef Unverified aan leden zonder rollen (uitgesteld om rate limits te vermijden) ----
+    setTimeout(async () => {
+      if (!secCfg.verification?.enabled || !secCfg.verification?.unverifiedRoleId) return;
+      const g = client.guilds.cache.first();
+      if (!g) return;
+      const unverRole = g.roles.cache.get(secCfg.verification.unverifiedRoleId);
+      if (!unverRole) return;
+      try {
+        const members = await g.members.fetch();
+        let count = 0;
+        for (const [, m] of members) {
+          if (m.user.bot) continue;
+          const realRoles = m.roles.cache.filter(r => r.id !== g.id);
+          if (realRoles.size === 0) {
+            await m.roles.add(unverRole, 'Startup autorole: geen rollen bij herstart').catch(() => {});
+            count++;
+          }
+        }
+        if (count > 0) console.log(`[AUTOROLE] ✅ Startup scan: Unverified gegeven aan ${count} leden zonder rollen.`);
+        else console.log('[AUTOROLE] ✅ Startup scan: alle leden hebben al een rol.');
+      } catch (e) {
+        console.error('[AUTOROLE] ❌ Startup scan mislukt:', e.message);
+      }
+    }, 35_000); // 35s wachten zodat Discord rate limits zakken
   }
   client.user.setActivity(STATUSES[0].name, { type: STATUSES[0].type });
 
@@ -3214,6 +3859,54 @@ client.on('ready', async () => {
         );
         await ch.send({ embeds: [warnEmbed], components: [row] }).catch(() => {});
       }
+    }
+  }, 60 * 60_000); // elk uur
+
+  // -- Partner ticket 48u herinnering: elk uur controleren -------------------
+  setInterval(async () => {
+    const guild = client.guilds.cache.first();
+    if (!guild) return;
+    const now = Date.now();
+    for (const [channelId, aangemaakt] of partnerTicketAangemaakt.entries()) {
+      if (partnerTicketHerinnerd.has(channelId)) continue;
+      if (now - aangemaakt < 48 * 60 * 60_000) continue; // nog geen 48u
+
+      const ch = guild.channels.cache.get(channelId);
+      if (!ch) { partnerTicketAangemaakt.delete(channelId); continue; } // ticket weg
+
+      // Controleer of de partner_bericht_versturen knop al gebruikt is
+      // (simpel: zoek of er een embed is van de bot met 'Partner Aanvraag' of 'aanvraag' in de content)
+      const msgs = await ch.messages.fetch({ limit: 30 }).catch(() => null);
+      if (!msgs) continue;
+      const heeftIngediend = msgs.some(m =>
+        m.author.id === client.user.id &&
+        m.embeds?.some(e => e.title?.includes('Partner Aanvraag') || e.title?.includes('Aanvraag Ontvangen'))
+      );
+      if (heeftIngediend) { partnerTicketAangemaakt.delete(channelId); continue; }
+
+      partnerTicketHerinnerd.add(channelId);
+
+      // Zoek de ticket-opener via permissie-overwrites
+      const openerOverwrite = ch.permissionOverwrites?.cache?.find(
+        ow => ow.type === 1 && ow.allow.has(PermissionFlagsBits.SendMessages)
+      );
+      const openerMention = openerOverwrite ? `<@${openerOverwrite.id}>` : '';
+
+      await ch.send({
+        content: openerMention || undefined,
+        embeds: [new EmbedBuilder()
+          .setTitle('⏰ Herinnering — Partner Aanvraag')
+          .setDescription(
+            `Hey${openerMention ? ` ${openerMention}` : ''}! 👋\n\n` +
+            `Je partner ticket staat al **48 uur open** maar er is nog geen aanvraag ingediend.\n\n` +
+            `Druk op de knop **📨 Stuur Partner Bericht** hierboven om je aanvraag in te vullen.\n` +
+            `Als je vragen hebt over de partner eisen, stel ze gerust in dit kanaal!\n\n` +
+            `> ⚠️ Als er geen reactie komt wordt dit ticket automatisch gesloten na de inactiviteitsperiode.`
+          )
+          .setColor(0xFFA500)
+          .setFooter({ text: 'Lage Landen RP — Partner Systeem' })
+          .setTimestamp()],
+      }).catch(() => {});
     }
   }, 60 * 60_000); // elk uur
 
@@ -3279,10 +3972,48 @@ client.on('ready', async () => {
 
   // -- Bot Trap: valse activiteit elke 2–5 uur -------------------------------
   const BOT_TRAP_MESSAGES = [
-    'is er iemand?', 'hoi', 'hey allemaal 👀', 'wat is er loos?',
-    'iemand online?', 'hallo?', 'man het is stil hier 😅', 'anyone?',
-    'hoi hoi', 'lekker rustig vandaag', 'goeiemorgen iedereen',
-    'wie is er allemaal?', '...', 'yo', 'salut',
+    // Korte groeten
+    'is er iemand?', 'hoi', 'hey 👀', 'hallo?', 'yo', 'salut', 'hoi hoi',
+    'anyone?', 'ello', 'heeey', 'hewwo', 'heyyy',
+
+    // Reacties op stilte
+    'man het is stil hier 😅', 'lekker rustig vandaag', '...', 'niemand?',
+    'waarom is het zo dood hier', 'altijd als ik online kom is het stil lol',
+    'oké dan niet 💀', 'hello?? echo echo', 'ben ik de enige die hier kijkt',
+    'ik verveel me', 'niemand die wat zegt?',
+
+    // Tijdsgebonden berichten
+    'goeiemorgen iedereen', 'goedenmiddag 👋', 'goedenavond mensen',
+    'net wakker 😴', 'bijna weekend!!', 'wat een dag zeg',
+
+    // Vragen / gespreksstarters
+    'wat is er loos?', 'wie is er allemaal?', 'wat doen jullie?',
+    'iemand die vanavond speelt?', 'iemand online?', 'wat is er vandaag te doen',
+    'heeft iemand die nieuwe update al gezien?', 'wanneer is de volgende sessie?',
+    'wanneer gaan jullie weer online?', 'iemand zin om samen te spelen?',
+    'zijn er nog nieuwe mensen bijgekomen?',
+
+    // Losse opmerkingen
+    'echt een toffe server dit', 'al lang lid maar post nooit wat haha',
+    'net gejoined, ziet er cool uit hier 👍', 'veel leden hier ofzo',
+    'ik check dit kanaal nooit maar toch 😂', 'oops verkeerd kanaal',
+    'wacht dit is niet waar ik wilde zijn lol', 'mooi rustig hier',
+    'ben ff weg zo terug', 'even eten, daarna weer online',
+
+    // Subtiele hints om niet te typen (voor echte spelers die scrollen)
+    'btw niet hier typen hoor 😅', 'oh wacht dit kanaal is niet voor chatten lol',
+    'voor zover ik weet mag je hier niet typen', 'pssst dit kanaal is niet voor berichten',
+    'vergeet niet: niet reageren in dit kanaal 👀', 'reminder: hier niet typen mensen',
+    'random reminder dat dit geen chat kanaal is 😂', 'je kan hier niet typen trouwens',
+    'niet reageren op dit bericht haha', 'typ hier alsjeblieft niks',
+
+    // Emoji-only of bijna leeg
+    '👀', '🙋', '👋', '😴', '💀', '🔥', '😂', ':eyes:',
+
+    // Engelse varianten
+    'hello anyone here?', 'pretty quiet in here', 'good morning all',
+    'anyone active?', 'what\'s up', 'sup', 'just checking in',
+    'this server still active?', 'cool server', 'been lurking for a while',
   ];
   async function sendBotTrapActivity() {
     if (!secCfg.botTrap?.enabled || !secCfg.botTrap?.channelId) return;
@@ -3358,6 +4089,7 @@ client.on('messageCreate', async (message) => {
     const tokenMatch = content.match(TOKEN_REGEX);
     const apiKeyMatch = content.match(APIKEY_REGEX);
     if (tokenMatch || apiKeyMatch) {
+      markBlocked(message.id);
       await message.delete().catch(() => {});
       const member = message.member;
       addSecurityEvent('token_detected', { userId: message.author.id, username: message.author.tag });
@@ -3392,6 +4124,7 @@ client.on('messageCreate', async (message) => {
       if (PHISHING_DOMAINS.has(domain)) { foundDomain = domain; break; }
     }
     if (foundDomain) {
+      markBlocked(message.id);
       await message.delete().catch(() => {});
       const member = message.member;
       const action = secCfg.phishing.action || 'ban';
@@ -3535,18 +4268,45 @@ client.on('messageCreate', async (message) => {
   if (message.author.bot && message.author.id === client.user.id) return; // eigen berichten negeren
   if (!secCfg.botTrap?.enabled || !secCfg.botTrap?.channelId) return;
   if (message.channel.id !== secCfg.botTrap.channelId) return;
-  if (message.author.bot && !message.webhookId) return; // echte bots negeren (alleen webhooks en gebruikers vangen)
 
   const guild = message.guild;
-  const member = message.member || await guild.members.fetch(message.author.id).catch(() => null);
 
-  // Verwijder het bericht meteen
+  // Verwijder het bericht altijd
+  markBlocked(message.id);
   await message.delete().catch(() => {});
 
-  // Staf negeren
-  if (member?.permissions.has(PermissionFlagsBits.ManageMessages)) return;
+  // --- WEBHOOK in honeypot → direct webhook verwijderen ---
+  if (message.webhookId) {
+    addSecurityEvent('bottrap_webhook', { webhookId: message.webhookId, webhookName: message.author.username, channelId: message.channel.id, content: message.content?.slice(0, 100) });
+    try {
+      const webhooks = await guild.fetchWebhooks();
+      const wh = webhooks.get(message.webhookId);
+      if (wh) await wh.delete('Bot Trap — webhook stuurde bericht in honeypot kanaal').catch(() => {});
+    } catch (_) {}
+    await securityLog(new EmbedBuilder()
+      .setTitle('🚨 Bot Trap — Webhook Vernietigd!')
+      .setColor(0xFF0000)
+      .setDescription('Een webhook stuurde een bericht in het honeypot kanaal. De webhook is permanent verwijderd.')
+      .addFields(
+        { name: '🪝 Webhook Naam', value: `\`${message.author.username}\``,             inline: true  },
+        { name: '🆔 Webhook ID',   value: `\`${message.webhookId}\``,                  inline: true  },
+        { name: '📢 Kanaal',       value: `<#${message.channel.id}>`,                  inline: true  },
+        { name: '💬 Bericht',      value: `\`${(message.content || '[geen tekst]').slice(0, 300)}\``, inline: false },
+        { name: '⚡ Actie',        value: '🗑️ Webhook verwijderd',                     inline: true  },
+      )
+      .setFooter({ text: 'Lage Landen RP — Bot Trap' }).setTimestamp()
+    );
+    return;
+  }
 
-  const action = secCfg.botTrap.action || 'quarantine';
+  // --- Echte bot (geen webhook) in honeypot → bannen ---
+  const isRealBot = message.author.bot;
+  const member = message.member || await guild.members.fetch(message.author.id).catch(() => null);
+
+  // Staf negeren (maar bericht is al verwijderd)
+  if (!isRealBot && member?.permissions.has(PermissionFlagsBits.ManageMessages)) return;
+
+  const action = isRealBot ? 'ban' : (secCfg.botTrap.action || 'quarantine');
   addSecurityEvent('bottrap', { userId: message.author.id, username: message.author.tag, action, content: message.content?.slice(0, 100) });
 
   await securityLog(new EmbedBuilder()
@@ -3554,15 +4314,36 @@ client.on('messageCreate', async (message) => {
     .setColor(0xFF4757)
     .setDescription(`Een gebruiker heeft een bericht gestuurd in het honeypot kanaal!`)
     .addFields(
-      { name: '👤 Gebruiker', value: `<@${message.author.id}> \`${message.author.tag}\``, inline: true },
-      { name: '🤖 Bot?',      value: message.author.bot ? '✅ Ja' : '❌ Nee',             inline: true },
-      { name: '💬 Bericht',   value: `\`${(message.content || '[geen tekst]').slice(0, 200)}\``,       inline: false },
-      { name: '⚡ Actie',     value: action,                                                             inline: true },
+      { name: '👤 Gebruiker', value: `<@${message.author.id}> \`${message.author.tag}\``,      inline: true  },
+      { name: '🤖 Bot?',      value: isRealBot ? '✅ Ja' : '❌ Nee',                           inline: true  },
+      { name: '💬 Bericht',   value: `\`${(message.content || '[geen tekst]').slice(0, 200)}\``, inline: false },
+      { name: '⚡ Actie',     value: action,                                                       inline: true  },
     )
     .setFooter({ text: 'Lage Landen RP — Bot Trap' }).setTimestamp()
   );
 
   if (!member) return;
+
+  // DM sturen naar echte gebruikers (niet naar bots)
+  if (!isRealBot) {
+    const actionLabel = action === 'quarantine' ? '🔒 In quarantaine geplaatst' : action === 'kick' ? '👢 Gekickt' : '🔨 Permanent geband';
+    try {
+      await message.author.send({ embeds: [
+        new EmbedBuilder()
+          .setTitle('🚨 Je bent gesanctioneerd op ' + guild.name)
+          .setColor(0xFF4757)
+          .setDescription(
+            `Hey **${member.displayName}**,\n\n` +
+            `Je hebt zojuist getypt in een **beveiligd kanaal** (<#${message.channel.id}>) waar typen **verboden** is en direct resulteert in een sanctie.\n\n` +
+            `**Jouw sanctie: ${actionLabel}**\n\n` +
+            `Dit is een automatisch beveiligingssysteem. Er is geen uitzondering — iedereen die in dat kanaal typt wordt direct gesanctioneerd, ongeacht de reden.`
+          )
+          .setFooter({ text: `${guild.name} — Beveiligingssysteem` })
+          .setTimestamp()
+      ]});
+    } catch (_) {}
+  }
+
   if (action === 'quarantine') {
     await applyQuarantine(member, '🚨 Bot Trap — bericht in honeypot kanaal');
   } else if (action === 'kick') {
@@ -3574,12 +4355,62 @@ client.on('messageCreate', async (message) => {
 });
 
 // ----------------------------------------------------------------------------
+//  WEBHOOK BESCHERMING — verwijder ongeauthoriseerde webhook berichten
+// ----------------------------------------------------------------------------
+client.on('messageCreate', async (message) => {
+  if (!message.webhookId) return;            // geen webhook → overslaan
+  if (!message.guild) return;
+  if (!secCfg.webhookProtection?.enabled) return;
+  // Bot Trap handler heeft dit al afgehandeld (honeypot kanaal) → niet dubbel doen
+  if (blockedMessageIds.has(message.id)) return;
+  // Honeypot kanaal zelf ook direct skippen als extra zekerheid
+  if (secCfg.botTrap?.enabled && secCfg.botTrap?.channelId && message.channel.id === secCfg.botTrap.channelId) return;
+
+  // Toegestane webhooks (allowlist) — niet verwijderen
+  const allowedIds = secCfg.webhookProtection?.allowedWebhookIds || [];
+  if (allowedIds.includes(message.webhookId)) return;
+
+  // Bericht altijd verwijderen
+  markBlocked(message.id);
+  await message.delete().catch(() => {});
+
+  // Probeer de webhook zelf ook te verwijderen zodat hij niet hergebruikt kan worden
+  try {
+    const webhooks = await message.guild.fetchWebhooks();
+    const wh = webhooks.get(message.webhookId);
+    if (wh) await wh.delete('Webhook Bescherming — ongeautoriseerde webhook geblokkeerd').catch(() => {});
+  } catch (_) {}
+
+  addSecurityEvent('webhook_blocked', {
+    webhookId: message.webhookId,
+    webhookName: message.author.username,
+    channelId: message.channel.id,
+    content: message.content?.slice(0, 200),
+  });
+
+  await securityLog(new EmbedBuilder()
+    .setTitle('🚨 Webhook Bericht Geblokkeerd!')
+    .setColor(0xFF4757)
+    .setDescription('Een ongeautoriseerd webhook bericht is automatisch verwijderd en de webhook is verwijderd.')
+    .addFields(
+      { name: '🪝 Webhook Naam', value: `\`${message.author.username}\``,                       inline: true  },
+      { name: '🆔 Webhook ID',   value: `\`${message.webhookId}\``,                             inline: true  },
+      { name: '📢 Kanaal',       value: `<#${message.channel.id}>`,                             inline: true  },
+      { name: '💬 Inhoud',       value: `\`${(message.content || '[geen tekst]').slice(0, 300)}\``, inline: false },
+    )
+    .setFooter({ text: 'Lage Landen RP — Webhook Bescherming' })
+    .setTimestamp()
+  );
+});
+
+// ----------------------------------------------------------------------------
 //  CHAT LOGS — elk bericht loggen
 // ----------------------------------------------------------------------------
 const NOLOG_CHANNELS = new Set([CHAT_LOG_CHANNEL, VOICE_LOG_CHANNEL, JOIN_LEAVE_CHANNEL, MOD_LOG_CHANNEL, TICKET_LOG_CHANNEL]);
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
+  if (blockedMessageIds.has(message.id)) return; // al verwijderd door security handler
   if (NOLOG_CHANNELS.has(message.channel.id)) return;
   if (message.channel.name?.startsWith('\u276Aticket\u276B')) return;
   const logCh = await client.channels.fetch(CHAT_LOG_CHANNEL).catch(() => null);
@@ -3618,6 +4449,7 @@ const XP_COOLDOWN_MS = 60_000; // 60 seconden cooldown per gebruiker
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
   if (!message.guild)     return;
+  if (blockedMessageIds.has(message.id)) return; // al verwijderd door security handler, geen XP
   if (XP_IGNORE_CHANNELS.has(message.channel.id)) return;
   if (message.channel.name?.startsWith('\u276Aticket\u276B')) return;
 
@@ -3703,6 +4535,7 @@ client.on('messageCreate', async (message) => {
   // -- Quarantaine: berichten van gequarantainde leden verwijderen ----------
   const qRoleId = cfg.antiRaid?.quarantineRoleId;
   if (qRoleId && member.roles.cache.has(qRoleId)) {
+    markBlocked(message.id);
     await message.delete().catch(() => {});
     return;
   }
@@ -3712,6 +4545,7 @@ client.on('messageCreate', async (message) => {
     const hasInvite = DISCORD_INVITE_REGEX.test(message.content);
     DISCORD_INVITE_REGEX.lastIndex = 0;
     if (hasInvite) {
+      markBlocked(message.id);
       if (cfg.antiInvite.deleteMsg) await message.delete().catch(() => {});
       addSecurityEvent('invite_blocked', { userId, username: message.author.tag, content: message.content.slice(0, 200) });
       if (cfg.antiInvite.warnUser) {
@@ -3797,6 +4631,7 @@ client.on('messageCreate', async (message) => {
       msgTracker.set(userId, []);
       dupTracker.delete(userId);
       crossChanTracker.delete(userId);
+      markBlocked(message.id);
       await message.delete().catch(() => {});
       addSecurityEvent('spam_detected', { userId, username: message.author.tag, reason: spamReason });
       addModLog(userId, message.author.tag, 'automod-spam', spamReason, 'AutoMod', client.user?.id ?? '0');
@@ -3855,6 +4690,7 @@ client.on('messageCreate', async (message) => {
   if (cfg.antiProfanity?.enabled !== false && message.content) {
     const found = checkProfanity(message.content);
     if (found.length > 0) {
+      markBlocked(message.id);
       await message.delete().catch(() => {});
 
       // Warn toevoegen aan warnsDB
@@ -4138,7 +4974,14 @@ client.on('guildMemberAdd', async (member) => {
   // -- Verificatie gate: geef 'onverifiëerd' rol ------------------------------
   if (secCfg.verification?.enabled && secCfg.verification?.unverifiedRoleId) {
     const unverRole = member.guild.roles.cache.get(secCfg.verification.unverifiedRoleId);
-    if (unverRole) await member.roles.add(unverRole, 'Verificatie gate: nieuw lid').catch(() => {});
+    if (unverRole) {
+      await member.roles.add(unverRole, 'Verificatie gate: nieuw lid').catch(err => {
+        console.error(`[AUTOROLE] ❌ Kon Unverified niet geven aan ${member.user.tag}:`, err.message);
+      });
+      console.log(`[AUTOROLE] ✅ Unverified gegeven aan ${member.user.tag} (${member.id})`);
+    } else {
+      console.warn(`[AUTOROLE] ⚠️ Unverified rol niet gevonden (ID: ${secCfg.verification.unverifiedRoleId}) — /setup vereist?`);
+    }
   }
 
   // -- Username filter / dehoisting bij join ------------------------------
@@ -4388,6 +5231,30 @@ client.on('guildMemberAdd', async (member) => {
       }
     }
   } catch {}
+
+  // -- Honeypot waarschuwing bij join (bericht in het kanaal zelf) -----------
+  if (secCfg.botTrap?.enabled && secCfg.botTrap?.channelId) {
+    const honeypotCh = member.guild.channels.cache.get(secCfg.botTrap.channelId);
+    if (honeypotCh) {
+      const perms = honeypotCh.permissionsFor(member);
+      if (perms?.has(PermissionFlagsBits.ViewChannel)) {
+        const joinWarnEmbed = new EmbedBuilder()
+          .setTitle('⛔ Niet typen in dit kanaal!')
+          .setColor(0xFF4757)
+          .setDescription(
+            `<@${member.id}>, welkom op **${member.guild.name}**!\n\n` +
+            `Dit kanaal is een **beveiligingsval** — je mag hier **nooit** iets typen of op reageren.\n\n` +
+            `⚠️ **Iedereen die in dit kanaal typt wordt automatisch en direct gesanctioneerd**, zonder uitzondering.\n\n` +
+            `Gebruik de normale kanalen om te chatten. Scroll gewoon verder! 👋`
+          )
+          .setFooter({ text: `${member.guild.name} — Beveiligingssysteem` })
+          .setTimestamp();
+        const joinWarnMsg = await honeypotCh.send({ content: `<@${member.id}>`, embeds: [joinWarnEmbed] }).catch(() => null);
+        // Verwijder het bericht na 5 minuten zodat het kanaal schoon blijft
+        if (joinWarnMsg) setTimeout(() => joinWarnMsg.delete().catch(() => {}), 5 * 60 * 1000);
+      }
+    }
+  }
 
   // -- Join log --------------------------------------------------------------
   const logCh = await client.channels.fetch(JOIN_LEAVE_CHANNEL).catch(() => null);
@@ -4694,6 +5561,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
   if (!entry || entry.target?.id !== newMember.id) return;
   const executor = entry?.executor;
   if (executor?.id === newMember.id) return; // zelf gewijzigd, niet loggen
+  if (executor?.id === client.user?.id) return; // bot actie (username filter), niet loggen
   await modLog(new EmbedBuilder()
     .setTitle('✏️ Nickname Gewijzigd')
     .setColor(0x99AAB5)
@@ -4804,7 +5672,7 @@ client.on('messageCreate', async (message) => {
   }
 });
 
-// --- Partner ticket begroeting (eenmalig bij eerste hallo/hoi/etc.) ----------
+// --- Partner ticket begroeting (eenmalig bij EERSTE bericht van ticket-opener) ---
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
@@ -4816,20 +5684,149 @@ client.on('messageCreate', async (message) => {
   // Alleen als er nog geen begroeting is gestuurd in dit kanaal
   if (partnerTicketGreeted.has(message.channel.id)) return;
 
-  // Detecteer begroeting
-  const begroetingen = /^\s*(hoi|hallo|hai|hey|hi|hee|dag|goedemorgen|goedemiddag|goedemidag|goedenavond|yo|sup|helo|hello)\s*[!.,]?\s*$/i;
-  if (!begroetingen.test(message.content)) return;
+  // Alleen van de ticket-opener (heeft eigen permissie-overwrite op het kanaal)
+  const isTicketOpener = message.channel.permissionOverwrites?.cache?.has(message.author.id);
+  if (!isTicketOpener) return;
 
   partnerTicketGreeted.add(message.channel.id);
 
   await message.channel.send(
     `👋 Welkom in het partner ticket, <@${message.author.id}>!\n\n` +
-    `Hierboven zie je een embed met onze **partner eisen** — lees deze even goed door. ` +
-    `Als je akkoord gaat, klik dan op het ✅ vinkje in de embed.\n\n` +
+    `Hierboven zie je een embed met onze **partner eisen** — lees deze even goed door.\n\n` +
     `> 📋 Zodra je de eisen hebt doorgelezen en akkoord bent, druk je op de knop **📨 Stuur Partner Bericht** om je aanvraag in te vullen.\n` +
     `> ⚠️ Houd er rekening mee: door op die knop te drukken ga je automatisch akkoord met alle partner eisen.\n\n` +
     `Je bericht wordt daarna zo snel mogelijk beoordeeld door ons staff team. 🙏`
   ).catch(() => {});
+});
+
+// --- Support ticket: automatisch doorverwijzen bij partner-gerelateerde vragen ---
+// channelId -> true  support tickets die al een partner-redirect hebben gekregen
+const supportPartnerRedirected = new Set();
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
+  if (!message.guild) return;
+
+  // Alleen in support ticket kanalen
+  const chanName = message.channel.name || '';
+  if (!chanName.startsWith('\u276Aticket\u276B-support-')) return;
+
+  // Eenmalig per kanaal
+  if (supportPartnerRedirected.has(message.channel.id)) return;
+
+  // Alleen van de ticket-opener
+  const isTicketOpener = message.channel.permissionOverwrites?.cache?.has(message.author.id);
+  if (!isTicketOpener) return;
+
+  // Partner-gerelateerde keywords
+  const partnerKeywords = /\b(partner|partnersch|samenwerk|adverter|reclame|promotie|promo|collab|sponser|sponsor)\w*/i;
+  if (!partnerKeywords.test(message.content)) return;
+
+  supportPartnerRedirected.add(message.channel.id);
+
+  const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder().setCustomId('partner_ticket').setLabel('🤝 Partner Ticket Aanmaken').setStyle(ButtonStyle.Primary),
+  );
+
+  await message.channel.send({
+    content: `<@${message.author.id}>`,
+    embeds: [new EmbedBuilder()
+      .setTitle('🤝 Partner Ticket Nodig?')
+      .setDescription(
+        `Het lijkt erop dat je een **partner-gerelateerde vraag** hebt.\n\n` +
+        `Support tickets zijn bedoeld voor technische vragen en problemen. ` +
+        `Voor partnerschap-aanvragen en samenwerkingen gebruik je een **Partner Ticket**.\n\n` +
+        `Klik op de knop hieronder om direct een partner ticket aan te maken. ` +
+        `Dit support ticket kun je sluiten als je vraag alleen over partnerschap gaat.`
+      )
+      .setColor(0xFFA500)
+      .setFooter({ text: 'Lage Landen RP — Ticket Systeem' })
+      .setTimestamp()],
+    components: [row],
+  }).catch(() => {});
+});
+
+// --- Sollicitatie ticket — follow-up als opener 30 min niet antwoordt ------
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
+  if (!message.guild) return;
+
+  const chanName = message.channel.name || '';
+  if (!chanName.startsWith('\u276Aticket\u276B-sollicitatie-')) return;
+  if (sollicitatieFollowupSent.has(message.channel.id)) return;
+
+  // Alleen eerste bericht van de ticket-opener starten we de timer op
+  const isTicketOpener = message.channel.permissionOverwrites?.cache?.has(message.author.id);
+  if (!isTicketOpener) return;
+
+  sollicitatieFollowupSent.add(message.channel.id);
+
+  // 30 minuten wachten — als het kanaal daarna nog bestaat en opener nog niet antwoordde op de vragen
+  setTimeout(async () => {
+    try {
+      const ch = await message.guild.channels.fetch(message.channel.id).catch(() => null);
+      if (!ch) return; // ticket al gesloten
+
+      // Controleer of er na het eerste bericht nog berichten zijn van de opener
+      const msgs = await ch.messages.fetch({ limit: 20 }).catch(() => null);
+      if (!msgs) return;
+      const openerReplies = msgs.filter(m => m.author.id === message.author.id && m.id !== message.id);
+      if (openerReplies.size > 0) return; // opener heeft al gereageerd
+
+      await ch.send({
+        embeds: [new EmbedBuilder()
+          .setTitle('📋 Herinnering — Sollicitatie Vragen')
+          .setDescription(
+            `Hey <@${message.author.id}>! 👋\n\n` +
+            `We zien dat de vragen hierboven nog niet beantwoord zijn.\n` +
+            `**Beantwoord de vragen zo snel mogelijk** zodat een stafflid je snel kan helpen!\n\n` +
+            `> 💡 Typ gewoon je antwoorden in dit kanaal, één voor één of allemaal tegelijk.`
+          )
+          .setColor(0x57F287)
+          .setFooter({ text: 'Lage Landen RP — Sollicitatie Systeem' })
+          .setTimestamp()],
+      }).catch(() => {});
+    } catch {}
+  }, 30 * 60_000);
+});
+
+// --- Report ticket — automatisch om bewijs vragen ----------------------------
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
+  if (!message.guild) return;
+
+  const chanName = message.channel.name || '';
+  if (!chanName.startsWith('\u276Aticket\u276B-report-')) return;
+  if (reportBewijsGevraagd.has(message.channel.id)) return;
+
+  // Alleen van de ticket-opener
+  const isTicketOpener = message.channel.permissionOverwrites?.cache?.has(message.author.id);
+  if (!isTicketOpener) return;
+
+  reportBewijsGevraagd.add(message.channel.id);
+
+  // Controleer of het eerste bericht al een link of bijlage bevat
+  const heeftBewijs = message.attachments.size > 0 ||
+    /https?:\/\/\S+/i.test(message.content) ||
+    /medal\.tv|streamable|gyazo|imgur|discord\.com\/channels|cdn\.discordapp|prnt\.sc|lightshot|clips\.twitch/i.test(message.content);
+
+  if (heeftBewijs) return; // bewijs al bijgevoegd, niks nodig
+
+  await message.channel.send({
+    embeds: [new EmbedBuilder()
+      .setTitle('📎 Bewijs Toevoegen')
+      .setDescription(
+        `Hey <@${message.author.id}>! 👋\n\n` +
+        `Je melding is ontvangen. Om je report zo snel mogelijk te behandelen hebben we **bewijs** nodig.\n\n` +
+        `📸 **Voeg een van de volgende toe:**\n` +
+        `> • Screenshot (upload direct in Discord)\n` +
+        `> • Video (Medal.tv, Streamable, YouTube link)\n` +
+        `> • Discord bericht link\n\n` +
+        `Zonder bewijs kan een stafflid je melding moeilijker beoordelen.`
+      )
+      .setColor(0xFF6B6B)
+      .setFooter({ text: 'Lage Landen RP — Report Systeem' })
+      .setTimestamp()],
+  }).catch(() => {});
 });
 
 // --- Blacklist kanaal — binnenkomende berichten verwerken -------------------
@@ -5766,6 +6763,18 @@ client.on('interactionCreate', async (interaction) => {
       const ch = interaction.guild.channels.cache.get(chanId);
       if (!ch) return interaction.reply({ content: '❌ Kanaal niet gevonden. Geef een geldig kanaal-ID.', flags: 64 });
       cfg.securityLogChannelId = chanId; resultMsg = `Security log kanaal: <#${chanId}>`;
+    } else if (instelling === 'webhook_allow') {
+      if (!waarde || !/^\d{17,20}$/.test(waarde.trim())) return interaction.reply({ content: '❌ Geef een geldig webhook ID (17–20 cijfers).', flags: 64 });
+      if (!cfg.webhookProtection.allowedWebhookIds) cfg.webhookProtection.allowedWebhookIds = [];
+      const wid = waarde.trim();
+      if (!cfg.webhookProtection.allowedWebhookIds.includes(wid)) cfg.webhookProtection.allowedWebhookIds.push(wid);
+      resultMsg = `Webhook **${wid}** toegevoegd aan allowlist (${cfg.webhookProtection.allowedWebhookIds.length} totaal)`;
+    } else if (instelling === 'webhook_remove') {
+      if (!waarde || !/^\d{17,20}$/.test(waarde.trim())) return interaction.reply({ content: '❌ Geef een geldig webhook ID (17–20 cijfers).', flags: 64 });
+      if (!cfg.webhookProtection.allowedWebhookIds) cfg.webhookProtection.allowedWebhookIds = [];
+      const wid = waarde.trim();
+      cfg.webhookProtection.allowedWebhookIds = cfg.webhookProtection.allowedWebhookIds.filter(id => id !== wid);
+      resultMsg = `Webhook **${wid}** verwijderd uit allowlist`;
     } else if (instelling === 'raid_action') {
       if (!['quarantine','kick','ban'].includes(waarde)) return interaction.reply({ content: '❌ Geldige waarden: `quarantine`, `kick`, `ban`', flags: 64 });
       cfg.antiRaid.action = waarde; resultMsg = `Raid actie: **${waarde}**`;
@@ -5802,10 +6811,10 @@ client.on('interactionCreate', async (interaction) => {
   if (interaction.isChatInputCommand() && interaction.commandName === 'site') {
     const embed = new EmbedBuilder()
       .setTitle('🌐 Lage Landen Roleplay — Officiële Website')
-      .setURL('https://lagelandenrp.netlify.app/')
+      .setURL('https://lagelanden.netlify.app/')
       .setDescription(
         '### 🌐 Welkom op onze website!\n' +
-        'Op [lagelandenrp.netlify.app](https://lagelandenrp.netlify.app/) vind je alles over onze server, procedures en meer.\n\n' +
+        'Op [lagelanden.netlify.app](https://lagelanden.netlify.app/) vind je alles over onze server, procedures en meer.\n\n' +
         '### ❓ Hoe werkt het?\n' +
         '**Stap 1 —** Maak een account aan op de website\n' +
         '**Stap 2 —** Neem daarna contact op:' +
@@ -5816,7 +6825,7 @@ client.on('interactionCreate', async (interaction) => {
       .setColor(0x5865F2)
       .setThumbnail('https://cdn.discordapp.com/attachments/1458575373846446233/1460303486318153973/RobloxScreenShot20260109_17464004423232.png?ex=69666d1a&is=69651b9a&hm=175c8d50be23aff72bab0d5940a6e4a693013fa3283d4b551eb09b05c0c23378&')
       .addFields(
-        { name: '🌐 Website', value: '[Klik hier om naar de site te gaan](https://lagelandenrp.netlify.app/)', inline: true },
+        { name: '🌐 Website', value: '[Klik hier om naar de site te gaan](https://lagelanden.netlify.app/)', inline: true },
         { name: '🏴‍☠️ Ticket', value: 'Open een ticket in dit Discord', inline: true }
       )
       .setFooter({ text: 'Lage Landen RP — Account aanmaken is verplicht!' })
@@ -5873,7 +6882,7 @@ client.on('interactionCreate', async (interaction) => {
       .setColor(0x5865F2)
       .setDescription(
         '> De onderstaande regels gelden **in-game** op de Lage Landen RP server.\n' +
-        '> Het volledig wetboek is te vinden via: [📖 Wetboek RP](https://lagelandenrp.netlify.app/handboek/wetboek-rp)'
+        '> Het volledig wetboek is te vinden via: [📖 Wetboek RP](https://lagelanden.netlify.app/handboek/wetboek-rp)'
       )
       .addFields(
         {
@@ -5903,11 +6912,11 @@ client.on('interactionCreate', async (interaction) => {
         },
         {
           name: '🏴‍☠️ Diensten',
-          value: '• Politie, Ambulance (EMS) en Brandweer vallen onder aanvullende **dienstreglementen**\n• Lees het volledig [📜 Wetboek RP](https://lagelandenrp.netlify.app/handboek/wetboek-rp) voor richtlijnen per dienst',
+          value: '• Politie, Ambulance (EMS) en Brandweer vallen onder aanvullende **dienstreglementen**\n• Lees het volledig [📜 Wetboek RP](https://lagelanden.netlify.app/handboek/wetboek-rp) voor richtlijnen per dienst',
           inline: false
         }
       )
-      .setFooter({ text: 'Lage Landen RP — In-Game Regels · Wetboek: lagelandenrp.netlify.app', iconURL: 'https://cdn.discordapp.com/attachments/1458575373846446233/1460303486318153973/RobloxScreenShot20260109_17464004423232.png?ex=69666d1a&is=69651b9a&hm=175c8d50be23aff72bab0d5940a6e4a693013fa3283d4b551eb09b05c0c23378&' })
+      .setFooter({ text: 'Lage Landen RP — In-Game Regels · Wetboek: lagelanden.netlify.app', iconURL: 'https://cdn.discordapp.com/attachments/1458575373846446233/1460303486318153973/RobloxScreenShot20260109_17464004423232.png?ex=69666d1a&is=69651b9a&hm=175c8d50be23aff72bab0d5940a6e4a693013fa3283d4b551eb09b05c0c23378&' })
       .setTimestamp();
 
     const strafEmbed = new EmbedBuilder()
@@ -6170,28 +7179,37 @@ client.on('interactionCreate', async (interaction) => {
       .map(k => interaction.options.getAttachment(k))
       .filter(Boolean);
 
-    const firstImg = afbeeldingen[0];
-    const extraImgs = afbeeldingen.slice(1);
+    await interaction.deferReply({ flags: 64 });
+
+    // Download elke afbeelding en upload als echte bijlage zodat de URL nooit verloopt
+    const fileBuffers = await Promise.all(afbeeldingen.map(async (att, i) => {
+      const res = await fetch(att.url);
+      const buf = Buffer.from(await res.arrayBuffer());
+      const ext = att.contentType?.split('/')[1]?.split(';')[0] || 'png';
+      const name = `sneakpeak_${i + 1}.${ext}`;
+      return { name, buffer: buf };
+    }));
+
+    const attachmentFiles = fileBuffers.map(f => new AttachmentBuilder(f.buffer, { name: f.name }));
 
     // Eén strakke embed — tekst boven de foto, ondertekst + branding onder de foto in footer
     const mainEmbed = new EmbedBuilder()
       .setTitle('👀 Sneak Peek — Lage Landen RP')
       .setDescription(tekst)
-      .setImage(firstImg.url)
+      .setImage(`attachment://${fileBuffers[0].name}`)
       .setColor(0x5865F2)
       .setFooter({ text: `${ondertekst}\nSneak Peek • Lage Landen RP`, iconURL: interaction.guild.iconURL({ dynamic: true }) })
       .setTimestamp();
 
     // Extra foto embeds — zelfde kleur zodat ze visueel aansluiten
-    const extraEmbeds = extraImgs.map(att =>
-      new EmbedBuilder().setImage(att.url).setColor(0x5865F2)
+    const extraEmbeds = fileBuffers.slice(1).map(f =>
+      new EmbedBuilder().setImage(`attachment://${f.name}`).setColor(0x5865F2)
     );
-
-    await interaction.deferReply({ flags: 64 });
 
     const sent = await interaction.channel.send({
       content: doTag ? `<@&1458227903731863603> 👀 **Nieuwe Sneak Peek!**` : `👀 **Nieuwe Sneak Peek!**`,
       embeds: [mainEmbed, ...extraEmbeds],
+      files: attachmentFiles,
     });
 
     await sent.react('👀').catch(() => {});
@@ -7093,6 +8111,7 @@ client.on('interactionCreate', async (interaction) => {
 
   // /serverinfo — server statistieken
   if (interaction.isChatInputCommand() && interaction.commandName === 'serverinfo') {
+    await interaction.deferReply();
     const guild = interaction.guild;
     await guild.fetch();
     await guild.members.fetch().catch(() => {});
@@ -7127,7 +8146,7 @@ client.on('interactionCreate', async (interaction) => {
       .setColor(0x5865F2)
       .setFooter({ text: `ID: ${guild.id} | Lage Landen RP`, iconURL: guild.iconURL({ dynamic: true }) })
       .setTimestamp();
-    return interaction.reply({ embeds: [embed] });
+    return interaction.editReply({ embeds: [embed] });
   }
 
   if (interaction.isButton() && interaction.customId === 'ticket_support')
@@ -8131,10 +9150,16 @@ De stream is mogelijk tijdelijk offline — probeer een andere zender.` });
       ], flags: 64 });
     }
 
+    // Defer zo vroeg mogelijk — voorkomt 'application did not respond' bij trage event loop
+    try {
+      await interaction.deferReply();
+    } catch (e) {
+      console.warn(`[play] deferReply mislukt: ${e.message}`);
+      return;
+    }
+
     // Stop radio als die actief is (radio en muziek zijn aparte systemen)
     stopRadio(interaction.guildId);
-
-    await interaction.deferReply();
 
     let searchResult;
     try {
@@ -8648,27 +9673,63 @@ client.on('presenceUpdate', async (oldPresence, newPresence) => {
 });
 
 // ----------------------------------------------------------------------------
-//  WEBHOOK BEVEILIGING
+//  WEBHOOK BEVEILIGING — detecteer én verwijder ongeautoriseerde webhooks
 // ----------------------------------------------------------------------------
+// Whitelisted webhook IDs die we zelf aanmaken (bijv. voor sollicitaties)
+const TRUSTED_WEBHOOK_IDS = new Set([
+  // Voeg hier jouw eigen webhook IDs toe als je er legitieme gebruikt in je server
+]);
+
 client.on('webhooksUpdate', async (channel) => {
   if (!secCfg.webhookProtection?.enabled) return;
+
+  // Haal alle webhooks op in dit kanaal
+  const webhooks = await channel.fetchWebhooks().catch(() => null);
+  if (!webhooks) return;
+
+  // Haal audit log op om maker te identificeren
   const audit = await channel.guild.fetchAuditLogs({ type: 101 /* WebhookCreate */, limit: 1 }).catch(() => null);
   const entry = audit?.entries.first();
-  if (!entry || Date.now() - entry.createdTimestamp > 8000) return;
-  addSecurityEvent('webhook_created', {
-    channelId: channel.id, channelName: channel.name,
-    by: entry.executor?.tag, byId: entry.executor?.id,
-  });
-  await securityLog(new EmbedBuilder()
-    .setTitle('🪝 Webhook Aangemaakt — Let Op!')
-    .setColor(0xFFA500)
-    .addFields(
-      { name: '📢 Kanaal',  value: `<#${channel.id}> \`#${channel.name}\``,                                        inline: true },
-      { name: '👤 Door',    value: entry.executor ? `${entry.executor.tag} (\`${entry.executor.id}\`)` : 'Onbekend', inline: true },
-      { name: '⏰ Tijdstip', value: `<t:${Math.floor(Date.now() / 1000)}:F>`,                                        inline: false },
-    )
-    .setFooter({ text: 'Lage Landen RP — Webhook Beveiliging' }).setTimestamp()
-  );
+  const isRecent = entry && Date.now() - entry.createdTimestamp < 10000;
+  const executor = isRecent ? entry.executor : null;
+
+  for (const [id, wh] of webhooks) {
+    // Eigen bot-webhooks en whitelisted webhooks overslaan
+    if (TRUSTED_WEBHOOK_IDS.has(id)) continue;
+    if (wh.owner?.id === client.user.id) continue;
+
+    // Verwijder ongeautoriseerde webhook direct
+    await wh.delete('Webhook Bescherming — ongeautoriseerde webhook automatisch verwijderd').catch(() => {});
+
+    addSecurityEvent('webhook_auto_deleted', {
+      webhookId: id, webhookName: wh.name,
+      channelId: channel.id, channelName: channel.name,
+      createdById: executor?.id, createdByTag: executor?.tag,
+    });
+
+    await securityLog(new EmbedBuilder()
+      .setTitle('🚨 Ongeautoriseerde Webhook Vernietigd!')
+      .setColor(0xFF0000)
+      .setDescription('Een nieuwe webhook is automatisch verwijderd zodra deze aangemaakt werd.')
+      .addFields(
+        { name: '🪝 Webhook Naam', value: `\`${wh.name}\``,                                                                    inline: true  },
+        { name: '🆔 Webhook ID',   value: `\`${id}\``,                                                                          inline: true  },
+        { name: '📢 Kanaal',       value: `<#${channel.id}> \`#${channel.name}\``,                                              inline: true  },
+        { name: '👤 Aangemaakt door', value: executor ? `<@${executor.id}> \`${executor.tag}\`` : 'Onbekend (of via API)',       inline: false },
+        { name: '⚡ Actie',        value: '🗑️ Webhook permanent verwijderd',                                                    inline: true  },
+      )
+      .setFooter({ text: 'Lage Landen RP — Webhook Beveiliging' }).setTimestamp()
+    );
+
+    // Als we de maker kennen en het is geen staf → quarantaine/ban
+    if (executor && executor.id !== client.user.id) {
+      const member = channel.guild.members.cache.get(executor.id)
+        || await channel.guild.members.fetch(executor.id).catch(() => null);
+      if (member && !member.permissions.has(PermissionFlagsBits.Administrator)) {
+        await applyQuarantine(member, '🚨 Ongeautoriseerde webhook aangemaakt').catch(() => {});
+      }
+    }
+  }
 });
 
 client.on('error', e => {
@@ -8686,3 +9747,36 @@ process.on('unhandledRejection', e => {
 }));
 
 client.login(BOT_TOKEN).catch(e => { console.error('❌ Login mislukt:', e); process.exit(1); });
+
+// ── DSI Bot meestarten ────────────────────────────────────────────────────────
+const { fork } = require('child_process');
+const dsiBotPath = path.join(__dirname, 'dsi-bot', 'bot.js');
+if (fs.existsSync(dsiBotPath)) {
+  const dsiProc = fork(dsiBotPath, [], { cwd: path.join(__dirname, 'dsi-bot') });
+  dsiProc.on('exit', (code) => console.warn(`[DSI] Bot gestopt (code ${code})`));
+  console.log('✅ DSI bot gestart');
+} else {
+  console.warn('⚠️  DSI bot niet gevonden op:', dsiBotPath);
+}
+
+// ── Guardian Bot meestarten ──────────────────────────────────────────────────
+const guardianBotPath = path.join(__dirname, 'guardian', 'bot.js');
+if (process.env.GUARDIAN_BOT_TOKEN && fs.existsSync(guardianBotPath)) {
+  let guardianRestarts = 0;
+  function startGuardian() {
+    const guardianProc = fork(guardianBotPath, [], { cwd: path.join(__dirname, 'guardian') });
+    guardianProc.on('exit', (code) => {
+      guardianRestarts++;
+      const delay = Math.min(30000, 5000 * guardianRestarts); // max 30s wachten
+      console.warn(`[GUARDIAN] Bot gestopt (code ${code}) — herstart over ${delay/1000}s (poging ${guardianRestarts})`);
+      if (guardianRestarts <= 5) setTimeout(startGuardian, delay);
+      else console.error('[GUARDIAN] Te veel herstarts — guardian bot gestopt. Controleer GUARDIAN_BOT_TOKEN in .env.');
+    });
+  }
+  startGuardian();
+  console.log('✅ Guardian bot gestart');
+} else if (!process.env.GUARDIAN_BOT_TOKEN) {
+  console.warn('⚠️  Guardian bot niet gestart — GUARDIAN_BOT_TOKEN ontbreekt in .env');
+} else {
+  console.warn('⚠️  Guardian bot niet gevonden op:', guardianBotPath);
+}

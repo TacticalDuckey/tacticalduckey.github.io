@@ -1,4 +1,4 @@
-# 🎯 Discord Webhook Setup (Zonder 24/7 Bot)
+﻿# 🎯 Discord Webhook Setup (Zonder 24/7 Bot)
 
 ## ✅ Wat werkt:
 - ✨ Type server naam in Discord kanaal
@@ -71,7 +71,7 @@
 ## 🧪 Test het!
 
 ### Optie A: Admin Panel (werkt altijd)
-1. Ga naar: https://lagelandenrp.netlify.app/blacklist-admin.html
+1. Ga naar: https://lagelanden.netlify.app/blacklist-admin.html
 2. Type server naam
 3. Click "Server Toevoegen"
 4. ✅ Embed verschijnt in Discord!
