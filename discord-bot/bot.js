@@ -2295,8 +2295,9 @@ async function createPartnerTicket(interaction) {
     .setDescription(
       `Welkom <@${user.id}>!\n\n` +
       `Bedankt voor je interesse in een partnerschap met **Lage Landen RP**!\n\n` +
-      `🔗 **[Bekijk de partnerschapseisen](${PARTNER_WEBSITE})**\n\n` +
-      `Heb je de eisen gelezen en ben je akkoord? Druk op de knop hieronder om je partnerbericht in te dienen.\n` +
+      `� **[Bekijk de partnerschapseisen & vul direct het aanvraagformulier in](${PARTNER_WEBSITE})**\n\n` +
+      `💡 **Tip:** Je kunt je partnership aanvraag rechtstreeks via de website indienen — geen extra stappen nodig!\n\n` +
+      `Heb je vragen of wil je het via Discord regelen? Druk op de knop hieronder.\n` +
       `Een stafflid beoordeelt je aanvraag daarna zo snel mogelijk.`
     )
     .setColor(0x5865F2)
@@ -5693,9 +5694,10 @@ client.on('messageCreate', async (message) => {
   await message.channel.send(
     `👋 Welkom in het partner ticket, <@${message.author.id}>!\n\n` +
     `Hierboven zie je een embed met onze **partner eisen** — lees deze even goed door.\n\n` +
-    `> 📋 Zodra je de eisen hebt doorgelezen en akkoord bent, druk je op de knop **📨 Stuur Partner Bericht** om je aanvraag in te vullen.\n` +
-    `> ⚠️ Houd er rekening mee: door op die knop te drukken ga je automatisch akkoord met alle partner eisen.\n\n` +
-    `Je bericht wordt daarna zo snel mogelijk beoordeeld door ons staff team. 🙏`
+    `> 🌐 **Snelste manier:** Vul het aanvraagformulier direct in op onze website: ${PARTNER_WEBSITE}\n` +
+    `> 📋 Of druk op de knop **📨 Stuur Partner Bericht** hieronder om het via Discord te doen.\n` +
+    `> ⚠️ Door je aanvraag in te dienen ga je automatisch akkoord met alle partner eisen.\n\n` +
+    `Je aanvraag wordt zo snel mogelijk beoordeeld door ons staff team. 🙏`
   ).catch(() => {});
 });
 
